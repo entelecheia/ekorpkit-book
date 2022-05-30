@@ -1,0 +1,23 @@
+# @package _global_
+defaults:
+  - /model/topic: esg_topics_test
+  - override /corpus: esg_nouns 
+  - override /task: corpora_task
+
+task:
+  verbose: true
+  pipeline:
+    _pipeline_:
+      - merge_dataframe
+      - filter_query
+      - save_dataframe
+    filter_query:
+      query: topic_esg > 0.1
+    merge_dataframe:
+      data_dir: ${model.topic.output_dir}/infer
+      data_file: infer_topics_aggregated.parquet
+      merge_on:
+        - id
+    save_dataframe:
+      output_dir: ${model.topic.output_dir}/infer
+      output_file: esg_topic_corpus.parquet

@@ -1,0 +1,69 @@
+# @package _global_
+defaults:
+  - override /task: dataframe_task
+
+task:
+  data_dir: ${dir.archive}/datasets/source/sec_report
+  data_file: TT_EST_REPORT_202104042213.csv
+  pipeline:
+    _pipeline_:
+      - load_dataframe
+      - eval_columns
+      - save_dataframe
+    load_dataframe:
+      # data_dir: ${..data_dir}
+      # data_file: ${..data_file}ß
+      dtype:
+        BAS_YYMM: str
+        CMP_CD: str
+        RPT_ID: str
+        RPT_TYP: str
+        RPT_SUB_TYP: str
+        ISS_FRQ_TYP: str
+        RECOM_TYP: str
+        RECOMM_ACTION_TYP: str
+        PRC_ACTION_TYP: str
+        EPS_ACTION_TYP: str
+      parse_dates:
+        - ANL_DT
+        - WORK_DT 
+        - TRD_DT
+    eval_columns:
+      engine: python
+      eval_at: pd
+      expressions:
+        RPT_ID: "df.assign(RPFX='r').RPFX + df.RPT_ID"
+        CMP_CD: "df.assign(CPFX='A').CPFX + df.CMP_CD"
+    save_dataframe:
+      output_dir: ${..data_dir}
+      output_file: TT_EST_REPORT.parquet
+      columns_to_keep:
+        - RPT_ID
+        - ANL_DT
+        - CMP_CD
+        - SEC_CD
+        - BRK_CD
+        - RPT_TYP
+        - RPT_SUB_TYP
+        - ISS_FRQ_TYP
+        - RECOM_TYP
+        - RECOMM
+        - BAS_YYMM
+        - FS_MN
+        - TARGET_PRC
+        - TARGET_PRC_PRD
+        - RPT_TITLE
+        - COMMENT
+        - PAGE_CNT
+        - FILE_ATTACH_YN
+        - FILE_NM
+        - RECOMM_ACTION_TYP
+        - PRC_ACTION_TYP
+        - EPS_ACTION_TYP
+        - EPS
+        - PRE_EPS
+        - PRE_RECOMM
+        - PRE_TARGET_PRC
+        - PRE_REG_DT
+        - WORK_DT
+        - TRD_DT

@@ -1,0 +1,32 @@
+# @package _global_
+defaults:
+  - /model/topic: esg_topics_test
+  # - override /corpus: esg_nouns 
+  - override /task: dataframe_task
+
+task:
+  name: esg_topic_infer_agg
+  verbose: true
+  pipeline:
+    _pipeline_:
+      - load_dataframe
+      - eval_columns
+      - aggregate_columns
+      # - filter_query
+      # - reset_index
+      - save_dataframe
+    load_dataframe:
+      data_dir: ${model.topic.output_dir}/infer
+      data_file: infer_topics.parquet
+    save_dataframe:
+      output_dir: ${..load_dataframe.data_dir}
+      output_file: infer_topics_aggregated.parquet
+    eval_columns:
+      expressions:
+        topic_esg: topic1+topic3+topic14+topic15+topic22
+    aggregate_columns:
+      aggregations:
+        topic_esg: mean
+      groupby:
+        - id
+        - corpus

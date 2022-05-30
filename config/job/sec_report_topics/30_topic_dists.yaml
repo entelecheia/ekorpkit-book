@@ -1,0 +1,78 @@
+# @package _global_
+defaults:
+  - override /corpus: sec_report_nouns
+  - override /task: corpus_task
+
+corpus:
+  autoload: true
+  # automerge: true
+task:
+  name: sec_report_topics
+  data_dir: ${dir.project}/${task.name}
+  verbose: true
+  merge_metadata: true
+  pipeline:
+    _pipeline_:
+      merge_dataframe: merge_dataframe
+      merge_dataframe2: merge_dataframe
+      filter_query: filter_query
+      # drop: drop
+      melt: melt
+      aggregate_columns: aggregate_columns
+      eval_columns: eval_columns
+      aggregate_columns2: aggregate_columns
+      pivot: pivot
+      save_dataframe: save_dataframe
+      
+    merge_dataframe:
+      data_dir: ${task.data_dir}/topics
+      data_file: sec_report_topic_dists.parquet 
+      merge_on:
+        - id
+        - chunk_id
+    merge_dataframe2:
+      data_dir: ${task.data_dir}/corpus
+      data_file: K200_20220412.csv
+      merge_on:
+        - CMP_CD
+    filter_query:
+      query: TARGET_PRC.notna()
+    drop:
+      columns:
+        - text
+    melt:
+      id_vars:
+        - id
+        - chunk_id
+        - corpus
+        - timestamp
+      value_vars: "[f'topic{i}' for i in range(36)]"
+      var_name: topic_num
+      value_name: topic_weight
+    aggregate_columns:
+      aggregations:
+        topic_weight: mean
+      groupby:
+        - id
+        - corpus
+        - timestamp
+        - topic_num
+    eval_columns:
+      expressions:
+        year: timestamp.dt.year
+    aggregate_columns2:
+      aggregations:
+        topic_weight: mean
+      groupby:
+        - year
+        - topic_num
+    pivot:
+      index:
+        - year
+      columns:
+        - topic_num
+      values:
+        - topic_weight
+    save_dataframe:
+      output_dir: ${task.data_dir}/topics
+      output_file: sec_report_topic_dists_agg_year.parquet

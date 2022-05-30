@@ -1,0 +1,59 @@
+# @package _global_
+defaults:
+  - /model/topic: sample_report_topics
+  - override /corpus: sample_report_nouns
+  - override /task: topic_task
+
+task:
+  name: sample_report_topics
+  verbose: true
+  topic:
+    _subtasks_:
+      - load_corpus
+      # - train_model
+      # - load_model
+      # - visualize
+      # - topic_wordclouds
+      # - infer_topics
+      # - label_topics
+      # - save_labels
+      # - export_processed
+    load_corpus:
+      rebuild: true
+    train_model:
+      k: 36
+      interval: 100
+      iterations: 3000
+    load_model:
+      model_file: sample_report_topics-LDA.k36.mdl
+    topic_wordclouds:
+      top_n: 500
+      ncols: 4
+      nrows: 3
+      dpi: 300
+      figsize: (12, 7)
+      colormap: tab20b # twilight_shifted
+      fontpath: /usr/share/fonts/truetype/nanum/NanumPen.ttf
+      # fontpath: /usr/share/fonts/truetype/nanum/NanumBrush.ttf
+      # save_each: false
+      wordclouds:
+        0:
+          mask_file: E.png
+          figsize: (6, 8)
+        1:
+          mask_file: S.png
+          figsize: (6, 8)
+        2:
+          mask_file: G.png
+          figsize: (6, 8)
+        3:
+          mask_file: INVEST.png
+          figsize: (12, 5)
+    label_topics:
+      rebuild: true
+    infer_topics:
+    save_labels:
+      names:
+        0: E
+        1: S
+        2: G

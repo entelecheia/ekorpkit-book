@@ -1,0 +1,33 @@
+# @package _global_
+defaults:
+  - /model/topic: sample_report_topics
+  - override /corpus: sec_report_nouns
+  - override /task: topic_task
+
+task:
+  name: sec_report_topics
+  data_dir: ${dir.project}/${task.name}
+  verbose: true
+  topic:
+    _subtasks_:
+      # - load_corpus
+      # - train_model
+      - load_model
+      # - visualize
+      # - topic_wordclouds
+      - infer_topics
+      # - label_topics
+      # - save_labels
+      # - export_processed
+    load_corpus:
+      rebuild: false
+    train_model:
+      k: 36
+      interval: 100
+      iterations: 3000
+    load_model:
+      model_file: sample_report_topics-LDA.k36.mdl
+    infer_topics:
+      output_dir: ${task.data_dir}/topics
+      output_file: sec_report_topic_dists.parquet 
+      iterations: 1000

@@ -1,0 +1,35 @@
+# @package _global_
+defaults:
+  - /dataset/preset: t5_bio_ner
+  - /model/transformer/finetune: simple_t5
+  - /model/transformer/pretrained: SciFive-base-Pubmed
+  - override /task: transformer_finetune
+  - override /dataset: preset
+
+model: 
+  transformer:
+    finetune:
+      _pipeline_:
+        - train
+        - predict
+      prediction:
+        task_prefix:
+          bc2gm_ner: ner
+          bc4chemd_ner: ner
+          bc5cdr_chem_ner: ner
+          bc5cdr_disease_ner: ner
+          jnlpba_ner: ner
+          linnaeus_ner: ner
+          ncbi_disease_ner: ner
+          s800_ner: ner
+        data_dir: ${dir.project}/corpus/text_corpus
+        data_files:
+          - pathobook-processed.csv
+        keys:
+          prefix:
+          input_text: text
+          target_text: 
+          pred_text: pred_text
+
+task:
+  name: t5_bio_ner

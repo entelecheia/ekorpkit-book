@@ -1,0 +1,26 @@
+# @package _global_
+defaults:
+  - /model/topic: esg_topics2
+  # - override /corpus: esg_nouns
+  - override /task: dataframe_task
+
+task:
+  name: esg_topics2_40_export_sample
+  verbose: true
+  pipeline:
+    _pipeline_:
+      - load_dataframe
+      - merge_dataframe
+      - save_dataframe
+    load_dataframe:
+      data_dir: ${model.topic.output_dir}/sample
+      data_file: esg_topics2-sample.csv
+    save_dataframe:
+      output_dir: ${model.topic.output_dir}/corpus
+      output_file: esg_topics2_sample_for_label.csv
+    merge_dataframe:
+      data_dir: ${model.topic.output_dir}/corpus
+      data_file: esg_topics2_corpus_chunk.parquet
+      merge_on:
+        - corpus
+        - id

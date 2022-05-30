@@ -1,0 +1,39 @@
+# @package _global_
+defaults:
+  - override /corpus: sec_report_nouns
+  - override /task: corpus
+  - override /cmd: task
+
+corpus:
+  autoload: true
+task:
+  name: sec_report_topics
+  data_dir: ${dir.project}/${task.name}
+  verbose: true
+  merge_metadata: true
+  pipeline:
+    _pipeline_:
+      # stdout_samples: stdout_samples
+      filter_query: filter_query
+      save_dataframe: save_dataframe
+      sampling: sampling
+    filter_query:
+      query: 
+        - "type == 1"
+        - "subtype.isin([1,2,3])"
+    save_dataframe:
+      columns_to_keep:
+        - id
+        - chunk_id
+        - timestamp
+        - text
+      task_dir: corpus
+      output_file: ${corpus.name}_filtered.parquet
+    sampling:
+      columns_to_keep:
+        - id
+        - chunk_id
+        - text
+      sample_size_per_group: 0.1
+      output_dir: ${..save_dataframe.output_dir}
+      output_file: ${corpus.name}_sample.parquet

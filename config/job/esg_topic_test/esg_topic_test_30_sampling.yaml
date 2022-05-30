@@ -1,0 +1,88 @@
+# @package _global_
+defaults:
+  - /model/topic: esg_topics_test
+  # - override /corpus: esg_nouns
+  - override /task: dataframe_task
+
+task:
+  name: esg_topic_test_sampling
+  verbose: true
+  pipeline:
+    _pipeline_:
+      - load_dataframe
+      - melt
+      - aggregate_columns
+      - merge_dataframe
+      - top_values
+      - filter_query
+      - reset_index
+      - sampling
+      - save_dataframe
+    load_dataframe:
+      data_dir: ${model.topic.model_dir}
+      data_file: esg_topics_test-LDA.k30-topic_dists.csv
+    save_dataframe:
+      output_dir: ${..load_dataframe.data_dir}
+      output_file: esg_topics_test-LDA.k30-topic_dists_melted_filtered.csv
+    melt:
+      id_vars:
+        - id
+        - chunk_no
+        - corpus
+      value_vars:
+      var_name: topic_num
+      value_name: topic_weight
+    aggregate_columns:
+      aggregations:
+        topic_weight: mean
+      groupby:
+        - id
+        - corpus
+        - topic_num
+    reset_index:
+      drop_index: true
+    merge_dataframe:
+      data_dir: ${model.topic.output_dir}
+      data_file: LDA.k30-labels.csv
+      merge_on:
+        - topic_num
+    split_sampling:
+      stratify_on:
+        - corpus
+        - topic_num
+      test_size: 600
+      unique_key: id
+      output_dir: ${model.topic.output_dir}/sample
+      test_file: esg_topics_test-sample-test.csv
+    sampling:
+      groupby:
+        - corpus
+        - topic_num
+      sample_size_per_group: 10
+      value_var: topic_weight
+      output_dir: ${model.topic.output_dir}/sample
+      test_file: esg_topics_test-sample.csv
+      columns_to_keep:
+        - corpus
+        - id
+        - topic_num
+        - topic_weight
+        - top_topics
+    top_values:
+      groupby:
+        - id
+        - corpus
+      value_var: topic_weight
+      value_label: topic_name
+      value_name: top_topics
+      columns_to_keep:
+        - corpus
+        - id
+        - topic_num
+        - topic_weight
+        - top_topics
+        - topic_no
+    filter_query:
+      query: 
+        - topic_weight > 0.5
+        - topic_no < 16

@@ -1,0 +1,25 @@
+# @package _global_
+defaults:
+  - /model/transformer: simple_classification
+  - /model/transformer/pretrained: finbert
+  - override /cmd: transformer_finetune
+  - override /dataset: simple
+
+dataset:
+  name: financial_phrasebank 
+  verbose: false
+model: 
+  transformer:
+    name: ${dataset.name}
+    _call_:
+      - train
+      - eval
+    config:
+      num_train_epochs: 2
+      max_seq_length: 256
+      train_batch_size: 32
+      eval_batch_size: 32
+    labels:
+      - positive
+      - neutral
+      - negative

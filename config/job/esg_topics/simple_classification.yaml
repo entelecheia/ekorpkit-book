@@ -1,0 +1,26 @@
+# @package _global_
+defaults:
+  - /model/transformer/finetune: simple_classification
+  - /model/transformer/pretrained: ekonelectra-base
+  - override /task: transformer_finetune
+  - override /dataset: simple
+
+model: 
+  transformer:
+    finetune:
+      _pipeline_:
+        - train
+        - predict
+      prediction:
+        data_dir: ${dir.archive}/datasets/source/simple/esg_topics
+        data_files:
+          - esg_topics.csv
+        columns_to_keep:
+          - content
+          - example_id
+          - classname
+        keys:
+          input_text: content
+ 
+task:
+  name: simple_esg_topics

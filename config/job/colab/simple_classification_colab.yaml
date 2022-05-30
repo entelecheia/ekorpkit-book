@@ -1,0 +1,30 @@
+# @package _global_
+defaults:
+  - /model/transformer/finetune: simple_classification
+  - /model/transformer/pretrained: ekonelectra-base
+  - override /task: transformer_finetune
+  - override /dataset: simple
+
+model: 
+  transformer:
+    finetune:
+      config:
+        max_seq_length: 256
+        train_batch_size: 16
+        eval_batch_size: 16
+      _pipeline_:
+        - train
+        - predict
+      prediction:
+        data_dir: 
+        data_files:
+          - esg_topics.csv
+        columns_to_keep:
+          - content
+          - example_id
+          - classname
+        keys:
+          input_text: content
+ 
+task:
+  name: simple_esg_topics

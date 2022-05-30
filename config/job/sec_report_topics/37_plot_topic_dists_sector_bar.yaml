@@ -1,0 +1,78 @@
+# @package _global_
+defaults:
+  - /visualize/plot: barplot
+  - override /task: dataframe_task
+
+task:
+  name: sec_report_topics
+  data_dir: ${dir.project}/${task.name}
+  verbose: true
+  pipeline:
+    _pipeline_:
+      load_dataframe: load_dataframe
+      eval_columns: eval_columns
+      aggregate_columns: aggregate_columns
+      # aggregate_columns2: aggregate_columns
+      # save_dataframe: save_dataframe
+      # pivot: pivot
+      plot: plot
+      
+    load_dataframe:
+      data_dir: ${task.data_dir}/topics
+      data_file: sec_report_topic_dists_sector_year.parquet
+    eval_columns:
+      expressions:
+        E: topic0
+        S: topic1
+        G2: topic2
+        G: topic2+topic6
+        ESG: E+S+G
+        ESG2: E+S+G2
+    aggregate_columns:
+      aggregations:
+        E: mean
+        S: mean
+        G: mean
+      groupby:
+        - sector
+    plot:
+      visualize: ${visualize}
+
+visualize:
+  plot:
+    output_dir: ${task.data_dir}/figs
+    output_file: topic_weights_by_sector.png
+    columns:
+      xvalue: sector
+      yvalue: 
+        - E
+        - S
+        - G
+    plot:
+      stacked: true
+      rcParams:
+        xtick.labelsize: 8
+    figure:
+      xlabel: Sector
+      ylabel: Topic Weight
+      title: Topic Weight by Sector
+      # legend:
+      #   labels: ['ESG', 'E', 'S', 'G']
+      xticklabels:
+        labels:
+          - Energy
+          - Materials
+          - Industrials
+          - Consumer Discretionary
+          - Consumer Staples
+          - Health Care
+          - Financials
+          - Information Technology
+          - Communication Services
+          - Utilities
+        fontsize: 10
+        rotation: 45
+      #   ticks: [2005, 2010, 2015, 2020]
+      #   labels: [2005, 2010, 2015, 2020]
+      # xtickmajorformatterfunc: 'ticker.FormatStrFormatter("%d")'
+      ytickmajorformatterfunc: 'ticker.PercentFormatter(1.0, decimals=1)'

@@ -1,0 +1,48 @@
+# @package _global_
+defaults:
+  - /model/topic: esg_topics2
+  - override /corpus: esg_topics2_norm 
+  - override /task: corpora_task
+
+task:
+  name: esg_topics2_corpus_chunk
+  verbose: true
+  pipeline:
+    _pipeline_:
+      - aggregate_columns
+      - chunk
+      - explode_splits
+      # - merge_dataframe
+      # - filter_query
+      - save_dataframe
+    filter_query:
+      query: topic_esg > 0.1
+    merge_dataframe:
+      data_dir: ${model.topic.output_dir}/infer
+      data_file: infer_topics_aggregated.parquet
+      merge_on:
+        - id
+    save_dataframe:
+      columns_to_keep:
+        - corpus
+        - id
+        - chunk_id
+        - text
+      output_dir: ${model.topic.output_dir}/corpus
+      output_file: esg_topics2_corpus_chunk.parquet
+    aggregate_columns:
+      onto: text
+      separator: '\n\n'
+      groupby:
+        - corpus
+        - id
+    chunk:
+      chunk_size: 350
+    explode_splits:
+      apply_to: text
+      id_key:
+        - corpus
+        - id
+      split_key: chunk_id
+      separator: '\n\n'
+

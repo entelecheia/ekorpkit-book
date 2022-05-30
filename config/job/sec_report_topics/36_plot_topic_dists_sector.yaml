@@ -1,0 +1,69 @@
+# @package _global_
+defaults:
+  - /visualize/plot: stackplot
+  - override /task: dataframe_task
+
+task:
+  name: sec_report_topics
+  data_dir: ${dir.project}/${task.name}
+  verbose: true
+  pipeline:
+    _pipeline_:
+      load_dataframe: load_dataframe
+      # drop: drop
+      # melt: melt
+      # merge_dataframe: merge_dataframe
+      eval_columns: eval_columns
+      # save_dataframe: save_dataframe
+      # pivot: pivot
+      plot: plot
+      
+    load_dataframe:
+      data_dir: ${task.data_dir}/topics
+      data_file: sec_report_topic_dists_sector_year.parquet
+    eval_columns:
+      expressions:
+        E: topic0
+        S: topic1
+        G2: topic2
+        G: topic2+topic6
+        ESG: E+S+G
+        ESG2: E+S+G2
+    plot:
+      visualize: ${visualize}
+      subset:
+        column: sector
+        values: [10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
+        titles:
+          - Energy
+          - Materials
+          - Industrials
+          - Consumer Discretionary
+          - Consumer Staples
+          - Health Care
+          - Financials
+          - Information Technology
+          - Communication Services
+          - Utilities
+      output_dir: ${task.data_dir}/figs
+      output_file: topic_trends_sector_{}.png
+
+visualize:
+  plot:
+    columns:
+      xvalue: year
+      yvalue: ['E', 'S', 'G']
+    figure:
+      xlabel: Year
+      ylabel: Topic Weight
+      title: Topic Trends
+      xlim:
+        left: 2004
+        right: 2020
+      # legend:
+      #   labels: ['ESG', 'E', 'S', 'G']
+      # xticks:
+      #   ticks: [2005, 2010, 2015, 2020]
+      #   labels: [2005, 2010, 2015, 2020]
+      xtickmajorformatterfunc: 'ticker.FormatStrFormatter("%d")'
+      ytickmajorformatterfunc: 'ticker.PercentFormatter(1.0, decimals=1)'
