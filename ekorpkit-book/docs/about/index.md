@@ -18,7 +18,7 @@
 ```tex
 @software{lee_2022_6497226,
   author       = {Young Joon Lee},
-  title        = {eKorpkit: English Korean Corpus Toolkit},
+  title        = {eKorpkit: eKonomic Research Python Toolkit},
   month        = apr,
   year         = 2022,
   publisher    = {Zenodo},
@@ -30,13 +30,13 @@
 ```tex
 @software{lee_2022_ekorpkit,
   author       = {Young Joon Lee},
-  title        = {eKorpkit: English Korean Corpus Toolkit},
-  month        = apr,
+  title        = {eKorpkit: eKonomic Research Python Toolkit},
   year         = 2022,
-  publisher    = {GitHub},
+  howpublished = {Github},
   url          = {https://github.com/entelecheia/ekorpkit}
 }
 ```
+
 
 ## License
 
