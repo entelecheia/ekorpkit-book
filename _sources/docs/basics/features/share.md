@@ -12,3 +12,6 @@ kernelspec:
 
 # Sharable and Reproducible
 
+- With eKorpkit, you can easily share your datasets and models.
+- Sharing configs along with datasets and models makes every research reproducible.
+- You can share each unit jobs or an entire workflow.
