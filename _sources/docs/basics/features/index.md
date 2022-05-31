@@ -1,4 +1,4 @@
-# Key features:
+# Key features
 
 ## [Easy Configuration](./easy_config.md)
 
