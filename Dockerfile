@@ -8,6 +8,10 @@ ENV DS_BUILD_FUSED_ADAM 1
 WORKDIR $WORK_DIR
 RUN pip install --upgrade --no-cache-dir pip && \
     pip install --no-cache-dir \
-        wandb transformers simpletransformers hydra-core hydra-colorlog tensorflow
+        wandb transformers simpletransformers hydra-core hydra-colorlog tensorflow jupyter_nbextensions_configurator ipywidgets
+
+RUN jupyter labextension enable @jupyter-widgets/jupyterlab-manager
+RUN jupyter nbextension enable --py widgetsnbextension
+RUN jupyter nbextensions_configurator enable
 
 CMD ["/bin/bash"]
