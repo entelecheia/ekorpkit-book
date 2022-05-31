@@ -26,6 +26,15 @@ pip install ekorpkit[all]
 
 ## Extra dependencies
 
+### List of extra dependency sets
+
+```{code-cell} ipython3
+from ekorpkit import eKonf
+eKonf.dependencies()
+```
+
+### List of libraries in each dependency set
+
 ```{code-cell} ipython3
 from ekorpkit import eKonf
 eKonf.dependencies("tokenize")
@@ -37,6 +46,10 @@ eKonf.dependencies("dataset")
 
 ```{code-cell} ipython3
 eKonf.dependencies("model")
+```
+
+```{code-cell} ipython3
+eKonf.dependencies("visualize")
 ```
 
 ```{code-cell} ipython3
