@@ -26,6 +26,3 @@
 
 - eKorpkit has a pluggable architecture, enabling it to combine with your own implementation.
 
-
-```{tableofcontents}
-```
