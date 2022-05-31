@@ -12,3 +12,4 @@ kernelspec:
 
 # No Boilerplate
 
+- eKorpkit lets you focus on the problem at hand instead of spending time on boilerplate code like command line flags, loading configuration files, logging etc.
