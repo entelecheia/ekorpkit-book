@@ -19,6 +19,6 @@ kernelspec:
 
 ## Run a job with `ekorpkit-run`
 
-```{code-cell} ipython3
-!ekorpkit-run +job=build_corpus name=bok_minutes num_workers=10
+```bash
+ekorpkit-run +job=build_corpus name=bok_minutes num_workers=10
 ```

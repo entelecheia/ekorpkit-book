@@ -49,5 +49,9 @@ eKonf.dependencies("model")
 ```
 
 ```{code-cell} ipython3
+eKonf.dependencies("visualize")
+```
+
+```{code-cell} ipython3
 eKonf.dependencies("all")
 ```
