@@ -51,8 +51,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Bank of Korea" href="../bok/index.html" />
@@ -557,8 +555,8 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#distribution-of-number-of-words-in-fomc-corpus">
-   Distribution of number of words in FOMC corpus
+  <a class="reference internal nav-link" href="#postprocess-fomc-corpus">
+   Postprocess FOMC corpus
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -624,8 +622,8 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#distribution-of-number-of-words-in-fomc-corpus">
-   Distribution of number of words in FOMC corpus
+  <a class="reference internal nav-link" href="#postprocess-fomc-corpus">
+   Postprocess FOMC corpus
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -698,7 +696,7 @@ Set logging level to Warning, if you don’t want to see verbose logging,</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.ekonf:initialized batcher with &lt;ekorpkit.utils.batch.batcher.Batcher object at 0x7f70cfe9ba90&gt;
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.ekonf:initialized batcher with &lt;ekorpkit.utils.batch.batcher.Batcher object at 0x7f6fba18bee0&gt;
 </pre></div>
 </div>
 </div>
@@ -1052,8 +1050,8 @@ INFO:ekorpkit.info.column:Timestamp column timestamp added to data
 </div></div></div>
 </div>
 </div>
-<div class="section" id="distribution-of-number-of-words-in-fomc-corpus">
-<h2>Distribution of number of words in FOMC corpus<a class="headerlink" href="#distribution-of-number-of-words-in-fomc-corpus" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="postprocess-fomc-corpus">
+<h2>Postprocess FOMC corpus<a class="headerlink" href="#postprocess-fomc-corpus" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remove sections having less than 50 words because those are unlikely to contain meaningful sentences.</span>
@@ -1537,6 +1535,21 @@ INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_sections.parquet
 </table>
 </div></div></div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fomc_sections</span> <span class="o">=</span> <span class="n">load_dataframe</span><span class="p">(</span><span class="n">data_file</span><span class="o">=</span><span class="s2">&quot;fomc_sections.parquet&quot;</span><span class="p">)</span>
+<span class="n">fomc_sections</span> <span class="o">=</span> <span class="n">fomc</span><span class="o">.</span><span class="n">find_speaker_of_sections</span><span class="p">(</span><span class="n">fomc_sections</span><span class="p">)</span>
+<span class="n">save_dataframe</span><span class="p">(</span><span class="n">fomc_sections</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;fomc_sections.parquet&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sections.parquet
+INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_sections.parquet
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 <div class="section" id="ditribution-of-sectons">
 <h3>Ditribution of sectons<a class="headerlink" href="#ditribution-of-sectons" title="Permalink to this headline">¶</a></h3>
@@ -1571,7 +1584,7 @@ INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_sections.parquet
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Saved figure to ./figs/distplot.png
 </pre></div>
 </div>
-<img alt="../../../_images/03_FOMC_corpus_19_1.png" src="../../../_images/03_FOMC_corpus_19_1.png" />
+<img alt="../../../_images/03_FOMC_corpus_20_1.png" src="../../../_images/03_FOMC_corpus_20_1.png" />
 </div>
 </div>
 </div>
@@ -1807,7 +1820,7 @@ INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_chunks.parquet
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Saved figure to ./figs/distplot.png
 </pre></div>
 </div>
-<img alt="../../../_images/03_FOMC_corpus_23_1.png" src="../../../_images/03_FOMC_corpus_23_1.png" />
+<img alt="../../../_images/03_FOMC_corpus_24_1.png" src="../../../_images/03_FOMC_corpus_24_1.png" />
 </div>
 </div>
 </div>
