@@ -1,0 +1,1909 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EDA and Feature Engineering for Numerical Data &#8212; eKorpkit Tutorials</title>
+    
+  <link href="../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Bank of Korea" href="../bok/index.html" />
+    <link rel="prev" title="Prepapring Textual Data" href="03_FOMC_corpus.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../_static/ekorpkit.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">eKorpkit Tutorials</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../intro.html">
+   eKonomic Research Python Toolkit
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Basics
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/index.html">
+   Getting started
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/install.html">
+     Installation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/usage.html">
+     Usage
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/features/index.html">
+   Key features
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/easy_config.html">
+     Easy Configuration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/no_boiler.html">
+     No Boilerplate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/workflows.html">
+     Workflows
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/share.html">
+     Sharable and Reproducible
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/plug.html">
+     Pluggable Architece
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tutorials
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/corpora/index.html">
+   Copora
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/corpus.html">
+     Instantiating corpora and corpus class
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/filter_and_save.html">
+     Corpus task pipeline
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/datasets/index.html">
+   Datasets
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/datasets/dataset.html">
+     Datasets
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/pipelines/index.html">
+   Pipelines
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/pipelines/pipeline.html">
+     Instantiating pipeline
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/models/index.html">
+   Models
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/embeddings/index.html">
+     Word Embeddings
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/embeddings/word2vec_basics.html">
+       Word2Vec Basics
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/sentiment/index.html">
+     Sentiment Analyers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/lexicon.html">
+       Sentiment Lexicons
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/lbsa_en.html">
+       Lexicon-based Sentiment Analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/sentiment.html">
+       LM Dictionary vs. finbert vs. T5
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/ngram/index.html">
+     N-Grams
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram.html">
+       N-Grams
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/preprocessors/preprocessor.html">
+   Preprocessors
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/preprocessors/mecab.html">
+     Mecab Tokenizer
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Datasets
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../corpus/ekorpkot_corpus.html">
+   The eKorpkit Corpus
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Use Cases
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   FOMC
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+  <label for="toctree-checkbox-11">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="01_FOMC_sentiments.html">
+     Sentiment Analysis of FOMC Statements
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="02_FOMC_numerical_data.html">
+     Prepapring Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="03_FOMC_corpus.html">
+     Prepapring Textual Data
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     EDA and Feature Engineering for Numerical Data
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../bok/index.html">
+   Bank of Korea
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../edgar/index.html">
+   EDGAR
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+  <label for="toctree-checkbox-12">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../edgar/predict_edgar.html">
+     Prediciting Sentiments
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../esg/index.html">
+   ESG
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+  <label for="toctree-checkbox-13">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../esg/classifiers.html">
+     Training Classifiers for ESG Ratings
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../esg/news_sample.html">
+     Predicting ESG Categories and Polarities
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Research
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../research/esg_topics/analyst.html">
+   ESG Topic Analysis
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about/index.html">
+   References
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../../_sources/docs/usecases/fomc/04_FOMC_EDA_numericals.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/entelecheia/ekorpkit-book"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/entelecheia/ekorpkit-book/issues/new?title=Issue%20on%20page%20%2Fdocs/usecases/fomc/04_FOMC_EDA_numericals.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/entelecheia/ekorpkit-book/main?urlpath=tree/ekorpkit-book/docs/usecases/fomc/04_FOMC_EDA_numericals.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <a class="colab-button" href="https://colab.research.google.com/github/entelecheia/ekorpkit-book/blob/main/ekorpkit-book/docs/usecases/fomc/04_FOMC_EDA_numericals.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../../../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-preprocessed-data">
+   Load preprocessed data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#eda-on-numerical-data">
+   EDA on numerical data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#plot-rate-decision-count">
+   Plot rate decision count
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#correlation">
+   Correlation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#correlation-between-taylor-rule-and-actual-rates">
+     Correlation between Taylor rule and actual rates
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#compare-distribution-by-rate-decisions">
+     Compare distribution by rate decisions
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#create-training-data-set">
+   Create Training Data Set
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#missing-values">
+     Missing Values
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#save-data">
+     Save Data
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>EDA and Feature Engineering for Numerical Data</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-preprocessed-data">
+   Load preprocessed data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#eda-on-numerical-data">
+   EDA on numerical data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#plot-rate-decision-count">
+   Plot rate decision count
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#correlation">
+   Correlation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#correlation-between-taylor-rule-and-actual-rates">
+     Correlation between Taylor rule and actual rates
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#compare-distribution-by-rate-decisions">
+     Compare distribution by rate decisions
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#create-training-data-set">
+   Create Training Data Set
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#missing-values">
+     Missing Values
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#save-data">
+     Save Data
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="eda-and-feature-engineering-for-numerical-data">
+<h1>EDA and Feature Engineering for Numerical Data<a class="headerlink" href="#eda-and-feature-engineering-for-numerical-data" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_format=&#39;retina&#39;
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+9.gb3d564c.dirty
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/fomc&quot;</span>
+<span class="n">save_dataframe</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+    <span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;_func_/save_dataframe&quot;</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="n">data_dir</span>
+<span class="p">)</span>
+<span class="n">load_dataframe</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;_func_/load_dataframe&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="o">=</span><span class="n">data_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="load-preprocessed-data">
+<h2>Load preprocessed data<a class="headerlink" href="#load-preprocessed-data" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">econ_data</span> <span class="o">=</span> <span class="n">load_dataframe</span><span class="p">(</span><span class="n">data_file</span><span class="o">=</span><span class="s2">&quot;econ_data2.parquet&quot;</span><span class="p">)</span>
+<span class="n">econ_data</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>unscheduled</th>
+      <th>forecast</th>
+      <th>confcall</th>
+      <th>speaker</th>
+      <th>rate</th>
+      <th>rate_change</th>
+      <th>rate_decision</th>
+      <th>rate_changed</th>
+      <th>GDP</th>
+      <th>GDP_diff_prev</th>
+      <th>...</th>
+      <th>Rate</th>
+      <th>Taylor</th>
+      <th>Balanced</th>
+      <th>Inertia</th>
+      <th>Taylor-Rate</th>
+      <th>Balanced-Rate</th>
+      <th>Inertia-Rate</th>
+      <th>Taylor_diff</th>
+      <th>Balanced_diff</th>
+      <th>Inertia_diff</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2021-11-03</th>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>Jerome Powell</td>
+      <td>0.25</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>19478.893</td>
+      <td>0.570948</td>
+      <td>...</td>
+      <td>0.25</td>
+      <td>5.747177</td>
+      <td>4.940210</td>
+      <td>-0.528532</td>
+      <td>5.497177</td>
+      <td>4.690210</td>
+      <td>-0.778532</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2021-12-15</th>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>Jerome Powell</td>
+      <td>0.25</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>19478.893</td>
+      <td>0.570948</td>
+      <td>...</td>
+      <td>0.25</td>
+      <td>6.472329</td>
+      <td>5.665362</td>
+      <td>-0.637304</td>
+      <td>6.222329</td>
+      <td>5.415362</td>
+      <td>-0.887304</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2022-01-26</th>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>Jerome Powell</td>
+      <td>0.25</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>19478.893</td>
+      <td>0.570948</td>
+      <td>...</td>
+      <td>0.25</td>
+      <td>7.222928</td>
+      <td>6.415961</td>
+      <td>-0.749894</td>
+      <td>6.972928</td>
+      <td>6.165961</td>
+      <td>-0.999894</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2022-03-16</th>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>Jerome Powell</td>
+      <td>0.50</td>
+      <td>0.25</td>
+      <td>1.0</td>
+      <td>1</td>
+      <td>19806.290</td>
+      <td>1.680778</td>
+      <td>...</td>
+      <td>0.25</td>
+      <td>8.499377</td>
+      <td>8.267766</td>
+      <td>-1.027665</td>
+      <td>8.249377</td>
+      <td>8.017766</td>
+      <td>-1.277665</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2022-05-04</th>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>Jerome Powell</td>
+      <td>1.00</td>
+      <td>0.50</td>
+      <td>1.0</td>
+      <td>1</td>
+      <td>19735.895</td>
+      <td>-0.355417</td>
+      <td>...</td>
+      <td>0.50</td>
+      <td>8.094924</td>
+      <td>7.420939</td>
+      <td>-0.688141</td>
+      <td>7.594924</td>
+      <td>6.920939</td>
+      <td>-1.188141</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 58 columns</p>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="eda-on-numerical-data">
+<h2>EDA on numerical data<a class="headerlink" href="#eda-on-numerical-data" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add previous rate decision to see inertia effect</span>
+<span class="n">econ_data</span><span class="p">[</span><span class="s2">&quot;rate_decision2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">econ_data</span><span class="p">[</span><span class="s2">&quot;rate_decision&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
+<span class="p">)</span>
+<span class="n">econ_data</span><span class="p">[</span><span class="s2">&quot;prev_decision&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">econ_data</span><span class="p">[</span><span class="s2">&quot;rate_decision2&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">econ_data</span><span class="p">[</span><span class="s2">&quot;next_decision&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">econ_data</span><span class="p">[</span><span class="s2">&quot;rate_decision2&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">econ_data</span><span class="p">[[</span><span class="s2">&quot;rate_decision&quot;</span><span class="p">,</span> <span class="s2">&quot;rate_decision2&quot;</span><span class="p">,</span> <span class="s2">&quot;prev_decision&quot;</span><span class="p">,</span> <span class="s2">&quot;next_decision&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>rate_decision</th>
+      <th>rate_decision2</th>
+      <th>prev_decision</th>
+      <th>next_decision</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1982-10-05</th>
+      <td>-1.0</td>
+      <td>-1</td>
+      <td>NaN</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>1982-11-16</th>
+      <td>-1.0</td>
+      <td>-1</td>
+      <td>-1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1982-12-21</th>
+      <td>0.0</td>
+      <td>0</td>
+      <td>-1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1983-01-14</th>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1983-01-21</th>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">econ_data</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>rate</th>
+      <th>rate_change</th>
+      <th>rate_decision</th>
+      <th>rate_changed</th>
+      <th>GDP</th>
+      <th>GDP_diff_prev</th>
+      <th>GDP_diff_year</th>
+      <th>GDPPOT</th>
+      <th>GDPPOT_diff_prev</th>
+      <th>GDPPOT_diff_year</th>
+      <th>...</th>
+      <th>Inertia</th>
+      <th>Taylor-Rate</th>
+      <th>Balanced-Rate</th>
+      <th>Inertia-Rate</th>
+      <th>Taylor_diff</th>
+      <th>Balanced_diff</th>
+      <th>Inertia_diff</th>
+      <th>rate_decision2</th>
+      <th>prev_decision</th>
+      <th>next_decision</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>415.000000</td>
+      <td>415.000000</td>
+      <td>415.000000</td>
+      <td>415.000000</td>
+      <td>415.000000</td>
+      <td>415.000000</td>
+      <td>415.000000</td>
+      <td>415.000000</td>
+      <td>415.000000</td>
+      <td>415.000000</td>
+      <td>...</td>
+      <td>415.000000</td>
+      <td>415.000000</td>
+      <td>415.000000</td>
+      <td>415.000000</td>
+      <td>415.000000</td>
+      <td>415.000000</td>
+      <td>415.000000</td>
+      <td>415.000000</td>
+      <td>414.000000</td>
+      <td>414.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>3.968976</td>
+      <td>-0.019880</td>
+      <td>-0.016867</td>
+      <td>0.334940</td>
+      <td>12815.408884</td>
+      <td>0.657814</td>
+      <td>2.523898</td>
+      <td>13018.548855</td>
+      <td>0.643467</td>
+      <td>2.616803</td>
+      <td>...</td>
+      <td>2.893358</td>
+      <td>0.005563</td>
+      <td>-0.665962</td>
+      <td>-1.097304</td>
+      <td>0.002576</td>
+      <td>0.005238</td>
+      <td>-0.002322</td>
+      <td>-0.012048</td>
+      <td>-0.014493</td>
+      <td>-0.009662</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>3.036522</td>
+      <td>0.228714</td>
+      <td>0.649939</td>
+      <td>0.472539</td>
+      <td>3719.399375</td>
+      <td>1.085580</td>
+      <td>2.203739</td>
+      <td>3776.658124</td>
+      <td>0.185616</td>
+      <td>0.756947</td>
+      <td>...</td>
+      <td>2.373858</td>
+      <td>1.899151</td>
+      <td>2.141286</td>
+      <td>0.711029</td>
+      <td>0.058706</td>
+      <td>0.088255</td>
+      <td>0.026755</td>
+      <td>0.579313</td>
+      <td>0.577867</td>
+      <td>0.577968</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.000000</td>
+      <td>-1.000000</td>
+      <td>-2.000000</td>
+      <td>0.000000</td>
+      <td>6804.139000</td>
+      <td>-8.937251</td>
+      <td>-9.083737</td>
+      <td>7271.207419</td>
+      <td>0.318708</td>
+      <td>1.303969</td>
+      <td>...</td>
+      <td>-1.027665</td>
+      <td>-4.920215</td>
+      <td>-8.061836</td>
+      <td>-2.699376</td>
+      <td>-0.400621</td>
+      <td>-0.400621</td>
+      <td>-0.425000</td>
+      <td>-1.000000</td>
+      <td>-1.000000</td>
+      <td>-1.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>9394.834000</td>
+      <td>0.426261</td>
+      <td>1.701703</td>
+      <td>9597.373675</td>
+      <td>0.475884</td>
+      <td>1.915027</td>
+      <td>...</td>
+      <td>0.561801</td>
+      <td>-1.470860</td>
+      <td>-1.661544</td>
+      <td>-1.567363</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>4.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>13183.890000</td>
+      <td>0.678051</td>
+      <td>2.673107</td>
+      <td>13014.429940</td>
+      <td>0.642412</td>
+      <td>2.615226</td>
+      <td>...</td>
+      <td>2.788555</td>
+      <td>0.052807</td>
+      <td>-0.293935</td>
+      <td>-1.130361</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>6.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>15781.342000</td>
+      <td>0.988107</td>
+      <td>3.908365</td>
+      <td>16227.234340</td>
+      <td>0.777802</td>
+      <td>3.150223</td>
+      <td>...</td>
+      <td>4.507101</td>
+      <td>1.361705</td>
+      <td>0.475418</td>
+      <td>-0.455663</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>11.500000</td>
+      <td>1.125000</td>
+      <td>2.000000</td>
+      <td>1.000000</td>
+      <td>19806.290000</td>
+      <td>7.547535</td>
+      <td>12.226677</td>
+      <td>20003.730000</td>
+      <td>1.058177</td>
+      <td>4.280368</td>
+      <td>...</td>
+      <td>8.901506</td>
+      <td>8.249377</td>
+      <td>8.017766</td>
+      <td>-0.037500</td>
+      <td>0.616857</td>
+      <td>1.233715</td>
+      <td>0.060093</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+<p>8 rows × 47 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">econ_data</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>unscheduled       0
+forecast          0
+confcall          0
+speaker           0
+rate              0
+                 ..
+Balanced_diff     0
+Inertia_diff      0
+rate_decision2    0
+prev_decision     1
+next_decision     1
+Length: 61, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="plot-rate-decision-count">
+<h2>Plot rate decision count<a class="headerlink" href="#plot-rate-decision-count" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=countplot&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">countplot</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;rate_decision&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Rate Decision Count&quot;</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">econ_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/04_FOMC_EDA_numericals_10_0.png" src="../../../_images/04_FOMC_EDA_numericals_10_0.png" />
+</div>
+</div>
+<p>Highly imbalanced to 0 (hold), so need to consider this point. Always predicting 0 (hold) will result in the accuracy of more than 60%.</p>
+</div>
+<div class="section" id="correlation">
+<h2>Correlation<a class="headerlink" href="#correlation" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corr_columns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;rate_decision2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;next_decision&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;prev_decision&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;unscheduled&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;forecast&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;confcall&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GDP_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GDP_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GDPPOT_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GDPPOT_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PCE_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PCE_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CPI_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CPI_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UNEMP&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UNEMP_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UNEMP_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EMP&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EMP_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EMP_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PMI&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PMI_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PMI_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RSALES_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RSALES_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HSALES_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HSALES_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Taylor_diff&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Balanced_diff&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Inertia_diff&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rate_change&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rate_changed&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">corr_data</span> <span class="o">=</span> <span class="n">econ_data</span><span class="p">[</span><span class="n">corr_columns</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=heatmap&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">heatmap</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="s2">&quot;YlGnBu&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">heatmap</span><span class="o">.</span><span class="n">vmin</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">heatmap</span><span class="o">.</span><span class="n">vmax</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">heatmap</span><span class="o">.</span><span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;.2f&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Correlation&quot;</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">corr_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/04_FOMC_EDA_numericals_14_0.png" src="../../../_images/04_FOMC_EDA_numericals_14_0.png" />
+</div>
+</div>
+<p>Observation on the correlation:</p>
+<p>Higher correlation with Rate Decision:</p>
+<ul class="simple">
+<li><p>‘GDP_diff_year’</p></li>
+<li><p>‘Unemp_diff_prev’</p></li>
+<li><p>‘Employ_diff_prev’</p></li>
+<li><p>‘PMI’</p></li>
+<li><p>‘RSALES_diff_year’</p></li>
+<li><p>‘HSALES_diff_year’</p></li>
+<li><p>‘prev_decision’</p></li>
+</ul>
+<p>Will create two dataset, one full set and the other smaller set with high correlation</p>
+<div class="section" id="correlation-between-taylor-rule-and-actual-rates">
+<h3>Correlation between Taylor rule and actual rates<a class="headerlink" href="#correlation-between-taylor-rule-and-actual-rates" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corr_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Rate&quot;</span><span class="p">,</span> <span class="s2">&quot;Taylor&quot;</span><span class="p">,</span> <span class="s2">&quot;Balanced&quot;</span><span class="p">,</span> <span class="s2">&quot;Inertia&quot;</span><span class="p">]</span>
+<span class="n">corr_data1</span> <span class="o">=</span> <span class="n">econ_data</span><span class="p">[</span><span class="n">corr_columns</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+<span class="n">corr_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;rate_change&quot;</span><span class="p">,</span> <span class="s2">&quot;Taylor_diff&quot;</span><span class="p">,</span> <span class="s2">&quot;Balanced_diff&quot;</span><span class="p">,</span> <span class="s2">&quot;Inertia_diff&quot;</span><span class="p">]</span>
+<span class="n">corr_data2</span> <span class="o">=</span> <span class="n">econ_data</span><span class="p">[</span><span class="n">corr_columns</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=heatmap&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">subplots</span><span class="o">.</span><span class="n">ncols</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">subplots</span><span class="o">.</span><span class="n">nrows</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">heatmap</span><span class="o">.</span><span class="n">axno</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">heatmap</span><span class="o">.</span><span class="n">datano</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">heatmap</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="s2">&quot;YlGnBu&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">heatmap</span><span class="o">.</span><span class="n">vmin</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">heatmap</span><span class="o">.</span><span class="n">vmax</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">heatmap</span><span class="o">.</span><span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;.2f&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Fed Rates&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axno</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">heatmap2</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">heatmap</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">heatmap2</span><span class="o">.</span><span class="n">axno</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">heatmap2</span><span class="o">.</span><span class="n">datano</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Rage changes&quot;</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">axno</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">heatmap2</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ax2</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">corr_data1</span><span class="p">,</span> <span class="n">corr_data2</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/04_FOMC_EDA_numericals_18_0.png" src="../../../_images/04_FOMC_EDA_numericals_18_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=lineplot&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">lineplot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">corr_columns</span>
+
+<span class="n">scatter_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot/scatter&quot;</span><span class="p">)</span>
+<span class="n">scatter_cfg</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;date&quot;</span>
+<span class="n">scatter_cfg</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;rate&quot;</span>
+<span class="n">scatter_cfg</span><span class="o">.</span><span class="n">hue</span> <span class="o">=</span> <span class="s2">&quot;rate_decision&quot;</span>
+<span class="n">scatter_cfg</span><span class="o">.</span><span class="n">palette</span> <span class="o">=</span> <span class="s2">&quot;rocket&quot;</span>
+<span class="n">scatter_cfg</span><span class="o">.</span><span class="n">secondary_y</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scatter_cfg</span><span class="p">)</span>
+
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">secondary_y</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ax2</span><span class="p">)</span>
+
+<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">econ_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/04_FOMC_EDA_numericals_19_0.png" src="../../../_images/04_FOMC_EDA_numericals_19_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="compare-distribution-by-rate-decisions">
+<h3>Compare distribution by rate decisions<a class="headerlink" href="#compare-distribution-by-rate-decisions" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_distribution</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=kdeplot&quot;</span><span class="p">)</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+
+        <span class="n">cfg</span><span class="o">.</span><span class="n">kdeplot</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">col</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">kdeplot</span><span class="o">.</span><span class="n">hue</span> <span class="o">=</span> <span class="s2">&quot;rate_decision2&quot;</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">kdeplot</span><span class="o">.</span><span class="n">palette</span> <span class="o">=</span> <span class="s2">&quot;tab10&quot;</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">legend</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Raise&quot;</span><span class="p">,</span> <span class="s2">&quot;Hold&quot;</span><span class="p">,</span> <span class="s2">&quot;Lower&quot;</span><span class="p">]</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Distribution of </span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">kdeplot</span><span class="o">.</span><span class="n">x</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">ylabel</span> <span class="o">=</span> <span class="s2">&quot;Frequency&quot;</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">xlabel</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">kdeplot</span><span class="o">.</span><span class="n">x</span>
+        <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=facetgrid&quot;</span><span class="p">)</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">palette</span> <span class="o">=</span> <span class="s2">&quot;pastel&quot;</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">facetgrid</span><span class="o">.</span><span class="n">col</span> <span class="o">=</span> <span class="s2">&quot;rate_decision2&quot;</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">facetgrid</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">facetgrid</span><span class="o">.</span><span class="n">map_dataframe</span><span class="o">.</span><span class="n">_func_</span> <span class="o">=</span> <span class="s2">&quot;histplot&quot;</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">facetgrid</span><span class="o">.</span><span class="n">map_dataframe</span><span class="o">.</span><span class="n">_parms_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_distribution</span><span class="p">(</span>
+    <span class="n">econ_data</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;GDP_diff_prev&quot;</span><span class="p">,</span> <span class="s2">&quot;GDP_diff_year&quot;</span><span class="p">,</span> <span class="s2">&quot;GDPPOT_diff_prev&quot;</span><span class="p">,</span> <span class="s2">&quot;GDPPOT_diff_year&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/04_FOMC_EDA_numericals_22_0.png" src="../../../_images/04_FOMC_EDA_numericals_22_0.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_22_1.png" src="../../../_images/04_FOMC_EDA_numericals_22_1.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_22_2.png" src="../../../_images/04_FOMC_EDA_numericals_22_2.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_22_3.png" src="../../../_images/04_FOMC_EDA_numericals_22_3.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_22_4.png" src="../../../_images/04_FOMC_EDA_numericals_22_4.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_22_5.png" src="../../../_images/04_FOMC_EDA_numericals_22_5.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_22_6.png" src="../../../_images/04_FOMC_EDA_numericals_22_6.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_22_7.png" src="../../../_images/04_FOMC_EDA_numericals_22_7.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_distribution</span><span class="p">(</span>
+    <span class="n">econ_data</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;PCE_diff_prev&quot;</span><span class="p">,</span> <span class="s2">&quot;PCE_diff_year&quot;</span><span class="p">,</span> <span class="s2">&quot;CPI_diff_prev&quot;</span><span class="p">,</span> <span class="s2">&quot;CPI_diff_year&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/04_FOMC_EDA_numericals_23_0.png" src="../../../_images/04_FOMC_EDA_numericals_23_0.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_23_1.png" src="../../../_images/04_FOMC_EDA_numericals_23_1.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_23_2.png" src="../../../_images/04_FOMC_EDA_numericals_23_2.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_23_3.png" src="../../../_images/04_FOMC_EDA_numericals_23_3.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_23_4.png" src="../../../_images/04_FOMC_EDA_numericals_23_4.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_23_5.png" src="../../../_images/04_FOMC_EDA_numericals_23_5.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_23_6.png" src="../../../_images/04_FOMC_EDA_numericals_23_6.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_23_7.png" src="../../../_images/04_FOMC_EDA_numericals_23_7.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_distribution</span><span class="p">(</span>
+    <span class="n">econ_data</span><span class="p">,</span>
+    <span class="p">[</span>
+        <span class="s2">&quot;UNEMP&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;UNEMP_diff_prev&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;UNEMP_diff_year&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;EMP&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;EMP_diff_prev&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;EMP_diff_year&quot;</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/04_FOMC_EDA_numericals_24_0.png" src="../../../_images/04_FOMC_EDA_numericals_24_0.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_24_1.png" src="../../../_images/04_FOMC_EDA_numericals_24_1.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_24_2.png" src="../../../_images/04_FOMC_EDA_numericals_24_2.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_24_3.png" src="../../../_images/04_FOMC_EDA_numericals_24_3.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_24_4.png" src="../../../_images/04_FOMC_EDA_numericals_24_4.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_24_5.png" src="../../../_images/04_FOMC_EDA_numericals_24_5.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_24_6.png" src="../../../_images/04_FOMC_EDA_numericals_24_6.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_24_7.png" src="../../../_images/04_FOMC_EDA_numericals_24_7.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_24_8.png" src="../../../_images/04_FOMC_EDA_numericals_24_8.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_24_9.png" src="../../../_images/04_FOMC_EDA_numericals_24_9.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_24_10.png" src="../../../_images/04_FOMC_EDA_numericals_24_10.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_24_11.png" src="../../../_images/04_FOMC_EDA_numericals_24_11.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_distribution</span><span class="p">(</span><span class="n">econ_data</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;PMI&quot;</span><span class="p">,</span> <span class="s2">&quot;PMI_diff_prev&quot;</span><span class="p">,</span> <span class="s2">&quot;PMI_diff_year&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/04_FOMC_EDA_numericals_25_0.png" src="../../../_images/04_FOMC_EDA_numericals_25_0.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_25_1.png" src="../../../_images/04_FOMC_EDA_numericals_25_1.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_25_2.png" src="../../../_images/04_FOMC_EDA_numericals_25_2.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_25_3.png" src="../../../_images/04_FOMC_EDA_numericals_25_3.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_25_4.png" src="../../../_images/04_FOMC_EDA_numericals_25_4.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_25_5.png" src="../../../_images/04_FOMC_EDA_numericals_25_5.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_distribution</span><span class="p">(</span>
+    <span class="n">econ_data</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;RSALES_diff_prev&quot;</span><span class="p">,</span> <span class="s2">&quot;RSALES_diff_year&quot;</span><span class="p">,</span> <span class="s2">&quot;HSALES_diff_prev&quot;</span><span class="p">,</span> <span class="s2">&quot;HSALES_diff_year&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/04_FOMC_EDA_numericals_26_0.png" src="../../../_images/04_FOMC_EDA_numericals_26_0.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_26_1.png" src="../../../_images/04_FOMC_EDA_numericals_26_1.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_26_2.png" src="../../../_images/04_FOMC_EDA_numericals_26_2.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_26_3.png" src="../../../_images/04_FOMC_EDA_numericals_26_3.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_26_4.png" src="../../../_images/04_FOMC_EDA_numericals_26_4.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_26_5.png" src="../../../_images/04_FOMC_EDA_numericals_26_5.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_26_6.png" src="../../../_images/04_FOMC_EDA_numericals_26_6.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_26_7.png" src="../../../_images/04_FOMC_EDA_numericals_26_7.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_distribution</span><span class="p">(</span><span class="n">econ_data</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Taylor_diff&quot;</span><span class="p">,</span> <span class="s2">&quot;Balanced_diff&quot;</span><span class="p">,</span> <span class="s2">&quot;Inertia_diff&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/04_FOMC_EDA_numericals_27_0.png" src="../../../_images/04_FOMC_EDA_numericals_27_0.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_27_1.png" src="../../../_images/04_FOMC_EDA_numericals_27_1.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_27_2.png" src="../../../_images/04_FOMC_EDA_numericals_27_2.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_27_3.png" src="../../../_images/04_FOMC_EDA_numericals_27_3.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_27_4.png" src="../../../_images/04_FOMC_EDA_numericals_27_4.png" />
+<img alt="../../../_images/04_FOMC_EDA_numericals_27_5.png" src="../../../_images/04_FOMC_EDA_numericals_27_5.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="create-training-data-set">
+<h2>Create Training Data Set<a class="headerlink" href="#create-training-data-set" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;rate_decision2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;prev_decision&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GDP_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PMI&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EMP_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RSALES_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UNEMP_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HSALES_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Inertia_diff&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Balanced_diff&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">econ_train_small</span> <span class="o">=</span> <span class="n">econ_data</span><span class="o">.</span><span class="n">copy</span><span class="p">()[</span><span class="n">columns</span><span class="p">]</span>
+<span class="n">econ_train_small</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;rate_decision2&quot;</span><span class="p">:</span> <span class="s2">&quot;target&quot;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">econ_train_small</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">econ_train_small</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(415, 10)
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>target</th>
+      <th>prev_decision</th>
+      <th>GDP_diff_prev</th>
+      <th>PMI</th>
+      <th>EMP_diff_prev</th>
+      <th>RSALES_diff_year</th>
+      <th>UNEMP_diff_prev</th>
+      <th>HSALES_diff_year</th>
+      <th>Inertia_diff</th>
+      <th>Balanced_diff</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2021-11-03</th>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.570948</td>
+      <td>60.5</td>
+      <td>0.288624</td>
+      <td>8.474656</td>
+      <td>-9.615385</td>
+      <td>-26.135217</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2021-12-15</th>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.570948</td>
+      <td>60.6</td>
+      <td>0.437147</td>
+      <td>10.977142</td>
+      <td>-8.695652</td>
+      <td>-11.163337</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2022-01-26</th>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.570948</td>
+      <td>58.8</td>
+      <td>0.395555</td>
+      <td>9.101289</td>
+      <td>-7.142857</td>
+      <td>-3.673938</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2022-03-16</th>
+      <td>1</td>
+      <td>0.0</td>
+      <td>1.680778</td>
+      <td>58.6</td>
+      <td>0.476814</td>
+      <td>9.076698</td>
+      <td>-5.000000</td>
+      <td>3.125000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2022-05-04</th>
+      <td>1</td>
+      <td>1.0</td>
+      <td>-0.355417</td>
+      <td>57.1</td>
+      <td>0.283658</td>
+      <td>-0.034915</td>
+      <td>0.000000</td>
+      <td>-26.946848</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Large dataset</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;rate_decision2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;prev_decision&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GDP_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GDP_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GDPPOT_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GDPPOT_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PCE_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PCE_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CPI_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CPI_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UNEMP&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UNEMP_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UNEMP_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EMP&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EMP_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EMP_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PMI&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PMI_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PMI_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RSALES_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RSALES_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HSALES_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HSALES_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Taylor-Rate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Balanced-Rate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Inertia-Rate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Taylor_diff&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Balanced_diff&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Inertia_diff&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="n">econ_train_large</span> <span class="o">=</span> <span class="n">econ_data</span><span class="o">.</span><span class="n">copy</span><span class="p">()[</span><span class="n">columns</span><span class="p">]</span>
+<span class="n">econ_train_large</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;rate_decision2&quot;</span><span class="p">:</span> <span class="s2">&quot;target&quot;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">econ_train_large</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(415, 29)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="missing-values">
+<h3>Missing Values<a class="headerlink" href="#missing-values" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># As most likely the decision is 0 (hold), fill prev_decision of the first row</span>
+<span class="n">econ_train_small</span><span class="p">[</span><span class="s2">&quot;prev_decision&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">econ_train_large</span><span class="p">[</span><span class="s2">&quot;prev_decision&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ax.set_xlim(0, 400)</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=lineplot&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">lineplot</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;date&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">lineplot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;HSALES_diff_year&quot;</span>
+
+<span class="n">lineplot</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">lineplot</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">lineplot</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;date&#39;</span>
+<span class="n">lineplot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;RSALES_diff_year&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lineplot</span><span class="p">)</span>
+
+<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">econ_train_small</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/04_FOMC_EDA_numericals_33_0.png" src="../../../_images/04_FOMC_EDA_numericals_33_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Retail sales growth ratio is difficult to estimate. Though it is not ideal, simply use the average</span>
+<span class="n">econ_train_small</span><span class="p">[</span><span class="s2">&quot;RSALES_diff_year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span>
+    <span class="n">econ_train_small</span><span class="p">[</span><span class="s2">&quot;RSALES_diff_year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">econ_train_large</span><span class="p">[</span><span class="s2">&quot;RSALES_diff_prev&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span>
+    <span class="n">econ_train_large</span><span class="p">[</span><span class="s2">&quot;RSALES_diff_prev&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">econ_train_large</span><span class="p">[</span><span class="s2">&quot;RSALES_diff_year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span>
+    <span class="n">econ_train_large</span><span class="p">[</span><span class="s2">&quot;RSALES_diff_year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">econ_train_small</span><span class="p">[</span><span class="s2">&quot;Inertia_diff&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span>
+    <span class="n">econ_train_small</span><span class="p">[</span><span class="s2">&quot;Inertia_diff&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">econ_train_small</span><span class="p">[</span><span class="s2">&quot;Balanced_diff&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span>
+    <span class="n">econ_train_small</span><span class="p">[</span><span class="s2">&quot;Balanced_diff&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">econ_train_large</span><span class="p">[</span><span class="s2">&quot;Inertia_diff&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span>
+    <span class="n">econ_train_large</span><span class="p">[</span><span class="s2">&quot;Inertia_diff&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">econ_train_large</span><span class="p">[</span><span class="s2">&quot;Balanced_diff&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span>
+    <span class="n">econ_train_large</span><span class="p">[</span><span class="s2">&quot;Balanced_diff&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">econ_train_large</span><span class="p">[</span><span class="s2">&quot;Taylor_diff&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span>
+    <span class="n">econ_train_large</span><span class="p">[</span><span class="s2">&quot;Taylor_diff&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="save-data">
+<h3>Save Data<a class="headerlink" href="#save-data" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">save_dataframe</span><span class="p">(</span><span class="n">econ_train_small</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;econ_train_small.parquet&quot;</span><span class="p">)</span>
+<span class="n">save_dataframe</span><span class="p">(</span><span class="n">econ_train_large</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;econ_train_large.parquet&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./docs/usecases/fomc"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="03_FOMC_corpus.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Prepapring Textual Data</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../bok/index.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Bank of Korea</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Young Joon Lee<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
