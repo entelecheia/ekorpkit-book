@@ -685,7 +685,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+9.gb3d564c.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+10.g751d414
 </pre></div>
 </div>
 </div>
@@ -908,12 +908,15 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add previous rate decision to see inertia effect</span>
-<span class="n">econ_data</span><span class="p">[</span><span class="s2">&quot;rate_decision2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">econ_data</span><span class="p">[</span><span class="s2">&quot;rate_decision&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+<span class="n">econ_data</span><span class="p">[</span><span class="s2">&quot;Rate Decision&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">econ_data</span><span class="p">[</span><span class="s2">&quot;rate_decision&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s1">&#39;Cut&#39;</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;Hike&quot;</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;Hold&quot;</span>
+<span class="p">)</span>
+<span class="n">econ_data</span><span class="p">[</span><span class="s2">&quot;rate_decision&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">econ_data</span><span class="p">[</span><span class="s2">&quot;rate_decision&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
     <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
 <span class="p">)</span>
-<span class="n">econ_data</span><span class="p">[</span><span class="s2">&quot;prev_decision&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">econ_data</span><span class="p">[</span><span class="s2">&quot;rate_decision2&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">econ_data</span><span class="p">[</span><span class="s2">&quot;next_decision&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">econ_data</span><span class="p">[</span><span class="s2">&quot;rate_decision2&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">econ_data</span><span class="p">[[</span><span class="s2">&quot;rate_decision&quot;</span><span class="p">,</span> <span class="s2">&quot;rate_decision2&quot;</span><span class="p">,</span> <span class="s2">&quot;prev_decision&quot;</span><span class="p">,</span> <span class="s2">&quot;next_decision&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="n">econ_data</span><span class="p">[</span><span class="s2">&quot;prev_decision&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">econ_data</span><span class="p">[</span><span class="s2">&quot;rate_decision&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">econ_data</span><span class="p">[</span><span class="s2">&quot;next_decision&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">econ_data</span><span class="p">[</span><span class="s2">&quot;rate_decision&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">econ_data</span><span class="p">[[</span><span class="s2">&quot;Rate Decision&quot;</span><span class="p">,</span><span class="s2">&quot;rate_decision&quot;</span><span class="p">,</span> <span class="s2">&quot;prev_decision&quot;</span><span class="p">,</span> <span class="s2">&quot;next_decision&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -936,8 +939,8 @@ const thebe_selector_output = ".output, .cell_output"
   <thead>
     <tr style="text-align: right;">
       <th></th>
+      <th>Rate Decision</th>
       <th>rate_decision</th>
-      <th>rate_decision2</th>
       <th>prev_decision</th>
       <th>next_decision</th>
     </tr>
@@ -952,35 +955,35 @@ const thebe_selector_output = ".output, .cell_output"
   <tbody>
     <tr>
       <th>1982-10-05</th>
-      <td>-1.0</td>
+      <td>Cut</td>
       <td>-1</td>
       <td>NaN</td>
       <td>-1.0</td>
     </tr>
     <tr>
       <th>1982-11-16</th>
-      <td>-1.0</td>
+      <td>Cut</td>
       <td>-1</td>
       <td>-1.0</td>
       <td>0.0</td>
     </tr>
     <tr>
       <th>1982-12-21</th>
-      <td>0.0</td>
+      <td>Hold</td>
       <td>0</td>
       <td>-1.0</td>
       <td>0.0</td>
     </tr>
     <tr>
       <th>1983-01-14</th>
-      <td>0.0</td>
+      <td>Hold</td>
       <td>0</td>
       <td>0.0</td>
       <td>0.0</td>
     </tr>
     <tr>
       <th>1983-01-21</th>
-      <td>0.0</td>
+      <td>Hold</td>
       <td>0</td>
       <td>0.0</td>
       <td>0.0</td>
@@ -1066,7 +1069,7 @@ const thebe_selector_output = ".output, .cell_output"
       <th>mean</th>
       <td>3.968976</td>
       <td>-0.019880</td>
-      <td>-0.016867</td>
+      <td>-0.012048</td>
       <td>0.334940</td>
       <td>12815.408884</td>
       <td>0.657814</td>
@@ -1090,7 +1093,7 @@ const thebe_selector_output = ".output, .cell_output"
       <th>std</th>
       <td>3.036522</td>
       <td>0.228714</td>
-      <td>0.649939</td>
+      <td>0.579313</td>
       <td>0.472539</td>
       <td>3719.399375</td>
       <td>1.085580</td>
@@ -1114,7 +1117,7 @@ const thebe_selector_output = ".output, .cell_output"
       <th>min</th>
       <td>0.000000</td>
       <td>-1.000000</td>
-      <td>-2.000000</td>
+      <td>-1.000000</td>
       <td>0.000000</td>
       <td>6804.139000</td>
       <td>-8.937251</td>
@@ -1210,7 +1213,7 @@ const thebe_selector_output = ".output, .cell_output"
       <th>max</th>
       <td>11.500000</td>
       <td>1.125000</td>
-      <td>2.000000</td>
+      <td>1.000000</td>
       <td>1.000000</td>
       <td>19806.290000</td>
       <td>7.547535</td>
@@ -1248,12 +1251,12 @@ confcall          0
 speaker           0
 rate              0
                  ..
-Balanced_diff     0
 Inertia_diff      0
+Rate Decision     0
 rate_decision2    0
 prev_decision     1
 next_decision     1
-Length: 61, dtype: int64
+Length: 62, dtype: int64
 </pre></div>
 </div>
 </div>
@@ -1264,7 +1267,7 @@ Length: 61, dtype: int64
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=countplot&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">countplot</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;rate_decision&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">countplot</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;Rate Decision&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Rate Decision Count&quot;</span>
@@ -1283,7 +1286,7 @@ Length: 61, dtype: int64
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corr_columns</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;rate_decision2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rate_decision&quot;</span><span class="p">,</span>
     <span class="s2">&quot;next_decision&quot;</span><span class="p">,</span>
     <span class="s2">&quot;prev_decision&quot;</span><span class="p">,</span>
     <span class="s2">&quot;unscheduled&quot;</span><span class="p">,</span>
@@ -1406,7 +1409,6 @@ Length: 61, dtype: int64
 <span class="n">scatter_cfg</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;date&quot;</span>
 <span class="n">scatter_cfg</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;rate&quot;</span>
 <span class="n">scatter_cfg</span><span class="o">.</span><span class="n">hue</span> <span class="o">=</span> <span class="s2">&quot;rate_decision&quot;</span>
-<span class="n">scatter_cfg</span><span class="o">.</span><span class="n">palette</span> <span class="o">=</span> <span class="s2">&quot;rocket&quot;</span>
 <span class="n">scatter_cfg</span><span class="o">.</span><span class="n">secondary_y</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scatter_cfg</span><span class="p">)</span>
 
@@ -1435,9 +1437,9 @@ Length: 61, dtype: int64
         <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 
         <span class="n">cfg</span><span class="o">.</span><span class="n">kdeplot</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">col</span>
-        <span class="n">cfg</span><span class="o">.</span><span class="n">kdeplot</span><span class="o">.</span><span class="n">hue</span> <span class="o">=</span> <span class="s2">&quot;rate_decision2&quot;</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">kdeplot</span><span class="o">.</span><span class="n">hue</span> <span class="o">=</span> <span class="s2">&quot;Rate Decision&quot;</span>
         <span class="n">cfg</span><span class="o">.</span><span class="n">kdeplot</span><span class="o">.</span><span class="n">palette</span> <span class="o">=</span> <span class="s2">&quot;tab10&quot;</span>
-        <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">legend</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Raise&quot;</span><span class="p">,</span> <span class="s2">&quot;Hold&quot;</span><span class="p">,</span> <span class="s2">&quot;Lower&quot;</span><span class="p">]</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">legend</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Hike&quot;</span><span class="p">,</span> <span class="s2">&quot;Hold&quot;</span><span class="p">,</span> <span class="s2">&quot;Cut&quot;</span><span class="p">]</span>
         <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Distribution of </span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">kdeplot</span><span class="o">.</span><span class="n">x</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">ylabel</span> <span class="o">=</span> <span class="s2">&quot;Frequency&quot;</span>
@@ -1447,7 +1449,7 @@ Length: 61, dtype: int64
         <span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=facetgrid&quot;</span><span class="p">)</span>
         <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
         <span class="n">cfg</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">palette</span> <span class="o">=</span> <span class="s2">&quot;pastel&quot;</span>
-        <span class="n">cfg</span><span class="o">.</span><span class="n">facetgrid</span><span class="o">.</span><span class="n">col</span> <span class="o">=</span> <span class="s2">&quot;rate_decision2&quot;</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">facetgrid</span><span class="o">.</span><span class="n">col</span> <span class="o">=</span> <span class="s2">&quot;Rate Decision&quot;</span>
         <span class="n">cfg</span><span class="o">.</span><span class="n">facetgrid</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="mi">3</span>
         <span class="n">cfg</span><span class="o">.</span><span class="n">facetgrid</span><span class="o">.</span><span class="n">map_dataframe</span><span class="o">.</span><span class="n">_func_</span> <span class="o">=</span> <span class="s2">&quot;histplot&quot;</span>
         <span class="n">cfg</span><span class="o">.</span><span class="n">facetgrid</span><span class="o">.</span><span class="n">map_dataframe</span><span class="o">.</span><span class="n">_parms_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1582,7 +1584,7 @@ Length: 61, dtype: int64
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;rate_decision2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rate_decision&quot;</span><span class="p">,</span>
     <span class="s2">&quot;prev_decision&quot;</span><span class="p">,</span>
     <span class="s2">&quot;GDP_diff_prev&quot;</span><span class="p">,</span>
     <span class="s2">&quot;PMI&quot;</span><span class="p">,</span>
@@ -1595,7 +1597,7 @@ Length: 61, dtype: int64
 <span class="p">]</span>
 
 <span class="n">econ_train_small</span> <span class="o">=</span> <span class="n">econ_data</span><span class="o">.</span><span class="n">copy</span><span class="p">()[</span><span class="n">columns</span><span class="p">]</span>
-<span class="n">econ_train_small</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;rate_decision2&quot;</span><span class="p">:</span> <span class="s2">&quot;target&quot;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">econ_train_small</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;rate_decision&quot;</span><span class="p">:</span> <span class="s2">&quot;target&quot;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">econ_train_small</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="n">econ_train_small</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
 </pre></div>
@@ -1722,7 +1724,7 @@ Length: 61, dtype: int64
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Large dataset</span>
 <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;rate_decision2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rate_decision&quot;</span><span class="p">,</span>
     <span class="s2">&quot;prev_decision&quot;</span><span class="p">,</span>
     <span class="s2">&quot;GDP_diff_prev&quot;</span><span class="p">,</span>
     <span class="s2">&quot;GDP_diff_year&quot;</span><span class="p">,</span>
@@ -1755,7 +1757,7 @@ Length: 61, dtype: int64
 
 
 <span class="n">econ_train_large</span> <span class="o">=</span> <span class="n">econ_data</span><span class="o">.</span><span class="n">copy</span><span class="p">()[</span><span class="n">columns</span><span class="p">]</span>
-<span class="n">econ_train_large</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;rate_decision2&quot;</span><span class="p">:</span> <span class="s2">&quot;target&quot;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">econ_train_large</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;rate_decision&quot;</span><span class="p">:</span> <span class="s2">&quot;target&quot;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">econ_train_large</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 </div>
