@@ -617,7 +617,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+14.g35d2a7e.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+15.g2cbd42e
 </pre></div>
 </div>
 </div>
@@ -640,7 +640,6 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fs_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;dataset=feature&quot;</span><span class="p">)</span>
 <span class="n">fs_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;fomc_features_small&quot;</span>
 <span class="n">fs_cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
-<span class="n">fs_cfg</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;econ_train_small.parquet&quot;</span>
 <span class="n">fs_small</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">fs_cfg</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -662,14 +661,16 @@ INFO:ekorpkit.info.feature:Added a column [split] with value [test]
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;model/automl=classification&#39;</span><span class="p">)</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">fs_cfg</span>
-<span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">time_budget</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">time_budget</span> <span class="o">=</span> <span class="mi">600</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">model_cfg</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.ekonf:No method defined to call
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/lib/python3.8/site-packages/xgboost/compat.py:31: FutureWarning: pandas.Int64Index is deprecated and will be removed from pandas in a future version. Use pandas.Index with the appropriate dtype instead.
+  from pandas import MultiIndex, Int64Index
+INFO:ekorpkit.ekonf:No method defined to call
 </pre></div>
 </div>
 </div>
@@ -688,10 +689,10 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_features_small/fomc_fe
 INFO:ekorpkit.info.feature:Added a column [split] with value [test]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best ML leaner: lgbm
-Best hyperparmeter config: {&#39;n_estimators&#39;: 4, &#39;num_leaves&#39;: 4, &#39;min_child_samples&#39;: 20, &#39;learning_rate&#39;: 0.09999999999999995, &#39;log_max_bin&#39;: 8, &#39;colsample_bytree&#39;: 1.0, &#39;reg_alpha&#39;: 0.0009765625, &#39;reg_lambda&#39;: 1.0}
-Best accuracy on validation data: 0.6627
-Training duration of best run: 2.4 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best ML leaner: rf
+Best hyperparmeter config: {&#39;n_estimators&#39;: 7, &#39;max_features&#39;: 0.15085968785222795, &#39;max_leaves&#39;: 10, &#39;criterion&#39;: &#39;gini&#39;}
+Best accuracy on validation data: 0.6807
+Training duration of best run: 0.1351 s
 </pre></div>
 </div>
 </div>
@@ -703,11 +704,9 @@ Training duration of best run: 2.4 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><style>#sk-container-id-1 {color: black;background-color: white;}#sk-container-id-1 pre{padding: 0;}#sk-container-id-1 div.sk-toggleable {background-color: white;}#sk-container-id-1 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-1 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-1 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-1 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-1 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-1 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-1 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-1 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-1 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-1 div.sk-item {position: relative;z-index: 1;}#sk-container-id-1 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-1 div.sk-item::before, #sk-container-id-1 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-1 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-1 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-1 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-1 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-1 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-1 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-1 div.sk-label-container {text-align: center;}#sk-container-id-1 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-1 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>LGBMClassifier(learning_rate=0.09999999999999995, max_bin=255, n_estimators=4,
-               num_leaves=4, reg_alpha=0.0009765625, reg_lambda=1.0,
-               verbose=-1)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label sk-toggleable__label-arrow">LGBMClassifier</label><div class="sk-toggleable__content"><pre>LGBMClassifier(learning_rate=0.09999999999999995, max_bin=255, n_estimators=4,
-               num_leaves=4, reg_alpha=0.0009765625, reg_lambda=1.0,
-               verbose=-1)</pre></div></div></div></div></div></div></div>
+<div class="output text_html"><style>#sk-container-id-1 {color: black;background-color: white;}#sk-container-id-1 pre{padding: 0;}#sk-container-id-1 div.sk-toggleable {background-color: white;}#sk-container-id-1 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-1 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-1 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-1 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-1 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-1 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-1 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-1 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-1 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-1 div.sk-item {position: relative;z-index: 1;}#sk-container-id-1 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-1 div.sk-item::before, #sk-container-id-1 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-1 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-1 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-1 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-1 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-1 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-1 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-1 div.sk-label-container {text-align: center;}#sk-container-id-1 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-1 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>RandomForestClassifier(max_features=0.15085968785222795, max_leaf_nodes=10,
+                       n_estimators=7, n_jobs=-1)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label sk-toggleable__label-arrow">RandomForestClassifier</label><div class="sk-toggleable__content"><pre>RandomForestClassifier(max_features=0.15085968785222795, max_leaf_nodes=10,
+                       n_estimators=7, n_jobs=-1)</pre></div></div></div></div></div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -740,10 +739,10 @@ Training duration of best run: 2.4 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best ML leaner: lgbm
-Best hyperparmeter config: {&#39;n_estimators&#39;: 4, &#39;num_leaves&#39;: 4, &#39;min_child_samples&#39;: 20, &#39;learning_rate&#39;: 0.09999999999999995, &#39;log_max_bin&#39;: 8, &#39;colsample_bytree&#39;: 1.0, &#39;reg_alpha&#39;: 0.0009765625, &#39;reg_lambda&#39;: 1.0}
-Best accuracy on validation data: 0.6627
-Training duration of best run: 2.4 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best ML leaner: rf
+Best hyperparmeter config: {&#39;n_estimators&#39;: 7, &#39;max_features&#39;: 0.15085968785222795, &#39;max_leaves&#39;: 10, &#39;criterion&#39;: &#39;gini&#39;}
+Best accuracy on validation data: 0.6807
+Training duration of best run: 0.1351 s
 </pre></div>
 </div>
 </div>
@@ -755,9 +754,21 @@ Training duration of best run: 2.4 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;time_history&#39;: [10.121073722839355],
- &#39;best_valid_loss_history&#39;: [0.33731343283582094],
- &#39;valid_loss_history&#39;: [0.33731343283582094],
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;time_history&#39;: [0.16283369064331055,
+  29.263866901397705,
+  53.26441550254822,
+  158.98795890808105,
+  161.9256660938263],
+ &#39;best_valid_loss_history&#39;: [0.33731343283582094,
+  0.3343283582089553,
+  0.3342831298055179,
+  0.32528267752148354,
+  0.31931252826775214],
+ &#39;valid_loss_history&#39;: [0.33731343283582094,
+  0.3343283582089553,
+  0.3342831298055179,
+  0.32528267752148354,
+  0.31931252826775214],
  &#39;config_history&#39;: [{&#39;Current Learner&#39;: &#39;lgbm&#39;,
    &#39;Current Sample&#39;: 332,
    &#39;Current Hyper-parameters&#39;: {&#39;n_estimators&#39;: 4,
@@ -776,8 +787,52 @@ Training duration of best run: 2.4 s
     &#39;log_max_bin&#39;: 8,
     &#39;colsample_bytree&#39;: 1.0,
     &#39;reg_alpha&#39;: 0.0009765625,
-    &#39;reg_lambda&#39;: 1.0}}],
- &#39;metric_history&#39;: [None]}
+    &#39;reg_lambda&#39;: 1.0}},
+  {&#39;Current Learner&#39;: &#39;extra&#39;,
+   &#39;Current Sample&#39;: 332,
+   &#39;Current Hyper-parameters&#39;: {&#39;n_estimators&#39;: 4,
+    &#39;max_features&#39;: 0.36037911316042676,
+    &#39;max_leaves&#39;: 4,
+    &#39;criterion&#39;: &#39;gini&#39;},
+   &#39;Best Learner&#39;: &#39;extra&#39;,
+   &#39;Best Hyper-parameters&#39;: {&#39;n_estimators&#39;: 4,
+    &#39;max_features&#39;: 0.36037911316042676,
+    &#39;max_leaves&#39;: 4,
+    &#39;criterion&#39;: &#39;gini&#39;}},
+  {&#39;Current Learner&#39;: &#39;extra&#39;,
+   &#39;Current Sample&#39;: 332,
+   &#39;Current Hyper-parameters&#39;: {&#39;n_estimators&#39;: 6,
+    &#39;max_features&#39;: 0.2686507948058836,
+    &#39;max_leaves&#39;: 5,
+    &#39;criterion&#39;: &#39;entropy&#39;},
+   &#39;Best Learner&#39;: &#39;extra&#39;,
+   &#39;Best Hyper-parameters&#39;: {&#39;n_estimators&#39;: 6,
+    &#39;max_features&#39;: 0.2686507948058836,
+    &#39;max_leaves&#39;: 5,
+    &#39;criterion&#39;: &#39;entropy&#39;}},
+  {&#39;Current Learner&#39;: &#39;rf&#39;,
+   &#39;Current Sample&#39;: 332,
+   &#39;Current Hyper-parameters&#39;: {&#39;n_estimators&#39;: 8,
+    &#39;max_features&#39;: 0.20888250913774078,
+    &#39;max_leaves&#39;: 6,
+    &#39;criterion&#39;: &#39;gini&#39;},
+   &#39;Best Learner&#39;: &#39;rf&#39;,
+   &#39;Best Hyper-parameters&#39;: {&#39;n_estimators&#39;: 8,
+    &#39;max_features&#39;: 0.20888250913774078,
+    &#39;max_leaves&#39;: 6,
+    &#39;criterion&#39;: &#39;gini&#39;}},
+  {&#39;Current Learner&#39;: &#39;rf&#39;,
+   &#39;Current Sample&#39;: 332,
+   &#39;Current Hyper-parameters&#39;: {&#39;n_estimators&#39;: 7,
+    &#39;max_features&#39;: 0.15085968785222795,
+    &#39;max_leaves&#39;: 10,
+    &#39;criterion&#39;: &#39;gini&#39;},
+   &#39;Best Learner&#39;: &#39;rf&#39;,
+   &#39;Best Hyper-parameters&#39;: {&#39;n_estimators&#39;: 7,
+    &#39;max_features&#39;: 0.15085968785222795,
+    &#39;max_leaves&#39;: 10,
+    &#39;criterion&#39;: &#39;gini&#39;}}],
+ &#39;metric_history&#39;: [None, None, None, None, None]}
 </pre></div>
 </div>
 </div>
