@@ -51,8 +51,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
     <link rel="next" title="Transformers" href="../transformers/index.html" />
@@ -696,7 +694,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+18.g0a7d0c4.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+19.gdb9b114.dirty
 </pre></div>
 </div>
 </div>
@@ -719,7 +717,7 @@ INFO:ekorpkit.models.ngram.base:instantiating ekorpkit.preprocessors.tokenizer.S
 INFO:ekorpkit.preprocessors.tokenizer:instantiating ekorpkit.preprocessors.stopwords.Stopwords...
 INFO:ekorpkit.ekonf:Calling load_candidates
 INFO:ekorpkit.io.file:Loading data from /workspace/projects/ekorpkit/ekorpkit/resources/lexicons/mpko/mp_polarity_lexicon_lex.parquet
-INFO:ekorpkit.io.file: &gt;&gt; elapsed time to load data: 0:00:00.031950
+INFO:ekorpkit.io.file: &gt;&gt; elapsed time to load data: 0:00:00.031857
 INFO:ekorpkit.models.ngram.base:loaded 23956 candidates
 </pre></div>
 </div>
@@ -794,10 +792,10 @@ INFO:ekorpkit.models.ngram.base:loaded 23956 candidates
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.cached_path:caching path: None, extract_archive: True, force_extract: False, cache_dir: /workspace/.cache
 INFO:ekorpkit.io.cached_path:caching path: None, extract_archive: True, force_extract: False, cache_dir: /workspace/.cache
-INFO:ekorpkit.ekonf:Executing function functools.partial(&lt;function load_dataframe at 0x7feebefacdc0&gt;) with parms {&#39;filepath&#39;: &#39;../data/bok/bok_minutes_tokens.parquet&#39;, &#39;columns&#39;: None, &#39;verbose&#39;: True}
+INFO:ekorpkit.ekonf:Executing function functools.partial(&lt;function load_dataframe at 0x7f61c2fa4d30&gt;) with parms {&#39;filepath&#39;: &#39;../data/bok/bok_minutes_tokens.parquet&#39;, &#39;columns&#39;: None, &#39;verbose&#39;: True}
 INFO:ekorpkit.io.file:Loading data from ../data/bok/bok_minutes_tokens.parquet
-INFO:ekorpkit.io.file: &gt;&gt; elapsed time to load data: 0:00:00.134562
-INFO:ekorpkit.ekonf:Skipping execute of functools.partial(&lt;function concat_dataframes at 0x7feebefacd30&gt;)
+INFO:ekorpkit.io.file: &gt;&gt; elapsed time to load data: 0:00:00.136118
+INFO:ekorpkit.ekonf:Skipping execute of functools.partial(&lt;function concat_dataframes at 0x7f61c2fa4ca0&gt;)
 WARNING:ekorpkit.pipelines.pipe:No pipeline specified
 </pre></div>
 </div>
@@ -861,23 +859,17 @@ WARNING:ekorpkit.pipelines.pipe:No pipeline specified
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ngram</span><span class="o">.</span><span class="n">_ngram</span><span class="o">.</span><span class="n">max_window</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">ngram</span><span class="o">.</span><span class="n">_ngram</span><span class="o">.</span><span class="n">max_skip</span> <span class="o">=</span> <span class="mi">1</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ngram</span><span class="o">.</span><span class="n">_ngram</span><span class="o">.</span><span class="n">max_window</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="n">ngram</span><span class="o">.</span><span class="n">_ngram</span><span class="o">.</span><span class="n">max_skip</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="n">_ngrams</span> <span class="o">=</span> <span class="n">ngram</span><span class="o">.</span><span class="n">find_ngrams</span><span class="p">(</span>
     <span class="n">df</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">100</span><span class="p">],</span> <span class="n">ignore_scores</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">strip_pos</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_surfaces_to_score</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">_ngrams</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 100/100 [00:02&lt;00:00, 33.72it/s]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>130
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 100/100 [00:12&lt;00:00,  7.98it/s]
+INFO:ekorpkit.models.ngram.base:found 155 ngrams
 </pre></div>
 </div>
 </div>
@@ -891,35 +883,37 @@ WARNING:ekorpkit.pipelines.pipe:No pipeline specified
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;하락/NN&#39;: -0.9974931628848912,
  &#39;저조/NN&#39;: 0.0177873650568067,
- &#39;회복/NN;속도/NN;지연/NN&#39;: -0.0259320419588431,
+ &#39;설비/NN;투자/NN;지연/NN&#39;: -0.0226515374908597,
+ &#39;가격/NN;하락/NN;가격/NN;하락/NN&#39;: -0.0650300227408409,
  &#39;투자/NN;크/VA&#39;: 0.0027509131677712,
  &#39;경제/NN;성장/NN&#39;: 0.5204387993211343,
- &#39;전망/NN;높/VA&#39;: 0.0175111631124411,
  &#39;마이너스/NN;갭/NN;축소/NN&#39;: 0.1201242492475812,
  &#39;물가/NN;상승/NN&#39;: 0.9892951767944276,
  &#39;물가/NN;압력/NN&#39;: 0.7529987098432693,
  &#39;우려/NN&#39;: -0.1406548563507243,
- &#39;성장/NN&#39;: 0.984967006613283,
- &#39;높/VA;회복/NN&#39;: 0.5541805807445747,
+ &#39;성장/NN;회복/NN&#39;: 0.5989181244170283,
  &#39;가격/NN;급등/NN&#39;: 0.1986249334628438,
  &#39;원화/NN;절상/NN&#39;: 0.2283740928971028,
+ &#39;농축/NN;수산물/NN;가격/NN;상승/NN&#39;: 0.1442351938704467,
  &#39;낙관/NN&#39;: 0.9073815168627392,
- &#39;기업/NN;경기/NN;회복/NN&#39;: 0.006634211288978,
- &#39;심리/NN;높/VA&#39;: -0.085850966840833,
+ &#39;유가/NN;상승/NN&#39;: 0.086094450614139,
+ &#39;높/VA;압력/NN&#39;: 0.2254642932138867,
+ &#39;회복/NN;높/VA&#39;: 0.1552012554910956,
  &#39;긍정/NN&#39;: 0.0159457855264369,
- &#39;부진/NN&#39;: -0.9990483803182358,
+ &#39;투자/NN;부진/NN&#39;: -0.0358596445136938,
  &#39;경기/NN;회복/NN;상승/NN&#39;: 0.2614104379541183,
  &#39;플러스/NN&#39;: 0.0729897565573511,
  &#39;성장/NN;상승/NN&#39;: 0.601762085086207,
+ &#39;성장/NN;높/VA&#39;: 0.060848222845096,
  &#39;마이너스/NN&#39;: -0.1030866691840481,
- &#39;악화/NN&#39;: -0.9977370912806918,
- &#39;높/VA;물가/NN;안정/NN&#39;: 0.1081292876673828,
+ &#39;구조/NN;악화/NN&#39;: -0.5815540818771514,
+ &#39;높/VA;안정/NN&#39;: 0.5531295115340968,
  &#39;공급/NN;많/VA&#39;: 0.009500605299848,
  &#39;식료품/NN;가격/NN;상승/NN&#39;: 0.1555153565392403,
  &#39;상회/NN&#39;: 0.9967354238232632,
- &#39;높/VA;상승/NN&#39;: 0.0621764825579624,
- &#39;통화/NN;완화/NN&#39;: -0.4727497709698944,
- &#39;부담/NN&#39;: 0.1193824753107514,
+ &#39;상승/NN;률/XS;완화/NN&#39;: 0.0761067942958138,
+ &#39;정책/NN;비판/NN&#39;: 0.0049888786214543,
+ &#39;통화/NN;부담/NN&#39;: 0.1571510903609397,
  &#39;가격/NN;상승/NN&#39;: 0.0582057939293445,
  &#39;노동/NN;시장/NN;경직/NN&#39;: 0.0084845706470504,
  &#39;실업/NN;률/XS;높/VA&#39;: 0.0287237160441449,
@@ -927,96 +921,119 @@ WARNING:ekorpkit.pipelines.pipe:No pipeline specified
  &#39;농산물/NN;가격/NN;상승/NN&#39;: 0.1425858037217573,
  &#39;생산/NN;성/XS;향상/NN&#39;: 0.0452936002957847,
  &#39;경기/NN;진작/NN&#39;: -0.0042416272858725,
- &#39;신용/NN;완화/NN&#39;: 0.0115231170661246,
+ &#39;우려/NN;통화/NN;정책/NN;완화/NN&#39;: 0.0320623308269414,
  &#39;지장/NN&#39;: -0.0075174868155409,
- &#39;적자/NN&#39;: -0.85895590944384,
+ &#39;수지/NN;적자/NN&#39;: 0.0834921480279219,
+ &#39;원화/NN;강세/NN&#39;: 0.1727261768138872,
  &#39;절하/NN&#39;: 0.0953148114501515,
  &#39;절상/NN&#39;: 0.2248293260757415,
+ &#39;예상/NN;절상/NN&#39;: 0.1695763763951845,
  &#39;절상/NN;추세/NN&#39;: 0.2186342682719313,
  &#39;원/NN;환율/NN;하락/NN&#39;: 0.0177535800093149,
- &#39;경제/NN;나쁘/VA&#39;: -0.0995368187620539,
- &#39;흑자/NN&#39;: 0.9632667050138296,
+ &#39;수출/NN;나쁘/VA&#39;: 0.0283707692494452,
+ &#39;수입/NN;높/VA&#39;: 0.1545249079680039,
+ &#39;경상/NN;흑자/NN&#39;: 0.5876588378351795,
  &#39;흑자/NN;크/VA&#39;: 0.5085622268239143,
+ &#39;흑자/NN;감소/NN&#39;: 0.5758585105005634,
  &#39;예상/NN;내수/NN;부진/NN&#39;: -0.0155572392622992,
  &#39;완화/NN&#39;: -0.9865071267692084,
  &#39;저축/NN;감소/NN&#39;: 0.0042613734820441,
  &#39;경상/NN;수지/NN;흑자/NN;축소/NN&#39;: 0.6100019195528328,
  &#39;경상/NN;수지/NN;흑자/NN&#39;: 0.6053516791693222,
  &#39;금리/NN;낮/VA&#39;: -0.6225652820221071,
+ &#39;원화/NN;약세/NN&#39;: 0.0925092558405274,
  &#39;금리/NN;확대/NN&#39;: -0.0336321097353523,
+ &#39;하락/NN;시장/NN;불안/NN&#39;: -0.1092842026790247,
  &#39;안정/NN&#39;: 0.0976581813281574,
- &#39;불안/NN&#39;: -0.1719079869086368,
  &#39;통화/NN;안정/NN&#39;: 0.1292155158174954,
  &#39;흡수/NN&#39;: 0.1052117397374828,
+ &#39;안정/NN;증가/NN&#39;: 0.5367199803916879,
+ &#39;통화/NN;감소/NN&#39;: 0.0737367299350517,
+ &#39;성장/NN&#39;: 0.984967006613283,
  &#39;활황/NN&#39;: -0.0551014472555072,
  &#39;활성/NN;화/XS&#39;: 0.0366413224875976,
  &#39;본원통화/NN;증가/NN&#39;: 0.2052452901600562,
- &#39;예상/NN;높/VA&#39;: 0.0075869885371307,
- &#39;콜/NN;금리/NN;목표/NN;인하/NN&#39;: -0.13262064558064,
  &#39;경기/NN;저점/NN&#39;: -0.0524643190502568,
+ &#39;경제/NN;성장/NN;높/VA&#39;: 0.53718119564373,
+ &#39;부담/NN&#39;: 0.1193824753107514,
+ &#39;콜/NN;금리/NN;목표/NN;인하/NN&#39;: -0.13262064558064,
  &#39;원자재/NN;가격/NN;높/VA&#39;: 0.1416074405549555,
  &#39;호전/NN&#39;: -0.0026158896002819,
- &#39;콜/NN;금리/NN;하락/NN&#39;: -0.0224492492765892,
+ &#39;기대/NN;하락/NN&#39;: -0.0103094599403686,
  &#39;경기/NN;회복/NN&#39;: -0.0735204089304163,
  &#39;자금/NN;조달/NN;어렵/VA&#39;: -0.0040748320366386,
  &#39;물가/NN;상방/NN&#39;: 0.0988565834144016,
  &#39;위험/NN&#39;: -0.0392922310459082,
  &#39;수요/NN;증대/NN&#39;: 0.1089774051346813,
  &#39;유가/NN;급등/NN&#39;: 0.1453835274580509,
- &#39;수입/NN;높/VA&#39;: 0.1545249079680039,
  &#39;실물/NN;회복/NN&#39;: -0.142651139302855,
  &#39;고용/NN;악화/NN&#39;: -0.624421305209124,
- &#39;경제/NN;경기/NN;회복/NN&#39;: -0.011754630806794,
+ &#39;경제/NN;회복/NN&#39;: 0.0178468896409118,
+ &#39;악화/NN&#39;: -0.9977370912806918,
+ &#39;인플레이션/NN;상승/NN&#39;: 0.7335312258068816,
+ &#39;회복/NN;상승/NN&#39;: 0.0040591051080092,
+ &#39;부동산/NN;가격/NN;상승/NN&#39;: 0.9892690707366624,
  &#39;경기/NN;하방/NN;위험/NN&#39;: -0.0483507943088113,
- &#39;원/NN;엔/NN;환율/NN;하락/NN&#39;: 0.0014481980249972,
  &#39;국제/NN;가격/NN;상승/NN&#39;: 0.1607683305610637,
+ &#39;변동/NN;성/XS;증대/NN&#39;: -0.6511616617588741,
  &#39;외환/NN;보유/NN;액/NN;안정/NN&#39;: 0.2564963975907099,
  &#39;산업/NN;안정/NN&#39;: 0.0083903949425955,
  &#39;유가/NN;상회/NN&#39;: 0.0852069978596837,
  &#39;위축/NN&#39;: -0.9964422143950517,
  &#39;회복/NN;조짐/NN&#39;: -0.2098940566677744,
- &#39;경기/NN;위축/NN&#39;: -0.670119810741936,
- &#39;투자/NN;부진/NN&#39;: -0.0358596445136938,
  &#39;원화/NN;절하/NN&#39;: 0.1599760982884495,
- &#39;물가/NN;낙관/NN&#39;: 0.0935772608947463,
+ &#39;낙관/NN;없/VA&#39;: 0.5648395762218247,
+ &#39;금리/NN;안정/NN&#39;: -0.0293381487430331,
  &#39;전망/NN;긍정/NN&#39;: 0.1622309866829919,
  &#39;회복/NN;걸림돌/NN&#39;: -0.0563375345741184,
  &#39;개선/NN;가능/NN;성/XS;높/VA&#39;: -0.0683009585004642,
  &#39;기대/NN;높/VA&#39;: 0.0192114413840148,
+ &#39;통화/NN;회복/NN&#39;: 0.0684671766180154,
  &#39;절상/NN;가속/NN&#39;: 0.2435251394850856,
  &#39;대외/NN;악화/NN&#39;: -0.0040301814801386,
- &#39;부진/NN;가능/NN;성/XS;높/VA&#39;: -0.5693425622967238,
+ &#39;전망/NN;가능/NN;성/XS;높/VA&#39;: 0.0095609632460382,
+ &#39;부진/NN&#39;: -0.9990483803182358,
  &#39;경제/NN;긍정/NN;적/XS&#39;: 0.0060044082848741,
  &#39;투자/NN;회복/NN;지연/NN&#39;: -0.0343363035374796,
  &#39;제조업/NN;견조/NN&#39;: 0.0214640048234721,
  &#39;고용/NN;부진/NN&#39;: -0.1435893412727956,
  &#39;개선/NN;불/XP;투명/NN&#39;: -0.0292074546541316,
+ &#39;경기/NN;회복/NN;속도/NN;우려/NN&#39;: -0.0441106867899891,
  &#39;가격/NN;반/NN;등/NN&#39;: 0.0969633599834299,
- &#39;상향/NN&#39;: 0.9987235423125308,
- &#39;취약/NN&#39;: -0.0436473049915151,
+ &#39;전망/NN;소폭/MA;상향/NN&#39;: 0.0331293671420811,
+ &#39;채권/NN;시장/NN;취약/NN&#39;: -0.0226388100088203,
  &#39;인플레이션/NN;크/VA&#39;: 0.2322585869302016,
  &#39;소매/NN;판매/NN;부진/NN&#39;: -0.0916732941026204,
  &#39;높/VA;경제/NN;성장/NN&#39;: 0.6785215318580916,
+ &#39;경제/NN;크/VA&#39;: -0.1560739700466167,
+ &#39;경제/NN;낮/VA&#39;: 0.1811089746302118,
  &#39;투자/NN;축소/NN&#39;: -0.0091250155342883,
- &#39;하회/NN&#39;: -0.9961338446508604,
+ &#39;실적/NN;예상/NN;하회/NN&#39;: -0.0633039043188929,
  &#39;실망/NN&#39;: -0.0537436125235228,
+ &#39;상승/NN;률/XS;상승/NN&#39;: 0.1482478137257441,
+ &#39;실업/NN;증가/NN&#39;: -0.0971255742845687,
  &#39;예상/NN;낮/VA&#39;: -0.5326471339885891,
+ &#39;성장/NN;전망/NN;낙관/NN&#39;: 0.5580236567891682,
  &#39;생산/NN;예상/NN;하회/NN&#39;: -0.0150834451089284,
  &#39;성장/NN;효과/NN&#39;: 0.5699464628899542,
  &#39;전망/NN;낙관/NN&#39;: 0.2062637762448329,
  &#39;수출/NN;증가/NN&#39;: 0.1420316987390225,
+ &#39;수출/NN;증가/NN;높/VA&#39;: 0.150713622679714,
+ &#39;낮/VA;효과/NN&#39;: -0.5461373569685195,
  &#39;예상/NN;좋/VA&#39;: -0.0557501757063274,
  &#39;대미/NN;수출/NN;증가/NN&#39;: 0.1676438534473504,
+ &#39;수출/NN;낮/VA&#39;: 0.1550332323355408,
  &#39;수출/NN;호조/NN&#39;: 0.046887575975538,
  &#39;비관/NN&#39;: -0.8859526730258452,
  &#39;부진/NN;둔화/NN&#39;: -0.0912906274268463,
  &#39;예상/NN;저조/NN&#39;: -0.1340445578640994,
- &#39;소비/NN;부진/NN&#39;: -0.5991462857066333,
+ &#39;예상/NN;수출/NN;호조/NN&#39;: 0.0810811306501646,
+ &#39;기대/NN;원화/NN;절상/NN&#39;: 0.2319026090308475,
  &#39;경상/NN;수지/NN;악화/NN&#39;: 0.4781920955534715,
  &#39;경제/NN;호조/NN&#39;: 0.0116789494143074,
  &#39;금리/NN;인상/NN&#39;: 0.6994401729370587,
  &#39;자산/NN;투자/NN;늘/MA&#39;: 0.0313607764932783,
- &#39;절하/NN;압력/NN&#39;: 0.155950847361199,
+ &#39;수요/NN;압력/NN&#39;: 0.2136052674247164,
  &#39;억제/NN&#39;: 0.326535478405863,
  &#39;불/XP;안정/NN&#39;: -0.0666785653590046}
 </pre></div>
