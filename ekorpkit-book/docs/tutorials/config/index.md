@@ -1,2 +1,2 @@
-# Configurations
+# Configuring ekorpkit
 
