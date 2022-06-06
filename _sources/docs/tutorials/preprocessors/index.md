@@ -1,4 +1,4 @@
-# Normalizers
+# Preprocessors
 
 ## Section table of contents
 
