@@ -1,0 +1,1112 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>N-Grams for lexicon models &#8212; eKorpkit Tutorials</title>
+    
+  <link href="../../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Transformers" href="../transformers/index.html" />
+    <link rel="prev" title="N-Grams" href="ngram.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../../_static/ekorpkit.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">eKorpkit Tutorials</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../intro.html">
+   eKonomic Research Python Toolkit
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Basics
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../basics/index.html">
+   Getting started
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../basics/install.html">
+     Installation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../basics/usage.html">
+     Usage
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../basics/features/index.html">
+   Key features
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../basics/features/easy_config.html">
+     Easy Configuration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../basics/features/no_boiler.html">
+     No Boilerplate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../basics/features/workflows.html">
+     Workflows
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../basics/features/share.html">
+     Sharable and Reproducible
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../basics/features/plug.html">
+     Pluggable Architece
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tutorials
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../config/index.html">
+   Configuring ekorpkit
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../corpora/index.html">
+   Copora
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../corpora/corpus.html">
+     Build and Load Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../corpora/pipeline.html">
+     Corpus task pipelines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../datasets/index.html">
+   Datasets
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../datasets/dataset.html">
+     Build and Load Datasets
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../index.html">
+   Models
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../automl/index.html">
+     Auto ML
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../embeddings/index.html">
+     Word Embeddings
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../embeddings/word2vec_basics.html">
+       Word2Vec Basics
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../sentiment/index.html">
+     Sentiment Analyers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../sentiment/lexicon.html">
+       Sentiment Lexicons
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../sentiment/lbsa_en.html">
+       Lexicon-based Sentiment Analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../sentiment/sentiment.html">
+       LM Dictionary vs. finbert vs. T5
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="index.html">
+     N-Grams
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3">
+      <a class="reference internal" href="ngram.html">
+       N-Grams
+      </a>
+     </li>
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
+       N-Grams for lexicon models
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../transformers/index.html">
+     Transformers
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../pipelines/index.html">
+   Pipelines
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../pipelines/pipeline.html">
+     Instantiating pipeline
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../preprocessors/index.html">
+   Preprocessors
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../preprocessors/normalizer/index.html">
+     Normalizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+    <label for="toctree-checkbox-11">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../preprocessors/normalizer/normalizer.html">
+       Normalizers
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../preprocessors/segmenter/index.html">
+     Segmenters
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+    <label for="toctree-checkbox-12">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../preprocessors/segmenter/segmenter.html">
+       Segmenters
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../preprocessors/tokenizer/index.html">
+     Tokenizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+    <label for="toctree-checkbox-13">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../preprocessors/tokenizer/mecab.html">
+       Mecab Tokenizer
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../visualizers/index.html">
+   Visualizers
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/>
+  <label for="toctree-checkbox-14">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../visualizers/plot.html">
+     Plots
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../workflow/index.html">
+   Workflows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Datasets
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../corpus/ekorpkot_corpus.html">
+   The eKorpkit Corpus
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Use Cases
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../usecases/fomc/index.html">
+   FOMC
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/>
+  <label for="toctree-checkbox-15">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../usecases/fomc/01_FOMC_sentiments.html">
+     Sentiment Analysis of FOMC Statements
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../usecases/fomc/02_FOMC_numerical_data.html">
+     Prepapring Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../usecases/fomc/03_FOMC_corpus.html">
+     Prepapring Textual Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../usecases/fomc/04_FOMC_EDA_numericals.html">
+     EDA on Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../usecases/fomc/05_FOMC_features.html">
+     Visualizing Features
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../usecases/fomc/06_FOMC_AutoML.html">
+     Checking Baseline with AutoML
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../usecases/bok/index.html">
+   Bank of Korea
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../usecases/edgar/index.html">
+   EDGAR
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/>
+  <label for="toctree-checkbox-16">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../usecases/edgar/predict_edgar.html">
+     Prediciting Sentiments
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../usecases/esg/index.html">
+   ESG
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" type="checkbox"/>
+  <label for="toctree-checkbox-17">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../usecases/esg/classifiers.html">
+     Training Classifiers for ESG Ratings
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../usecases/esg/news_sample.html">
+     Predicting ESG Categories and Polarities
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Research
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../research/esg_topics/analyst.html">
+   ESG Topic Analysis
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../about/index.html">
+   References
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../../../_sources/docs/tutorials/models/ngram/ngram_for_lexicons.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/entelecheia/ekorpkit-book"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/entelecheia/ekorpkit-book/issues/new?title=Issue%20on%20page%20%2Fdocs/tutorials/models/ngram/ngram_for_lexicons.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/entelecheia/ekorpkit-book/main?urlpath=tree/ekorpkit-book/docs/tutorials/models/ngram/ngram_for_lexicons.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <a class="colab-button" href="https://colab.research.google.com/github/entelecheia/ekorpkit-book/blob/main/ekorpkit-book/docs/tutorials/models/ngram/ngram_for_lexicons.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../../../../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-a-ngram-model-with-lexicon-scores">
+   Load a ngram model with lexicon scores
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>N-Grams for lexicon models</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-a-ngram-model-with-lexicon-scores">
+   Load a ngram model with lexicon scores
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="n-grams-for-lexicon-models">
+<h1>N-Grams for lexicon models<a class="headerlink" href="#n-grams-for-lexicon-models" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+18.g0a7d0c4.dirty
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="load-a-ngram-model-with-lexicon-scores">
+<h2>Load a ngram model with lexicon scores<a class="headerlink" href="#load-a-ngram-model-with-lexicon-scores" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ngram_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;model/ngram=mpko&quot;</span><span class="p">)</span>
+<span class="n">ngram_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">ngram_cfg</span><span class="o">.</span><span class="n">autoload</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">ngram</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">ngram_cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.cached_path:caching path: None, extract_archive: True, force_extract: False, cache_dir: /workspace/.cache
+INFO:ekorpkit.ekonf:Config is not instantiatable, returning config
+INFO:ekorpkit.models.ngram.base:instantiating ekorpkit.preprocessors.tokenizer.SimpleTokenizer...
+INFO:ekorpkit.preprocessors.tokenizer:instantiating ekorpkit.preprocessors.stopwords.Stopwords...
+INFO:ekorpkit.ekonf:Calling load_candidates
+INFO:ekorpkit.io.file:Loading data from /workspace/projects/ekorpkit/ekorpkit/resources/lexicons/mpko/mp_polarity_lexicon_lex.parquet
+INFO:ekorpkit.io.file: &gt;&gt; elapsed time to load data: 0:00:00.031950
+INFO:ekorpkit.models.ngram.base:loaded 23956 candidates
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of candidates: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ngram</span><span class="o">.</span><span class="n">candidates</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of candidates: 23956
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ngram</span><span class="o">.</span><span class="n">export_ngrams</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">apply_postag_rules</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[((&#39;투기/NN&#39;, &#39;억제/NN&#39;),
+  ngram(word=&#39;투기/NN;억제/NN&#39;, label=1, polarity=0.9984224740344032, ratio=76.89998054169148, count=238, intensity=76.89998054169148, pos_score=842.336810100104, neg_score=10.95366740233997)),
+ ((&#39;금리/NN&#39;, &#39;상승/NN&#39;),
+  ngram(word=&#39;금리/NN;상승/NN&#39;, label=1, polarity=0.9976489029338528, ratio=74.78067419154141, count=142807, intensity=74.78067419154141, pos_score=852.2582592674567, neg_score=11.396771538653194)),
+ ((&#39;채권/NN&#39;, &#39;가격/NN&#39;, &#39;하락/NN&#39;),
+  ngram(word=&#39;채권/NN;가격/NN;하락/NN&#39;, label=1, polarity=0.9965068843156996, ratio=71.85459337496019, count=2415, intensity=71.85459337496019, pos_score=830.1285320910899, neg_score=11.552894437231236)),
+ ((&#39;인플레이션/NN&#39;, &#39;압력/NN&#39;),
+  ngram(word=&#39;인플레이션/NN;압력/NN&#39;, label=1, polarity=0.9962771197986816, ratio=71.29298491650549, count=14010, intensity=71.29298491650549, pos_score=851.9671447928356, neg_score=11.950224075911729)),
+ ((&#39;물가/NN&#39;, &#39;상승/NN&#39;),
+  ngram(word=&#39;물가/NN;상승/NN&#39;, label=1, polarity=0.9892951767944276, ratio=57.572641724969934, count=37965, intensity=57.572641724969934, pos_score=840.8393220118454, neg_score=14.604841758497308)),
+ ((&#39;부동산/NN&#39;, &#39;가격/NN&#39;, &#39;상승/NN&#39;),
+  ngram(word=&#39;부동산/NN;가격/NN;상승/NN&#39;, label=1, polarity=0.9892690707366624, ratio=57.53110616205035, count=2646, intensity=57.53110616205035, pos_score=850.132566974034, neg_score=14.776920238234757)),
+ ((&#39;요금/NN&#39;, &#39;인상/NN&#39;),
+  ngram(word=&#39;요금/NN;인상/NN&#39;, label=1, polarity=0.9226025183563592, ratio=19.822968765773577, count=716, intensity=19.822968765773577, pos_score=845.4185241017657, neg_score=42.64843142776217)),
+ ((&#39;상방/NN&#39;, &#39;압력/NN&#39;),
+  ngram(word=&#39;상방/NN;압력/NN&#39;, label=1, polarity=0.9205443517087604, ratio=19.41688981090808, count=244, intensity=19.41688981090808, pos_score=829.3004950427758, neg_score=42.71026426574706))]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sentence</span> <span class="o">=</span> <span class="s2">&quot;일부/NNG 위원/NNG 은/JX 인플레이션/NNG 팬/NNG 차트/NNG Inflation/SL Fan/SL Chart/SL 에서/JKB 와/JKB 같이/MAG 주요/NNG 경제/NNG 변수/NNG 의/JKG 전망/NNG 치/XSN 에/JKB 내재/NNG 한/XSA+ETM 상방/NNG 위험/NNG 과/JC 하방/NNG 위험/NNG 의/JKG 확률/NNG 을/JKO 파악/NNG 하/XSV 는/ETM 것/NNB 이/JKS 정책/NNG 판단/NNG 에/JKB 크/VA 게/EC 도움/NNG 이/JKS 된다고/VV+EC 언급/NNG 하/XSV 고/EC 유럽/NNP 중앙은행/NNG 이나/JC 영란/NNG 은행/NNG 등/NNB 에서/JKB 활용/NNG 되/XSV 고/EC 있/VX 는/ETM 베/NNG 이지언/NNP 전망/NNG 기법/NNG Bayesian/SL Forecasting/SL Approach/SL 을/JKO 한국은행/NNP 의/JKG 기존/NNG 경제/NNG 전망/NNG 모형/NNG 에/JKB 반영/NNG 해/XSV+EC 볼/VX+ETM 필요/NNG 가/JKS 있/VV 을/ETM 것/NNB 으로/JKB 여겨진다는/VV+EC+VX+ETM 견해/NNG 를/JKO 나타내/VV 었/EP 음/ETN&quot;</span>
+<span class="n">tokens</span> <span class="o">=</span> <span class="n">ngram</span><span class="o">.</span><span class="n">ngramize_sentence</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;일부/NN&#39;, &#39;위원/NN&#39;, &#39;인플레이션/NN&#39;, &#39;팬/NN&#39;, &#39;차트/NN&#39;, &#39;같이/MA&#39;, &#39;주요/NN&#39;, &#39;경제/NN&#39;, &#39;변수/NN&#39;, &#39;전망/NN&#39;, &#39;치/XS&#39;, &#39;내재/NN&#39;, &#39;한/XS&#39;, &#39;상방/NN;위험/NN&#39;, &#39;상방/NN;위험/NN&#39;, &#39;하방/NN&#39;, &#39;확률/NN&#39;, &#39;파악/NN&#39;, &#39;하/XS&#39;, &#39;것/NN&#39;, &#39;정책/NN&#39;, &#39;판단/NN&#39;, &#39;크/VA&#39;, &#39;도움/NN&#39;, &#39;언급/NN&#39;, &#39;하/XS&#39;, &#39;유럽/NN&#39;, &#39;중앙은행/NN&#39;, &#39;영란/NN&#39;, &#39;은행/NN&#39;, &#39;등/NN&#39;, &#39;활용/NN&#39;, &#39;되/XS&#39;, &#39;베/NN&#39;, &#39;이지언/NN&#39;, &#39;전망/NN&#39;, &#39;기법/NN&#39;, &#39;한국은행/NN&#39;, &#39;기존/NN&#39;, &#39;경제/NN&#39;, &#39;전망/NN&#39;, &#39;모형/NN&#39;, &#39;반영/NN&#39;, &#39;해/XS&#39;, &#39;필요/NN&#39;, &#39;것/NN&#39;, &#39;견해/NN&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;pipeline&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/bok&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;bok_minutes_tokens.parquet&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">_pipeline_</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.cached_path:caching path: None, extract_archive: True, force_extract: False, cache_dir: /workspace/.cache
+INFO:ekorpkit.io.cached_path:caching path: None, extract_archive: True, force_extract: False, cache_dir: /workspace/.cache
+INFO:ekorpkit.ekonf:Executing function functools.partial(&lt;function load_dataframe at 0x7feebefacdc0&gt;) with parms {&#39;filepath&#39;: &#39;../data/bok/bok_minutes_tokens.parquet&#39;, &#39;columns&#39;: None, &#39;verbose&#39;: True}
+INFO:ekorpkit.io.file:Loading data from ../data/bok/bok_minutes_tokens.parquet
+INFO:ekorpkit.io.file: &gt;&gt; elapsed time to load data: 0:00:00.134562
+INFO:ekorpkit.ekonf:Skipping execute of functools.partial(&lt;function concat_dataframes at 0x7feebefacd30&gt;)
+WARNING:ekorpkit.pipelines.pipe:No pipeline specified
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>text</th>
+      <th>sent_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>162</th>
+      <td>162</td>
+      <td>앞/NNG 으로/JKB 코로나/NNG 19/SN 충격/NNG 에서/JKB 점차/MA...</td>
+      <td>337</td>
+    </tr>
+    <tr>
+      <th>162</th>
+      <td>162</td>
+      <td>또한/MAJ 글로벌/NNG 공급/NNG 망/NNG 재편/NNG 기후/NNG 변화/N...</td>
+      <td>338</td>
+    </tr>
+    <tr>
+      <th>162</th>
+      <td>162</td>
+      <td>향후/NNG 경제/NNG 회복세/NNG 와/JC 물가/NNG 의/JKG 흐름/NNG...</td>
+      <td>339</td>
+    </tr>
+    <tr>
+      <th>162</th>
+      <td>162</td>
+      <td></td>
+      <td>340</td>
+    </tr>
+    <tr>
+      <th>162</th>
+      <td>162</td>
+      <td>Government/SL s/SL View/SL</td>
+      <td>341</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ngram</span><span class="o">.</span><span class="n">_ngram</span><span class="o">.</span><span class="n">max_window</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">ngram</span><span class="o">.</span><span class="n">_ngram</span><span class="o">.</span><span class="n">max_skip</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">_ngrams</span> <span class="o">=</span> <span class="n">ngram</span><span class="o">.</span><span class="n">find_ngrams</span><span class="p">(</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">100</span><span class="p">],</span> <span class="n">ignore_scores</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">strip_pos</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_surfaces_to_score</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">_ngrams</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 100/100 [00:02&lt;00:00, 33.72it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>130
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_ngrams</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;하락/NN&#39;: -0.9974931628848912,
+ &#39;저조/NN&#39;: 0.0177873650568067,
+ &#39;회복/NN;속도/NN;지연/NN&#39;: -0.0259320419588431,
+ &#39;투자/NN;크/VA&#39;: 0.0027509131677712,
+ &#39;경제/NN;성장/NN&#39;: 0.5204387993211343,
+ &#39;전망/NN;높/VA&#39;: 0.0175111631124411,
+ &#39;마이너스/NN;갭/NN;축소/NN&#39;: 0.1201242492475812,
+ &#39;물가/NN;상승/NN&#39;: 0.9892951767944276,
+ &#39;물가/NN;압력/NN&#39;: 0.7529987098432693,
+ &#39;우려/NN&#39;: -0.1406548563507243,
+ &#39;성장/NN&#39;: 0.984967006613283,
+ &#39;높/VA;회복/NN&#39;: 0.5541805807445747,
+ &#39;가격/NN;급등/NN&#39;: 0.1986249334628438,
+ &#39;원화/NN;절상/NN&#39;: 0.2283740928971028,
+ &#39;낙관/NN&#39;: 0.9073815168627392,
+ &#39;기업/NN;경기/NN;회복/NN&#39;: 0.006634211288978,
+ &#39;심리/NN;높/VA&#39;: -0.085850966840833,
+ &#39;긍정/NN&#39;: 0.0159457855264369,
+ &#39;부진/NN&#39;: -0.9990483803182358,
+ &#39;경기/NN;회복/NN;상승/NN&#39;: 0.2614104379541183,
+ &#39;플러스/NN&#39;: 0.0729897565573511,
+ &#39;성장/NN;상승/NN&#39;: 0.601762085086207,
+ &#39;마이너스/NN&#39;: -0.1030866691840481,
+ &#39;악화/NN&#39;: -0.9977370912806918,
+ &#39;높/VA;물가/NN;안정/NN&#39;: 0.1081292876673828,
+ &#39;공급/NN;많/VA&#39;: 0.009500605299848,
+ &#39;식료품/NN;가격/NN;상승/NN&#39;: 0.1555153565392403,
+ &#39;상회/NN&#39;: 0.9967354238232632,
+ &#39;높/VA;상승/NN&#39;: 0.0621764825579624,
+ &#39;통화/NN;완화/NN&#39;: -0.4727497709698944,
+ &#39;부담/NN&#39;: 0.1193824753107514,
+ &#39;가격/NN;상승/NN&#39;: 0.0582057939293445,
+ &#39;노동/NN;시장/NN;경직/NN&#39;: 0.0084845706470504,
+ &#39;실업/NN;률/XS;높/VA&#39;: 0.0287237160441449,
+ &#39;확장/NN&#39;: 0.998870726677456,
+ &#39;농산물/NN;가격/NN;상승/NN&#39;: 0.1425858037217573,
+ &#39;생산/NN;성/XS;향상/NN&#39;: 0.0452936002957847,
+ &#39;경기/NN;진작/NN&#39;: -0.0042416272858725,
+ &#39;신용/NN;완화/NN&#39;: 0.0115231170661246,
+ &#39;지장/NN&#39;: -0.0075174868155409,
+ &#39;적자/NN&#39;: -0.85895590944384,
+ &#39;절하/NN&#39;: 0.0953148114501515,
+ &#39;절상/NN&#39;: 0.2248293260757415,
+ &#39;절상/NN;추세/NN&#39;: 0.2186342682719313,
+ &#39;원/NN;환율/NN;하락/NN&#39;: 0.0177535800093149,
+ &#39;경제/NN;나쁘/VA&#39;: -0.0995368187620539,
+ &#39;흑자/NN&#39;: 0.9632667050138296,
+ &#39;흑자/NN;크/VA&#39;: 0.5085622268239143,
+ &#39;예상/NN;내수/NN;부진/NN&#39;: -0.0155572392622992,
+ &#39;완화/NN&#39;: -0.9865071267692084,
+ &#39;저축/NN;감소/NN&#39;: 0.0042613734820441,
+ &#39;경상/NN;수지/NN;흑자/NN;축소/NN&#39;: 0.6100019195528328,
+ &#39;경상/NN;수지/NN;흑자/NN&#39;: 0.6053516791693222,
+ &#39;금리/NN;낮/VA&#39;: -0.6225652820221071,
+ &#39;금리/NN;확대/NN&#39;: -0.0336321097353523,
+ &#39;안정/NN&#39;: 0.0976581813281574,
+ &#39;불안/NN&#39;: -0.1719079869086368,
+ &#39;통화/NN;안정/NN&#39;: 0.1292155158174954,
+ &#39;흡수/NN&#39;: 0.1052117397374828,
+ &#39;활황/NN&#39;: -0.0551014472555072,
+ &#39;활성/NN;화/XS&#39;: 0.0366413224875976,
+ &#39;본원통화/NN;증가/NN&#39;: 0.2052452901600562,
+ &#39;예상/NN;높/VA&#39;: 0.0075869885371307,
+ &#39;콜/NN;금리/NN;목표/NN;인하/NN&#39;: -0.13262064558064,
+ &#39;경기/NN;저점/NN&#39;: -0.0524643190502568,
+ &#39;원자재/NN;가격/NN;높/VA&#39;: 0.1416074405549555,
+ &#39;호전/NN&#39;: -0.0026158896002819,
+ &#39;콜/NN;금리/NN;하락/NN&#39;: -0.0224492492765892,
+ &#39;경기/NN;회복/NN&#39;: -0.0735204089304163,
+ &#39;자금/NN;조달/NN;어렵/VA&#39;: -0.0040748320366386,
+ &#39;물가/NN;상방/NN&#39;: 0.0988565834144016,
+ &#39;위험/NN&#39;: -0.0392922310459082,
+ &#39;수요/NN;증대/NN&#39;: 0.1089774051346813,
+ &#39;유가/NN;급등/NN&#39;: 0.1453835274580509,
+ &#39;수입/NN;높/VA&#39;: 0.1545249079680039,
+ &#39;실물/NN;회복/NN&#39;: -0.142651139302855,
+ &#39;고용/NN;악화/NN&#39;: -0.624421305209124,
+ &#39;경제/NN;경기/NN;회복/NN&#39;: -0.011754630806794,
+ &#39;경기/NN;하방/NN;위험/NN&#39;: -0.0483507943088113,
+ &#39;원/NN;엔/NN;환율/NN;하락/NN&#39;: 0.0014481980249972,
+ &#39;국제/NN;가격/NN;상승/NN&#39;: 0.1607683305610637,
+ &#39;외환/NN;보유/NN;액/NN;안정/NN&#39;: 0.2564963975907099,
+ &#39;산업/NN;안정/NN&#39;: 0.0083903949425955,
+ &#39;유가/NN;상회/NN&#39;: 0.0852069978596837,
+ &#39;위축/NN&#39;: -0.9964422143950517,
+ &#39;회복/NN;조짐/NN&#39;: -0.2098940566677744,
+ &#39;경기/NN;위축/NN&#39;: -0.670119810741936,
+ &#39;투자/NN;부진/NN&#39;: -0.0358596445136938,
+ &#39;원화/NN;절하/NN&#39;: 0.1599760982884495,
+ &#39;물가/NN;낙관/NN&#39;: 0.0935772608947463,
+ &#39;전망/NN;긍정/NN&#39;: 0.1622309866829919,
+ &#39;회복/NN;걸림돌/NN&#39;: -0.0563375345741184,
+ &#39;개선/NN;가능/NN;성/XS;높/VA&#39;: -0.0683009585004642,
+ &#39;기대/NN;높/VA&#39;: 0.0192114413840148,
+ &#39;절상/NN;가속/NN&#39;: 0.2435251394850856,
+ &#39;대외/NN;악화/NN&#39;: -0.0040301814801386,
+ &#39;부진/NN;가능/NN;성/XS;높/VA&#39;: -0.5693425622967238,
+ &#39;경제/NN;긍정/NN;적/XS&#39;: 0.0060044082848741,
+ &#39;투자/NN;회복/NN;지연/NN&#39;: -0.0343363035374796,
+ &#39;제조업/NN;견조/NN&#39;: 0.0214640048234721,
+ &#39;고용/NN;부진/NN&#39;: -0.1435893412727956,
+ &#39;개선/NN;불/XP;투명/NN&#39;: -0.0292074546541316,
+ &#39;가격/NN;반/NN;등/NN&#39;: 0.0969633599834299,
+ &#39;상향/NN&#39;: 0.9987235423125308,
+ &#39;취약/NN&#39;: -0.0436473049915151,
+ &#39;인플레이션/NN;크/VA&#39;: 0.2322585869302016,
+ &#39;소매/NN;판매/NN;부진/NN&#39;: -0.0916732941026204,
+ &#39;높/VA;경제/NN;성장/NN&#39;: 0.6785215318580916,
+ &#39;투자/NN;축소/NN&#39;: -0.0091250155342883,
+ &#39;하회/NN&#39;: -0.9961338446508604,
+ &#39;실망/NN&#39;: -0.0537436125235228,
+ &#39;예상/NN;낮/VA&#39;: -0.5326471339885891,
+ &#39;생산/NN;예상/NN;하회/NN&#39;: -0.0150834451089284,
+ &#39;성장/NN;효과/NN&#39;: 0.5699464628899542,
+ &#39;전망/NN;낙관/NN&#39;: 0.2062637762448329,
+ &#39;수출/NN;증가/NN&#39;: 0.1420316987390225,
+ &#39;예상/NN;좋/VA&#39;: -0.0557501757063274,
+ &#39;대미/NN;수출/NN;증가/NN&#39;: 0.1676438534473504,
+ &#39;수출/NN;호조/NN&#39;: 0.046887575975538,
+ &#39;비관/NN&#39;: -0.8859526730258452,
+ &#39;부진/NN;둔화/NN&#39;: -0.0912906274268463,
+ &#39;예상/NN;저조/NN&#39;: -0.1340445578640994,
+ &#39;소비/NN;부진/NN&#39;: -0.5991462857066333,
+ &#39;경상/NN;수지/NN;악화/NN&#39;: 0.4781920955534715,
+ &#39;경제/NN;호조/NN&#39;: 0.0116789494143074,
+ &#39;금리/NN;인상/NN&#39;: 0.6994401729370587,
+ &#39;자산/NN;투자/NN;늘/MA&#39;: 0.0313607764932783,
+ &#39;절하/NN;압력/NN&#39;: 0.155950847361199,
+ &#39;억제/NN&#39;: 0.326535478405863,
+ &#39;불/XP;안정/NN&#39;: -0.0666785653590046}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]):</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">ngram</span><span class="o">.</span><span class="n">ngramize_sentence</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">tokens</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 []
+1 [&#39;일부/NN&#39;, &#39;위원/NN&#39;, &#39;반도체/NN&#39;, &#39;시장/NN&#39;, &#39;재고/NN&#39;, &#39;조정/NN&#39;, &#39;지속/NN&#39;, &#39;반도체/NN&#39;, &#39;가격/NN&#39;, &#39;하락/NN&#39;, &#39;하/XS&#39;, &#39;하/XS&#39;, &#39;월/NN&#39;, &#39;중/NN&#39;, &#39;반도체/NN&#39;, &#39;제조/NN&#39;, &#39;장비/NN&#39;, &#39;투자/NN&#39;, &#39;큰/VA&#39;, &#39;폭/NN&#39;, &#39;증가/NN&#39;, &#39;한/XS&#39;, &#39;것/NN&#39;, &#39;월/NN&#39;, &#39;중/NN&#39;, &#39;반도체/NN&#39;, &#39;관련/NN&#39;, &#39;투자/NN&#39;, &#39;전체/NN&#39;, &#39;설비/NN&#39;, &#39;투자/NN&#39;, &#39;중/NN&#39;, &#39;차지/NN&#39;, &#39;하/XS&#39;, &#39;비중/NN&#39;, &#39;금액/NN&#39;, &#39;어느/MM&#39;, &#39;정도/NN&#39;, &#39;인지/VC&#39;, &#39;그리고/MA&#39;, &#39;동/MM&#39;, &#39;투자/NN&#39;, &#39;연중/NN&#39;, &#39;지속/NN&#39;, &#39;가능/NN&#39;, &#39;한/XS&#39;, &#39;투자/NN&#39;, &#39;한편/NN&#39;, &#39;산업/NN&#39;, &#39;신규/NN&#39;, &#39;투자/NN&#39;, &#39;상반기/NN&#39;, &#39;중/NN&#39;, &#39;저조/NN&#39;, &#39;할/XS&#39;, &#39;것/NN&#39;, &#39;이/VC&#39;, &#39;전망/NN&#39;, &#39;관련/NN&#39;, &#39;하/XS&#39;, &#39;그/MM&#39;, &#39;같/VA&#39;, &#39;상황/NN&#39;, &#39;지속/NN&#39;, &#39;될/XS&#39;, &#39;경우/NN&#39;, &#39;설비/NN&#39;, &#39;투자/NN&#39;, &#39;회복/NN;속도/NN;지연/NN&#39;, &#39;되/XS&#39;, &#39;의문/NN&#39;, &#39;제기/NN&#39;, &#39;하/XS&#39;]
+2 [&#39;관련/NN&#39;, &#39;부서/NN&#39;, &#39;현재/MA&#39;, &#39;반도체/NN&#39;, &#39;경기/NN&#39;, &#39;좋/VA&#39;, &#39;인식/NN&#39;, &#39;되/XS&#39;, &#39;것/NN&#39;, &#39;반도체/NN&#39;, &#39;가격/NN&#39;, &#39;큰/VA&#39;, &#39;폭/NN&#39;, &#39;하락/NN&#39;, &#39;한/XS&#39;, &#39;데/NN&#39;, &#39;기인/NN&#39;, &#39;한/XS&#39;, &#39;것/NN&#39;, &#39;가격/NN&#39;, &#39;하락/NN&#39;, &#39;한/XS&#39;, &#39;반면/NN&#39;, &#39;수요/NN&#39;, &#39;가격/NN&#39;, &#39;하락/NN&#39;, &#39;비율/NN&#39;, &#39;경상/NN&#39;, &#39;금액/NN&#39;, &#39;때/NN&#39;, &#39;그리/MA&#39;, &#39;저조/NN&#39;, &#39;하/XS&#39;, &#39;것/NN&#39;, &#39;판단/NN&#39;, &#39;된다면서/XS&#39;, &#39;월/NN&#39;, &#39;중/NN&#39;, &#39;반도체/NN&#39;, &#39;제조/NN&#39;, &#39;장비/NN&#39;, &#39;투자/NN&#39;, &#39;크/VA&#39;, &#39;것/NN&#39;, &#39;플래시/NN&#39;, &#39;메모리/NN&#39;, &#39;설비/NN&#39;, &#39;투자/NN&#39;, &#39;것/NN&#39;, &#39;연중/NN&#39;, &#39;투자/NN&#39;, &#39;규모/NN&#39;, &#39;영향/NN&#39;, &#39;할/XS&#39;, &#39;것/NN&#39;, &#39;이/VC&#39;, &#39;설명/NN&#39;, &#39;하/XS&#39;]
+3 [&#39;동/MM&#39;, &#39;위원/NN&#39;, &#39;분기/NN&#39;, &#39;중/NN&#39;, &#39;경제/NN;성장/NN&#39;, &#39;률/XS&#39;, &#39;당초/NN&#39;, &#39;전망/NN;높/VA&#39;, &#39;소폭/MA&#39;, &#39;수/NN&#39;, &#39;보고/NN&#39;, &#39;내용/NN&#39;, &#39;관련/NN&#39;, &#39;하/XS&#39;, &#39;그/MM&#39;, &#39;경우/NN&#39;, &#39;마이너스/NN;축소/NN&#39;, &#39;갭/NN&#39;, &#39;속도/NN&#39;, &#39;예상/NN&#39;, &#39;빨라질/VA&#39;, &#39;수/NN&#39;, &#39;것/NN&#39;, &#39;생각/NN&#39;, &#39;되/XS&#39;, &#39;다른/MM&#39;, &#39;측면/NN&#39;, &#39;작년/NN&#39;, &#39;크/VA&#39;, &#39;소비자/NN&#39;, &#39;물가/NN&#39;, &#39;반영/NN&#39;, &#39;되/XS&#39;, &#39;생산자/NN&#39;, &#39;물가/NN;상승/NN&#39;, &#39;요인/NN&#39;, &#39;금년/NN&#39;, &#39;빠르/VA&#39;, &#39;소비자/NN&#39;, &#39;물가/NN&#39;, &#39;전가/NN&#39;, &#39;되/XS&#39;, &#39;생산자/NN&#39;, &#39;물가/NN&#39;, &#39;소비자/NN&#39;, &#39;물가/NN&#39;, &#39;간/NN&#39;, &#39;갭/NN&#39;, &#39;축소/NN&#39;, &#39;될/XS&#39;, &#39;것/NN&#39;, &#39;그/MM&#39;, &#39;같/VA&#39;, &#39;상태/NN&#39;, &#39;지속/NN&#39;, &#39;될/XS&#39;, &#39;경우/NN&#39;, &#39;수요/NN&#39;, &#39;측면/NN&#39;, &#39;물가/NN;상승/NN&#39;, &#39;물가/NN;압력/NN&#39;, &#39;전망/NN&#39;, &#39;빠르/VA&#39;, &#39;가능/NN&#39;, &#39;성/XS&#39;, &#39;없/VA&#39;, &#39;우려/NN&#39;, &#39;하/XS&#39;]
+4 [&#39;관련/NN&#39;, &#39;부서/NN&#39;, &#39;분기/NN&#39;, &#39;중/NN&#39;, &#39;경제/NN&#39;, &#39;성장/NN;높/VA&#39;, &#39;률/XS&#39;, &#39;경기/NN&#39;, &#39;회복/NN&#39;, &#39;시기/NN&#39;, &#39;경우/NN&#39;, &#39;갭/NN&#39;, &#39;축소/NN&#39;, &#39;되/XS&#39;, &#39;수요/NN&#39;, &#39;측면/NN&#39;, &#39;물가/NN;상승/NN&#39;, &#39;물가/NN;압력/NN&#39;, &#39;수/NN&#39;, &#39;것/NN&#39;, &#39;답변/NN&#39;, &#39;하/XS&#39;]
+5 [&#39;또한/MA&#39;, &#39;동/MM&#39;, &#39;위원/NN&#39;, &#39;분기/NN&#39;, &#39;중/NN&#39;, &#39;국제/NN&#39;, &#39;유가/NN&#39;, &#39;현재/NN&#39;, &#39;브렌트/NN&#39;, &#39;유/NN&#39;, &#39;기준/NN&#39;, &#39;달러/NN&#39;, &#39;두/MM&#39;, &#39;바/NN&#39;, &#39;이유/NN&#39;, &#39;기준/NN&#39;, &#39;달러/NN&#39;, &#39;지속/NN&#39;, &#39;한다/XS&#39;, &#39;소비자/NN&#39;, &#39;물가/NN&#39;, &#39;중반/NN&#39;, &#39;것/NN&#39;, &#39;예상/NN&#39;, &#39;된다는/XS&#39;, &#39;보고/NN&#39;, &#39;내용/NN&#39;, &#39;관련/NN&#39;, &#39;하/XS&#39;, &#39;작년/NN&#39;, &#39;월/NN&#39;, &#39;이후/NN&#39;, &#39;농축/NN&#39;, &#39;수산물/NN&#39;, &#39;가격/NN;급등/NN&#39;, &#39;한/XS&#39;, &#39;것/NN&#39;, &#39;감안/NN&#39;, &#39;하/XS&#39;, &#39;브렌트/NN&#39;, &#39;유가/NN&#39;, &#39;달러/NN&#39;, &#39;두/MM&#39;, &#39;바/NN&#39;, &#39;이유/NN&#39;, &#39;달러/NN&#39;, &#39;내외/NN&#39;, &#39;유지/NN&#39;, &#39;한/XS&#39;, &#39;상황/NN&#39;, &#39;소비자/NN&#39;, &#39;물가/NN&#39;, &#39;선/NN&#39;, &#39;것/NN&#39;, &#39;비교/NN&#39;, &#39;해/XS&#39;, &#39;원화/NN;절상/NN&#39;, &#39;효과/NN&#39;, &#39;제한/NN&#39;, &#39;적/XS&#39;, &#39;이/VC&#39;, &#39;농축/NN&#39;, &#39;수산물/NN&#39;, &#39;가격/NN&#39;, &#39;비/XP&#39;, &#39;정상/NN&#39;, &#39;적/XS&#39;, &#39;상승/NN&#39;, &#39;할/XS&#39;, &#39;수/NN&#39;, &#39;있/VA&#39;, &#39;점/NN&#39;, &#39;고려/NN&#39;, &#39;할/XS&#39;, &#39;때/NN&#39;, &#39;너무/MA&#39;, &#39;낙관/NN&#39;, &#39;적/XS&#39;, &#39;인/VC&#39;, &#39;전망/NN&#39;, &#39;아닌지/VC&#39;]
+6 [&#39;관련/NN&#39;, &#39;부서/NN&#39;, &#39;유가/NN&#39;, &#39;현재/NN&#39;, &#39;달러/NN&#39;, &#39;정도/NN&#39;, &#39;상승/NN&#39;, &#39;하/XS&#39;, &#39;소비자/NN&#39;, &#39;물가/NN;상승/NN&#39;, &#39;중반/NN&#39;, &#39;할/XS&#39;, &#39;것/NN&#39;, &#39;예상/NN&#39;, &#39;되/XS&#39;, &#39;이상/NN&#39;, &#39;기후/NN&#39;, &#39;농수산물/NN&#39;, &#39;가격/NN&#39;, &#39;급상승/NN&#39;, &#39;할/XS&#39;, &#39;경우/NN&#39;, &#39;월/NN&#39;, &#39;한/MM&#39;, &#39;두/MM&#39;, &#39;달/NN&#39;, &#39;동안/NN&#39;, &#39;대/XS&#39;, &#39;가능/NN&#39;, &#39;성/XS&#39;, &#39;있/VA&#39;, &#39;것/NN&#39;, &#39;이/VC&#39;, &#39;답변/NN&#39;, &#39;하/XS&#39;]
+7 [&#39;다른/MM&#39;, &#39;일부/NN&#39;, &#39;위원/NN&#39;, &#39;관련/NN&#39;, &#39;부서/NN&#39;, &#39;작성/NN&#39;, &#39;한/XS&#39;, &#39;주요/NN&#39;, &#39;경제/NN&#39;, &#39;지표/NN&#39;, &#39;설비/NN&#39;, &#39;투자/NN&#39;, &#39;작년/NN&#39;, &#39;월/NN&#39;, &#39;월/NN&#39;, &#39;전년/NN&#39;, &#39;동기/NN&#39;, &#39;대비/NN&#39;, &#39;증가세/NN&#39;, &#39;월/NN&#39;, &#39;이후/NN&#39;, &#39;감소/NN&#39;, &#39;증가/NN&#39;, &#39;반복/NN&#39;, &#39;하/XS&#39;, &#39;감안/NN&#39;, &#39;할/XS&#39;, &#39;때/NN&#39;, &#39;현재/MA&#39;, &#39;설비/NN&#39;, &#39;투자/NN&#39;, &#39;회복세/NN&#39;, &#39;수/NN&#39;, &#39;그리고/MA&#39;, &#39;가동/NN&#39;, &#39;률/XS&#39;, &#39;높/VA&#39;, &#39;투자/NN&#39;, &#39;조정/NN&#39;, &#39;압력/NN&#39;, &#39;있/VA&#39;, &#39;현/MM&#39;, &#39;상태/NN&#39;, &#39;중소기업/NN&#39;, &#39;대/XP&#39;, &#39;기업/NN&#39;, &#39;쪽/NN&#39;, &#39;투자/NN&#39;, &#39;여력/NN&#39;, &#39;더/MA&#39;, &#39;있/VA&#39;, &#39;것/NN&#39;, &#39;아닌지/VC&#39;]
+8 [&#39;관련/NN&#39;, &#39;부서/NN&#39;, &#39;설비/NN&#39;, &#39;투자/NN&#39;, &#39;작년/NN&#39;, &#39;분기/NN&#39;, &#39;증가세/NN&#39;, &#39;전환/NN&#39;, &#39;하/XS&#39;, &#39;몇/MM&#39;, &#39;달/NN&#39;, &#39;동안/NN&#39;, &#39;대/XS&#39;, &#39;증가세/NN&#39;, &#39;유지/NN&#39;, &#39;하/XS&#39;, &#39;분기/NN&#39;, &#39;감소세/NN&#39;, &#39;수준면/NN&#39;, &#39;회복세/NN&#39;, &#39;라고/VC&#39;, &#39;어려우나/VA&#39;, &#39;최근/NN&#39;, &#39;기업/NN;경기/NN;회복/NN&#39;, &#39;들/XS&#39;, &#39;기대/NN&#39;, &#39;심리/NN&#39;, &#39;상당히/MA&#39;, &#39;높/VA&#39;, &#39;점/NN&#39;, &#39;설비/NN&#39;, &#39;투자/NN&#39;, &#39;긍정/NN&#39;, &#39;적/XS&#39;, &#39;작용/NN&#39;, &#39;할/XS&#39;, &#39;것/NN&#39;, &#39;이/VC&#39;, &#39;측면/NN&#39;, &#39;투자/NN&#39;, &#39;회복/NN&#39;, &#39;기대/NN&#39;, &#39;되/XS&#39;, &#39;그/MM&#39;, &#39;동안/NN&#39;, &#39;대/XP&#39;, &#39;기업/NN&#39;, &#39;경우/NN&#39;, &#39;꾸준히/MA&#39;, &#39;투자/NN&#39;, &#39;반면/NN&#39;, &#39;중소기업/NN&#39;, &#39;부진/NN&#39;, &#39;하/XS&#39;, &#39;앞/NN&#39;, &#39;경기/NN;회복/NN;상승/NN&#39;, &#39;기대감/NN&#39;, &#39;대/XP&#39;, &#39;기업/NN&#39;, &#39;중소기업/NN&#39;, &#39;모두/MA&#39;, &#39;투자/NN&#39;, &#39;플러스/NN&#39;, &#39;요인/NN&#39;, &#39;작용/NN&#39;, &#39;할/XS&#39;, &#39;것/NN&#39;, &#39;기대/NN&#39;, &#39;된다고/XS&#39;, &#39;답변/NN&#39;, &#39;하/XS&#39;]
+9 [&#39;동/MM&#39;, &#39;위원/NN&#39;, &#39;갭/NN&#39;, &#39;관련/NN&#39;, &#39;하/XS&#39;, &#39;분기/NN&#39;, &#39;분기/NN&#39;, &#39;경제/NN&#39;, &#39;성장/NN;상승/NN&#39;, &#39;률/XS&#39;, &#39;어느/MM&#39;, &#39;정도/NN&#39;, &#39;시차/NN&#39;, &#39;갭/NN&#39;, &#39;효과/NN&#39;, &#39;것/NN&#39;, &#39;인지/VC&#39;, &#39;또한/MA&#39;, &#39;성장/NN&#39;, &#39;률/XS&#39;, &#39;더/MA&#39;, &#39;높/VA&#39;, &#39;분기/NN&#39;, &#39;분기/NN&#39;, &#39;중/NN&#39;, &#39;갭/NN&#39;, &#39;경우/NN&#39;, &#39;수요/NN&#39;, &#39;측면/NN&#39;, &#39;물가/NN;상승/NN&#39;, &#39;요인/NN&#39;, &#39;바로미터/NN&#39;, &#39;관련/NN&#39;, &#39;부서/NN&#39;, &#39;당초/NN&#39;, &#39;올해/NN&#39;, &#39;상반기/NN&#39;, &#39;중/NN&#39;, &#39;갭/NN&#39;, &#39;크/VA&#39;, &#39;하반기/NN&#39;, &#39;연간/NN&#39;, &#39;것/NN&#39;, &#39;예상/NN&#39;, &#39;하/XS&#39;, &#39;분기/NN&#39;, &#39;분기/NN&#39;, &#39;동/MM&#39;, &#39;갭/NN&#39;, &#39;마이너스/NN&#39;, &#39;유지/NN&#39;, &#39;할/XS&#39;, &#39;것/NN&#39;, &#39;예상/NN&#39;, &#39;된다고/XS&#39;, &#39;답변/NN&#39;, &#39;하/XS&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./docs/tutorials/models/ngram"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="ngram.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">N-Grams</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../transformers/index.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Transformers</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Young Joon Lee<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
