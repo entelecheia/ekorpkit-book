@@ -51,11 +51,9 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Pipelines" href="../pipelines/index.html" />
+    <link rel="next" title="Models" href="../models/index.html" />
     <link rel="prev" title="Datasets" href="index.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -174,7 +172,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../config/index.html">
-   Configurations
+   Configuring ekorpkit
   </a>
  </li>
  <li class="toctree-l1 has-children">
@@ -190,6 +188,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="../corpora/corpus.html">
      Instantiating corpora and corpus class
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../corpora/pipeline.html">
+     Corpus task pipelines
     </a>
    </li>
    <li class="toctree-l2">
@@ -217,28 +220,11 @@ const thebe_selector_output = ".output, .cell_output"
   </ul>
  </li>
  <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../pipelines/index.html">
-   Pipelines
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-  <label for="toctree-checkbox-5">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../pipelines/pipeline.html">
-     Instantiating pipeline
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
   <a class="reference internal" href="../models/index.html">
    Models
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-  <label for="toctree-checkbox-6">
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -252,8 +238,8 @@ const thebe_selector_output = ".output, .cell_output"
     <a class="reference internal" href="../models/embeddings/index.html">
      Word Embeddings
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-    <label for="toctree-checkbox-7">
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -269,8 +255,8 @@ const thebe_selector_output = ".output, .cell_output"
     <a class="reference internal" href="../models/sentiment/index.html">
      Sentiment Analyers
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-    <label for="toctree-checkbox-8">
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -296,8 +282,8 @@ const thebe_selector_output = ".output, .cell_output"
     <a class="reference internal" href="../models/ngram/index.html">
      N-Grams
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
-    <label for="toctree-checkbox-9">
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -312,6 +298,23 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="../models/transformers/index.html">
      Transformers
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../pipelines/index.html">
+   Pipelines
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../pipelines/pipeline.html">
+     Instantiating pipeline
     </a>
    </li>
   </ul>
@@ -676,138 +679,16 @@ const thebe_selector_output = ".output, .cell_output"
 <h1>Datasets<a class="headerlink" href="#datasets" title="Permalink to this headline">¶</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.30+5.g26259e0.dirty
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
-
-<span class="n">ds_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;dataset&#39;</span><span class="p">)</span>
-<span class="n">ds_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;financial_phrasebank&#39;</span>
-<span class="n">ds_cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;${cached_path:&#39;https://github.com/entelecheia/ekorpkit-config/raw/main/data/financial_phrasebank.zip&#39;,true,false}&quot;</span>
-<span class="n">ds_cfg</span><span class="o">.</span><span class="n">use_name_as_subdir</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">ds</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">ds_cfg</span><span class="p">)</span>
-<span class="n">ds</span><span class="o">.</span><span class="n">info</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;name&#39;: &#39;financial_phrasebank&#39;,
- &#39;domain&#39;: &#39;econ&#39;,
- &#39;task&#39;: &#39;classification&#39;,
- &#39;lang&#39;: &#39;en&#39;,
- &#39;column_info&#39;: {&#39;keys&#39;: {&#39;id&#39;: &#39;id&#39;, &#39;text&#39;: &#39;text&#39;},
-  &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;labels&#39;: &#39;str&#39;, &#39;text&#39;: &#39;str&#39;}},
- &#39;splits&#39;: {&#39;train&#39;: {&#39;name&#39;: &#39;train&#39;,
-   &#39;dataset_name&#39;: &#39;financial_phrasebank&#39;,
-   &#39;data_file&#39;: &#39;financial_phrasebank-train.csv&#39;,
-   &#39;num_examples&#39;: 1445,
-   &#39;num_bytes&#39;: 176485,
-   &#39;num_bytes_median&#39;: 112.0,
-   &#39;num_bytes_max&#39;: 315,
-   &#39;num_bytes_min&#39;: 15,
-   &#39;human_bytes&#39;: &#39;172.35 KiB&#39;},
-  &#39;test&#39;: {&#39;name&#39;: &#39;test&#39;,
-   &#39;dataset_name&#39;: &#39;financial_phrasebank&#39;,
-   &#39;data_file&#39;: &#39;financial_phrasebank-test.csv&#39;,
-   &#39;num_examples&#39;: 452,
-   &#39;num_bytes&#39;: 55518,
-   &#39;num_bytes_median&#39;: 110.0,
-   &#39;num_bytes_max&#39;: 296,
-   &#39;num_bytes_min&#39;: 11,
-   &#39;human_bytes&#39;: &#39;54.22 KiB&#39;},
-  &#39;dev&#39;: {&#39;name&#39;: &#39;dev&#39;,
-   &#39;dataset_name&#39;: &#39;financial_phrasebank&#39;,
-   &#39;data_file&#39;: &#39;financial_phrasebank-dev.csv&#39;,
-   &#39;num_examples&#39;: 362,
-   &#39;num_bytes&#39;: 43404,
-   &#39;num_bytes_median&#39;: 109.0,
-   &#39;num_bytes_max&#39;: 296,
-   &#39;num_bytes_min&#39;: 9,
-   &#39;human_bytes&#39;: &#39;42.39 KiB&#39;}},
- &#39;num_examples&#39;: 2259,
- &#39;size_in_bytes&#39;: 275407,
- &#39;size_in_human_bytes&#39;: &#39;268.95 KiB&#39;,
- &#39;data_files&#39;: {&#39;train&#39;: &#39;financial_phrasebank-train.csv&#39;,
-  &#39;test&#39;: &#39;financial_phrasebank-test.csv&#39;,
-  &#39;dev&#39;: &#39;financial_phrasebank-dev.csv&#39;},
- &#39;meta_files&#39;: {},
- &#39;data_files_modified&#39;: &#39;2022-04-22 03:18:20&#39;,
- &#39;info_updated&#39;: &#39;2022-04-22 03:18:20&#39;}
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">COLUMN</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ColumnInfo : {&#39;keys&#39;: {&#39;id&#39;: &#39;id&#39;, &#39;text&#39;: &#39;text&#39;, &#39;timestamp&#39;: &#39;timestamp&#39;, &#39;split&#39;: &#39;split&#39;}, &#39;columns&#39;: {&#39;id&#39;: [&#39;id&#39;, &#39;split&#39;], &#39;text&#39;: [&#39;text&#39;], &#39;merge_meta_on&#39;: None, &#39;timestamp&#39;: None}, &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;, &#39;labels&#39;: &#39;str&#39;, &#39;split&#39;: &#39;str&#39;}, &#39;meta&#39;: None, &#39;timestamp&#39;: {&#39;key&#39;: None, &#39;format&#39;: None, &#39;params&#39;: None}, &#39;datetime&#39;: {&#39;key&#39;: None, &#39;format&#39;: None, &#39;params&#39;: None}, &#39;segment_separator&#39;: &#39;\\n\\n&#39;}
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span><span class="o">.</span><span class="n">splits</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;train&#39;:         id    labels                                               text  split
- 0      655   neutral  Customers in a wide range of industries use ou...  train
- 1      634   neutral  The writing and publication of Lemmink+ñinen -...  train
- 2     1030   neutral  Sullivan said some of the boards `` really inv...  train
- 3      317  positive  The six breweries recorded a 5.2 percent growt...  train
- 4      868  positive  In the second quarter of 2010 , the company &#39;s...  train
- ...    ...       ...                                                ...    ...
- 1440   136  positive  In the fourth quarter of 2009 , Orion &#39;s net p...  train
- 1441  2170  negative  Profit for the period totalled EUR 1.1 mn , do...  train
- 1442   344  positive  The diluted loss per share narrowed to EUR 0.2...  train
- 1443   573   neutral  LKAB , headquartered in Lulea , Sweden , is a ...  train
- 1444  1768   neutral  The EBRD is using its own funds to provide a 2...  train
- 
- [1445 rows x 4 columns],
- &#39;test&#39;:        id    labels                                               text split
- 0     505   neutral  Los Angeles-based Pacific Office Properties Tr...  test
- 1     783  positive  Investors will continue being interested in th...  test
- 2    2253  negative  Repeats sees 2008 operating profit down y-y ( ...  test
- 3    1374   neutral  The acquisition was financed with $ 2.56 billi...  test
- 4     243  positive  Profit per share was EUR 1.03 , up from EUR 0....  test
- ..    ...       ...                                                ...   ...
- 447   605   neutral  The commission said the hydrogen peroxide and ...  test
- 448  2258  negative  Sales in Finland decreased by 2.0 % , and inte...  test
- 449   254  positive  The earnings per share for the quarter came in...  test
- 450  1390   neutral  The company can not give up palm oil altogethe...  test
- 451   181  positive  Pretax profit rose to EUR 1,019 mn from EUR 1,...  test
- 
- [452 rows x 4 columns],
- &#39;dev&#39;:        id    labels                                               text split
- 0    1449   neutral       The identity of the buyer is not yet known .   dev
- 1     165  positive  Operating profit rose to EUR 3.2 mn from EUR 1...   dev
- 2    1334   neutral  Previously , Grimaldi held a 46.43 pct stake i...   dev
- 3     907   neutral  A total of $ 78 million will be invested in th...   dev
- 4    1371   neutral  The 19,200-square metre technology center is l...   dev
- ..    ...       ...                                                ...   ...
- 357  1120   neutral  Under a preliminary estimation , the technolog...   dev
- 358   404  positive  Operating profit improved by 27 % to EUR 579.8...   dev
- 359  1708   neutral  Rohwedder Group is an automotive supplies , te...   dev
- 360   225  positive  In January-September 2007 , the group &#39;s net s...   dev
- 361  1008   neutral  Payment of shares shall be effected on subscri...   dev
- 
- [362 rows x 4 columns]}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+15.g2cbd42e.dirty
 </pre></div>
 </div>
 </div>
@@ -816,46 +697,70 @@ const thebe_selector_output = ".output, .cell_output"
 <h2>Build a dataset with the ekorpkit configs<a class="headerlink" href="#build-a-dataset-with-the-ekorpkit-configs" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;dataset/simple=financial_phrasebank&#39;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s1">&#39;./data/financial_phrasebank&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">fetch</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">fetch</span><span class="o">.</span><span class="n">overwrite</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">fetch</span><span class="o">.</span><span class="n">calculate_stats</span> <span class="o">=</span> <span class="kc">True</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;dataset/simple=sst2&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/sst2&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">overwrite</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">calculate_stats</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">db</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
-<span class="n">db</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:datasets.builder:Reusing dataset glue (/root/.cache/huggingface/datasets/glue/sst2/1.0.0/dacbe3125aa31d7f70367a07a8a9e72a5a0bfeb5fc42e75c9db75b96da6053ad)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset({
+    features: [&#39;sentence&#39;, &#39;label&#39;, &#39;idx&#39;],
+    num_rows: 67349
+})
+</pre></div>
+</div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "7fcd14436ba841999c14bb7eb799851e", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "516069fcb4ea4c7ab9c9af0457747ecd", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "496182b28c8b461cb0d93611463ff1dd", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "0ea60d06fc6d407babddca5aa784ca95", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "2d796e69da95476785bb5ba9cb73edf2", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "588fd94d15e64583b785e09a697a7b62", "version_major": 2, "version_minor": 0}
+{"model_id": "41723b37cec749ecb658aea05cc26858", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:datasets.builder:Reusing dataset glue (/root/.cache/huggingface/datasets/glue/sst2/1.0.0/dacbe3125aa31d7f70367a07a8a9e72a5a0bfeb5fc42e75c9db75b96da6053ad)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset({
+    features: [&#39;sentence&#39;, &#39;label&#39;, &#39;idx&#39;],
+    num_rows: 1821
+})
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "2690509c74a2497981e8c3eee227e631", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:datasets.builder:Reusing dataset glue (/root/.cache/huggingface/datasets/glue/sst2/1.0.0/dacbe3125aa31d7f70367a07a8a9e72a5a0bfeb5fc42e75c9db75b96da6053ad)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset({
+    features: [&#39;sentence&#39;, &#39;label&#39;, &#39;idx&#39;],
+    num_rows: 872
+})
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "287cf6e76755424890f24d1cf901f65d", "version_major": 2, "version_minor": 0}
 </script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;dataset/simple=nsmc&#39;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s1">&#39;./data/nsmc&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">fetch</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">fetch</span><span class="o">.</span><span class="n">overwrite</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">fetch</span><span class="o">.</span><span class="n">calculate_stats</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s1">&#39;../data/nsmc&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">overwrite</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">calculate_stats</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">db</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using custom data configuration default
-Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd4729bf1a67114e5267e6916b9e4807010aeb238e4a3c2b95fbfa3a014b5f3)
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "b68c86ca37ef4ef19dd660afa2644740", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "7612e287c6274dc58f8e52c7422adb24", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:datasets.builder:Using custom data configuration default
+WARNING:datasets.builder:Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd4729bf1a67114e5267e6916b9e4807010aeb238e4a3c2b95fbfa3a014b5f3)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset({
@@ -865,9 +770,9 @@ Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd47
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "0ba1dc69559140aea8927a805a6a842d", "version_major": 2, "version_minor": 0}
-</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using custom data configuration default
-Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd4729bf1a67114e5267e6916b9e4807010aeb238e4a3c2b95fbfa3a014b5f3)
+{"model_id": "98b4398b24674344ba76578233891992", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:datasets.builder:Using custom data configuration default
+WARNING:datasets.builder:Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd4729bf1a67114e5267e6916b9e4807010aeb238e4a3c2b95fbfa3a014b5f3)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset({
@@ -877,9 +782,9 @@ Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd47
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "a046a6885fec42b3bb027111a0dfc3c7", "version_major": 2, "version_minor": 0}
-</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using custom data configuration default
-Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd4729bf1a67114e5267e6916b9e4807010aeb238e4a3c2b95fbfa3a014b5f3)
+{"model_id": "c6fc2ba17bfa433a9a8890e97b33ae75", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:datasets.builder:Using custom data configuration default
+WARNING:datasets.builder:Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd4729bf1a67114e5267e6916b9e4807010aeb238e4a3c2b95fbfa3a014b5f3)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset({
@@ -889,9 +794,9 @@ Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd47
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "cd95daa8a7d94af6a41cb6fd891f8aa9", "version_major": 2, "version_minor": 0}
-</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using custom data configuration default
-Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd4729bf1a67114e5267e6916b9e4807010aeb238e4a3c2b95fbfa3a014b5f3)
+{"model_id": "146383f1b63d4a8093f2c23f6dad9a95", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:datasets.builder:Using custom data configuration default
+WARNING:datasets.builder:Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd4729bf1a67114e5267e6916b9e4807010aeb238e4a3c2b95fbfa3a014b5f3)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset({
@@ -901,88 +806,7 @@ Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd47
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "b61ee3e2e46c4d23b0761f1b3d6a565b", "version_major": 2, "version_minor": 0}
-</script></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;dataset/simple=sst2&#39;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s1">&#39;./data/sst2&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">fetch</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">fetch</span><span class="o">.</span><span class="n">overwrite</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">fetch</span><span class="o">.</span><span class="n">calculate_stats</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">db</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
-<span class="n">db</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reusing dataset glue (/root/.cache/huggingface/datasets/glue/sst2/1.0.0/dacbe3125aa31d7f70367a07a8a9e72a5a0bfeb5fc42e75c9db75b96da6053ad)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset({
-    features: [&#39;sentence&#39;, &#39;label&#39;, &#39;idx&#39;],
-    num_rows: 67349
-})
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "1b28016c053a4d318c6f8a9106ed05cc", "version_major": 2, "version_minor": 0}
-</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reusing dataset glue (/root/.cache/huggingface/datasets/glue/sst2/1.0.0/dacbe3125aa31d7f70367a07a8a9e72a5a0bfeb5fc42e75c9db75b96da6053ad)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset({
-    features: [&#39;sentence&#39;, &#39;label&#39;, &#39;idx&#39;],
-    num_rows: 1821
-})
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "a453d355d26442b0af99bb869eaf1acf", "version_major": 2, "version_minor": 0}
-</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reusing dataset glue (/root/.cache/huggingface/datasets/glue/sst2/1.0.0/dacbe3125aa31d7f70367a07a8a9e72a5a0bfeb5fc42e75c9db75b96da6053ad)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset({
-    features: [&#39;sentence&#39;, &#39;label&#39;, &#39;idx&#39;],
-    num_rows: 872
-})
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "cbaf369d6b6b4748919a2aa1b3ac4894", "version_major": 2, "version_minor": 0}
-</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reusing dataset glue (/root/.cache/huggingface/datasets/glue/sst2/1.0.0/dacbe3125aa31d7f70367a07a8a9e72a5a0bfeb5fc42e75c9db75b96da6053ad)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset({
-    features: [&#39;sentence&#39;, &#39;label&#39;, &#39;idx&#39;],
-    num_rows: 67349
-})
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "c272f083f6f4410eb94d2c37b6dcc618", "version_major": 2, "version_minor": 0}
-</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reusing dataset glue (/root/.cache/huggingface/datasets/glue/sst2/1.0.0/dacbe3125aa31d7f70367a07a8a9e72a5a0bfeb5fc42e75c9db75b96da6053ad)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset({
-    features: [&#39;sentence&#39;, &#39;label&#39;, &#39;idx&#39;],
-    num_rows: 1821
-})
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "96c1ee76ff124d35928ebe86d70fabaa", "version_major": 2, "version_minor": 0}
-</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reusing dataset glue (/root/.cache/huggingface/datasets/glue/sst2/1.0.0/dacbe3125aa31d7f70367a07a8a9e72a5a0bfeb5fc42e75c9db75b96da6053ad)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset({
-    features: [&#39;sentence&#39;, &#39;label&#39;, &#39;idx&#39;],
-    num_rows: 872
-})
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "b8eeb7d8169b4f43970845a6d9c14e45", "version_major": 2, "version_minor": 0}
+{"model_id": "7787f515ac324ed1b4a22c44451aac29", "version_major": 2, "version_minor": 0}
 </script></div>
 </div>
 </div>
@@ -993,88 +817,19 @@ Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd47
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
 
 <span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;dataset=datasets&#39;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;financial_phrasebank&#39;</span><span class="p">,</span> <span class="s1">&#39;sst2&#39;</span><span class="p">]</span>
-<span class="n">cfg</span><span class="p">[</span><span class="s1">&#39;data_dir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;../data&#39;</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">datasets</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;nsmc&#39;</span><span class="p">,</span> <span class="s1">&#39;sst2&#39;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s1">&#39;../data&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">ds</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;_target_&#39;: &#39;ekorpkit.datasets.loader.Datasets&#39;,
- &#39;autoload&#39;: True,
- &#39;autorun&#39;: [&#39;load&#39;],
- &#39;column_info&#39;: {&#39;_target_&#39;: &#39;ekorpkit.info.base.ColumnInfo&#39;,
-                 &#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;,
-                             &#39;merge_meta_on&#39;: None,
-                             &#39;text&#39;: &#39;text&#39;,
-                             &#39;timestamp&#39;: None},
-                 &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;},
-                 &#39;datetime&#39;: {&#39;format&#39;: None, &#39;key&#39;: None, &#39;params&#39;: None},
-                 &#39;keys&#39;: {&#39;id&#39;: &#39;id&#39;,
-                          &#39;split&#39;: &#39;split&#39;,
-                          &#39;text&#39;: &#39;text&#39;,
-                          &#39;timestamp&#39;: &#39;timestamp&#39;},
-                 &#39;meta&#39;: None,
-                 &#39;segment_separator&#39;: &#39;\\n\\n&#39;,
-                 &#39;timestamp&#39;: {&#39;format&#39;: None, &#39;key&#39;: None, &#39;params&#39;: None}},
- &#39;data_dir&#39;: &#39;../data&#39;,
- &#39;datasets&#39;: None,
- &#39;filetype&#39;: &#39;csv&#39;,
- &#39;info&#39;: {&#39;_target_&#39;: &#39;ekorpkit.info.stat.SummaryInfo&#39;,
-          &#39;aggregate_info&#39;: {&#39;num_examples&#39;: &#39;num_examples&#39;,
-                             &#39;size_in_bytes&#39;: &#39;num_bytes&#39;},
-          &#39;data_dir&#39;: &#39;../data&#39;,
-          &#39;info_file&#39;: &quot;info-[&#39;financial_phrasebank&#39;, &#39;sst2&#39;].yaml&quot;,
-          &#39;info_list&#39;: [&#39;name&#39;,
-                        &#39;fullname&#39;,
-                        &#39;domain&#39;,
-                        &#39;task&#39;,
-                        &#39;lang&#39;,
-                        &#39;description&#39;,
-                        &#39;license&#39;,
-                        &#39;homepage&#39;,
-                        &#39;version&#39;,
-                        &#39;num_examples&#39;,
-                        &#39;size_in_bytes&#39;,
-                        &#39;size_in_human_bytes&#39;,
-                        &#39;data_files_modified&#39;,
-                        &#39;info_updated&#39;,
-                        &#39;data_files&#39;,
-                        &#39;column_info&#39;],
-          &#39;key_columns&#39;: &#39;&#39;,
-          &#39;modified_info&#39;: {&#39;data_files_modified&#39;: &#39;data_file&#39;},
-          &#39;name&#39;: [&#39;financial_phrasebank&#39;, &#39;sst2&#39;],
-          &#39;stats&#39;: {&#39;_partial_&#39;: True,
-                    &#39;_target_&#39;: &#39;ekorpkit.info.stat.summary_stats&#39;,
-                    &#39;agg_funcs&#39;: {&#39;num_bytes&#39;: [&#39;count&#39;,
-                                                &#39;sum&#39;,
-                                                &#39;median&#39;,
-                                                &#39;max&#39;,
-                                                &#39;min&#39;]},
-                    &#39;convert_to_humanbytes&#39;: {&#39;num_bytes&#39;: &#39;human_bytes&#39;},
-                    &#39;function&#39;: {&#39;len_bytes&#39;: {&#39;_partial_&#39;: True,
-                                               &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}},
-                    &#39;key_columns&#39;: &#39;&#39;,
-                    &#39;num_columns&#39;: {&#39;num_bytes&#39;: &#39;len_bytes&#39;},
-                    &#39;num_workers&#39;: 1,
-                    &#39;rename_columns&#39;: {&#39;num_bytes_count&#39;: &#39;num_examples&#39;,
-                                       &#39;num_bytes_sum&#39;: &#39;num_bytes&#39;},
-                    &#39;text_keys&#39;: &#39;text&#39;},
-          &#39;update_files_info&#39;: {&#39;data_files&#39;: &#39;data_file&#39;,
-                                &#39;meta_files&#39;: &#39;meta_file&#39;},
-          &#39;update_info&#39;: [&#39;fullname&#39;,
-                          &#39;lang&#39;,
-                          &#39;domain&#39;,
-                          &#39;task&#39;,
-                          &#39;description&#39;,
-                          &#39;license&#39;,
-                          &#39;homepage&#39;,
-                          &#39;version&#39;],
-          &#39;verbose&#39;: False},
- &#39;name&#39;: [&#39;financial_phrasebank&#39;, &#39;sst2&#39;],
- &#39;use_name_as_subdir&#39;: True,
- &#39;verbose&#39;: False}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Datasets
+----------
+nsmc
+sst2
 </pre></div>
 </div>
 </div>
@@ -1086,56 +841,45 @@ Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd47
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ColumnInfo : {&#39;keys&#39;: {&#39;id&#39;: &#39;id&#39;, &#39;text&#39;: &#39;text&#39;, &#39;timestamp&#39;: &#39;timestamp&#39;, &#39;split&#39;: &#39;split&#39;, &#39;_id&#39;: &#39;_id&#39;, &#39;corpus&#39;: &#39;corpus&#39;, &#39;dataset&#39;: &#39;dataset&#39;}, &#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;, &#39;text&#39;: &#39;text&#39;, &#39;merge_meta_on&#39;: None, &#39;timestamp&#39;: None}, &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;}, &#39;meta&#39;: None, &#39;timestamp&#39;: {&#39;key&#39;: None, &#39;format&#39;: None, &#39;params&#39;: None}, &#39;datetime&#39;: {&#39;key&#39;: None, &#39;format&#39;: None, &#39;params&#39;: None}, &#39;segment_separator&#39;: &#39;\\n\\n&#39;}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ColumnInfo : {&#39;keys&#39;: {&#39;id&#39;: &#39;id&#39;, &#39;text&#39;: &#39;text&#39;, &#39;timestamp&#39;: &#39;timestamp&#39;, &#39;split&#39;: &#39;split&#39;}, &#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;, &#39;text&#39;: &#39;text&#39;, &#39;merge_meta_on&#39;: None, &#39;timestamp&#39;: None}, &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;}, &#39;meta&#39;: None, &#39;timestamp&#39;: {&#39;key&#39;: None, &#39;format&#39;: None, &#39;_parms_&#39;: None}, &#39;datetime&#39;: {&#39;columns&#39;: None, &#39;format&#39;: None, &#39;_parms_&#39;: None}, &#39;segment_separator&#39;: &#39;\\n\\n&#39;, &#39;sentence_separator&#39;: &#39;\\n&#39;}
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span><span class="o">.</span><span class="n">persist</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ds.concat_datasets()</span>
+<span class="n">ds</span><span class="o">.</span><span class="n">persist</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>datasets not concatenated yet, calling concatenate()
-</pre></div>
-</div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "47f4ca331c24409f8cf5afd551696e64", "version_major": 2, "version_minor": 0}
+{"model_id": "e61b20c3fd1b4934a399ed9c928f1dda", "version_major": 2, "version_minor": 0}
 </script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "8698281e6f19498b9ad28243756af00d", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "d74dd5ea042a48989fd16179f0729131", "version_major": 2, "version_minor": 0}
+{"model_id": "e9850b1c62db45bb9b01b2bd83dfc1fe", "version_major": 2, "version_minor": 0}
 </script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span><span class="o">.</span><span class="n">concat_datasets</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;column_info&#39;: {&#39;keys&#39;: {&#39;id&#39;: &#39;id&#39;, &#39;text&#39;: &#39;text&#39;, &#39;timestamp&#39;: &#39;timestamp&#39;, &#39;split&#39;: &#39;split&#39;}, &#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;, &#39;text&#39;: &#39;text&#39;, &#39;merge_meta_on&#39;: None, &#39;timestamp&#39;: None}, &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;}, &#39;meta&#39;: None, &#39;timestamp&#39;: {&#39;key&#39;: None, &#39;format&#39;: None, &#39;_parms_&#39;: None}, &#39;datetime&#39;: {&#39;columns&#39;: None, &#39;format&#39;: None, &#39;_parms_&#39;: None}, &#39;segment_separator&#39;: &#39;\\n\\n&#39;, &#39;sentence_separator&#39;: &#39;\\n&#39;, &#39;_target_&#39;: &#39;ekorpkit.info.column.ColumnInfo&#39;}, &#39;cache&#39;: {&#39;uri&#39;: None, &#39;extract_archive&#39;: True, &#39;force_extract&#39;: False, &#39;return_parent_dir&#39;: True, &#39;cache_dir&#39;: &#39;/workspace/.cache&#39;, &#39;verbose&#39;: False, &#39;path&#39;: None}, &#39;name&#39;: &#39;nsmc-sst2&#39;, &#39;data_dir&#39;: &#39;../data&#39;, &#39;filetype&#39;: &#39;.parquet&#39;, &#39;autoload&#39;: True, &#39;use_name_as_subdir&#39;: True, &#39;verbose&#39;: False, &#39;info&#39;: {&#39;stats&#39;: {&#39;_func_&#39;: {&#39;len_bytes&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}}, &#39;_target_&#39;: &#39;ekorpkit.info.stat.summary_stats&#39;, &#39;_partial_&#39;: True, &#39;num_workers&#39;: 1, &#39;key_columns&#39;: None, &#39;num_columns&#39;: {&#39;num_bytes&#39;: &#39;len_bytes&#39;}, &#39;agg_funcs&#39;: {&#39;num_bytes&#39;: [&#39;count&#39;, &#39;sum&#39;, &#39;median&#39;, &#39;max&#39;, &#39;min&#39;]}, &#39;rename_columns&#39;: {&#39;num_bytes_count&#39;: &#39;num_examples&#39;, &#39;num_bytes_sum&#39;: &#39;num_bytes&#39;}, &#39;convert_to_humanbytes&#39;: {&#39;num_bytes&#39;: &#39;human_bytes&#39;}, &#39;text_keys&#39;: &#39;text&#39;}, &#39;_target_&#39;: &#39;ekorpkit.info.stat.SummaryInfo&#39;, &#39;name&#39;: &#39;nsmc-sst2&#39;, &#39;data_dir&#39;: &#39;../data/nsmc-sst2&#39;, &#39;info_file&#39;: None, &#39;info_list&#39;: [&#39;name&#39;, &#39;fullname&#39;, &#39;domain&#39;, &#39;task&#39;, &#39;lang&#39;, &#39;description&#39;, &#39;license&#39;, &#39;homepage&#39;, &#39;version&#39;, &#39;num_examples&#39;, &#39;size_in_bytes&#39;, &#39;size_in_human_bytes&#39;, &#39;data_files_modified&#39;, &#39;info_updated&#39;, &#39;data_files&#39;, &#39;column_info&#39;], &#39;update_files_info&#39;: {&#39;data_files&#39;: &#39;data_file&#39;, &#39;meta_files&#39;: &#39;meta_file&#39;}, &#39;update_info&#39;: [&#39;fullname&#39;, &#39;lang&#39;, &#39;domain&#39;, &#39;task&#39;, &#39;description&#39;, &#39;license&#39;, &#39;homepage&#39;, &#39;version&#39;], &#39;modified_info&#39;: {&#39;data_files_modified&#39;: &#39;data_file&#39;}, &#39;key_columns&#39;: None, &#39;verbose&#39;: False, &#39;aggregate_info&#39;: {&#39;num_examples&#39;: &#39;num_examples&#39;, &#39;size_in_bytes&#39;: &#39;num_bytes&#39;}}, &#39;datasets&#39;: {&#39;nsmc&#39;: &lt;ekorpkit.datasets.dataset.Dataset object at 0x7f6cd0068820&gt;, &#39;sst2&#39;: &lt;ekorpkit.datasets.dataset.Dataset object at 0x7f6d83ffe700&gt;}, &#39;autorun&#39;: [&#39;load&#39;]}
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">COLUMN</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name of a new dataset: </span><span class="si">{</span><span class="n">ds</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ColumnInfo : {&#39;keys&#39;: {&#39;id&#39;: &#39;id&#39;, &#39;text&#39;: &#39;text&#39;, &#39;timestamp&#39;: &#39;timestamp&#39;, &#39;split&#39;: &#39;split&#39;, &#39;_id&#39;: &#39;_id&#39;, &#39;corpus&#39;: &#39;corpus&#39;, &#39;dataset&#39;: &#39;dataset&#39;}, &#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;, &#39;text&#39;: &#39;text&#39;, &#39;merge_meta_on&#39;: None, &#39;timestamp&#39;: None}, &#39;data&#39;: {&#39;text&#39;: &#39;object&#39;, &#39;split&#39;: &#39;object&#39;, &#39;id&#39;: &#39;int64&#39;, &#39;labels&#39;: &#39;object&#39;, &#39;dataset&#39;: &#39;str&#39;}, &#39;meta&#39;: None, &#39;timestamp&#39;: {&#39;key&#39;: None, &#39;format&#39;: None, &#39;params&#39;: None}, &#39;datetime&#39;: {&#39;key&#39;: None, &#39;format&#39;: None, &#39;params&#39;: None}, &#39;segment_separator&#39;: &#39;\\n\\n&#39;}
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span><span class="o">.</span><span class="n">name</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;financial_phrasebank-sst2&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Name of a new dataset: nsmc-sst2
 </pre></div>
 </div>
 </div>
@@ -1160,7 +904,7 @@ Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd47
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ColumnInfo : {&#39;keys&#39;: {&#39;id&#39;: &#39;id&#39;, &#39;text&#39;: &#39;text&#39;, &#39;timestamp&#39;: &#39;timestamp&#39;, &#39;split&#39;: &#39;split&#39;, &#39;_id&#39;: &#39;_id&#39;, &#39;corpus&#39;: &#39;corpus&#39;, &#39;dataset&#39;: &#39;dataset&#39;}, &#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;, &#39;text&#39;: &#39;text&#39;, &#39;merge_meta_on&#39;: None, &#39;timestamp&#39;: None}, &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;, &#39;labels&#39;: &#39;str&#39;, &#39;split&#39;: &#39;str&#39;}, &#39;meta&#39;: None, &#39;timestamp&#39;: {&#39;key&#39;: None, &#39;format&#39;: None, &#39;params&#39;: None}, &#39;datetime&#39;: {&#39;key&#39;: None, &#39;format&#39;: None, &#39;params&#39;: None}, &#39;segment_separator&#39;: &#39;\\n\\n&#39;}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ColumnInfo : {&#39;keys&#39;: {&#39;id&#39;: &#39;id&#39;, &#39;text&#39;: &#39;text&#39;, &#39;timestamp&#39;: &#39;timestamp&#39;, &#39;split&#39;: &#39;split&#39;}, &#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;, &#39;text&#39;: &#39;text&#39;, &#39;merge_meta_on&#39;: None, &#39;timestamp&#39;: None}, &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;, &#39;labels&#39;: &#39;str&#39;, &#39;split&#39;: &#39;str&#39;}, &#39;meta&#39;: None, &#39;timestamp&#39;: {&#39;key&#39;: None, &#39;format&#39;: None, &#39;_parms_&#39;: None}, &#39;datetime&#39;: {&#39;columns&#39;: None, &#39;format&#39;: None, &#39;_parms_&#39;: None}, &#39;segment_separator&#39;: &#39;\\n\\n&#39;, &#39;sentence_separator&#39;: &#39;\\n&#39;}
 </pre></div>
 </div>
 </div>
@@ -1281,7 +1025,7 @@ Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd47
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eKonf</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">info</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1347,27 +1091,35 @@ Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd47
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;_call_&#39;: [&#39;load&#39;, &#39;concatenate&#39;],
- &#39;_target_&#39;: &#39;ekorpkit.datasets.loader.Datasets&#39;,
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;_method_&#39;: [&#39;load&#39;, &#39;concatenate&#39;],
+ &#39;_target_&#39;: &#39;ekorpkit.datasets.datasets.Datasets&#39;,
  &#39;autoload&#39;: True,
  &#39;autorun&#39;: [&#39;load&#39;],
- &#39;column_info&#39;: {&#39;_target_&#39;: &#39;ekorpkit.info.base.ColumnInfo&#39;,
+ &#39;cache&#39;: {&#39;cache_dir&#39;: &#39;/workspace/.cache&#39;,
+           &#39;extract_archive&#39;: True,
+           &#39;force_extract&#39;: False,
+           &#39;path&#39;: None,
+           &#39;return_parent_dir&#39;: True,
+           &#39;uri&#39;: None,
+           &#39;verbose&#39;: True},
+ &#39;column_info&#39;: {&#39;_target_&#39;: &#39;ekorpkit.info.column.ColumnInfo&#39;,
                  &#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;,
                              &#39;merge_meta_on&#39;: None,
                              &#39;text&#39;: &#39;text&#39;,
                              &#39;timestamp&#39;: None},
                  &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;},
-                 &#39;datetime&#39;: {&#39;format&#39;: None, &#39;key&#39;: None, &#39;params&#39;: None},
+                 &#39;datetime&#39;: {&#39;_parms_&#39;: None, &#39;columns&#39;: None, &#39;format&#39;: None},
                  &#39;keys&#39;: {&#39;id&#39;: &#39;id&#39;,
                           &#39;split&#39;: &#39;split&#39;,
                           &#39;text&#39;: &#39;text&#39;,
                           &#39;timestamp&#39;: &#39;timestamp&#39;},
                  &#39;meta&#39;: None,
                  &#39;segment_separator&#39;: &#39;\\n\\n&#39;,
-                 &#39;timestamp&#39;: {&#39;format&#39;: None, &#39;key&#39;: None, &#39;params&#39;: None}},
+                 &#39;sentence_separator&#39;: &#39;\\n&#39;,
+                 &#39;timestamp&#39;: {&#39;_parms_&#39;: None, &#39;format&#39;: None, &#39;key&#39;: None}},
  &#39;data_dir&#39;: &#39;../data&#39;,
  &#39;datasets&#39;: None,
- &#39;filetype&#39;: &#39;csv&#39;,
+ &#39;filetype&#39;: &#39;.parquet&#39;,
  &#39;info&#39;: {&#39;_target_&#39;: &#39;ekorpkit.info.stat.SummaryInfo&#39;,
           &#39;aggregate_info&#39;: {&#39;num_examples&#39;: &#39;num_examples&#39;,
                              &#39;size_in_bytes&#39;: &#39;num_bytes&#39;},
@@ -1389,10 +1141,12 @@ Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd47
                         &#39;info_updated&#39;,
                         &#39;data_files&#39;,
                         &#39;column_info&#39;],
-          &#39;key_columns&#39;: &#39;&#39;,
+          &#39;key_columns&#39;: None,
           &#39;modified_info&#39;: {&#39;data_files_modified&#39;: &#39;data_file&#39;},
           &#39;name&#39;: [&#39;financial_phrasebank&#39;],
-          &#39;stats&#39;: {&#39;_partial_&#39;: True,
+          &#39;stats&#39;: {&#39;_func_&#39;: {&#39;len_bytes&#39;: {&#39;_partial_&#39;: True,
+                                             &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}},
+                    &#39;_partial_&#39;: True,
                     &#39;_target_&#39;: &#39;ekorpkit.info.stat.summary_stats&#39;,
                     &#39;agg_funcs&#39;: {&#39;num_bytes&#39;: [&#39;count&#39;,
                                                 &#39;sum&#39;,
@@ -1400,9 +1154,7 @@ Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd47
                                                 &#39;max&#39;,
                                                 &#39;min&#39;]},
                     &#39;convert_to_humanbytes&#39;: {&#39;num_bytes&#39;: &#39;human_bytes&#39;},
-                    &#39;function&#39;: {&#39;len_bytes&#39;: {&#39;_partial_&#39;: True,
-                                               &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}},
-                    &#39;key_columns&#39;: &#39;&#39;,
+                    &#39;key_columns&#39;: None,
                     &#39;num_columns&#39;: {&#39;num_bytes&#39;: &#39;len_bytes&#39;},
                     &#39;num_workers&#39;: 1,
                     &#39;rename_columns&#39;: {&#39;num_bytes_count&#39;: &#39;num_examples&#39;,
@@ -1422,23 +1174,32 @@ Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd47
  &#39;name&#39;: [&#39;financial_phrasebank&#39;],
  &#39;use_name_as_subdir&#39;: True,
  &#39;verbose&#39;: True}
-{&#39;_call_&#39;: [&#39;load&#39;, &#39;concatenate&#39;],
+Intantiating a dataset financial_phrasebank with a config:
+{&#39;_method_&#39;: [&#39;load&#39;, &#39;concatenate&#39;],
  &#39;autoload&#39;: True,
  &#39;autorun&#39;: [&#39;load&#39;],
- &#39;column_info&#39;: {&#39;_target_&#39;: &#39;ekorpkit.info.base.ColumnInfo&#39;,
+ &#39;cache&#39;: {&#39;cache_dir&#39;: &#39;/workspace/.cache&#39;,
+           &#39;extract_archive&#39;: True,
+           &#39;force_extract&#39;: False,
+           &#39;path&#39;: None,
+           &#39;return_parent_dir&#39;: True,
+           &#39;uri&#39;: None,
+           &#39;verbose&#39;: True},
+ &#39;column_info&#39;: {&#39;_target_&#39;: &#39;ekorpkit.info.column.ColumnInfo&#39;,
                  &#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;,
                              &#39;merge_meta_on&#39;: None,
                              &#39;text&#39;: &#39;text&#39;,
                              &#39;timestamp&#39;: None},
                  &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;labels&#39;: &#39;str&#39;, &#39;text&#39;: &#39;str&#39;},
-                 &#39;datetime&#39;: {&#39;format&#39;: None, &#39;key&#39;: None, &#39;params&#39;: None},
+                 &#39;datetime&#39;: {&#39;_parms_&#39;: None, &#39;columns&#39;: None, &#39;format&#39;: None},
                  &#39;keys&#39;: {&#39;id&#39;: &#39;id&#39;,
                           &#39;split&#39;: &#39;split&#39;,
                           &#39;text&#39;: &#39;text&#39;,
                           &#39;timestamp&#39;: &#39;timestamp&#39;},
                  &#39;meta&#39;: None,
                  &#39;segment_separator&#39;: &#39;\\n\\n&#39;,
-                 &#39;timestamp&#39;: {&#39;format&#39;: None, &#39;key&#39;: None, &#39;params&#39;: None}},
+                 &#39;sentence_separator&#39;: &#39;\\n&#39;,
+                 &#39;timestamp&#39;: {&#39;_parms_&#39;: None, &#39;format&#39;: None, &#39;key&#39;: None}},
  &#39;data_dir&#39;: &#39;../data&#39;,
  &#39;data_files&#39;: {&#39;dev&#39;: &#39;financial_phrasebank-dev.csv&#39;,
                 &#39;test&#39;: &#39;financial_phrasebank-test.csv&#39;,
@@ -1446,7 +1207,7 @@ Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd47
  &#39;data_files_modified&#39;: &#39;2022-05-03 09:35:34&#39;,
  &#39;datasets&#39;: None,
  &#39;domain&#39;: &#39;econ&#39;,
- &#39;filetype&#39;: &#39;csv&#39;,
+ &#39;filetype&#39;: &#39;.parquet&#39;,
  &#39;info&#39;: {&#39;_target_&#39;: &#39;ekorpkit.info.stat.SummaryInfo&#39;,
           &#39;aggregate_info&#39;: {&#39;num_examples&#39;: &#39;num_examples&#39;,
                              &#39;size_in_bytes&#39;: &#39;num_bytes&#39;},
@@ -1468,10 +1229,12 @@ Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd47
                         &#39;info_updated&#39;,
                         &#39;data_files&#39;,
                         &#39;column_info&#39;],
-          &#39;key_columns&#39;: &#39;&#39;,
+          &#39;key_columns&#39;: None,
           &#39;modified_info&#39;: {&#39;data_files_modified&#39;: &#39;data_file&#39;},
           &#39;name&#39;: [&#39;financial_phrasebank&#39;],
-          &#39;stats&#39;: {&#39;_partial_&#39;: True,
+          &#39;stats&#39;: {&#39;_func_&#39;: {&#39;len_bytes&#39;: {&#39;_partial_&#39;: True,
+                                             &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}},
+                    &#39;_partial_&#39;: True,
                     &#39;_target_&#39;: &#39;ekorpkit.info.stat.summary_stats&#39;,
                     &#39;agg_funcs&#39;: {&#39;num_bytes&#39;: [&#39;count&#39;,
                                                 &#39;sum&#39;,
@@ -1479,9 +1242,7 @@ Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd47
                                                 &#39;max&#39;,
                                                 &#39;min&#39;]},
                     &#39;convert_to_humanbytes&#39;: {&#39;num_bytes&#39;: &#39;human_bytes&#39;},
-                    &#39;function&#39;: {&#39;len_bytes&#39;: {&#39;_partial_&#39;: True,
-                                               &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}},
-                    &#39;key_columns&#39;: &#39;&#39;,
+                    &#39;key_columns&#39;: None,
                     &#39;num_columns&#39;: {&#39;num_bytes&#39;: &#39;len_bytes&#39;},
                     &#39;num_workers&#39;: 1,
                     &#39;rename_columns&#39;: {&#39;num_bytes_count&#39;: &#39;num_examples&#39;,
@@ -1546,45 +1307,45 @@ Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd47
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;train&#39;:                                                    text  split    id  \
- 0     Customers in a wide range of industries use ou...  train   655   
- 1     The writing and publication of Lemmink+ñinen -...  train   634   
- 2     Sullivan said some of the boards `` really inv...  train  1030   
- 3     The six breweries recorded a 5.2 percent growt...  train   317   
- 4     In the second quarter of 2010 , the company &#39;s...  train   868   
- ...                                                 ...    ...   ...   
- 1440  In the fourth quarter of 2009 , Orion &#39;s net p...  train   136   
- 1441  Profit for the period totalled EUR 1.1 mn , do...  train  2170   
- 1442  The diluted loss per share narrowed to EUR 0.2...  train   344   
- 1443  LKAB , headquartered in Lulea , Sweden , is a ...  train   573   
- 1444  The EBRD is using its own funds to provide a 2...  train  1768   
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;train&#39;:         labels                                               text  split  \
+ 0      neutral  Customers in a wide range of industries use ou...  train   
+ 1      neutral  The writing and publication of Lemmink+ñinen -...  train   
+ 2      neutral  Sullivan said some of the boards `` really inv...  train   
+ 3     positive  The six breweries recorded a 5.2 percent growt...  train   
+ 4     positive  In the second quarter of 2010 , the company &#39;s...  train   
+ ...        ...                                                ...    ...   
+ 1440  positive  In the fourth quarter of 2009 , Orion &#39;s net p...  train   
+ 1441  negative  Profit for the period totalled EUR 1.1 mn , do...  train   
+ 1442  positive  The diluted loss per share narrowed to EUR 0.2...  train   
+ 1443   neutral  LKAB , headquartered in Lulea , Sweden , is a ...  train   
+ 1444   neutral  The EBRD is using its own funds to provide a 2...  train   
  
-         labels               dataset  
- 0      neutral  financial_phrasebank  
- 1      neutral  financial_phrasebank  
- 2      neutral  financial_phrasebank  
- 3     positive  financial_phrasebank  
- 4     positive  financial_phrasebank  
- ...        ...                   ...  
- 1440  positive  financial_phrasebank  
- 1441  negative  financial_phrasebank  
- 1442  positive  financial_phrasebank  
- 1443   neutral  financial_phrasebank  
- 1444   neutral  financial_phrasebank  
+         id               dataset  
+ 0      655  financial_phrasebank  
+ 1      634  financial_phrasebank  
+ 2     1030  financial_phrasebank  
+ 3      317  financial_phrasebank  
+ 4      868  financial_phrasebank  
+ ...    ...                   ...  
+ 1440   136  financial_phrasebank  
+ 1441  2170  financial_phrasebank  
+ 1442   344  financial_phrasebank  
+ 1443   573  financial_phrasebank  
+ 1444  1768  financial_phrasebank  
  
  [1445 rows x 5 columns],
- &#39;test&#39;:                                                   text split    id    labels  \
- 0    Los Angeles-based Pacific Office Properties Tr...  test   505   neutral   
- 1    Investors will continue being interested in th...  test   783  positive   
- 2    Repeats sees 2008 operating profit down y-y ( ...  test  2253  negative   
- 3    The acquisition was financed with $ 2.56 billi...  test  1374   neutral   
- 4    Profit per share was EUR 1.03 , up from EUR 0....  test   243  positive   
- ..                                                 ...   ...   ...       ...   
- 447  The commission said the hydrogen peroxide and ...  test   605   neutral   
- 448  Sales in Finland decreased by 2.0 % , and inte...  test  2258  negative   
- 449  The earnings per share for the quarter came in...  test   254  positive   
- 450  The company can not give up palm oil altogethe...  test  1390   neutral   
- 451  Pretax profit rose to EUR 1,019 mn from EUR 1,...  test   181  positive   
+ &#39;test&#39;:        labels                                               text split    id  \
+ 0     neutral  Los Angeles-based Pacific Office Properties Tr...  test   505   
+ 1    positive  Investors will continue being interested in th...  test   783   
+ 2    negative  Repeats sees 2008 operating profit down y-y ( ...  test  2253   
+ 3     neutral  The acquisition was financed with $ 2.56 billi...  test  1374   
+ 4    positive  Profit per share was EUR 1.03 , up from EUR 0....  test   243   
+ ..        ...                                                ...   ...   ...   
+ 447   neutral  The commission said the hydrogen peroxide and ...  test   605   
+ 448  negative  Sales in Finland decreased by 2.0 % , and inte...  test  2258   
+ 449  positive  The earnings per share for the quarter came in...  test   254   
+ 450   neutral  The company can not give up palm oil altogethe...  test  1390   
+ 451  positive  Pretax profit rose to EUR 1,019 mn from EUR 1,...  test   181   
  
                    dataset  
  0    financial_phrasebank  
@@ -1600,18 +1361,18 @@ Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd47
  451  financial_phrasebank  
  
  [452 rows x 5 columns],
- &#39;dev&#39;:                                                   text split    id    labels  \
- 0         The identity of the buyer is not yet known .   dev  1449   neutral   
- 1    Operating profit rose to EUR 3.2 mn from EUR 1...   dev   165  positive   
- 2    Previously , Grimaldi held a 46.43 pct stake i...   dev  1334   neutral   
- 3    A total of $ 78 million will be invested in th...   dev   907   neutral   
- 4    The 19,200-square metre technology center is l...   dev  1371   neutral   
- ..                                                 ...   ...   ...       ...   
- 357  Under a preliminary estimation , the technolog...   dev  1120   neutral   
- 358  Operating profit improved by 27 % to EUR 579.8...   dev   404  positive   
- 359  Rohwedder Group is an automotive supplies , te...   dev  1708   neutral   
- 360  In January-September 2007 , the group &#39;s net s...   dev   225  positive   
- 361  Payment of shares shall be effected on subscri...   dev  1008   neutral   
+ &#39;dev&#39;:        labels                                               text split    id  \
+ 0     neutral       The identity of the buyer is not yet known .   dev  1449   
+ 1    positive  Operating profit rose to EUR 3.2 mn from EUR 1...   dev   165   
+ 2     neutral  Previously , Grimaldi held a 46.43 pct stake i...   dev  1334   
+ 3     neutral  A total of $ 78 million will be invested in th...   dev   907   
+ 4     neutral  The 19,200-square metre technology center is l...   dev  1371   
+ ..        ...                                                ...   ...   ...   
+ 357   neutral  Under a preliminary estimation , the technolog...   dev  1120   
+ 358  positive  Operating profit improved by 27 % to EUR 579.8...   dev   404   
+ 359   neutral  Rohwedder Group is an automotive supplies , te...   dev  1708   
+ 360  positive  In January-September 2007 , the group &#39;s net s...   dev   225   
+ 361   neutral  Payment of shares shall be effected on subscri...   dev  1008   
  
                    dataset  
  0    financial_phrasebank  
@@ -1666,10 +1427,10 @@ Reusing dataset nsmc (/root/.cache/huggingface/datasets/nsmc/default/1.1.0/bfd47
             <p class="prev-next-title">Datasets</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="../pipelines/index.html" title="next page">
+    <a class='right-next' id="next-link" href="../models/index.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Pipelines</p>
+        <p class="prev-next-title">Models</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
