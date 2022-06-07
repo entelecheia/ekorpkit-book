@@ -51,11 +51,9 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="N-Grams for lexicon models" href="ngram_for_lexicons.html" />
+    <link rel="next" title="N-Gram model for lexicon features" href="ngram_for_lexicons.html" />
     <link rel="prev" title="N-Grams" href="index.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -292,7 +290,7 @@ const thebe_selector_output = ".output, .cell_output"
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="ngram_for_lexicons.html">
-       N-Grams for lexicon models
+       N-Gram model for lexicon features
       </a>
      </li>
     </ul>
@@ -706,7 +704,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+18.g0a7d0c4.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+19.gdb9b114.dirty
 </pre></div>
 </div>
 </div>
@@ -737,134 +735,14 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="s2">&quot;bok_minutes_tokenized.parquet&quot;</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [[&#39;bok_minutes-train.parquet&#39;]]
-INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/corpus/ekorpkit/bok_minutes/bok_minutes-train.parquet
-INFO:ekorpkit.io.file:Processing [1] files from [[&#39;meta-bok_minutes-train.parquet&#39;]]
-INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/corpus/ekorpkit/bok_minutes/meta-bok_minutes-train.parquet
-INFO:ekorpkit.info.column:No timestamp key found
-INFO:ekorpkit.ekonf:Skipping execute of functools.partial(&lt;function concat_dataframes at 0x7fe84bcb7a60&gt;)
-INFO:ekorpkit.pipelines.pipe:Applying pipeline: OrderedDict([(&#39;tokenize&#39;, &#39;tokenize&#39;), (&#39;explode_splits&#39;, &#39;explode_splits&#39;), (&#39;save_dataframe&#39;, &#39;save_dataframe&#39;)])
-INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function tokenize at 0x7fe9c9598550&gt;)
-INFO:ekorpkit.pipelines.pipe:instantiating tokenizer
-INFO:ekorpkit.preprocessors.tokenizer:Initializing mecab with {&#39;userdic_path&#39;: None, &#39;backend&#39;: &#39;mecab-python3&#39;, &#39;verbose&#39;: False}...
-INFO:ekorpkit.preprocessors.tokenizer:instantiating ekorpkit.preprocessors.stopwords.Stopwords...
-</pre></div>
-</div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "6f58c8bf112f4a9fb1a3bbb6c6cae9a0", "version_major": 2, "version_minor": 0}
-</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to segment: 0:01:00.693916
-INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function explode_splits at 0x7fe9c9598160&gt;)
-INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function save_dataframe at 0x7fe9c9598e50&gt;)
-INFO:ekorpkit.io.file:Saving dataframe as ../data/bok/bok_minutes_tokenized.parquet
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id</th>
-      <th>text</th>
-      <th>sent_id</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>0</td>
-      <td>Economic/SL /SP Situation/SL</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>0</td>
-      <td>일부/NNG /SP 위원/NNG 은/JX /SP 반도체/NNG 시장/NNG 의/JK...</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>0</td>
-      <td>이/NP 에/JKB /SP 대해/VV+EC /SP 관련/NNG 부서/NNG 에서/J...</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>0</td>
-      <td>동/MM /SP 위원/NNG 은/JX /SP 1/SN //SC 4/SN 분기/NNG...</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>0</td>
-      <td>이/NP 에/JKB /SP 대해/VV+EC /SP 관련/NNG 부서/NNG 에서/J...</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>162</th>
-      <td>162</td>
-      <td>앞/NNG 으로/JKB /SP 코로나/NNG 19/SN /SP 충격/NNG 에서/J...</td>
-      <td>337</td>
-    </tr>
-    <tr>
-      <th>162</th>
-      <td>162</td>
-      <td>또한/MAJ /SP 글로벌/NNG /SP 공급/NNG 망/NNG /SP 재편/NNG...</td>
-      <td>338</td>
-    </tr>
-    <tr>
-      <th>162</th>
-      <td>162</td>
-      <td>향후/NNG /SP 경제/NNG 회복세/NNG 와/JC /SP 물가/NNG 의/JK...</td>
-      <td>339</td>
-    </tr>
-    <tr>
-      <th>162</th>
-      <td>162</td>
-      <td></td>
-      <td>340</td>
-    </tr>
-    <tr>
-      <th>162</th>
-      <td>162</td>
-      <td>Government/SL '/SY s/SL /SP View/SL</td>
-      <td>341</td>
-    </tr>
-  </tbody>
-</table>
-<p>33857 rows × 3 columns</p>
-</div></div></div>
+{"model_id": "49a7d4446a8a4aa1b70c856b1f7d69cd", "version_major": 2, "version_minor": 0}
+</script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -882,46 +760,14 @@ INFO:ekorpkit.io.file:Saving dataframe as ../data/bok/bok_minutes_tokenized.parq
 <span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/bok&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="s2">&quot;bok_minutes_tokens.parquet&quot;</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.cached_path:caching path: None, extract_archive: True, force_extract: False, cache_dir: /workspace/.cache
-INFO:ekorpkit.ekonf:Executing function functools.partial(&lt;function load_dataframe at 0x7fe84bcb7af0&gt;) with parms {&#39;filepath&#39;: &#39;../data/bok/bok_minutes_tokenized.parquet&#39;, &#39;columns&#39;: None, &#39;verbose&#39;: True}
-INFO:ekorpkit.io.file:Loading data from ../data/bok/bok_minutes_tokenized.parquet
-INFO:ekorpkit.io.file: &gt;&gt; elapsed time to load data: 0:00:00.136895
-INFO:ekorpkit.ekonf:Skipping execute of functools.partial(&lt;function concat_dataframes at 0x7fe84bcb7a60&gt;)
-INFO:ekorpkit.pipelines.pipe:Applying pipeline: OrderedDict([(&#39;extract_tokens&#39;, &#39;extract_tokens&#39;), (&#39;save_dataframe&#39;, &#39;save_dataframe&#39;)])
-INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function extract_tokens at 0x7fe9c95985e0&gt;)
-INFO:ekorpkit.pipelines.pipe:instantiating tokenizer
-INFO:ekorpkit.preprocessors.tokenizer:Initializing mecab with {&#39;userdic_path&#39;: &#39;/workspace/projects/ekorpkit/ekorpkit/resources/dictionaries/mecab/ekon_v1.dic&#39;, &#39;backend&#39;: &#39;mecab-python3&#39;, &#39;verbose&#39;: True}...
-INFO:ekorpkit.preprocessors.tokenizer:instantiating ekorpkit.preprocessors.stopwords.Stopwords...
-INFO:ekorpkit.preprocessors.tokenizer:MecabTokenizer initialized with:
-INFO:ekorpkit.preprocessors.tokenizer:	return_as_list: False
-INFO:ekorpkit.models.tokenizer.mecab:MeCab uses mecab-python3 as backend.
-INFO:ekorpkit.models.tokenizer.mecab:Mecab uses system dictionary: /resources/.pyenv/versions/3.8.12/envs/ekonml38/lib/python3.8/site-packages/mecab_ko_dic/dicdir, user dictionary: /workspace/projects/ekorpkit/ekorpkit/resources/dictionaries/mecab/ekon_v1.dic
-INFO:ekorpkit.pipelines.pipe:extract_func: &lt;bound method Tokenizer.extract_tokens of &lt;ekorpkit.preprocessors.tokenizer.MecabTokenizer object at 0x7fe9cb4799d0&gt;&gt;
-</pre></div>
-</div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "e904700e6c0b4eafa91fc0b36302e9e8", "version_major": 2, "version_minor": 0}
-</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to extract tokens: 0:00:06.351701
-INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function save_dataframe at 0x7fe9c9598e50&gt;)
-INFO:ekorpkit.io.file:Saving dataframe as ../data/bok/bok_minutes_tokens.parquet
-INFO:ekorpkit.io.file: &gt;&gt; elapsed time to save data: 0:00:00.726176
-INFO:ekorpkit.io.file: &gt;&gt; saved dataframe to ../data/bok/bok_minutes_tokens.parquet
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
+{"model_id": "22e2c8b5175d4a71be3ce92dfea4c4e3", "version_major": 2, "version_minor": 0}
+</script><div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
@@ -945,42 +791,6 @@ INFO:ekorpkit.io.file: &gt;&gt; saved dataframe to ../data/bok/bok_minutes_token
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th>0</th>
-      <td>0</td>
-      <td>Economic/SL Situation/SL</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>0</td>
-      <td>일부/NNG 위원/NNG 은/JX 반도체/NNG 시장/NNG 의/JKG 재고/NNG...</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>0</td>
-      <td>이/NP 에/JKB 대해/VV+EC 관련/NNG 부서/NNG 에서/JKB 는/JX ...</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>0</td>
-      <td>동/MM 위원/NNG 은/JX 1/SN / 4/SN 분기/NNG 중/NNB 경제/N...</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>0</td>
-      <td>이/NP 에/JKB 대해/VV+EC 관련/NNG 부서/NNG 에서/JKB 는/JX ...</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
     <tr>
       <th>162</th>
       <td>162</td>
@@ -1013,7 +823,6 @@ INFO:ekorpkit.io.file: &gt;&gt; saved dataframe to ../data/bok/bok_minutes_token
     </tr>
   </tbody>
 </table>
-<p>33857 rows × 3 columns</p>
 </div></div></div>
 </div>
 </div>
@@ -1039,7 +848,7 @@ INFO:ekorpkit.io.file: &gt;&gt; saved dataframe to ../data/bok/bok_minutes_token
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 41008
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 41005
 </pre></div>
 </div>
 </div>
@@ -1055,39 +864,39 @@ INFO:ekorpkit.io.file: &gt;&gt; saved dataframe to ../data/bok/bok_minutes_token
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[((&#39;민/XPN&#39;, &#39;감도/NNG&#39;),
-  ngram(words=&#39;민/XPN;감도/NNG&#39;, length=44827, frequency=27, score=0.9905600642226081)),
+  score(words=&#39;민/XPN;감도/NNG&#39;, length=44827, frequency=27, score=0.9905600642226081)),
  ((&#39;신/XPN&#39;, &#39;흥국/NNG&#39;),
-  ngram(words=&#39;신/XPN;흥국/NNG&#39;, length=44827, frequency=999, score=0.9602497345784399)),
+  score(words=&#39;신/XPN;흥국/NNG&#39;, length=44827, frequency=999, score=0.9602497345784399)),
  ((&#39;문안/NNG&#39;, &#39;을/JKO&#39;, &#39;작성/NNG&#39;),
-  ngram(words=&#39;문안/NNG;을/JKO;작성/NNG&#39;, length=44827, frequency=43, score=0.9550163996733796)),
+  score(words=&#39;문안/NNG;을/JKO;작성/NNG&#39;, length=44827, frequency=43, score=0.9550163996733796)),
  ((&#39;예/NNG&#39;, &#39;의/JKG&#39;, &#39;주시/NNG&#39;),
-  ngram(words=&#39;예/NNG;의/JKG;주시/NNG&#39;, length=44827, frequency=193, score=0.952158528049305)),
+  score(words=&#39;예/NNG;의/JKG;주시/NNG&#39;, length=44827, frequency=193, score=0.952158528049305)),
  ((&#39;한국/NNP&#39;, &#39;은/JX&#39;, &#39;행법/NNG&#39;),
-  ngram(words=&#39;한국/NNP;은/JX;행법/NNG&#39;, length=44827, frequency=13, score=0.9215496994789585)),
+  score(words=&#39;한국/NNP;은/JX;행법/NNG&#39;, length=44827, frequency=13, score=0.9215496994789585)),
  ((&#39;한/NNP&#39;, &#39;은/JX&#39;, &#39;법/NNG&#39;),
-  ngram(words=&#39;한/NNP;은/JX;법/NNG&#39;, length=44827, frequency=17, score=0.9115135958462448)),
+  score(words=&#39;한/NNP;은/JX;법/NNG&#39;, length=44827, frequency=17, score=0.9115135958462448)),
  ((&#39;차관/NNG&#39;, &#39;에게/JKB&#39;, &#39;발언/NNG&#39;),
-  ngram(words=&#39;차관/NNG;에게/JKB;발언/NNG&#39;, length=44827, frequency=48, score=0.8730837780556813)),
+  score(words=&#39;차관/NNG;에게/JKB;발언/NNG&#39;, length=44827, frequency=48, score=0.8730837780556813)),
  ((&#39;취지/NNG&#39;, &#39;로/JKB&#39;, &#39;발언/NNG&#39;),
-  ngram(words=&#39;취지/NNG;로/JKB;발언/NNG&#39;, length=44827, frequency=36, score=0.8703677143686631)),
+  score(words=&#39;취지/NNG;로/JKB;발언/NNG&#39;, length=44827, frequency=36, score=0.8703677143686631)),
  ((&#39;신/XPN&#39;, &#39;용스/NNP&#39;, &#39;프레드/NNP&#39;),
-  ngram(words=&#39;신/XPN;용스/NNP;프레드/NNP&#39;, length=44827, frequency=111, score=0.8677320405182908)),
+  score(words=&#39;신/XPN;용스/NNP;프레드/NNP&#39;, length=44827, frequency=111, score=0.8677320405182908)),
  ((&#39;양질/NNG&#39;, &#39;의/JKG&#39;, &#39;일자리/NNG&#39;),
-  ngram(words=&#39;양질/NNG;의/JKG;일자리/NNG&#39;, length=44827, frequency=16, score=0.8602652867490822)),
+  score(words=&#39;양질/NNG;의/JKG;일자리/NNG&#39;, length=44827, frequency=16, score=0.8602652867490822)),
  ((&#39;시일/NNG&#39;, &#39;이/JKS&#39;, &#39;소요/NNG&#39;),
-  ngram(words=&#39;시일/NNG;이/JKS;소요/NNG&#39;, length=44827, frequency=25, score=0.8577081983567416)),
+  score(words=&#39;시일/NNG;이/JKS;소요/NNG&#39;, length=44827, frequency=25, score=0.8577081983567416)),
  ((&#39;고부/NNG&#39;, &#39;가/JKS&#39;, &#39;가치/NNG&#39;),
-  ngram(words=&#39;고부/NNG;가/JKS;가치/NNG&#39;, length=44827, frequency=10, score=0.8441046212878132)),
+  score(words=&#39;고부/NNG;가/JKS;가치/NNG&#39;, length=44827, frequency=10, score=0.8441046212878132)),
  ((&#39;저점/NNG&#39;, &#39;을/JKO&#39;, &#39;통과/NNG&#39;),
-  ngram(words=&#39;저점/NNG;을/JKO;통과/NNG&#39;, length=44827, frequency=13, score=0.8280556580473707)),
+  score(words=&#39;저점/NNG;을/JKO;통과/NNG&#39;, length=44827, frequency=13, score=0.8280556580473707)),
  ((&#39;북한/NNP&#39;, &#39;의/JKG&#39;, &#39;미사일/NNG&#39;),
-  ngram(words=&#39;북한/NNP;의/JKG;미사일/NNG&#39;, length=44827, frequency=11, score=0.8209799127562951)),
+  score(words=&#39;북한/NNP;의/JKG;미사일/NNG&#39;, length=44827, frequency=11, score=0.8209799127562951)),
  ((&#39;끝/NNG&#39;, &#39;으로/JKB&#39;, &#39;동/NNG&#39;),
-  ngram(words=&#39;끝/NNG;으로/JKB;동/NNG&#39;, length=44827, frequency=62, score=0.8060710940902794)),
+  score(words=&#39;끝/NNG;으로/JKB;동/NNG&#39;, length=44827, frequency=62, score=0.8060710940902794)),
  ((&#39;재/XPN&#39;, &#39;정취/NNG&#39;, &#39;약국/NNG&#39;),
-  ngram(words=&#39;재/XPN;정취/NNG;약국/NNG&#39;, length=44827, frequency=13, score=0.8059870646567988)),
+  score(words=&#39;재/XPN;정취/NNG;약국/NNG&#39;, length=44827, frequency=13, score=0.8059870646567988)),
  ((&#39;결시/NNG&#39;, &#39;까지/JX&#39;, &#39;콜/NNG&#39;),
-  ngram(words=&#39;결시/NNG;까지/JX;콜/NNG&#39;, length=44827, frequency=20, score=0.8008655335614991))]
+  score(words=&#39;결시/NNG;까지/JX;콜/NNG&#39;, length=44827, frequency=20, score=0.8008655335614991))]
 </pre></div>
 </div>
 </div>
@@ -1097,14 +906,14 @@ INFO:ekorpkit.io.file: &gt;&gt; saved dataframe to ../data/bok/bok_minutes_token
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ngram</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
 <span class="n">sentence</span> <span class="o">=</span> <span class="n">ngram</span><span class="o">.</span><span class="n">sentences</span><span class="p">[</span><span class="mi">18</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
-<span class="n">tokens</span> <span class="o">=</span> <span class="n">ngram</span><span class="o">.</span><span class="n">analyze_sentence</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+<span class="n">tokens</span> <span class="o">=</span> <span class="n">ngram</span><span class="o">.</span><span class="n">ngramize_sentence</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>이/NP 에/JKB 대해/VV+EC 관련/NNG 부서/NNG 에서/JKB 는/JX 실업/NNG 률/XSN 과/JC 경기/NNG 지수/NNG 와/JKB 의/JKG 상관/NNG 관계/NNG 는/JX 그렇게/MAG 높/VA 지/EC 않/VX 은/ETM 것/NNB 으로/JKB 나타나/VV 며/EC 통계청/NNG 에서/JKB 발표/NNG 하/XSV 는/ETM 공식/NNG 적/XSN 인/VCP+ETM 실업/NNG 률/XSN 을/JKO 구직/NNG 단념/NNG 자/XSN 를/JKO 포함/NNG 한/XSA+ETM 광의/NNG 의/JKG 실업/NNG 률/XSN 로/JKB 전환/NNG 할/XSV+ETM 경우/NNG 오히려/MAJ 경기/NNG 와/JKB 의/JKG 연관/NNG 성/XSN 이/JKS 좀/MAG 더/MAG 높/VA 은/ETM 것/NNB 으로/JKB 분석/NNG 되/XSV 므로/EC 경기/NNG 상환/NNG 판단/NNG 을/JKO 위해서/VV+EC 는/JX 공식/NNG 적/XSN 인/VCP+ETM 실업/NNG 률/XSN 보다/JKB 는/JX 광의/NNG 의/JKG 실업/NNG 률/XSN 을/JKO 이용/NNG 하/XSV 는/ETM 것/NNB 이/JKS 더/MAG 좋/VA 을/ETM 것/NNB 같/VA 다고/EC 설명/NNG 하/XSV 였/EP 음/ETN
-[((&#39;이/NP&#39;,), (0,), -inf), ((&#39;에/JKB&#39;,), (1,), -inf), ((&#39;대해/VV+&#39;,), (2,), -inf), ((&#39;관련/NNG&#39;,), (3,), -inf), ((&#39;부서/NNG&#39;,), (4,), -inf), ((&#39;에서/JKB&#39;,), (5,), -inf), ((&#39;는/JX&#39;,), (6,), -inf), ((&#39;실업/NNG&#39;,), (7,), -inf), ((&#39;률/XSN&#39;,), (8,), -inf), ((&#39;과/JC&#39;,), (9,), -inf), ((&#39;경기/NNG&#39;,), (10,), -inf), ((&#39;지수/NNG&#39;,), (11,), -inf), ((&#39;와/JKB&#39;,), (12,), -inf), ((&#39;의/JKG&#39;,), (13,), -inf), ((&#39;상관/NNG&#39;,), (14,), -inf), ((&#39;관계/NNG&#39;,), (15,), -inf), ((&#39;는/JX&#39;,), (16,), -inf), ((&#39;그렇게/MAG&#39;,), (17,), -inf), ((&#39;높/VA&#39;,), (18,), -inf), ((&#39;지/EC&#39;,), (19,), -inf), ((&#39;않/VX&#39;,), (20,), -inf), ((&#39;은/ETM&#39;,), (21,), -inf), ((&#39;것/NNB&#39;,), (22,), -inf), ((&#39;으로/JKB&#39;,), (23,), -inf), ((&#39;나타나/VV&#39;,), (24,), -inf), ((&#39;며/EC&#39;,), (25,), -inf), ((&#39;통계청/NNG&#39;,), (26,), -inf), ((&#39;에서/JKB&#39;,), (27,), -inf), ((&#39;발표/NNG&#39;,), (28,), -inf), ((&#39;하/XSV&#39;,), (29,), -inf), ((&#39;는/ETM&#39;,), (30,), -inf), ((&#39;공식/NNG&#39;,), (31,), -inf), ((&#39;적/XSN&#39;,), (32,), -inf), ((&#39;인/VCP&#39;,), (33,), -inf), ((&#39;실업/NNG&#39;,), (34,), -inf), ((&#39;률/XSN&#39;,), (35,), -inf), ((&#39;을/JKO&#39;,), (36,), -inf), ((&#39;구직/NNG&#39;,), (37,), -inf), ((&#39;단념/NNG&#39;,), (38,), -inf), ((&#39;자/XSN&#39;,), (39,), -inf), ((&#39;를/JKO&#39;,), (40,), -inf), ((&#39;포함/NNG&#39;,), (41,), -inf), ((&#39;한/XSA&#39;,), (42,), -inf), ((&#39;광의/NNG&#39;, &#39;의/JKG&#39;, &#39;실업/NNG&#39;), (43, 44, 45), 0.7125695666268386), ((&#39;률/XSN&#39;,), (46,), -inf), ((&#39;로/JKB&#39;,), (47,), -inf), ((&#39;전환/NNG&#39;,), (48,), -inf), ((&#39;할/XSV&#39;,), (49,), -inf), ((&#39;경우/NNG&#39;,), (50,), -inf), ((&#39;오히려/MAJ&#39;,), (51,), -inf), ((&#39;경기/NNG&#39;,), (52,), -inf), ((&#39;와/JKB&#39;,), (53,), -inf), ((&#39;의/JKG&#39;,), (54,), -inf), ((&#39;연관/NNG&#39;,), (55,), -inf), ((&#39;성/XSN&#39;,), (56,), -inf), ((&#39;이/JKS&#39;,), (57,), -inf), ((&#39;좀/MAG&#39;,), (58,), -inf), ((&#39;더/MAG&#39;,), (59,), -inf), ((&#39;높/VA&#39;,), (60,), -inf), ((&#39;은/ETM&#39;,), (61,), -inf), ((&#39;것/NNB&#39;, &#39;으로/JKB&#39;, &#39;분석/NNG&#39;), (62, 63, 64), 0.3374681991529073), ((&#39;되/XSV&#39;,), (65,), -inf), ((&#39;므로/EC&#39;,), (66,), -inf), ((&#39;경기/NNG&#39;,), (67,), -inf), ((&#39;상환/NNG&#39;,), (68,), -inf), ((&#39;판단/NNG&#39;,), (69,), -inf), ((&#39;을/JKO&#39;,), (70,), -inf), ((&#39;위해서/VV+&#39;,), (71,), -inf), ((&#39;는/JX&#39;,), (72,), -inf), ((&#39;공식/NNG&#39;,), (73,), -inf), ((&#39;적/XSN&#39;,), (74,), -inf), ((&#39;인/VCP&#39;,), (75,), -inf), ((&#39;실업/NNG&#39;,), (76,), -inf), ((&#39;률/XSN&#39;,), (77,), -inf), ((&#39;보다/JKB&#39;,), (78,), -inf), ((&#39;는/JX&#39;,), (79,), -inf), ((&#39;광의/NNG&#39;, &#39;의/JKG&#39;, &#39;실업/NNG&#39;), (80, 81, 82), 0.7125695666268386), ((&#39;률/XSN&#39;,), (83,), -inf), ((&#39;을/JKO&#39;,), (84,), -inf), ((&#39;이용/NNG&#39;,), (85,), -inf), ((&#39;하/XSV&#39;,), (86,), -inf), ((&#39;는/ETM&#39;,), (87,), -inf), ((&#39;것/NNB&#39;,), (88,), -inf), ((&#39;이/JKS&#39;,), (89,), -inf), ((&#39;더/MAG&#39;,), (90,), -inf), ((&#39;좋/VA&#39;,), (91,), -inf), ((&#39;을/ETM&#39;,), (92,), -inf), ((&#39;것/NNB&#39;,), (93,), -inf), ((&#39;같/VA&#39;,), (94,), -inf), ((&#39;다고/EC&#39;,), (95,), -inf), ((&#39;설명/NNG&#39;,), (96,), -inf), ((&#39;하/XSV&#39;,), (97,), -inf), ((&#39;였/EP&#39;,), (98,), -inf), ((&#39;음/ETN&#39;,), (99,), -inf)]
+[&#39;이&#39;, &#39;에&#39;, &#39;대해&#39;, &#39;관련&#39;, &#39;부서&#39;, &#39;에서&#39;, &#39;는&#39;, &#39;실업&#39;, &#39;률&#39;, &#39;과&#39;, &#39;경기&#39;, &#39;지수&#39;, &#39;와&#39;, &#39;의&#39;, &#39;상관&#39;, &#39;관계&#39;, &#39;는&#39;, &#39;그렇게&#39;, &#39;높&#39;, &#39;지&#39;, &#39;않&#39;, &#39;은&#39;, &#39;것&#39;, &#39;으로&#39;, &#39;나타나&#39;, &#39;며&#39;, &#39;통계청&#39;, &#39;에서&#39;, &#39;발표&#39;, &#39;하&#39;, &#39;는&#39;, &#39;공식&#39;, &#39;적&#39;, &#39;인&#39;, &#39;실업&#39;, &#39;률&#39;, &#39;을&#39;, &#39;구직&#39;, &#39;단념&#39;, &#39;자&#39;, &#39;를&#39;, &#39;포함&#39;, &#39;한&#39;, &#39;광의의실업&#39;, &#39;률&#39;, &#39;로&#39;, &#39;전환&#39;, &#39;할&#39;, &#39;경우&#39;, &#39;오히려&#39;, &#39;경기&#39;, &#39;와&#39;, &#39;의&#39;, &#39;연관&#39;, &#39;성&#39;, &#39;이&#39;, &#39;좀&#39;, &#39;더&#39;, &#39;높&#39;, &#39;은&#39;, &#39;것으로분석&#39;, &#39;되&#39;, &#39;므로&#39;, &#39;경기&#39;, &#39;상환&#39;, &#39;판단&#39;, &#39;을&#39;, &#39;위해서&#39;, &#39;는&#39;, &#39;공식&#39;, &#39;적&#39;, &#39;인&#39;, &#39;실업&#39;, &#39;률&#39;, &#39;보다&#39;, &#39;는&#39;, &#39;광의의실업&#39;, &#39;률&#39;, &#39;을&#39;, &#39;이용&#39;, &#39;하&#39;, &#39;는&#39;, &#39;것&#39;, &#39;이&#39;, &#39;더&#39;, &#39;좋&#39;, &#39;을&#39;, &#39;것&#39;, &#39;같&#39;, &#39;다고&#39;, &#39;설명&#39;, &#39;하&#39;, &#39;였&#39;, &#39;음&#39;]
 </pre></div>
 </div>
 </div>
@@ -1124,63 +933,72 @@ INFO:ekorpkit.io.file: &gt;&gt; saved dataframe to ../data/bok/bok_minutes_token
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ngram</span><span class="o">.</span><span class="n">find_ngrams</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_ngrams</span> <span class="o">=</span><span class="n">ngram</span><span class="o">.</span><span class="n">find_ngrams</span><span class="p">(</span>
     <span class="n">ngram</span><span class="o">.</span><span class="n">sentences</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">105</span><span class="p">],</span> <span class="n">strip_pos</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">surface_delim</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 95/95 [00:00&lt;00:00, 345.05it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 95/95 [00:00&lt;00:00, 231.53it/s]
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;의견/NNG;을/JKO;제시/NNG&#39;: 0.7712962057207168,
- &#39;것/NNB;으로/JKB;예상/NNG&#39;: 0.6434462999127033,
- &#39;광의/NNG;의/JKG;실업/NNG&#39;: 0.7125695666268386,
- &#39;위원/NNG;은/JX;최근/NNG&#39;: 0.6384959743711969,
- &#39;나라/NNG;의/JKG;경우/NNG&#39;: 0.5392882244391282,
- &#39;비중/NNG;을/JKO;차지/NNG&#39;: 0.7072775299321461,
- &#39;견해/NNG;를/JKO;피력/NNG&#39;: 0.7097555785919298,
- &#39;점/NNG;을/JKO;감안/NNG&#39;: 0.6377572632677098,
- &#39;견해/NNG;를/JKO;제시/NNG&#39;: 0.6669627043316719,
- &#39;것/NNB;으로/JKB;판단/NNG&#39;: 0.6210796296158267,
- &#39;요인/NNG;이/JKS;상존/NNG&#39;: 0.5211343183357702,
- &#39;부서/NNG;의/JKG;견해/NNG&#39;: 0.6754271644040637,
- &#39;요인/NNG;에/JKB;기인/NNG&#39;: 0.5043339218152425,
- &#39;예/NNG;의/JKG;주시/NNG&#39;: 0.952158528049305,
- &#39;것/NNB;으로/JKB;생각/NNG&#39;: 0.5958825911374661,
- &#39;수준/NNG;에서/JKB;유지/NNG&#39;: 0.6636461971348067,
- &#39;저점/NNG;을/JKO;통과/NNG&#39;: 0.8280556580473707,
- &#39;대/XPN;기업/NNG&#39;: 0.5456359866836469,
- &#39;요인/NNG;으로/JKB;작용/NNG&#39;: 0.7708715487382776,
- &#39;의견/NNG;을/JKO;개진/NNG&#39;: 0.7384395627581938,
- &#39;물가/NNG;의/JKG;상방/NNG&#39;: 0.5074584872073851,
- &#39;점/NNG;을/JKO;종합/NNG&#39;: 0.556822420265398,
- &#39;수준/NNG;에서/JKB;동결/NNG&#39;: 0.6461681893860215,
- &#39;견해/NNG;를/JKO;표명/NNG&#39;: 0.6478129958286124,
- &#39;재정/NNG;의/JKG;조기/NNG&#39;: 0.5132700555256842,
- &#39;위원/NNG;은/JX;다음/NNG&#39;: 0.553448109164864,
- &#39;수준/NNG;으로/JKB;유지/NNG&#39;: 0.518649582527882,
- &#39;물가/NNG;와/JC;근원/NNG&#39;: 0.5100416604056133,
- &#39;압력/NNG;으로/JKB;작용/NNG&#39;: 0.6098929849604648,
- &#39;방안/NNG;을/JKO;마련/NNG&#39;: 0.6454923188451946,
- &#39;전월/NNG;과/JC;동일/NNG&#39;: 0.7439097224053924,
- &#39;기조/NNG;를/JKO;유지/NNG&#39;: 0.5969123748774878,
- &#39;부/NNG;의/JKG;효과/NNG&#39;: 0.6138078250845276,
- &#39;회복/NNG;이/JKS;지연/NNG&#39;: 0.6097978165821536,
- &#39;불/XPN;투명/NNG&#39;: 0.5551530211025784,
- &#39;방향/NNG;으로/JKB;구체/NNG&#39;: 0.601315871698512,
- &#39;문안/NNG;을/JKO;작성/NNG&#39;: 0.9550163996733796,
- &#39;여부/NNG;를/JKO;판단/NNG&#39;: 0.541207347065582,
- &#39;재/XPN;건축/NNG&#39;: 0.6862712987065251,
- &#39;등/NNB;을/JKO;감안/NNG&#39;: 0.5646998864710981,
- &#39;부문/NNG;을/JKO;중심/NNG&#39;: 0.5119575517507184,
- &#39;사정/NNG;이/JKS;악화/NNG&#39;: 0.5752082489368028,
- &#39;고용/NNG;의/JKG;질/NNG&#39;: 0.5587539187241448,
- &#39;유럽/NNP;과/JC;일본/NNP&#39;: 0.6067764382636405,
- &#39;수출/NNG;이/JKS;호조/NNG&#39;: 0.5622354169829481,
- &#39;소폭/NNG;의/JKG;플러스/NNG&#39;: 0.6654012719908597,
- &#39;모형/NNG;에/JKB;반영/NNG&#39;: 0.5302568474099705}
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_ngrams</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;의견/NNG;을/JKO;제시/NNG&#39;: {&#39;score&#39;: 0.7712962057207168, &#39;count&#39;: 4},
+ &#39;것/NNB;으로/JKB;예상/NNG&#39;: {&#39;score&#39;: 0.6434462999127033, &#39;count&#39;: 9},
+ &#39;광의/NNG;의/JKG;실업/NNG&#39;: {&#39;score&#39;: 0.7125695666268386, &#39;count&#39;: 7},
+ &#39;위원/NNG;은/JX;최근/NNG&#39;: {&#39;score&#39;: 0.6384959743711969, &#39;count&#39;: 6},
+ &#39;나라/NNG;의/JKG;경우/NNG&#39;: {&#39;score&#39;: 0.5392882244391282, &#39;count&#39;: 1},
+ &#39;비중/NNG;을/JKO;차지/NNG&#39;: {&#39;score&#39;: 0.7072775299321461, &#39;count&#39;: 2},
+ &#39;견해/NNG;를/JKO;피력/NNG&#39;: {&#39;score&#39;: 0.7097555785919298, &#39;count&#39;: 4},
+ &#39;점/NNG;을/JKO;감안/NNG&#39;: {&#39;score&#39;: 0.6377572632677098, &#39;count&#39;: 3},
+ &#39;견해/NNG;를/JKO;제시/NNG&#39;: {&#39;score&#39;: 0.6669627043316719, &#39;count&#39;: 1},
+ &#39;것/NNB;으로/JKB;판단/NNG&#39;: {&#39;score&#39;: 0.6210796296158267, &#39;count&#39;: 8},
+ &#39;요인/NNG;이/JKS;상존/NNG&#39;: {&#39;score&#39;: 0.5211343183357702, &#39;count&#39;: 1},
+ &#39;부서/NNG;의/JKG;견해/NNG&#39;: {&#39;score&#39;: 0.6754271644040637, &#39;count&#39;: 2},
+ &#39;요인/NNG;에/JKB;기인/NNG&#39;: {&#39;score&#39;: 0.5043339218152425, &#39;count&#39;: 1},
+ &#39;예/NNG;의/JKG;주시/NNG&#39;: {&#39;score&#39;: 0.952158528049305, &#39;count&#39;: 2},
+ &#39;것/NNB;으로/JKB;생각/NNG&#39;: {&#39;score&#39;: 0.5958825911374661, &#39;count&#39;: 8},
+ &#39;수준/NNG;에서/JKB;유지/NNG&#39;: {&#39;score&#39;: 0.6636461971348067, &#39;count&#39;: 3},
+ &#39;저점/NNG;을/JKO;통과/NNG&#39;: {&#39;score&#39;: 0.8280556580473707, &#39;count&#39;: 1},
+ &#39;대/XPN;기업/NNG&#39;: {&#39;score&#39;: 0.5456359866836469, &#39;count&#39;: 5},
+ &#39;요인/NNG;으로/JKB;작용/NNG&#39;: {&#39;score&#39;: 0.7708715487382776, &#39;count&#39;: 2},
+ &#39;의견/NNG;을/JKO;개진/NNG&#39;: {&#39;score&#39;: 0.7384395627581938, &#39;count&#39;: 1},
+ &#39;물가/NNG;의/JKG;상방/NNG&#39;: {&#39;score&#39;: 0.5074584872073851, &#39;count&#39;: 2},
+ &#39;점/NNG;을/JKO;종합/NNG&#39;: {&#39;score&#39;: 0.556822420265398, &#39;count&#39;: 2},
+ &#39;수준/NNG;에서/JKB;동결/NNG&#39;: {&#39;score&#39;: 0.6461681893860215, &#39;count&#39;: 1},
+ &#39;견해/NNG;를/JKO;표명/NNG&#39;: {&#39;score&#39;: 0.6478129958286124, &#39;count&#39;: 1},
+ &#39;재정/NNG;의/JKG;조기/NNG&#39;: {&#39;score&#39;: 0.5132700555256842, &#39;count&#39;: 1},
+ &#39;위원/NNG;은/JX;다음/NNG&#39;: {&#39;score&#39;: 0.553448109164864, &#39;count&#39;: 3},
+ &#39;수준/NNG;으로/JKB;유지/NNG&#39;: {&#39;score&#39;: 0.518649582527882, &#39;count&#39;: 4},
+ &#39;물가/NNG;와/JC;근원/NNG&#39;: {&#39;score&#39;: 0.5100416604056133, &#39;count&#39;: 1},
+ &#39;압력/NNG;으로/JKB;작용/NNG&#39;: {&#39;score&#39;: 0.6098929849604648, &#39;count&#39;: 2},
+ &#39;방안/NNG;을/JKO;마련/NNG&#39;: {&#39;score&#39;: 0.6454923188451946, &#39;count&#39;: 1},
+ &#39;전월/NNG;과/JC;동일/NNG&#39;: {&#39;score&#39;: 0.7439097224053924, &#39;count&#39;: 2},
+ &#39;기조/NNG;를/JKO;유지/NNG&#39;: {&#39;score&#39;: 0.5969123748774878, &#39;count&#39;: 1},
+ &#39;부/NNG;의/JKG;효과/NNG&#39;: {&#39;score&#39;: 0.6138078250845276, &#39;count&#39;: 1},
+ &#39;회복/NNG;이/JKS;지연/NNG&#39;: {&#39;score&#39;: 0.6097978165821536, &#39;count&#39;: 1},
+ &#39;불/XPN;투명/NNG&#39;: {&#39;score&#39;: 0.5551530211025784, &#39;count&#39;: 1},
+ &#39;방향/NNG;으로/JKB;구체/NNG&#39;: {&#39;score&#39;: 0.601315871698512, &#39;count&#39;: 1},
+ &#39;문안/NNG;을/JKO;작성/NNG&#39;: {&#39;score&#39;: 0.9550163996733796, &#39;count&#39;: 1},
+ &#39;여부/NNG;를/JKO;판단/NNG&#39;: {&#39;score&#39;: 0.541207347065582, &#39;count&#39;: 1},
+ &#39;재/XPN;건축/NNG&#39;: {&#39;score&#39;: 0.6862712987065251, &#39;count&#39;: 1},
+ &#39;등/NNB;을/JKO;감안/NNG&#39;: {&#39;score&#39;: 0.5646998864710981, &#39;count&#39;: 3},
+ &#39;부문/NNG;을/JKO;중심/NNG&#39;: {&#39;score&#39;: 0.5119575517507184, &#39;count&#39;: 1},
+ &#39;사정/NNG;이/JKS;악화/NNG&#39;: {&#39;score&#39;: 0.5752082489368028, &#39;count&#39;: 1},
+ &#39;고용/NNG;의/JKG;질/NNG&#39;: {&#39;score&#39;: 0.5587539187241448, &#39;count&#39;: 1},
+ &#39;유럽/NNP;과/JC;일본/NNP&#39;: {&#39;score&#39;: 0.6067764382636405, &#39;count&#39;: 1},
+ &#39;수출/NNG;이/JKS;호조/NNG&#39;: {&#39;score&#39;: 0.5622354169829481, &#39;count&#39;: 1},
+ &#39;소폭/NNG;의/JKG;플러스/NNG&#39;: {&#39;score&#39;: 0.6654012719908597, &#39;count&#39;: 1},
+ &#39;모형/NNG;에/JKB;반영/NNG&#39;: {&#39;score&#39;: 0.5302568474099705, &#39;count&#39;: 1}}
 </pre></div>
 </div>
 </div>
@@ -1223,7 +1041,7 @@ INFO:ekorpkit.io.file: &gt;&gt; saved dataframe to ../data/bok/bok_minutes_token
     <a class='right-next' id="next-link" href="ngram_for_lexicons.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">N-Grams for lexicon models</p>
+        <p class="prev-next-title">N-Gram model for lexicon features</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
