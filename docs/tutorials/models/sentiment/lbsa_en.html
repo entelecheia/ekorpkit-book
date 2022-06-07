@@ -51,12 +51,10 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="LM Dictionary vs. finbert vs. T5" href="sentiment.html" />
-    <link rel="prev" title="Sentiment Lexicons" href="lexicon.html" />
+    <link rel="next" title="Evaluate LM with financial phrasebank" href="financial_phrasebank_lm.html" />
+    <link rel="prev" title="Sentiment Analyers" href="index.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -248,39 +246,12 @@ const thebe_selector_output = ".output, .cell_output"
      </li>
     </ul>
    </li>
-   <li class="toctree-l2 current active has-children">
-    <a class="reference internal" href="index.html">
-     Sentiment Analyers
-    </a>
-    <input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-    <label for="toctree-checkbox-7">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul class="current">
-     <li class="toctree-l3">
-      <a class="reference internal" href="lexicon.html">
-       Sentiment Lexicons
-      </a>
-     </li>
-     <li class="toctree-l3 current active">
-      <a class="current reference internal" href="#">
-       Lexicon-based Sentiment Analysis
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="sentiment.html">
-       LM Dictionary vs. finbert vs. T5
-      </a>
-     </li>
-    </ul>
-   </li>
    <li class="toctree-l2 has-children">
     <a class="reference internal" href="../ngram/index.html">
      N-Grams
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-    <label for="toctree-checkbox-8">
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -292,7 +263,39 @@ const thebe_selector_output = ".output, .cell_output"
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../ngram/ngram_for_lexicons.html">
-       N-Grams for lexicon models
+       N-Gram model for lexicon features
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../ngram/ngram_for_words.html">
+       N-Gram model for word lexicon features
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="index.html">
+     Sentiment Analyers
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
+       Lexicon-based Sentiment Analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="financial_phrasebank_lm.html">
+       Evaluate LM with financial phrasebank
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="sentiment.html">
+       LM Dictionary vs. finbert vs. T5
       </a>
      </li>
     </ul>
@@ -687,8 +690,7 @@ const thebe_selector_output = ".output, .cell_output"
 <h1>Lexicon-based Sentiment Analysis<a class="headerlink" href="#lexicon-based-sentiment-analysis" title="Permalink to this headline">¶</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_format=&#39;retina&#39;
-<span class="kn">import</span> <span class="nn">logging</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
 
 <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
@@ -697,7 +699,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+16.g2b3b245.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+19.gdb9b114.dirty
 </pre></div>
 </div>
 </div>
@@ -708,7 +710,7 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;model/sentiment=lm&#39;</span>
 <span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="n">config_group</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">preprocessor</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">nltk</span><span class="o">.</span><span class="n">lemmatize</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="c1"># eKonf.print(cfg)</span>
 <span class="n">lmsa</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
 
 <span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Fraud&quot;</span><span class="p">,</span> <span class="s2">&quot;Good&quot;</span><span class="p">,</span><span class="s2">&quot;Good&quot;</span><span class="p">,</span><span class="s2">&quot;Good&quot;</span><span class="p">,</span> <span class="s2">&quot;Sound&quot;</span><span class="p">,</span> <span class="s2">&quot;uncertain&quot;</span><span class="p">,</span> <span class="s2">&quot;beat&quot;</span><span class="p">,</span> <span class="s2">&quot;wrong&quot;</span><span class="p">]</span>
@@ -718,12 +720,12 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;positive&#39;: 0.3749999531250059,
- &#39;negative&#39;: 0.24999996875000394,
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;positive&#39;: 0.0,
+ &#39;negative&#39;: 0.12499998437500197,
  &#39;num_tokens&#39;: 8,
- &#39;polarity&#39;: 0.199999960000008,
- &#39;subjectivity&#39;: 0.6249999218750099,
- &#39;polarity_label&#39;: &#39;neutral&#39;,
+ &#39;polarity&#39;: -0.9999990000010001,
+ &#39;subjectivity&#39;: 0.12499998437500197,
+ &#39;polarity_label&#39;: &#39;negative&#39;,
  &#39;uncertainty&#39;: 0.12499998437500197}
 </pre></div>
 </div>
@@ -732,152 +734,46 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Beyond the improved voice capabilities, customers now have a streamlined way to comply with recalls and other traceability requirements, providing them with a competitive advantage.&quot;</span>
-<span class="n">tokens</span> <span class="o">=</span> <span class="n">lmsa</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">lmsa</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Negative&#39;</span><span class="p">,</span> <span class="s1">&#39;Positive&#39;</span><span class="p">]))</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">lmsa</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Negative&#39;</span><span class="p">,</span> <span class="s1">&#39;Positive&#39;</span><span class="p">]))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Beyond/IN&#39;, &#39;the/DT&#39;, &#39;improved/JJ&#39;, &#39;voice/NN&#39;, &#39;capability/NNS&#39;, &#39;,/,&#39;, &#39;customer/NNS&#39;, &#39;now/RB&#39;, &#39;have/VBP&#39;, &#39;a/DT&#39;, &#39;streamlined/JJ&#39;, &#39;way/NN&#39;, &#39;to/TO&#39;, &#39;comply/VB&#39;, &#39;with/IN&#39;, &#39;recall/NNS&#39;, &#39;and/CC&#39;, &#39;other/JJ&#39;, &#39;traceability/NN&#39;, &#39;requirement/NNS&#39;, &#39;,/,&#39;, &#39;provide/VBG&#39;, &#39;them/PRP&#39;, &#39;with/IN&#39;, &#39;a/DT&#39;, &#39;competitive/JJ&#39;, &#39;advantage/NN&#39;, &#39;./.&#39;]
-{}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;advantage&#39;: {&#39;Negative&#39;: 0, &#39;Positive&#39;: 2009, &#39;count&#39;: 1},
+ &#39;and&#39;: {&#39;Negative&#39;: 0, &#39;Positive&#39;: 0, &#39;count&#39;: 1},
+ &#39;beyond&#39;: {&#39;Negative&#39;: 0, &#39;Positive&#39;: 0, &#39;count&#39;: 1},
+ &#39;capability&#39;: {&#39;Negative&#39;: 0, &#39;Positive&#39;: 0, &#39;count&#39;: 1},
+ &#39;competitive&#39;: {&#39;Negative&#39;: 0, &#39;Positive&#39;: 0, &#39;count&#39;: 1},
+ &#39;comply&#39;: {&#39;Negative&#39;: 0, &#39;Positive&#39;: 0, &#39;count&#39;: 1},
+ &#39;customer&#39;: {&#39;Negative&#39;: 0, &#39;Positive&#39;: 0, &#39;count&#39;: 1},
+ &#39;have&#39;: {&#39;Negative&#39;: 0, &#39;Positive&#39;: 0, &#39;count&#39;: 1},
+ &#39;improved&#39;: {&#39;Negative&#39;: 0, &#39;Positive&#39;: 2009, &#39;count&#39;: 1},
+ &#39;now&#39;: {&#39;Negative&#39;: 0, &#39;Positive&#39;: 0, &#39;count&#39;: 1},
+ &#39;other&#39;: {&#39;Negative&#39;: 0, &#39;Positive&#39;: 0, &#39;count&#39;: 1},
+ &#39;provide&#39;: {&#39;Negative&#39;: 0, &#39;Positive&#39;: 0, &#39;count&#39;: 1},
+ &#39;recall&#39;: {&#39;Negative&#39;: 2009, &#39;Positive&#39;: 0, &#39;count&#39;: 1},
+ &#39;requirement&#39;: {&#39;Negative&#39;: 0, &#39;Positive&#39;: 0, &#39;count&#39;: 1},
+ &#39;streamlined&#39;: {&#39;Negative&#39;: 0, &#39;Positive&#39;: 0, &#39;count&#39;: 1},
+ &#39;the&#39;: {&#39;Negative&#39;: 0, &#39;Positive&#39;: 0, &#39;count&#39;: 1},
+ &#39;them&#39;: {&#39;Negative&#39;: 0, &#39;Positive&#39;: 0, &#39;count&#39;: 1},
+ &#39;to&#39;: {&#39;Negative&#39;: 0, &#39;Positive&#39;: 0, &#39;count&#39;: 1},
+ &#39;traceability&#39;: {&#39;Negative&#39;: 0, &#39;Positive&#39;: 0, &#39;count&#39;: 1},
+ &#39;voice&#39;: {&#39;Negative&#39;: 0, &#39;Positive&#39;: 0, &#39;count&#39;: 1},
+ &#39;way&#39;: {&#39;Negative&#39;: 0, &#39;Positive&#39;: 0, &#39;count&#39;: 1},
+ &#39;with&#39;: {&#39;Negative&#39;: 0, &#39;Positive&#39;: 0, &#39;count&#39;: 2}}
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="n">lexicon_features</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">lxfeat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">lexicon_features</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
-<span class="n">lxfeat</span><span class="o">.</span><span class="n">empty</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Beyond the improved voice capabilities, customers now have a streamlined way to comply with recalls and other traceability requirements, providing them with a competitive advantage.&quot;</span>
-<span class="n">tokens</span> <span class="o">=</span> <span class="n">lmsa</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">lmsa</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Negative&#39;</span><span class="p">,</span> <span class="s1">&#39;Positive&#39;</span><span class="p">]))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">lmsa</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
-<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Operating loss amounted to EUR 0.7 mn compared to a profit of EUR 0.8 mn in the second quarter of 2005.&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Operating loss amounted to EUR 0.7 mn compared to a profit of EUR 0.8 mn in the second quarter of 2005.&quot;</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">lmsa</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Beyond/IN&#39;, &#39;the/DT&#39;, &#39;improved/JJ&#39;, &#39;voice/NN&#39;, &#39;capability/NNS&#39;, &#39;,/,&#39;, &#39;customer/NNS&#39;, &#39;now/RB&#39;, &#39;have/VBP&#39;, &#39;a/DT&#39;, &#39;streamlined/JJ&#39;, &#39;way/NN&#39;, &#39;to/TO&#39;, &#39;comply/VB&#39;, &#39;with/IN&#39;, &#39;recall/NNS&#39;, &#39;and/CC&#39;, &#39;other/JJ&#39;, &#39;traceability/NN&#39;, &#39;requirement/NNS&#39;, &#39;,/,&#39;, &#39;provide/VBG&#39;, &#39;them/PRP&#39;, &#39;with/IN&#39;, &#39;a/DT&#39;, &#39;competitive/JJ&#39;, &#39;advantage/NN&#39;, &#39;./.&#39;]
-{}
-</pre></div>
-</div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">IndexError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">3</span><span class="o">-</span><span class="mf">1e3</span><span class="n">d1067391f</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="nb">print</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">lmsa</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Negative&#39;</span><span class="p">,</span> <span class="s1">&#39;Positive&#39;</span><span class="p">]))</span>
-<span class="ne">----&gt; </span><span class="mi">5</span> <span class="nb">print</span><span class="p">(</span><span class="n">lmsa</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Operating loss amounted to EUR 0.7 mn compared to a profit of EUR 0.8 mn in the second quarter of 2005.&quot;</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="nb">print</span><span class="p">(</span><span class="n">lmsa</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
-
-<span class="nn">/workspace/projects/ekorpkit/ekorpkit/models/sentiment/base.py</span> in <span class="ni">predict</span><span class="nt">(self, text, features)</span>
-<span class="g g-Whitespace">     </span><span class="mi">77</span>         <span class="n">scores</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="g g-Whitespace">     </span><span class="mi">78</span>         <span class="k">for</span> <span class="n">feather</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">79</span>             <span class="n">score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_score</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">lexicon_features</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="n">feather</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">80</span>             <span class="n">score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_assign_class</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="n">feather</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">81</span>             <span class="n">scores</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
-
-<span class="nn">/workspace/projects/ekorpkit/ekorpkit/models/sentiment/analyser.py</span> in <span class="ni">_get_score</span><span class="nt">(self, tokens, lexicon_features, feature)</span>
-<span class="g g-Whitespace">     </span><span class="mi">87</span>                 <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;Negative&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
-<span class="g g-Whitespace">     </span><span class="mi">88</span>             <span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">89</span>             <span class="n">lxfeat_agg</span> <span class="o">=</span> <span class="n">lxfeat</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;pos&quot;</span><span class="p">:</span> <span class="s2">&quot;sum&quot;</span><span class="p">,</span> <span class="s2">&quot;neg&quot;</span><span class="p">:</span> <span class="s2">&quot;sum&quot;</span><span class="p">})</span>
-<span class="g g-Whitespace">     </span><span class="mi">90</span>             <span class="n">polarity</span> <span class="o">=</span> <span class="p">(</span><span class="n">lxfeat_agg</span><span class="p">[</span><span class="s2">&quot;pos&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">lxfeat_agg</span><span class="p">[</span><span class="s2">&quot;neg&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">91</span>                 <span class="n">lxfeat_agg</span><span class="p">[</span><span class="s2">&quot;pos&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">lxfeat_agg</span><span class="p">[</span><span class="s2">&quot;neg&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">EPSILON</span>
-
-<span class="nn">/opt/conda/lib/python3.8/site-packages/pandas/core/frame.py</span> in <span class="ni">aggregate</span><span class="nt">(self, func, axis, *args, **kwargs)</span>
-<span class="g g-Whitespace">   </span><span class="mi">8647</span> 
-<span class="g g-Whitespace">   </span><span class="mi">8648</span>         <span class="n">op</span> <span class="o">=</span> <span class="n">frame_apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="n">func</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="ne">-&gt; </span><span class="mi">8649</span>         <span class="n">result</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">agg</span><span class="p">()</span>
-<span class="g g-Whitespace">   </span><span class="mi">8650</span> 
-<span class="g g-Whitespace">   </span><span class="mi">8651</span>         <span class="k">if</span> <span class="n">relabeling</span><span class="p">:</span>
-
-<span class="nn">/opt/conda/lib/python3.8/site-packages/pandas/core/apply.py</span> in <span class="ni">agg</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">737</span>         <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="g g-Whitespace">    </span><span class="mi">738</span>         <span class="k">try</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">739</span>             <span class="n">result</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">agg</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">740</span>         <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">741</span>             <span class="n">exc</span> <span class="o">=</span> <span class="ne">TypeError</span><span class="p">(</span>
-
-<span class="nn">/opt/conda/lib/python3.8/site-packages/pandas/core/apply.py</span> in <span class="ni">agg</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">166</span> 
-<span class="g g-Whitespace">    </span><span class="mi">167</span>         <span class="k">if</span> <span class="n">is_dict_like</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">168</span>             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">agg_dict_like</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">169</span>         <span class="k">elif</span> <span class="n">is_list_like</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">170</span>             <span class="c1"># we require a list, but not a &#39;str&#39;</span>
-
-<span class="nn">/opt/conda/lib/python3.8/site-packages/pandas/core/apply.py</span> in <span class="ni">agg_dict_like</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">473</span>         <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">474</span>             <span class="c1"># key used for column selection and output</span>
-<span class="ne">--&gt; </span><span class="mi">475</span>             <span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
-<span class="nn">    476                 key: obj._gotitem(key, ndim=1).agg(how) for key, how</span> in <span class="ni">arg.items</span><span class="nt">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">477</span>             <span class="p">}</span>
-
-<span class="nn">/opt/conda/lib/python3.8/site-packages/pandas/core/apply.py</span> in <span class="ni">&lt;dictcomp&gt;</span><span class="nt">(.0)</span>
-<span class="g g-Whitespace">    </span><span class="mi">474</span>             <span class="c1"># key used for column selection and output</span>
-<span class="g g-Whitespace">    </span><span class="mi">475</span>             <span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
-<span class="nn">--&gt; 476                 key: obj._gotitem(key, ndim=1).agg(how) for key, how</span> in <span class="ni">arg.items</span><span class="nt">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">477</span>             <span class="p">}</span>
-<span class="g g-Whitespace">    </span><span class="mi">478</span> 
-
-<span class="nn">/opt/conda/lib/python3.8/site-packages/pandas/core/frame.py</span> in <span class="ni">_gotitem</span><span class="nt">(self, key, ndim, subset)</span>
-<span class="g g-Whitespace">   </span><span class="mi">8561</span> 
-<span class="g g-Whitespace">   </span><span class="mi">8562</span>         <span class="c1"># TODO: _shallow_copy(subset)?</span>
-<span class="ne">-&gt; </span><span class="mi">8563</span>         <span class="k">return</span> <span class="n">subset</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-<span class="g g-Whitespace">   </span><span class="mi">8564</span> 
-<span class="g g-Whitespace">   </span><span class="mi">8565</span>     <span class="n">_agg_summary_and_see_also_doc</span> <span class="o">=</span> <span class="n">dedent</span><span class="p">(</span>
-
-<span class="nn">/opt/conda/lib/python3.8/site-packages/pandas/core/frame.py</span> in <span class="ni">__getitem__</span><span class="nt">(self, key)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3472</span>                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">MultiIndex</span><span class="p">):</span>
-<span class="g g-Whitespace">   </span><span class="mi">3473</span>                     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getitem_multilevel</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="ne">-&gt; </span><span class="mi">3474</span>                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_item_cache</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3475</span> 
-<span class="g g-Whitespace">   </span><span class="mi">3476</span>         <span class="c1"># Do we have a slicer (on rows)?</span>
-
-<span class="nn">/opt/conda/lib/python3.8/site-packages/pandas/core/frame.py</span> in <span class="ni">_get_item_cache</span><span class="nt">(self, item)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3930</span> 
-<span class="g g-Whitespace">   </span><span class="mi">3931</span>             <span class="n">loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-<span class="ne">-&gt; </span><span class="mi">3932</span>             <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ixs</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3933</span> 
-<span class="g g-Whitespace">   </span><span class="mi">3934</span>             <span class="n">cache</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span>
-
-<span class="nn">/opt/conda/lib/python3.8/site-packages/pandas/core/frame.py</span> in <span class="ni">_ixs</span><span class="nt">(self, i, axis)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3439</span>             <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-<span class="g g-Whitespace">   </span><span class="mi">3440</span> 
-<span class="ne">-&gt; </span><span class="mi">3441</span>             <span class="n">col_mgr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mgr</span><span class="o">.</span><span class="n">iget</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3442</span>             <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_box_col_values</span><span class="p">(</span><span class="n">col_mgr</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3443</span> 
-
-<span class="nn">/opt/conda/lib/python3.8/site-packages/pandas/core/internals/managers.py</span> in <span class="ni">iget</span><span class="nt">(self, i)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1019</span>         <span class="s2">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">1020</span><span class="s2">         block = self.blocks[self.blknos[i]]</span>
-<span class="ne">-&gt; </span><span class="mi">1021</span><span class="s2">         values = block.iget(self.blklocs[i])</span>
-<span class="g g-Whitespace">   </span><span class="mi">1022</span><span class="s2"> </span>
-<span class="g g-Whitespace">   </span><span class="mi">1023</span><span class="s2">         # shortcut for select a single-dim from a 2-dim BM</span>
-
-<span class="nn">/opt/conda/lib/python3.8/site-packages/pandas/core/internals/blocks.py</span> in <span class="ni">iget</span><span class="nt">(self, i)</span>
-<span class="g g-Whitespace">    </span><span class="mi">363</span><span class="s2">         # for &quot;Union[ndarray[Any, Any], ExtensionArray]&quot;; expected type</span>
-<span class="g g-Whitespace">    </span><span class="mi">364</span><span class="s2">         # &quot;Union[int, integer[Any]]&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">365</span><span class="s2">         return self.values[i]  # type: ignore[index]</span>
-<span class="g g-Whitespace">    </span><span class="mi">366</span><span class="s2"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">367</span><span class="s2">     def set_inplace(self, locs, values) -&gt; None:</span>
-
-<span class="ne">IndexError</span>: index 0 is out of bounds for axis 0 with size 0
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;positive&#39;: 0.0, &#39;negative&#39;: 0.045454543388429844, &#39;num_tokens&#39;: 22, &#39;polarity&#39;: -0.9999990000010001, &#39;subjectivity&#39;: 0.045454543388429844, &#39;polarity_label&#39;: &#39;negative&#39;, &#39;uncertainty&#39;: 0.0}
 </pre></div>
 </div>
 </div>
@@ -888,8 +784,6 @@ const thebe_selector_output = ".output, .cell_output"
 
 <span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;model/sentiment=hiv4&#39;</span>
 <span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="n">config_group</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">preprocessor</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">nltk</span><span class="o">.</span><span class="n">lemmatize</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="c1"># eKonf.pprint(cfg)</span>
 <span class="n">hivsa</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
 
 <span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Fraud&quot;</span><span class="p">,</span> <span class="s2">&quot;Good&quot;</span><span class="p">,</span><span class="s2">&quot;Good&quot;</span><span class="p">,</span><span class="s2">&quot;Good&quot;</span><span class="p">,</span> <span class="s2">&quot;Sound&quot;</span><span class="p">,</span> <span class="s2">&quot;uncertain&quot;</span><span class="p">,</span> <span class="s2">&quot;beat&quot;</span><span class="p">,</span> <span class="s2">&quot;wrong&quot;</span><span class="p">]</span>
@@ -899,23 +793,15 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading data from /workspace/projects/ekorpkit/ekorpkit/resources/lexicons/HIV-4.parquet
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;polarity&#39;: -0.9999990000010001,
- &#39;subjectivity&#39;: 0.12499998437500197,
- &#39;label&#39;: &#39;negative&#39;}
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;polarity&#39;: 0.0, &#39;subjectivity&#39;: 0.0, &#39;label&#39;: &#39;neutral&#39;, &#39;legal&#39;: 0.0}
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
-<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Beyond the improved voice capabilities, customers now have a streamlined way to comply with recalls and other traceability requirements, providing them with a competitive advantage.&quot;</span>
-<span class="n">tokens</span> <span class="o">=</span> <span class="n">hivsa</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
-<span class="n">pprint</span><span class="p">(</span><span class="n">hivsa</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Negativ&#39;</span><span class="p">,</span> <span class="s1">&#39;Positiv&#39;</span><span class="p">]))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Beyond the improved voice capabilities, customers now have a streamlined way to comply with recalls and other traceability requirements, providing them with a competitive advantage.&quot;</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">hivsa</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Negativ&#39;</span><span class="p">,</span> <span class="s1">&#39;Positiv&#39;</span><span class="p">]))</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">hivsa</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
 <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Operating loss amounted to EUR 0.7 mn compared to a profit of EUR 0.8 mn in the second quarter of 2005.&quot;</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">hivsa</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
@@ -923,22 +809,18 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Beyond&#39;, &#39;the&#39;, &#39;improved&#39;, &#39;voice&#39;, &#39;capability&#39;, &#39;,&#39;, &#39;customer&#39;, &#39;now&#39;, &#39;have&#39;, &#39;a&#39;, &#39;streamlined&#39;, &#39;way&#39;, &#39;to&#39;, &#39;comply&#39;, &#39;with&#39;, &#39;recall&#39;, &#39;and&#39;, &#39;other&#39;, &#39;traceability&#39;, &#39;requirement&#39;, &#39;,&#39;, &#39;provide&#39;, &#39;them&#39;, &#39;with&#39;, &#39;a&#39;, &#39;competitive&#39;, &#39;advantage&#39;, &#39;.&#39;]
-{&#39;a&#39;: {&#39;Negativ&#39;: None, &#39;Positiv&#39;: None, &#39;count&#39;: 2},
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;a&#39;: {&#39;Negativ&#39;: None, &#39;Positiv&#39;: None, &#39;count&#39;: 2},
  &#39;advantage&#39;: {&#39;Negativ&#39;: None, &#39;Positiv&#39;: &#39;Positiv&#39;, &#39;count&#39;: 1},
  &#39;and&#39;: {&#39;Negativ&#39;: None, &#39;Positiv&#39;: None, &#39;count&#39;: 1},
  &#39;beyond&#39;: {&#39;Negativ&#39;: None, &#39;Positiv&#39;: None, &#39;count&#39;: 1},
- &#39;capability&#39;: {&#39;Negativ&#39;: None, &#39;Positiv&#39;: &#39;Positiv&#39;, &#39;count&#39;: 1},
  &#39;competitive&#39;: {&#39;Negativ&#39;: &#39;Negativ&#39;, &#39;Positiv&#39;: None, &#39;count&#39;: 1},
  &#39;comply&#39;: {&#39;Negativ&#39;: None, &#39;Positiv&#39;: None, &#39;count&#39;: 1},
- &#39;customer&#39;: {&#39;Negativ&#39;: None, &#39;Positiv&#39;: None, &#39;count&#39;: 1},
  &#39;now&#39;: {&#39;Negativ&#39;: None, &#39;Positiv&#39;: None, &#39;count&#39;: 1},
- &#39;requirement&#39;: {&#39;Negativ&#39;: None, &#39;Positiv&#39;: None, &#39;count&#39;: 1},
  &#39;the&#39;: {&#39;Negativ&#39;: None, &#39;Positiv&#39;: None, &#39;count&#39;: 1},
  &#39;them&#39;: {&#39;Negativ&#39;: None, &#39;Positiv&#39;: None, &#39;count&#39;: 1},
  &#39;with&#39;: {&#39;Negativ&#39;: None, &#39;Positiv&#39;: None, &#39;count&#39;: 2}}
-{&#39;polarity&#39;: 0.33333322222225925, &#39;subjectivity&#39;: 0.10714285331632667, &#39;label&#39;: &#39;positive&#39;}
-{&#39;polarity&#39;: -0.9999990000010001, &#39;subjectivity&#39;: 0.045454543388429844, &#39;label&#39;: &#39;negative&#39;}
+{&#39;polarity&#39;: 0.0, &#39;subjectivity&#39;: 0.07142856887755111, &#39;label&#39;: &#39;neutral&#39;, &#39;legal&#39;: 0.0}
+{&#39;polarity&#39;: -0.9999990000010001, &#39;subjectivity&#39;: 0.045454543388429844, &#39;label&#39;: &#39;negative&#39;, &#39;legal&#39;: 0.0}
 </pre></div>
 </div>
 </div>
@@ -971,17 +853,17 @@ const thebe_selector_output = ".output, .cell_output"
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="lexicon.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="index.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Sentiment Lexicons</p>
+            <p class="prev-next-title">Sentiment Analyers</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="sentiment.html" title="next page">
+    <a class='right-next' id="next-link" href="financial_phrasebank_lm.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">LM Dictionary vs. finbert vs. T5</p>
+        <p class="prev-next-title">Evaluate LM with financial phrasebank</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
