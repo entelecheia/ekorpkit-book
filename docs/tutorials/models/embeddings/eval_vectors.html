@@ -797,7 +797,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.32+0.g25255f6.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.32+1.gcf6615f.dirty
 </pre></div>
 </div>
 </div>
@@ -839,15 +839,15 @@ INFO:ekorpkit.io.cached_path:cached path: /workspace/.cache/cached_path/d97dcf99
 INFO:cached_path:cache of https://raw.githubusercontent.com/RaRe-Technologies/gensim/develop/gensim/test/test_data/questions-words.txt is up-to-date
 INFO:ekorpkit.io.cached_path:cached path: /root/.ekorpkit/.cache/cached_path/7568e1428a2ba53a33f67dea7e276f212c065b07d102aafc177a507d244161f6.f60f7f82aaacf3a534d93013617bcfead46a795268096ff1990608b16115b566
 INFO:gensim.models.keyedvectors:loading projection weights from /workspace/.cache/cached_path/d97dcf99e9ed61e3b07a5a87dd5dea7b6a4815ba6eb1ac87f529bfe6e2ba4ccf.f9662ccb99e715467e6da0c85a047cfc51888321958f9440eb5a15f7189c140f-extracted/glove.6B.300d.txt
-INFO:gensim.utils:KeyedVectors lifecycle event {&#39;msg&#39;: &#39;loaded (400000, 300) matrix of type float32 from /workspace/.cache/cached_path/d97dcf99e9ed61e3b07a5a87dd5dea7b6a4815ba6eb1ac87f529bfe6e2ba4ccf.f9662ccb99e715467e6da0c85a047cfc51888321958f9440eb5a15f7189c140f-extracted/glove.6B.300d.txt&#39;, &#39;binary&#39;: False, &#39;encoding&#39;: &#39;utf8&#39;, &#39;datetime&#39;: &#39;2022-06-08T02:00:19.457112&#39;, &#39;gensim&#39;: &#39;4.2.0&#39;, &#39;python&#39;: &#39;3.8.12 (default, Jan 14 2022, 01:33:56) \n[GCC 7.5.0]&#39;, &#39;platform&#39;: &#39;Linux-5.4.0-58-generic-x86_64-with-glibc2.27&#39;, &#39;event&#39;: &#39;load_word2vec_format&#39;}
+INFO:gensim.utils:KeyedVectors lifecycle event {&#39;msg&#39;: &#39;loaded (400000, 300) matrix of type float32 from /workspace/.cache/cached_path/d97dcf99e9ed61e3b07a5a87dd5dea7b6a4815ba6eb1ac87f529bfe6e2ba4ccf.f9662ccb99e715467e6da0c85a047cfc51888321958f9440eb5a15f7189c140f-extracted/glove.6B.300d.txt&#39;, &#39;binary&#39;: False, &#39;encoding&#39;: &#39;utf8&#39;, &#39;datetime&#39;: &#39;2022-06-08T10:14:23.606212&#39;, &#39;gensim&#39;: &#39;4.2.0&#39;, &#39;python&#39;: &#39;3.8.12 (default, Jan 14 2022, 01:33:56) \n[GCC 7.5.0]&#39;, &#39;platform&#39;: &#39;Linux-5.4.0-58-generic-x86_64-with-glibc2.27&#39;, &#39;event&#39;: &#39;load_word2vec_format&#39;}
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wiki_score</span><span class="p">,</span> <span class="n">wiki_eval</span><span class="p">,</span> <span class="n">wiki_sections</span> <span class="o">=</span> <span class="n">wv_wiki</span><span class="o">.</span><span class="n">evaluate_word_analogies</span><span class="p">(</span><span class="n">analogies</span><span class="o">=</span><span class="s2">&quot;google&quot;</span><span class="p">)</span>
-<span class="n">wiki_eval</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wiki_results</span> <span class="o">=</span> <span class="n">wv_wiki</span><span class="o">.</span><span class="n">evaluate_word_analogies</span><span class="p">(</span><span class="n">analogies</span><span class="o">=</span><span class="s2">&quot;google&quot;</span><span class="p">)</span>
+<span class="n">wiki_results</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -871,6 +871,171 @@ INFO:gensim.models.keyedvectors:Quadruplets with out-of-vocabulary words: 0.3%
 INFO:gensim.models.keyedvectors:NB: analogies containing OOV words were skipped from evaluation! To change this behavior, use &quot;dummy4unknown=True&quot;
 INFO:gensim.models.keyedvectors:Total accuracy: 72.0% (14021/19486)
 INFO:ekorpkit.models.embeddings.wordvec:Evaluation score: 0.7195422354510931
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dict_keys([&#39;score&#39;, &#39;summary&#39;, &#39;correct&#39;, &#39;incorrect&#39;])
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="twitter-data">
+<h3>Twitter Data<a class="headerlink" href="#twitter-data" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;model/embedding&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;glove_twitter&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">corpus</span> <span class="o">=</span> <span class="s2">&quot;Twitter&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;https://nlp.stanford.edu/data/glove.twitter.27B.zip&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">model_dir</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">path</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">model_file</span> <span class="o">=</span> <span class="s2">&quot;glove.twitter.27B.200d.txt&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">model_type</span> <span class="o">=</span> <span class="s2">&quot;glove&quot;</span>
+<span class="n">wv_twt</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">wv_twt</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:cached_path:cache of https://nlp.stanford.edu/data/glove.twitter.27B.zip is up-to-date
+INFO:ekorpkit.io.cached_path:cached path: /workspace/.cache/cached_path/d08f2221566196fe3fd6f557a2b67e9ffd5cf4b7c500918d98581a52f349a804.7417464dae8ba25e69e639021d320765d2d18bb24f73391ef423756069dc8078-extracted
+INFO:cached_path:cache of https://nlp.stanford.edu/data/glove.twitter.27B.zip is up-to-date
+INFO:ekorpkit.io.cached_path:cached path: /workspace/.cache/cached_path/d08f2221566196fe3fd6f557a2b67e9ffd5cf4b7c500918d98581a52f349a804.7417464dae8ba25e69e639021d320765d2d18bb24f73391ef423756069dc8078-extracted
+INFO:cached_path:cache of https://raw.githubusercontent.com/RaRe-Technologies/gensim/develop/gensim/test/test_data/questions-words.txt is up-to-date
+INFO:ekorpkit.io.cached_path:cached path: /root/.ekorpkit/.cache/cached_path/7568e1428a2ba53a33f67dea7e276f212c065b07d102aafc177a507d244161f6.f60f7f82aaacf3a534d93013617bcfead46a795268096ff1990608b16115b566
+INFO:gensim.models.keyedvectors:loading projection weights from /workspace/.cache/cached_path/d08f2221566196fe3fd6f557a2b67e9ffd5cf4b7c500918d98581a52f349a804.7417464dae8ba25e69e639021d320765d2d18bb24f73391ef423756069dc8078-extracted/glove.twitter.27B.200d.txt
+INFO:gensim.utils:KeyedVectors lifecycle event {&#39;msg&#39;: &#39;loaded (1193514, 200) matrix of type float32 from /workspace/.cache/cached_path/d08f2221566196fe3fd6f557a2b67e9ffd5cf4b7c500918d98581a52f349a804.7417464dae8ba25e69e639021d320765d2d18bb24f73391ef423756069dc8078-extracted/glove.twitter.27B.200d.txt&#39;, &#39;binary&#39;: False, &#39;encoding&#39;: &#39;utf8&#39;, &#39;datetime&#39;: &#39;2022-06-08T09:15:08.452346&#39;, &#39;gensim&#39;: &#39;4.2.0&#39;, &#39;python&#39;: &#39;3.8.12 (default, Jan 14 2022, 01:33:56) \n[GCC 7.5.0]&#39;, &#39;platform&#39;: &#39;Linux-5.4.0-58-generic-x86_64-with-glibc2.27&#39;, &#39;event&#39;: &#39;load_word2vec_format&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">twt_results</span> <span class="o">=</span> <span class="n">wv_twt</span><span class="o">.</span><span class="n">evaluate_word_analogies</span><span class="p">(</span><span class="n">analogies</span><span class="o">=</span><span class="s2">&quot;google&quot;</span><span class="p">)</span>
+<span class="n">twt_results</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:gensim.models.keyedvectors:Evaluating word analogies for top 300000 words in the model on /root/.ekorpkit/.cache/cached_path/7568e1428a2ba53a33f67dea7e276f212c065b07d102aafc177a507d244161f6.f60f7f82aaacf3a534d93013617bcfead46a795268096ff1990608b16115b566
+INFO:gensim.models.keyedvectors:capital-common-countries: 70.6% (357/506)
+INFO:gensim.models.keyedvectors:capital-world: 74.6% (1639/2198)
+INFO:gensim.models.keyedvectors:currency: 3.3% (15/458)
+INFO:gensim.models.keyedvectors:city-in-state: 35.6% (879/2467)
+INFO:gensim.models.keyedvectors:family: 79.5% (302/380)
+INFO:gensim.models.keyedvectors:gram1-adjective-to-adverb: 12.7% (118/930)
+INFO:gensim.models.keyedvectors:gram2-opposite: 30.8% (185/600)
+INFO:gensim.models.keyedvectors:gram3-comparative: 74.2% (989/1332)
+INFO:gensim.models.keyedvectors:gram4-superlative: 64.0% (718/1122)
+INFO:gensim.models.keyedvectors:gram5-present-participle: 66.4% (701/1056)
+INFO:gensim.models.keyedvectors:gram6-nationality-adjective: 72.7% (894/1229)
+INFO:gensim.models.keyedvectors:gram7-past-tense: 53.1% (787/1482)
+INFO:gensim.models.keyedvectors:gram8-plural: 76.0% (1012/1332)
+INFO:gensim.models.keyedvectors:gram9-plural-verbs: 52.0% (452/870)
+INFO:gensim.models.keyedvectors:Quadruplets with out-of-vocabulary words: 18.3%
+INFO:gensim.models.keyedvectors:NB: analogies containing OOV words were skipped from evaluation! To change this behavior, use &quot;dummy4unknown=True&quot;
+INFO:gensim.models.keyedvectors:Total accuracy: 56.7% (9048/15962)
+INFO:ekorpkit.models.embeddings.wordvec:Evaluation score: 0.5668462598671845
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dict_keys([&#39;score&#39;, &#39;summary&#39;, &#39;correct&#39;, &#39;incorrect&#39;])
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="common-crawl">
+<h3>Common Crawl<a class="headerlink" href="#common-crawl" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;model/embedding&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;glove_commoncrawl&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">corpus</span> <span class="o">=</span> <span class="s2">&quot;Common Crawl&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;https://nlp.stanford.edu/data/glove.42B.300d.zip&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">model_dir</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">path</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">model_file</span> <span class="o">=</span> <span class="s2">&quot;glove.42B.300d.txt&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">model_type</span> <span class="o">=</span> <span class="s2">&quot;glove&quot;</span>
+<span class="n">wv_cc</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">wv_cc</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:cached_path:cache of https://nlp.stanford.edu/data/glove.42B.300d.zip is up-to-date
+INFO:ekorpkit.io.cached_path:cached path: /workspace/.cache/cached_path/1b77e307d0976680276bd5eddffac55a83164787611dccb81aaaab9c4c79073b.d4304a004cdd3b0267ad688b5fc4d6c9d43c622a571ee2ba8b39604fc257faed-extracted
+INFO:cached_path:cache of https://nlp.stanford.edu/data/glove.42B.300d.zip is up-to-date
+INFO:ekorpkit.io.cached_path:cached path: /workspace/.cache/cached_path/1b77e307d0976680276bd5eddffac55a83164787611dccb81aaaab9c4c79073b.d4304a004cdd3b0267ad688b5fc4d6c9d43c622a571ee2ba8b39604fc257faed-extracted
+INFO:cached_path:cache of https://raw.githubusercontent.com/RaRe-Technologies/gensim/develop/gensim/test/test_data/questions-words.txt is up-to-date
+INFO:ekorpkit.io.cached_path:cached path: /root/.ekorpkit/.cache/cached_path/7568e1428a2ba53a33f67dea7e276f212c065b07d102aafc177a507d244161f6.f60f7f82aaacf3a534d93013617bcfead46a795268096ff1990608b16115b566
+INFO:gensim.models.keyedvectors:loading projection weights from /workspace/.cache/cached_path/1b77e307d0976680276bd5eddffac55a83164787611dccb81aaaab9c4c79073b.d4304a004cdd3b0267ad688b5fc4d6c9d43c622a571ee2ba8b39604fc257faed-extracted/glove.42B.300d.txt
+INFO:gensim.utils:KeyedVectors lifecycle event {&#39;msg&#39;: &#39;loaded (1917494, 300) matrix of type float32 from /workspace/.cache/cached_path/1b77e307d0976680276bd5eddffac55a83164787611dccb81aaaab9c4c79073b.d4304a004cdd3b0267ad688b5fc4d6c9d43c622a571ee2ba8b39604fc257faed-extracted/glove.42B.300d.txt&#39;, &#39;binary&#39;: False, &#39;encoding&#39;: &#39;utf8&#39;, &#39;datetime&#39;: &#39;2022-06-08T09:22:21.176032&#39;, &#39;gensim&#39;: &#39;4.2.0&#39;, &#39;python&#39;: &#39;3.8.12 (default, Jan 14 2022, 01:33:56) \n[GCC 7.5.0]&#39;, &#39;platform&#39;: &#39;Linux-5.4.0-58-generic-x86_64-with-glibc2.27&#39;, &#39;event&#39;: &#39;load_word2vec_format&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cc_results</span> <span class="o">=</span> <span class="n">wv_cc</span><span class="o">.</span><span class="n">evaluate_word_analogies</span><span class="p">(</span><span class="n">analogies</span><span class="o">=</span><span class="s2">&quot;google&quot;</span><span class="p">)</span>
+<span class="n">cc_results</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:gensim.models.keyedvectors:Evaluating word analogies for top 300000 words in the model on /root/.ekorpkit/.cache/cached_path/7568e1428a2ba53a33f67dea7e276f212c065b07d102aafc177a507d244161f6.f60f7f82aaacf3a534d93013617bcfead46a795268096ff1990608b16115b566
+INFO:gensim.models.keyedvectors:capital-common-countries: 95.1% (481/506)
+INFO:gensim.models.keyedvectors:capital-world: 94.0% (4178/4446)
+INFO:gensim.models.keyedvectors:currency: 17.6% (142/808)
+INFO:gensim.models.keyedvectors:city-in-state: 78.1% (1926/2467)
+INFO:gensim.models.keyedvectors:family: 90.9% (460/506)
+INFO:gensim.models.keyedvectors:gram1-adjective-to-adverb: 30.2% (300/992)
+INFO:gensim.models.keyedvectors:gram2-opposite: 35.6% (289/812)
+INFO:gensim.models.keyedvectors:gram3-comparative: 85.6% (1140/1332)
+INFO:gensim.models.keyedvectors:gram4-superlative: 84.0% (942/1122)
+INFO:gensim.models.keyedvectors:gram5-present-participle: 80.9% (854/1056)
+INFO:gensim.models.keyedvectors:gram6-nationality-adjective: 88.3% (1412/1599)
+INFO:gensim.models.keyedvectors:gram7-past-tense: 49.3% (769/1560)
+INFO:gensim.models.keyedvectors:gram8-plural: 84.9% (1131/1332)
+INFO:gensim.models.keyedvectors:gram9-plural-verbs: 64.1% (558/870)
+INFO:gensim.models.keyedvectors:Quadruplets with out-of-vocabulary words: 0.7%
+INFO:gensim.models.keyedvectors:NB: analogies containing OOV words were skipped from evaluation! To change this behavior, use &quot;dummy4unknown=True&quot;
+INFO:gensim.models.keyedvectors:Total accuracy: 75.1% (14582/19408)
+INFO:ekorpkit.models.embeddings.wordvec:Evaluation score: 0.7513396537510305
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dict_keys([&#39;score&#39;, &#39;summary&#39;, &#39;correct&#39;, &#39;incorrect&#39;])
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="evaluate-embeddings">
+<h2>Evaluate embeddings<a class="headerlink" href="#evaluate-embeddings" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">eval_summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">wiki_results</span><span class="p">[</span><span class="s2">&quot;summary&quot;</span><span class="p">],</span> <span class="n">twt_results</span><span class="p">[</span><span class="s2">&quot;summary&quot;</span><span class="p">],</span> <span class="n">cc_results</span><span class="p">[</span><span class="s2">&quot;summary&quot;</span><span class="p">]]</span>
+<span class="p">)</span>
+<span class="n">save_dataframe</span><span class="p">(</span><span class="n">eval_summary</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;eval_summary.parquet&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Saving dataframe as ../data/embeddings/eval_summary.parquet
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_summary</span> <span class="o">=</span> <span class="n">load_dataframe</span><span class="p">(</span><span class="n">data_file</span><span class="o">=</span><span class="s2">&quot;eval_summary.parquet&quot;</span><span class="p">)</span>
+<span class="n">eval_summary</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Loading data from ../data/embeddings/eval_summary.parquet
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -949,345 +1114,6 @@ INFO:ekorpkit.models.embeddings.wordvec:Evaluation score: 0.7195422354510931
 </table>
 </div></div></div>
 </div>
-</div>
-<div class="section" id="twitter-data">
-<h3>Twitter Data<a class="headerlink" href="#twitter-data" title="Permalink to this headline">¶</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;model/embedding&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;glove_twitter&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">corpus</span> <span class="o">=</span> <span class="s2">&quot;Twitter&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;https://nlp.stanford.edu/data/glove.twitter.27B.zip&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">model_dir</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">path</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">model_file</span> <span class="o">=</span> <span class="s2">&quot;glove.twitter.27B.200d.txt&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">model_type</span> <span class="o">=</span> <span class="s2">&quot;glove&quot;</span>
-<span class="n">wv_twt</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
-<span class="n">wv_twt</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:cached_path:cache of https://nlp.stanford.edu/data/glove.twitter.27B.zip is up-to-date
-INFO:ekorpkit.io.cached_path:cached path: /workspace/.cache/cached_path/d08f2221566196fe3fd6f557a2b67e9ffd5cf4b7c500918d98581a52f349a804.7417464dae8ba25e69e639021d320765d2d18bb24f73391ef423756069dc8078-extracted
-INFO:cached_path:cache of https://nlp.stanford.edu/data/glove.twitter.27B.zip is up-to-date
-INFO:ekorpkit.io.cached_path:cached path: /workspace/.cache/cached_path/d08f2221566196fe3fd6f557a2b67e9ffd5cf4b7c500918d98581a52f349a804.7417464dae8ba25e69e639021d320765d2d18bb24f73391ef423756069dc8078-extracted
-INFO:cached_path:cache of https://raw.githubusercontent.com/RaRe-Technologies/gensim/develop/gensim/test/test_data/questions-words.txt is up-to-date
-INFO:ekorpkit.io.cached_path:cached path: /root/.ekorpkit/.cache/cached_path/7568e1428a2ba53a33f67dea7e276f212c065b07d102aafc177a507d244161f6.f60f7f82aaacf3a534d93013617bcfead46a795268096ff1990608b16115b566
-INFO:gensim.models.keyedvectors:loading projection weights from /workspace/.cache/cached_path/d08f2221566196fe3fd6f557a2b67e9ffd5cf4b7c500918d98581a52f349a804.7417464dae8ba25e69e639021d320765d2d18bb24f73391ef423756069dc8078-extracted/glove.twitter.27B.200d.txt
-INFO:gensim.utils:KeyedVectors lifecycle event {&#39;msg&#39;: &#39;loaded (1193514, 200) matrix of type float32 from /workspace/.cache/cached_path/d08f2221566196fe3fd6f557a2b67e9ffd5cf4b7c500918d98581a52f349a804.7417464dae8ba25e69e639021d320765d2d18bb24f73391ef423756069dc8078-extracted/glove.twitter.27B.200d.txt&#39;, &#39;binary&#39;: False, &#39;encoding&#39;: &#39;utf8&#39;, &#39;datetime&#39;: &#39;2022-06-08T01:29:15.967560&#39;, &#39;gensim&#39;: &#39;4.2.0&#39;, &#39;python&#39;: &#39;3.8.12 (default, Jan 14 2022, 01:33:56) \n[GCC 7.5.0]&#39;, &#39;platform&#39;: &#39;Linux-5.4.0-58-generic-x86_64-with-glibc2.27&#39;, &#39;event&#39;: &#39;load_word2vec_format&#39;}
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">twt_score</span><span class="p">,</span> <span class="n">twt_eval</span><span class="p">,</span> <span class="n">twt_sections</span> <span class="o">=</span> <span class="n">wv_twt</span><span class="o">.</span><span class="n">evaluate_word_analogies</span><span class="p">(</span><span class="n">analogies</span><span class="o">=</span><span class="s2">&quot;google&quot;</span><span class="p">)</span>
-<span class="n">twt_eval</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:gensim.models.keyedvectors:Evaluating word analogies for top 300000 words in the model on /root/.ekorpkit/.cache/cached_path/7568e1428a2ba53a33f67dea7e276f212c065b07d102aafc177a507d244161f6.f60f7f82aaacf3a534d93013617bcfead46a795268096ff1990608b16115b566
-INFO:gensim.models.keyedvectors:capital-common-countries: 70.6% (357/506)
-INFO:gensim.models.keyedvectors:capital-world: 74.6% (1639/2198)
-INFO:gensim.models.keyedvectors:currency: 3.3% (15/458)
-INFO:gensim.models.keyedvectors:city-in-state: 35.6% (879/2467)
-INFO:gensim.models.keyedvectors:family: 79.5% (302/380)
-INFO:gensim.models.keyedvectors:gram1-adjective-to-adverb: 12.7% (118/930)
-INFO:gensim.models.keyedvectors:gram2-opposite: 30.8% (185/600)
-INFO:gensim.models.keyedvectors:gram3-comparative: 74.2% (989/1332)
-INFO:gensim.models.keyedvectors:gram4-superlative: 64.0% (718/1122)
-INFO:gensim.models.keyedvectors:gram5-present-participle: 66.4% (701/1056)
-INFO:gensim.models.keyedvectors:gram6-nationality-adjective: 72.7% (894/1229)
-INFO:gensim.models.keyedvectors:gram7-past-tense: 53.1% (787/1482)
-INFO:gensim.models.keyedvectors:gram8-plural: 76.0% (1012/1332)
-INFO:gensim.models.keyedvectors:gram9-plural-verbs: 52.0% (452/870)
-INFO:gensim.models.keyedvectors:Quadruplets with out-of-vocabulary words: 18.3%
-INFO:gensim.models.keyedvectors:NB: analogies containing OOV words were skipped from evaluation! To change this behavior, use &quot;dummy4unknown=True&quot;
-INFO:gensim.models.keyedvectors:Total accuracy: 56.7% (9048/15962)
-INFO:ekorpkit.models.embeddings.wordvec:Evaluation score: 0.5668462598671845
-</pre></div>
-</div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Category</th>
-      <th>Samples</th>
-      <th>Average</th>
-      <th>Corpus</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Capitals</td>
-      <td>506</td>
-      <td>0.705534</td>
-      <td>Twitter</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Capitals RoW</td>
-      <td>2198</td>
-      <td>0.745678</td>
-      <td>Twitter</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Currency</td>
-      <td>458</td>
-      <td>0.032751</td>
-      <td>Twitter</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>City-State</td>
-      <td>2467</td>
-      <td>0.356303</td>
-      <td>Twitter</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Famliy</td>
-      <td>380</td>
-      <td>0.794737</td>
-      <td>Twitter</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-</div>
-<div class="section" id="common-crawl">
-<h3>Common Crawl<a class="headerlink" href="#common-crawl" title="Permalink to this headline">¶</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;model/embedding&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;glove_commoncrawl&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">corpus</span> <span class="o">=</span> <span class="s2">&quot;Common Crawl&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;https://nlp.stanford.edu/data/glove.42B.300d.zip&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">model_dir</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">path</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">model_file</span> <span class="o">=</span> <span class="s2">&quot;glove.42B.300d.txt&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">model_type</span> <span class="o">=</span> <span class="s2">&quot;glove&quot;</span>
-<span class="n">wv_cc</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
-<span class="n">wv_cc</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:cached_path:cache of https://nlp.stanford.edu/data/glove.42B.300d.zip is up-to-date
-INFO:ekorpkit.io.cached_path:cached path: /workspace/.cache/cached_path/1b77e307d0976680276bd5eddffac55a83164787611dccb81aaaab9c4c79073b.d4304a004cdd3b0267ad688b5fc4d6c9d43c622a571ee2ba8b39604fc257faed-extracted
-INFO:cached_path:cache of https://nlp.stanford.edu/data/glove.42B.300d.zip is up-to-date
-INFO:ekorpkit.io.cached_path:cached path: /workspace/.cache/cached_path/1b77e307d0976680276bd5eddffac55a83164787611dccb81aaaab9c4c79073b.d4304a004cdd3b0267ad688b5fc4d6c9d43c622a571ee2ba8b39604fc257faed-extracted
-INFO:cached_path:cache of https://raw.githubusercontent.com/RaRe-Technologies/gensim/develop/gensim/test/test_data/questions-words.txt is up-to-date
-INFO:ekorpkit.io.cached_path:cached path: /root/.ekorpkit/.cache/cached_path/7568e1428a2ba53a33f67dea7e276f212c065b07d102aafc177a507d244161f6.f60f7f82aaacf3a534d93013617bcfead46a795268096ff1990608b16115b566
-INFO:gensim.models.keyedvectors:loading projection weights from /workspace/.cache/cached_path/1b77e307d0976680276bd5eddffac55a83164787611dccb81aaaab9c4c79073b.d4304a004cdd3b0267ad688b5fc4d6c9d43c622a571ee2ba8b39604fc257faed-extracted/glove.42B.300d.txt
-INFO:gensim.utils:KeyedVectors lifecycle event {&#39;msg&#39;: &#39;loaded (1917494, 300) matrix of type float32 from /workspace/.cache/cached_path/1b77e307d0976680276bd5eddffac55a83164787611dccb81aaaab9c4c79073b.d4304a004cdd3b0267ad688b5fc4d6c9d43c622a571ee2ba8b39604fc257faed-extracted/glove.42B.300d.txt&#39;, &#39;binary&#39;: False, &#39;encoding&#39;: &#39;utf8&#39;, &#39;datetime&#39;: &#39;2022-06-08T01:36:34.557263&#39;, &#39;gensim&#39;: &#39;4.2.0&#39;, &#39;python&#39;: &#39;3.8.12 (default, Jan 14 2022, 01:33:56) \n[GCC 7.5.0]&#39;, &#39;platform&#39;: &#39;Linux-5.4.0-58-generic-x86_64-with-glibc2.27&#39;, &#39;event&#39;: &#39;load_word2vec_format&#39;}
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cc_score</span><span class="p">,</span> <span class="n">cc_eval</span><span class="p">,</span> <span class="n">cc_sections</span> <span class="o">=</span> <span class="n">wv_cc</span><span class="o">.</span><span class="n">evaluate_word_analogies</span><span class="p">(</span><span class="n">analogies</span><span class="o">=</span><span class="s2">&quot;google&quot;</span><span class="p">)</span>
-<span class="n">cc_eval</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:gensim.models.keyedvectors:Evaluating word analogies for top 300000 words in the model on /root/.ekorpkit/.cache/cached_path/7568e1428a2ba53a33f67dea7e276f212c065b07d102aafc177a507d244161f6.f60f7f82aaacf3a534d93013617bcfead46a795268096ff1990608b16115b566
-INFO:gensim.models.keyedvectors:capital-common-countries: 95.1% (481/506)
-INFO:gensim.models.keyedvectors:capital-world: 94.0% (4178/4446)
-INFO:gensim.models.keyedvectors:currency: 17.6% (142/808)
-INFO:gensim.models.keyedvectors:city-in-state: 78.1% (1926/2467)
-INFO:gensim.models.keyedvectors:family: 90.9% (460/506)
-INFO:gensim.models.keyedvectors:gram1-adjective-to-adverb: 30.2% (300/992)
-INFO:gensim.models.keyedvectors:gram2-opposite: 35.6% (289/812)
-INFO:gensim.models.keyedvectors:gram3-comparative: 85.6% (1140/1332)
-INFO:gensim.models.keyedvectors:gram4-superlative: 84.0% (942/1122)
-INFO:gensim.models.keyedvectors:gram5-present-participle: 80.9% (854/1056)
-INFO:gensim.models.keyedvectors:gram6-nationality-adjective: 88.3% (1412/1599)
-INFO:gensim.models.keyedvectors:gram7-past-tense: 49.3% (769/1560)
-INFO:gensim.models.keyedvectors:gram8-plural: 84.9% (1131/1332)
-INFO:gensim.models.keyedvectors:gram9-plural-verbs: 64.1% (558/870)
-INFO:gensim.models.keyedvectors:Quadruplets with out-of-vocabulary words: 0.7%
-INFO:gensim.models.keyedvectors:NB: analogies containing OOV words were skipped from evaluation! To change this behavior, use &quot;dummy4unknown=True&quot;
-INFO:gensim.models.keyedvectors:Total accuracy: 75.1% (14582/19408)
-INFO:ekorpkit.models.embeddings.wordvec:Evaluation score: 0.7513396537510305
-</pre></div>
-</div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Category</th>
-      <th>Samples</th>
-      <th>Average</th>
-      <th>Corpus</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Capitals</td>
-      <td>506</td>
-      <td>0.950593</td>
-      <td>Common Crawl</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Capitals RoW</td>
-      <td>4446</td>
-      <td>0.939721</td>
-      <td>Common Crawl</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Currency</td>
-      <td>808</td>
-      <td>0.175743</td>
-      <td>Common Crawl</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>City-State</td>
-      <td>2467</td>
-      <td>0.780705</td>
-      <td>Common Crawl</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Famliy</td>
-      <td>506</td>
-      <td>0.909091</td>
-      <td>Common Crawl</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-</div>
-</div>
-<div class="section" id="evaluate-embeddings">
-<h2>Evaluate embeddings<a class="headerlink" href="#evaluate-embeddings" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="n">eval_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">wiki_eval</span><span class="p">,</span> <span class="n">twt_eval</span><span class="p">,</span> <span class="n">cc_eval</span><span class="p">])</span>
-<span class="n">save_dataframe</span><span class="p">(</span><span class="n">eval_results</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;eval_results.parquet&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Saving dataframe as ../data/embeddings/eval_results.parquet
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_results</span> <span class="o">=</span> <span class="n">load_dataframe</span><span class="p">(</span><span class="n">data_file</span><span class="o">=</span><span class="s2">&quot;eval_results.parquet&quot;</span><span class="p">)</span>
-<span class="n">eval_results</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Loading data from ../data/embeddings/eval_results.parquet
-</pre></div>
-</div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Category</th>
-      <th>Samples</th>
-      <th>Average</th>
-      <th>Corpus</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Capitals</td>
-      <td>506</td>
-      <td>0.948617</td>
-      <td>Wikipedia</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Capitals RoW</td>
-      <td>4524</td>
-      <td>0.959770</td>
-      <td>Wikipedia</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Currency</td>
-      <td>808</td>
-      <td>0.170792</td>
-      <td>Wikipedia</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>City-State</td>
-      <td>2467</td>
-      <td>0.593028</td>
-      <td>Wikipedia</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Famliy</td>
-      <td>506</td>
-      <td>0.881423</td>
-      <td>Wikipedia</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=barplot&quot;</span><span class="p">)</span>
@@ -1298,8 +1124,8 @@ INFO:ekorpkit.models.embeddings.wordvec:Evaluation score: 0.7513396537510305
 <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">ylabel</span> <span class="o">=</span> <span class="s2">&quot;Accuracy&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Word Vector Accuracy by Glove Source: Twitter: </span><span class="si">{</span><span class="n">twt_score</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">, Wiki: </span><span class="si">{</span><span class="n">wiki_score</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">, Crawl: </span><span class="si">{</span><span class="n">cc_score</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">eval_results</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Word Vector Accuracy by Glove Source: Twitter: </span><span class="si">{</span><span class="n">twt_results</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">, Wiki: </span><span class="si">{</span><span class="n">wiki_results</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">, Crawl: </span><span class="si">{</span><span class="n">cc_results</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">eval_summary</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1316,42 +1142,25 @@ INFO:ekorpkit.visualize.plot:Saved figure to ./figs/plot_BarPlot.png
 <h2>Visualize Embeddings<a class="headerlink" href="#visualize-embeddings" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">norm</span>
-<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">IncrementalPCA</span>
-
-<span class="n">vectors</span> <span class="o">=</span> <span class="n">wv_wiki</span><span class="o">.</span><span class="n">wv</span><span class="o">.</span><span class="n">vectors</span><span class="p">[:</span><span class="mi">100000</span><span class="p">]</span>
-<span class="n">vectors</span> <span class="o">/=</span> <span class="n">norm</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">vectors</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-
-<span class="n">words</span> <span class="o">=</span> <span class="n">wv_wiki</span><span class="o">.</span><span class="n">wv</span><span class="o">.</span><span class="n">index_to_key</span><span class="p">[:</span><span class="mi">100000</span><span class="p">]</span>
-<span class="n">word2id</span> <span class="o">=</span> <span class="p">{</span><span class="n">w</span><span class="p">:</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">words</span><span class="p">)}</span>
-
-<span class="n">pca</span> <span class="o">=</span> <span class="n">IncrementalPCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="n">vectors2D</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">wv_wiki</span><span class="o">.</span><span class="n">reduce_embeddings_2d</span><span class="p">(</span><span class="n">restrict_vocab</span><span class="o">=</span><span class="mi">100_000</span><span class="p">)</span>
+<span class="n">vectors</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;vectors&quot;</span><span class="p">]</span>
+<span class="n">word2idx</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;word2idx&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(100000, 300)
-[0.02604632 0.01293813]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.models.embeddings.wordvec:dimensions: (100000, 300)
+INFO:ekorpkit.models.embeddings.wordvec:explained variance: [0.02604632 0.01293811]
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-
-<span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
-<span class="n">correct</span> <span class="o">=</span> <span class="n">incorrect</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">wiki_sections</span><span class="p">:</span>
-    <span class="n">correct</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">section</span><span class="p">[</span><span class="s1">&#39;correct&#39;</span><span class="p">])</span>
-    <span class="n">incorrect</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">section</span><span class="p">[</span><span class="s1">&#39;incorrect&#39;</span><span class="p">])</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">section</span><span class="p">[</span><span class="s1">&#39;correct&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">section</span><span class="o">=</span><span class="n">section</span><span class="p">[</span><span class="s1">&#39;section&#39;</span><span class="p">])</span>
-    <span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">results</span><span class="p">,</span> <span class="n">df</span><span class="p">])</span>
-<span class="n">results</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_analogies</span> <span class="o">=</span> <span class="n">wv_wiki</span><span class="o">.</span><span class="n">find_most_similar_analogies</span><span class="p">(</span>
+    <span class="n">wiki_results</span><span class="p">[</span><span class="s2">&quot;correct&quot;</span><span class="p">],</span> <span class="n">word2idx</span><span class="p">,</span> <span class="n">vectors</span>
+<span class="p">)</span>
+<span class="n">best_analogies</span>
 </pre></div>
 </div>
 </div>
@@ -1374,212 +1183,127 @@ INFO:ekorpkit.visualize.plot:Saved figure to ./figs/plot_BarPlot.png
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>0</th>
-      <th>1</th>
-      <th>2</th>
-      <th>3</th>
-      <th>section</th>
+      <th>wordpairs</th>
+      <th>word2idx</th>
+      <th>similarity</th>
+    </tr>
+    <tr>
+      <th>category</th>
+      <th></th>
+      <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>athens</td>
-      <td>greece</td>
-      <td>baghdad</td>
-      <td>iraq</td>
-      <td>capital-common-countries</td>
+      <th>Adj-Adverb</th>
+      <td>(fortunate, fortunately, lucky, luckily)</td>
+      <td>(11156, 11584, 5065, 19955)</td>
+      <td>1.998511</td>
     </tr>
     <tr>
-      <th>1</th>
-      <td>athens</td>
-      <td>greece</td>
-      <td>bangkok</td>
-      <td>thailand</td>
-      <td>capital-common-countries</td>
+      <th>Capitals</th>
+      <td>(london, england, paris, france)</td>
+      <td>(516, 563, 1035, 387)</td>
+      <td>1.780721</td>
     </tr>
     <tr>
-      <th>2</th>
-      <td>athens</td>
-      <td>greece</td>
-      <td>beijing</td>
-      <td>china</td>
-      <td>capital-common-countries</td>
+      <th>Capitals RoW</th>
+      <td>(vienna, austria, brussels, belgium)</td>
+      <td>(4094, 2640, 3879, 2975)</td>
+      <td>1.996072</td>
     </tr>
     <tr>
-      <th>3</th>
-      <td>athens</td>
-      <td>greece</td>
-      <td>berlin</td>
-      <td>germany</td>
-      <td>capital-common-countries</td>
+      <th>City-State</th>
+      <td>(chicago, illinois, omaha, nebraska)</td>
+      <td>(1147, 2884, 12159, 6087)</td>
+      <td>1.971419</td>
     </tr>
     <tr>
-      <th>4</th>
-      <td>athens</td>
-      <td>greece</td>
-      <td>bern</td>
-      <td>switzerland</td>
-      <td>capital-common-countries</td>
+      <th>Comparative</th>
+      <td>(long, longer, heavy, heavier)</td>
+      <td>(173, 1078, 1106, 11613)</td>
+      <td>1.932268</td>
     </tr>
     <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
+      <th>Currency</th>
+      <td>(usa, dollar, russia, ruble)</td>
+      <td>(2396, 678, 412, 17506)</td>
+      <td>1.834880</td>
     </tr>
     <tr>
-      <th>14016</th>
-      <td>write</td>
-      <td>writes</td>
-      <td>speak</td>
-      <td>speaks</td>
-      <td>Total accuracy</td>
+      <th>Famliy</th>
+      <td>(sons, daughters, stepfather, stepmother)</td>
+      <td>(2912, 4321, 20624, 26903)</td>
+      <td>1.999805</td>
     </tr>
     <tr>
-      <th>14017</th>
-      <td>write</td>
-      <td>writes</td>
-      <td>swim</td>
-      <td>swims</td>
-      <td>Total accuracy</td>
+      <th>Nationality</th>
+      <td>(switzerland, swiss, israel, israeli)</td>
+      <td>(2311, 1849, 315, 406)</td>
+      <td>1.999926</td>
     </tr>
     <tr>
-      <th>14018</th>
-      <td>write</td>
-      <td>writes</td>
-      <td>think</td>
-      <td>thinks</td>
-      <td>Total accuracy</td>
+      <th>Opposite</th>
+      <td>(tasteful, distasteful, likely, unlikely)</td>
+      <td>(43255, 41259, 647, 2993)</td>
+      <td>1.954353</td>
     </tr>
     <tr>
-      <th>14019</th>
-      <td>write</td>
-      <td>writes</td>
-      <td>walk</td>
-      <td>walks</td>
-      <td>Total accuracy</td>
+      <th>Past Tense</th>
+      <td>(sitting, sat, hitting, hit)</td>
+      <td>(2995, 3223, 3141, 416)</td>
+      <td>1.999999</td>
     </tr>
     <tr>
-      <th>14020</th>
-      <td>write</td>
-      <td>writes</td>
-      <td>work</td>
-      <td>works</td>
-      <td>Total accuracy</td>
+      <th>Plural</th>
+      <td>(eye, eyes, donkey, donkeys)</td>
+      <td>(2090, 2251, 20328, 35193)</td>
+      <td>1.999876</td>
+    </tr>
+    <tr>
+      <th>Plural Verbs</th>
+      <td>(talk, talks, estimate, estimates)</td>
+      <td>(1077, 370, 3470, 2886)</td>
+      <td>1.739114</td>
+    </tr>
+    <tr>
+      <th>Pres. Part.</th>
+      <td>(write, writing, read, reading)</td>
+      <td>(2432, 1649, 1465, 2185)</td>
+      <td>1.999959</td>
+    </tr>
+    <tr>
+      <th>Superlative</th>
+      <td>(weak, weakest, big, biggest)</td>
+      <td>(2690, 15655, 365, 882)</td>
+      <td>0.663122</td>
+    </tr>
+    <tr>
+      <th>Total accuracy</th>
+      <td>(sitting, sat, hitting, hit)</td>
+      <td>(2995, 3223, 3141, 416)</td>
+      <td>1.999999</td>
     </tr>
   </tbody>
 </table>
-<p>28042 rows × 5 columns</p>
 </div></div></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">import</span> <span class="n">cosine</span>
-
-<span class="k">def</span> <span class="nf">find_most_similar_analogy</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Find analogy that most similar in 2D&quot;&quot;&quot;</span>
-    <span class="n">idx</span><span class="p">,</span> <span class="n">most_similar</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
-    
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)):</span>
-        <span class="n">v1</span> <span class="o">=</span> <span class="n">vectors2D</span><span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">-</span> <span class="n">vectors2D</span><span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
-        <span class="n">v2</span> <span class="o">=</span> <span class="n">vectors2D</span><span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span> <span class="o">-</span> <span class="n">vectors2D</span><span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
-        <span class="n">similarity</span> <span class="o">=</span> <span class="n">cosine</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">similarity</span> <span class="o">&lt;</span> <span class="n">most_similar</span><span class="p">:</span>
-            <span class="n">idx</span> <span class="o">=</span> <span class="n">i</span>
-            <span class="n">most_similar</span> <span class="o">=</span> <span class="n">similarity</span>
-    <span class="k">return</span> <span class="n">idx</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result_indices</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;section&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">word2id</span><span class="p">))</span>
-<span class="n">result_indices</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">v</span> <span class="o">=</span> <span class="n">result_indices</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_plot_lims</span><span class="p">(</span><span class="n">coordinates</span><span class="p">):</span>
-    <span class="n">xlim</span><span class="p">,</span> <span class="n">ylim</span> <span class="o">=</span> <span class="n">coordinates</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">values</span>
-    <span class="n">xrange</span><span class="p">,</span> <span class="n">yrange</span> <span class="o">=</span> <span class="p">(</span><span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="mf">.1</span><span class="p">,</span> <span class="p">(</span><span class="n">ylim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">ylim</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="mf">.1</span>
-    <span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">xrange</span><span class="p">,</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">xrange</span>
-    <span class="n">ylim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ylim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">ylim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">yrange</span><span class="p">,</span> <span class="n">ylim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">yrange</span>
-    <span class="k">return</span> <span class="n">xlim</span><span class="p">,</span> <span class="n">ylim</span>
-</pre></div>
-</div>
-</div>
 </div>
 <div class="section" id="plot-analogy-examples">
 <h3>Plot Analogy Examples<a class="headerlink" href="#plot-analogy-examples" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
-<span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-<span class="n">fc</span> <span class="o">=</span> <span class="n">ec</span> <span class="o">=</span> <span class="s2">&quot;darkgrey&quot;</span>
-<span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;section&quot;</span><span class="p">)):</span>
-    <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="mi">11</span><span class="p">:</span>
-        <span class="k">break</span>
-
-    <span class="n">df</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;section&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">word2id</span><span class="p">))</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
-    <span class="n">most_similar_idx</span> <span class="o">=</span> <span class="n">find_most_similar_analogy</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-
-    <span class="n">best_analogy</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">most_similar_idx</span><span class="p">,</span> <span class="p">:</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-
-    <span class="n">analogy_idx</span> <span class="o">=</span> <span class="p">[</span><span class="n">words</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">best_analogy</span><span class="p">]</span>
-    <span class="n">best_analogy</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">best_analogy</span><span class="p">]</span>
-
-    <span class="n">coords</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">vectors2D</span><span class="p">[</span><span class="n">analogy_idx</span><span class="p">])</span>  <span class="c1"># xy array</span>
-
-    <span class="n">xlim</span><span class="p">,</span> <span class="n">ylim</span> <span class="o">=</span> <span class="n">get_plot_lims</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">xlim</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ylim</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
-        <span class="n">axes</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
-            <span class="n">best_analogy</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-            <span class="n">xy</span><span class="o">=</span><span class="n">coords</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>
-            <span class="n">xytext</span><span class="o">=</span><span class="n">coords</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-            <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-                <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">headwidth</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">headlength</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="n">fc</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="n">ec</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.1</span>
-            <span class="p">),</span>
-            <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
-        <span class="p">)</span>
-
-        <span class="n">axes</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
-            <span class="n">best_analogy</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>
-            <span class="n">xy</span><span class="o">=</span><span class="n">coords</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>
-            <span class="n">xytext</span><span class="o">=</span><span class="n">coords</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>
-            <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
-            <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
-            <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
-            <span class="n">color</span><span class="o">=</span><span class="s2">&quot;darkred&quot;</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span>
-        <span class="p">)</span>
-
-    <span class="n">axes</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
-    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">section</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">s</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;gram&quot;</span><span class="p">)]</span>
-    <span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-
-<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;word2vec Embeddings | Analogy Examples&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wv_wiki</span><span class="o">.</span><span class="n">plot_similar_analogies</span><span class="p">(</span><span class="n">best_analogies</span><span class="p">,</span> <span class="n">vectors</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../../_images/eval_vectors_24_0.png" src="../../../../_images/eval_vectors_24_0.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:No data to plot
+INFO:ekorpkit.visualize.plot:No plots to plot
+INFO:ekorpkit.visualize.plot:Saved figure to ./figs/plot_plot.png
+</pre></div>
+</div>
+<img alt="../../../../_images/eval_vectors_21_1.png" src="../../../../_images/eval_vectors_21_1.png" />
 </div>
 </div>
 </div>
