@@ -2,7 +2,25 @@
 
 > credit: original source from https://github.com/yuki678/centralbank_analysis
 
-## FOMC dataset contents
+## Textual Analysis of FOMC contents
+
+FOMC has eight regular meetings to determine the monetary policy. It publishes press conference minutes, statements, and scripts at each meeting. In addition to these regular meetings, it releases the members’ speeches and testimonies on the website. 
+
+At each meeting, the policy makers decide on monetary policy and publish the decision along with their view on the current economic situation and forecast, including the  Forward Guidance since 2012. The central banks intend to indicate their potential future monetary policy in their publications as market communication. 
+
+```{figure} ./figs/FomcMeetings.png
+---
+height: 150px
+name: fig-FomcMeetings
+---
+The prediction inputs (by [Yuki Takahashi](https://towardsdatascience.com/fedspeak-how-to-build-a-nlp-pipeline-to-predict-central-bank-policy-changes-a2f157ca0434))
+```
+
+This project aims to apply NLP to those texts published by FOMC to find latent features. All data used in this analysis are publicly available. 
+
+FOMC Meeting documents are available here: https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm
+
+## FOMC contents
 
 - Statements
 - Meeting Minutes
