@@ -10,13 +10,22 @@ At each meeting, the policy makers decide on monetary policy and publish the dec
 
 ```{figure} ./figs/FomcMeetings.png
 ---
-height: 150px
+width: 500px
 name: fig-FomcMeetings
 ---
-The prediction inputs (by [Yuki Takahashi](https://towardsdatascience.com/fedspeak-how-to-build-a-nlp-pipeline-to-predict-central-bank-policy-changes-a2f157ca0434))
+Available data between FOMC meetings (by [Yuki Takahashi](https://towardsdatascience.com/fedspeak-how-to-build-a-nlp-pipeline-to-predict-central-bank-policy-changes-a2f157ca0434))
 ```
 
 This project aims to apply NLP to those texts published by FOMC to find latent features. All data used in this analysis are publicly available. 
+
+```{figure} ./figs/process.png
+---
+width: 500px
+name: fig-FomcProcess
+---
+Overall flow of analysis (by [Yuki Takahashi](https://towardsdatascience.com/fedspeak-how-to-build-a-nlp-pipeline-to-predict-central-bank-policy-changes-a2f157ca0434))
+```
+
 
 FOMC Meeting documents are available here: https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm
 
