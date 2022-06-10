@@ -51,8 +51,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Prepapring Textual Data" href="03_FOMC_corpus.html" />
@@ -861,7 +859,7 @@ Set logging level to Warning, if you don’t want to see verbose logging,</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.30+13.g779907e.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.32+6.ged4b0a1.dirty
 </pre></div>
 </div>
 </div>
@@ -869,10 +867,6 @@ Set logging level to Warning, if you don’t want to see verbose logging,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/fomc&quot;</span>
-<span class="n">save_dataframe</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
-    <span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;_func_/save_dataframe&quot;</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="n">data_dir</span>
-<span class="p">)</span>
-<span class="n">load_dataframe</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;_func_/load_dataframe&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="o">=</span><span class="n">data_dir</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -881,11 +875,15 @@ Set logging level to Warning, if you don’t want to see verbose logging,</p>
 <h2>Load FOMC class<a class="headerlink" href="#load-fomc-class" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
-
-<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;io/fetcher/fomc&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/fomc&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;io/fetcher/fomc&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
 <span class="n">fomc</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fomc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ekorpkit.io.fetch.fomc.base.FOMC object at 0x7f3e23d51c10&gt;
 </pre></div>
 </div>
 </div>
@@ -957,7 +955,7 @@ Set logging level to Warning, if you don’t want to see verbose logging,</p>
       <td>Powell</td>
       <td>Jerome</td>
       <td>2018-02-05</td>
-      <td>2022-05-27</td>
+      <td>2022-06-10</td>
     </tr>
   </tbody>
 </table>
@@ -995,9 +993,17 @@ Set logging level to Warning, if you don’t want to see verbose logging,</p>
       <th>forecast</th>
       <th>confcall</th>
       <th>speaker</th>
+      <th>rate</th>
+      <th>rate_change</th>
+      <th>rate_decision</th>
+      <th>rate_changed</th>
     </tr>
     <tr>
       <th>date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -1006,39 +1012,59 @@ Set logging level to Warning, if you don’t want to see verbose logging,</p>
   </thead>
   <tbody>
     <tr>
-      <th>1982-02-02</th>
+      <th>1982-10-05</th>
       <td>False</td>
       <td>False</td>
       <td>False</td>
       <td>Paul Volcker</td>
+      <td>9.50</td>
+      <td>-0.50</td>
+      <td>-1.0</td>
+      <td>1</td>
     </tr>
     <tr>
-      <th>1982-03-30</th>
+      <th>1982-11-16</th>
       <td>False</td>
       <td>False</td>
       <td>False</td>
       <td>Paul Volcker</td>
+      <td>9.00</td>
+      <td>-0.50</td>
+      <td>-1.0</td>
+      <td>1</td>
     </tr>
     <tr>
-      <th>1982-05-18</th>
+      <th>1982-12-21</th>
       <td>False</td>
       <td>False</td>
       <td>False</td>
       <td>Paul Volcker</td>
+      <td>8.50</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>1982-05-20</th>
+      <th>1983-01-14</th>
       <td>False</td>
       <td>False</td>
       <td>True</td>
       <td>Paul Volcker</td>
+      <td>8.50</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>1982-06-01</th>
+      <th>1983-01-21</th>
       <td>False</td>
       <td>False</td>
-      <td>False</td>
+      <td>True</td>
       <td>Paul Volcker</td>
+      <td>8.50</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>...</th>
@@ -1046,45 +1072,69 @@ Set logging level to Warning, if you don’t want to see verbose logging,</p>
       <td>...</td>
       <td>...</td>
       <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
     </tr>
     <tr>
-      <th>2022-06-15</th>
+      <th>2021-11-03</th>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>Jerome Powell</td>
+      <td>0.25</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2021-12-15</th>
       <td>False</td>
       <td>True</td>
       <td>False</td>
-      <td>other</td>
+      <td>Jerome Powell</td>
+      <td>0.25</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>2022-07-27</th>
+      <th>2022-01-26</th>
       <td>False</td>
       <td>False</td>
       <td>False</td>
-      <td>other</td>
+      <td>Jerome Powell</td>
+      <td>0.25</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>2022-09-21</th>
+      <th>2022-03-16</th>
       <td>False</td>
       <td>True</td>
       <td>False</td>
-      <td>other</td>
+      <td>Jerome Powell</td>
+      <td>0.50</td>
+      <td>0.25</td>
+      <td>1.0</td>
+      <td>1</td>
     </tr>
     <tr>
-      <th>2022-11-02</th>
+      <th>2022-05-04</th>
       <td>False</td>
       <td>False</td>
       <td>False</td>
-      <td>other</td>
-    </tr>
-    <tr>
-      <th>2022-12-14</th>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>other</td>
+      <td>Jerome Powell</td>
+      <td>1.00</td>
+      <td>0.50</td>
+      <td>1.0</td>
+      <td>1</td>
     </tr>
   </tbody>
 </table>
-<p>427 rows × 4 columns</p>
+<p>415 rows × 8 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -1117,9 +1167,17 @@ Set logging level to Warning, if you don’t want to see verbose logging,</p>
       <th>forecast</th>
       <th>confcall</th>
       <th>speaker</th>
+      <th>rate</th>
+      <th>rate_change</th>
+      <th>rate_decision</th>
+      <th>rate_changed</th>
     </tr>
     <tr>
       <th>date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -1128,39 +1186,59 @@ Set logging level to Warning, if you don’t want to see verbose logging,</p>
   </thead>
   <tbody>
     <tr>
-      <th>1982-02-02</th>
+      <th>1982-10-05</th>
       <td>False</td>
       <td>False</td>
       <td>False</td>
       <td>Paul Volcker</td>
+      <td>9.50</td>
+      <td>-0.50</td>
+      <td>-1.0</td>
+      <td>1</td>
     </tr>
     <tr>
-      <th>1982-03-30</th>
+      <th>1982-11-16</th>
       <td>False</td>
       <td>False</td>
       <td>False</td>
       <td>Paul Volcker</td>
+      <td>9.00</td>
+      <td>-0.50</td>
+      <td>-1.0</td>
+      <td>1</td>
     </tr>
     <tr>
-      <th>1982-05-18</th>
+      <th>1982-12-21</th>
       <td>False</td>
       <td>False</td>
       <td>False</td>
       <td>Paul Volcker</td>
+      <td>8.50</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>1982-05-20</th>
+      <th>1983-01-14</th>
       <td>False</td>
       <td>False</td>
       <td>True</td>
       <td>Paul Volcker</td>
+      <td>8.50</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>1982-06-01</th>
+      <th>1983-01-21</th>
       <td>False</td>
       <td>False</td>
-      <td>False</td>
+      <td>True</td>
       <td>Paul Volcker</td>
+      <td>8.50</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>...</th>
@@ -1168,45 +1246,69 @@ Set logging level to Warning, if you don’t want to see verbose logging,</p>
       <td>...</td>
       <td>...</td>
       <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
     </tr>
     <tr>
-      <th>2022-06-15</th>
+      <th>2021-11-03</th>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>Jerome Powell</td>
+      <td>0.25</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2021-12-15</th>
       <td>False</td>
       <td>True</td>
       <td>False</td>
-      <td>other</td>
+      <td>Jerome Powell</td>
+      <td>0.25</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>2022-07-27</th>
+      <th>2022-01-26</th>
       <td>False</td>
       <td>False</td>
       <td>False</td>
-      <td>other</td>
+      <td>Jerome Powell</td>
+      <td>0.25</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>2022-09-21</th>
+      <th>2022-03-16</th>
       <td>False</td>
       <td>True</td>
       <td>False</td>
-      <td>other</td>
+      <td>Jerome Powell</td>
+      <td>0.50</td>
+      <td>0.25</td>
+      <td>1.0</td>
+      <td>1</td>
     </tr>
     <tr>
-      <th>2022-11-02</th>
+      <th>2022-05-04</th>
       <td>False</td>
       <td>False</td>
       <td>False</td>
-      <td>other</td>
-    </tr>
-    <tr>
-      <th>2022-12-14</th>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>other</td>
+      <td>Jerome Powell</td>
+      <td>1.00</td>
+      <td>0.50</td>
+      <td>1.0</td>
+      <td>1</td>
     </tr>
   </tbody>
 </table>
-<p>427 rows × 4 columns</p>
+<p>415 rows × 8 columns</p>
 </div></div></div>
 </div>
 </div>
@@ -1217,7 +1319,7 @@ Set logging level to Warning, if you don’t want to see verbose logging,</p>
 <h3>Target FED Rate<a class="headerlink" href="#target-fed-rate" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;io/fetcher=quandl&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;io/fetcher=quandl&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">series_name</span> <span class="o">=</span> <span class="s2">&quot;DFEDTAR&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">series_id</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;DFEDTAR&quot;</span><span class="p">,</span> <span class="s2">&quot;DFEDTARU&quot;</span><span class="p">]</span>
 <span class="c1"># cfg.force_download = True</span>
@@ -1288,41 +1390,42 @@ Set logging level to Warning, if you don’t want to see verbose logging,</p>
       <td>...</td>
     </tr>
     <tr>
-      <th>2022-05-21</th>
+      <th>2022-06-05</th>
       <td>1.00</td>
       <td>DFEDTARU</td>
     </tr>
     <tr>
-      <th>2022-05-22</th>
+      <th>2022-06-06</th>
       <td>1.00</td>
       <td>DFEDTARU</td>
     </tr>
     <tr>
-      <th>2022-05-23</th>
+      <th>2022-06-07</th>
       <td>1.00</td>
       <td>DFEDTARU</td>
     </tr>
     <tr>
-      <th>2022-05-24</th>
+      <th>2022-06-08</th>
       <td>1.00</td>
       <td>DFEDTARU</td>
     </tr>
     <tr>
-      <th>2022-05-25</th>
+      <th>2022-06-09</th>
       <td>1.00</td>
       <td>DFEDTARU</td>
     </tr>
   </tbody>
 </table>
-<p>14486 rows × 2 columns</p>
+<p>14501 rows × 2 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;visualize/plot=lineplot&#39;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;DFEDTAR&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Fed Rate&#39;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;visualize/plot=lineplot&#39;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;date&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;DFEDTAR&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Fed Rate&#39;</span>
 <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">fedrates</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1423,10 +1526,11 @@ Set logging level to Warning, if you don’t want to see verbose logging,</p>
 <span class="n">dff_30</span> <span class="o">=</span> <span class="n">dff</span><span class="o">.</span><span class="n">iloc</span><span class="p">[::</span><span class="mi">30</span><span class="p">,</span> <span class="p">:]</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">dff_30</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
-<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;visualize/plot=lineplot&#39;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;DFF&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Effective FED Rate&#39;</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;visualize/plot=lineplot&#39;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;date&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;DFF&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Effective FED Rate&#39;</span>
 <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">dff_30</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1458,7 +1562,7 @@ Set logging level to Warning, if you don’t want to see verbose logging,</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 10/10 [00:00&lt;00:00, 477.35it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 10/10 [00:00&lt;00:00, 440.36it/s]
 </pre></div>
 </div>
 </div>
@@ -1479,224 +1583,6 @@ Set logging level to Warning, if you don’t want to see verbose logging,</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>1 Mo</th>
-      <th>2 Mo</th>
-      <th>3 Mo</th>
-      <th>6 Mo</th>
-      <th>1 Yr</th>
-      <th>2 Yr</th>
-      <th>3 Yr</th>
-      <th>5 Yr</th>
-      <th>7 Yr</th>
-      <th>10 Yr</th>
-      <th>20 Yr</th>
-      <th>30 Yr</th>
-    </tr>
-    <tr>
-      <th>Date</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2022-05-26</th>
-      <td>0.71</td>
-      <td>0.90</td>
-      <td>1.07</td>
-      <td>1.52</td>
-      <td>1.99</td>
-      <td>2.46</td>
-      <td>2.63</td>
-      <td>2.70</td>
-      <td>2.75</td>
-      <td>2.75</td>
-      <td>3.18</td>
-      <td>2.99</td>
-    </tr>
-    <tr>
-      <th>2022-05-25</th>
-      <td>0.58</td>
-      <td>0.88</td>
-      <td>1.06</td>
-      <td>1.52</td>
-      <td>2.01</td>
-      <td>2.48</td>
-      <td>2.63</td>
-      <td>2.71</td>
-      <td>2.76</td>
-      <td>2.75</td>
-      <td>3.14</td>
-      <td>2.97</td>
-    </tr>
-    <tr>
-      <th>2022-05-24</th>
-      <td>0.55</td>
-      <td>0.88</td>
-      <td>1.06</td>
-      <td>1.53</td>
-      <td>2.02</td>
-      <td>2.50</td>
-      <td>2.66</td>
-      <td>2.76</td>
-      <td>2.80</td>
-      <td>2.76</td>
-      <td>3.16</td>
-      <td>2.98</td>
-    </tr>
-    <tr>
-      <th>2022-05-23</th>
-      <td>0.55</td>
-      <td>0.90</td>
-      <td>1.07</td>
-      <td>1.57</td>
-      <td>2.09</td>
-      <td>2.65</td>
-      <td>2.80</td>
-      <td>2.88</td>
-      <td>2.90</td>
-      <td>2.86</td>
-      <td>3.26</td>
-      <td>3.08</td>
-    </tr>
-    <tr>
-      <th>2022-05-20</th>
-      <td>0.63</td>
-      <td>0.87</td>
-      <td>1.03</td>
-      <td>1.51</td>
-      <td>2.07</td>
-      <td>2.60</td>
-      <td>2.73</td>
-      <td>2.80</td>
-      <td>2.82</td>
-      <td>2.78</td>
-      <td>3.17</td>
-      <td>2.99</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>1990-01-08</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>7.79</td>
-      <td>7.88</td>
-      <td>7.81</td>
-      <td>7.90</td>
-      <td>7.95</td>
-      <td>7.92</td>
-      <td>8.05</td>
-      <td>8.02</td>
-      <td>NaN</td>
-      <td>8.09</td>
-    </tr>
-    <tr>
-      <th>1990-01-05</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>7.79</td>
-      <td>7.85</td>
-      <td>7.79</td>
-      <td>7.90</td>
-      <td>7.94</td>
-      <td>7.92</td>
-      <td>8.03</td>
-      <td>7.99</td>
-      <td>NaN</td>
-      <td>8.06</td>
-    </tr>
-    <tr>
-      <th>1990-01-04</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>7.84</td>
-      <td>7.90</td>
-      <td>7.82</td>
-      <td>7.92</td>
-      <td>7.93</td>
-      <td>7.91</td>
-      <td>8.02</td>
-      <td>7.98</td>
-      <td>NaN</td>
-      <td>8.04</td>
-    </tr>
-    <tr>
-      <th>1990-01-03</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>7.89</td>
-      <td>7.94</td>
-      <td>7.85</td>
-      <td>7.94</td>
-      <td>7.96</td>
-      <td>7.92</td>
-      <td>8.04</td>
-      <td>7.99</td>
-      <td>NaN</td>
-      <td>8.04</td>
-    </tr>
-    <tr>
-      <th>1990-01-02</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>7.83</td>
-      <td>7.89</td>
-      <td>7.81</td>
-      <td>7.87</td>
-      <td>7.90</td>
-      <td>7.87</td>
-      <td>7.98</td>
-      <td>7.94</td>
-      <td>NaN</td>
-      <td>8.00</td>
-    </tr>
-  </tbody>
-</table>
-<p>8109 rows × 12 columns</p>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1704,9 +1590,9 @@ Set logging level to Warning, if you don’t want to see verbose logging,</p>
 <span class="n">treasury_5</span> <span class="o">=</span> <span class="n">treasury</span><span class="o">.</span><span class="n">iloc</span><span class="p">[::</span><span class="mi">5</span><span class="p">,</span> <span class="p">:]</span>
 
 <span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=lineplot&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">treasury_5</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Treasury Yields&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">treasury_5</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Treasury Yields&quot;</span>
 <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">treasury_5</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -2067,11 +1953,10 @@ Set logging level to Warning, if you don’t want to see verbose logging,</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=scatter&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;rate_decision&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Rate Decisions&quot;</span>
-<span class="c1"># eKonf.print(cfg)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot=scatter&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;rate_decision&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Rate Decisions&quot;</span>
 <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">fomc_calendar</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -2082,14 +1967,14 @@ Set logging level to Warning, if you don’t want to see verbose logging,</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">econ_data</span> <span class="o">=</span> <span class="n">load_dataframe</span><span class="p">(</span><span class="n">data_file</span><span class="o">=</span><span class="s2">&quot;econ_data.parquet&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">econ_data</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;econ_data.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">econ_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">econ_data</span><span class="o">.</span><span class="n">tail</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            unscheduled  forecast  confcall          chair  rate  rate_change  \
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            unscheduled  forecast  confcall        speaker  rate  rate_change  \
 date                                                                            
 2021-11-03        False     False     False  Jerome Powell  0.25         0.00   
 2021-12-15        False      True     False  Jerome Powell  0.25         0.00   
@@ -2099,11 +1984,11 @@ date
 
             rate_decision  rate_changed        GDP  GDP_diff_prev  ...  \
 date                                                               ...   
-2021-11-03              0             0  19478.893       0.570948  ...   
-2021-12-15              0             0  19478.893       0.570948  ...   
-2022-01-26              0             0  19478.893       0.570948  ...   
-2022-03-16              1             1  19806.290       1.680778  ...   
-2022-05-04              1             1  19735.895      -0.355417  ...   
+2021-11-03            0.0             0  19478.893       0.570948  ...   
+2021-12-15            0.0             0  19478.893       0.570948  ...   
+2022-01-26            0.0             0  19478.893       0.570948  ...   
+2022-03-16            1.0             1  19806.290       1.680778  ...   
+2022-05-04            1.0             1  19735.895      -0.355417  ...   
 
             NMI_diff_year   NMI_date    RSALES  RSALES_diff_prev  \
 date                                                               
@@ -2145,7 +2030,7 @@ date
         <span class="n">econ_data</span><span class="p">,</span> <span class="n">econ_indicators</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">name</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">offset</span>
     <span class="p">)</span>
 
-<span class="n">save_dataframe</span><span class="p">(</span><span class="n">econ_data</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;econ_data.parquet&quot;</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">econ_data</span><span class="p">,</span> <span class="s2">&quot;econ_data.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2166,15 +2051,16 @@ date
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=lineplot&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot=lineplot&quot;</span><span class="p">)</span>
 
-<span class="n">cfg</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">form</span> <span class="o">=</span> <span class="s2">&quot;individual&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">subplots</span><span class="o">.</span><span class="n">ncols</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">subplots</span><span class="o">.</span><span class="n">nrows</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">lineplot</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">lineplot</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">figure</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">axes</span> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sr</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fomc</span><span class="o">.</span><span class="n">econ_series</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">sr</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
@@ -2184,15 +2070,15 @@ date
     <span class="n">plot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">name</span>
     <span class="n">plot</span><span class="o">.</span><span class="n">axno</span> <span class="o">=</span> <span class="n">i</span><span class="o">*</span><span class="mi">2</span>
     <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plot</span><span class="p">)</span>
-    <span class="n">fig</span> <span class="o">=</span> <span class="n">figure</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">axno</span> <span class="o">=</span> <span class="n">i</span><span class="o">*</span><span class="mi">2</span>
-    <span class="n">cfg</span><span class="o">.</span><span class="n">figures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
-    <span class="n">fig</span> <span class="o">=</span> <span class="n">figure</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span> <span class="o">+</span> <span class="s2">&quot; (% Change)&quot;</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">legend</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Previous Period&#39;</span><span class="p">,</span> <span class="s1">&#39;Previous Year&#39;</span><span class="p">]</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">axno</span> <span class="o">=</span> <span class="n">i</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span>
-    <span class="n">cfg</span><span class="o">.</span><span class="n">figures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+    <span class="n">_ax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">_ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+    <span class="n">_ax</span><span class="o">.</span><span class="n">axno</span> <span class="o">=</span> <span class="n">i</span><span class="o">*</span><span class="mi">2</span>
+    <span class="n">cfg</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_ax</span><span class="p">)</span>
+    <span class="n">_ax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">_ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span> <span class="o">+</span> <span class="s2">&quot; (% Change)&quot;</span>
+    <span class="n">_ax</span><span class="o">.</span><span class="n">legend</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Previous Period&#39;</span><span class="p">,</span> <span class="s1">&#39;Previous Year&#39;</span><span class="p">]</span>
+    <span class="n">_ax</span><span class="o">.</span><span class="n">axno</span> <span class="o">=</span> <span class="n">i</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span>
+    <span class="n">cfg</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_ax</span><span class="p">)</span>
     <span class="n">plot</span> <span class="o">=</span> <span class="n">lineplot</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">plot</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;_date&quot;</span>
     <span class="n">plot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;_diff_prev&quot;</span>
@@ -2233,9 +2119,9 @@ date
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 14486/14486 [00:12&lt;00:00, 1190.84it/s]
-100%|██████████| 14486/14486 [00:11&lt;00:00, 1213.75it/s]
-100%|██████████| 14486/14486 [00:11&lt;00:00, 1217.74it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 14501/14501 [00:12&lt;00:00, 1207.01it/s]
+100%|██████████| 14501/14501 [00:11&lt;00:00, 1238.34it/s]
+100%|██████████| 14501/14501 [00:11&lt;00:00, 1208.64it/s]
 </pre></div>
 </div>
 </div>
@@ -2278,10 +2164,10 @@ date
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=lineplot&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">taylor</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Taylor Rule&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot=lineplot&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">taylor</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Taylor Rule&quot;</span>
 <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">taylor</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -2353,7 +2239,7 @@ date
   </thead>
   <tbody>
     <tr>
-      <th>2022-05-21</th>
+      <th>2022-06-05</th>
       <td>1.0</td>
       <td>8.094924</td>
       <td>7.420939</td>
@@ -2366,7 +2252,7 @@ date
       <td>0.0</td>
     </tr>
     <tr>
-      <th>2022-05-22</th>
+      <th>2022-06-06</th>
       <td>1.0</td>
       <td>8.094924</td>
       <td>7.420939</td>
@@ -2379,7 +2265,7 @@ date
       <td>0.0</td>
     </tr>
     <tr>
-      <th>2022-05-23</th>
+      <th>2022-06-07</th>
       <td>1.0</td>
       <td>8.094924</td>
       <td>7.420939</td>
@@ -2392,7 +2278,7 @@ date
       <td>0.0</td>
     </tr>
     <tr>
-      <th>2022-05-24</th>
+      <th>2022-06-08</th>
       <td>1.0</td>
       <td>8.094924</td>
       <td>7.420939</td>
@@ -2405,7 +2291,7 @@ date
       <td>0.0</td>
     </tr>
     <tr>
-      <th>2022-05-25</th>
+      <th>2022-06-09</th>
       <td>1.0</td>
       <td>8.094924</td>
       <td>7.420939</td>
@@ -2429,7 +2315,7 @@ date
 
 <span class="n">econ_data2</span> <span class="o">=</span> <span class="n">econ_data</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">taylor2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
 <span class="n">econ_data2</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">save_dataframe</span><span class="p">(</span><span class="n">econ_data2</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;econ_data2.parquet&quot;</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">econ_data2</span><span class="p">,</span> <span class="s2">&quot;econ_data2.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
 <span class="n">econ_data2</span>
 </pre></div>
 </div>
