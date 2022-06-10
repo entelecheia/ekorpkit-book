@@ -246,6 +246,11 @@ const thebe_selector_output = ".output, .cell_output"
        Word2Vec Basics
       </a>
      </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../embeddings/eval_vectors.html">
+       Evaluate pretrained embeddings
+      </a>
+     </li>
     </ul>
    </li>
    <li class="toctree-l2 has-children">
@@ -545,6 +550,11 @@ const thebe_selector_output = ".output, .cell_output"
    Deep Learning for NLP
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../lectures/ds/index.html">
+   Data Science for Economics and Finance
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -753,7 +763,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+20.g3b968a7.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.32+4.gfd15d82.dirty
 </pre></div>
 </div>
 </div>
@@ -766,8 +776,8 @@ const thebe_selector_output = ".output, .cell_output"
 
 <span class="n">ds_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;dataset&quot;</span><span class="p">)</span>
 <span class="n">ds_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;financial_phrasebank&quot;</span>
-<span class="n">ds_cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;gd://15TUjIfQstCYXU82s0pcaxh2QcSWf1zyG:financial_phrasebank.zip&quot;</span>
-<span class="n">ds_cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">ds_cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">path</span>
+<span class="n">ds_cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;gd://15TUjIfQstCYXU82s0pcaxh2QcSWf1zyG:financial_phrasebank.zip&quot;</span>
+<span class="n">ds_cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">ds_cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cached_path</span>
 <span class="n">ds</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">ds_cfg</span><span class="p">)</span>
 <span class="n">ds</span><span class="o">.</span><span class="n">INFO</span>
 </pre></div>
@@ -839,23 +849,22 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Predicting [text]: 100%|██████████| 97/97 [00:18&lt;00:00,  5.36it/s]
-Predicting [text]: 100%|██████████| 91/91 [00:16&lt;00:00,  5.54it/s]
-Predicting [text]: 100%|██████████| 91/91 [00:16&lt;00:00,  5.49it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Predicting [text]: 100%|██████████| 97/97 [00:26&lt;00:00,  3.68it/s]
+Predicting [text]: 100%|██████████| 91/91 [00:16&lt;00:00,  5.61it/s]
+Predicting [text]: 100%|██████████| 91/91 [00:16&lt;00:00,  5.62it/s]
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">output_dir</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">output_file</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># print(cfg.predict.output_dir)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">suffix</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>./data/predict
-financial_phrasebank.parquet
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>None
 </pre></div>
 </div>
 </div>

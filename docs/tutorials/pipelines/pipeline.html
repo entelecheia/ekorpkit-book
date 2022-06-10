@@ -246,6 +246,11 @@ const thebe_selector_output = ".output, .cell_output"
        Word2Vec Basics
       </a>
      </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../models/embeddings/eval_vectors.html">
+       Evaluate pretrained embeddings
+      </a>
+     </li>
     </ul>
    </li>
    <li class="toctree-l2 has-children">
@@ -545,6 +550,11 @@ const thebe_selector_output = ".output, .cell_output"
    Deep Learning for NLP
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../lectures/ds/index.html">
+   Data Science for Economics and Finance
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -720,7 +730,15 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.32+4.gfd15d82.dirty
 </pre></div>
 </div>
 </div>
@@ -729,23 +747,25 @@ const thebe_selector_output = ".output, .cell_output"
 <h2>Load data<a class="headerlink" href="#load-data" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
-
-<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;${cached_path:&#39;https://github.com/entelecheia/ekorpkit-config/raw/main/data/edgar.zip&#39;,true,false}&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/entelecheia/ekorpkit-book/raw/main/data/edgar.zip&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cached_path</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">+=</span> <span class="s2">&quot;/edgar&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;edgar.parquet&quot;</span>
-<span class="c1"># cfg.verbose = True</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data: edgar.parquet&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
-
-<span class="n">df_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;pipeline=blank&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;pipeline=blank&quot;</span><span class="p">)</span>
 <span class="n">df_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;edgar_sample&quot;</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">df_cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -753,6 +773,9 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:ekorpkit.pipelines.pipe:No pipeline specified
+</pre></div>
+</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -891,11 +914,10 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
-
-<span class="n">df_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;pipeline=blank&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;pipeline=blank&quot;</span><span class="p">)</span>
 <span class="n">df_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;edgar_sample&quot;</span>
-<span class="n">df_cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;${cached_path:&#39;https://github.com/entelecheia/ekorpkit-config/raw/main/data/edgar.zip&#39;,true,false}&quot;</span>
+<span class="n">df_cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/entelecheia/ekorpkit-book/raw/main/data/edgar.zip&quot;</span>
+<span class="n">df_cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">df_cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cached_path</span>
 <span class="n">df_cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">+=</span> <span class="s2">&quot;/edgar&quot;</span>
 <span class="n">df_cfg</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;edgar.parquet&quot;</span>
 <span class="n">df_cfg</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;filename&quot;</span><span class="p">,</span> <span class="s2">&quot;item&quot;</span><span class="p">,</span> <span class="s2">&quot;cik&quot;</span><span class="p">,</span> <span class="s2">&quot;company&quot;</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">]</span>
@@ -905,6 +927,9 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:ekorpkit.pipelines.pipe:No pipeline specified
+</pre></div>
+</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -926,9 +951,19 @@ const thebe_selector_output = ".output, .cell_output"
       <th>id</th>
       <th>filename</th>
       <th>item</th>
+      <th>text</th>
       <th>cik</th>
       <th>company</th>
-      <th>text</th>
+      <th>filing_type</th>
+      <th>filing_date</th>
+      <th>period_of_report</th>
+      <th>sic</th>
+      <th>state_of_inc</th>
+      <th>state_location</th>
+      <th>fiscal_year_end</th>
+      <th>filing_html_index</th>
+      <th>htm_filing_link</th>
+      <th>complete_text_filing_link</th>
     </tr>
   </thead>
   <tbody>
@@ -937,45 +972,95 @@ const thebe_selector_output = ".output, .cell_output"
       <td>1534</td>
       <td>1999/320193_10K_1999_0000912057-99-010244.json</td>
       <td>item_1</td>
+      <td>ITEM 1. \nBUSINESS GENERAL Apple Computer, Inc...</td>
       <td>320193</td>
       <td>APPLE COMPUTER INC</td>
-      <td>ITEM 1. \nBUSINESS GENERAL Apple Computer, Inc...</td>
+      <td>10-K</td>
+      <td>1999-12-22</td>
+      <td>1999-09-25</td>
+      <td>3571</td>
+      <td>CA</td>
+      <td>CA</td>
+      <td>0930</td>
+      <td>https://www.sec.gov/Archives/edgar/data/320193...</td>
+      <td>None</td>
+      <td>https://www.sec.gov/Archives/edgar/data/320193...</td>
     </tr>
     <tr>
       <th>1560</th>
       <td>1697</td>
       <td>1999/21344_10K_1999_0000021344-00-000009.json</td>
       <td>item_1</td>
+      <td>ITEM 1. \nBUSINESS The Coca-Cola Company (toge...</td>
       <td>21344</td>
       <td>COCA COLA CO</td>
-      <td>ITEM 1. \nBUSINESS The Coca-Cola Company (toge...</td>
+      <td>10-K</td>
+      <td>2000-03-09</td>
+      <td>1999-12-31</td>
+      <td>2080</td>
+      <td>DE</td>
+      <td>GA</td>
+      <td>1231</td>
+      <td>https://www.sec.gov/Archives/edgar/data/21344/...</td>
+      <td>None</td>
+      <td>https://www.sec.gov/Archives/edgar/data/21344/...</td>
     </tr>
     <tr>
       <th>2746</th>
       <td>2977</td>
       <td>1999/70858_10K_1999_0000950168-00-000621.json</td>
       <td>item_1</td>
+      <td>Item 1. \nBUSINESS General Bank of America Cor...</td>
       <td>70858</td>
       <td>BANK OF AMERICA CORP /DE/</td>
-      <td>Item 1. \nBUSINESS General Bank of America Cor...</td>
+      <td>10-K</td>
+      <td>2000-03-20</td>
+      <td>1999-12-31</td>
+      <td>6021</td>
+      <td>DE</td>
+      <td>NC</td>
+      <td>1231</td>
+      <td>https://www.sec.gov/Archives/edgar/data/70858/...</td>
+      <td>None</td>
+      <td>https://www.sec.gov/Archives/edgar/data/70858/...</td>
     </tr>
     <tr>
       <th>3762</th>
       <td>4088</td>
       <td>1999/80424_10K_1999_0000080424-99-000027.json</td>
       <td>item_1</td>
+      <td>Item 1. \nBusiness. \n--------- General Develo...</td>
       <td>80424</td>
       <td>PROCTER &amp; GAMBLE CO</td>
-      <td>Item 1. \nBusiness. \n--------- General Develo...</td>
+      <td>10-K</td>
+      <td>1999-09-15</td>
+      <td>1999-06-30</td>
+      <td>2840</td>
+      <td>OH</td>
+      <td>OH</td>
+      <td>0630</td>
+      <td>https://www.sec.gov/Archives/edgar/data/80424/...</td>
+      <td>None</td>
+      <td>https://www.sec.gov/Archives/edgar/data/80424/...</td>
     </tr>
     <tr>
       <th>4806</th>
       <td>5211</td>
       <td>1999/1018724_10K_1999_0000891020-00-000622.json</td>
       <td>item_1</td>
+      <td>ITEM 1. \nBUSINESS This Annual Report on Form ...</td>
       <td>1018724</td>
       <td>AMAZON COM INC</td>
-      <td>ITEM 1. \nBUSINESS This Annual Report on Form ...</td>
+      <td>10-K</td>
+      <td>2000-03-29</td>
+      <td>1999-12-31</td>
+      <td>5961</td>
+      <td>DE</td>
+      <td>WA</td>
+      <td>1231</td>
+      <td>https://www.sec.gov/Archives/edgar/data/101872...</td>
+      <td>None</td>
+      <td>https://www.sec.gov/Archives/edgar/data/101872...</td>
     </tr>
   </tbody>
 </table>
@@ -997,20 +1082,28 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;_target_&#39;: &#39;ekorpkit.corpora.corpus.Corpus&#39;,
  &#39;autoload&#39;: True,
  &#39;automerge&#39;: False,
- &#39;column_info&#39;: {&#39;_target_&#39;: &#39;ekorpkit.info.base.ColumnInfo&#39;,
+ &#39;cache&#39;: {&#39;cache_dir&#39;: &#39;/workspace/.cache&#39;,
+           &#39;extract_archive&#39;: True,
+           &#39;force_extract&#39;: False,
+           &#39;path&#39;: None,
+           &#39;return_parent_dir&#39;: True,
+           &#39;uri&#39;: None,
+           &#39;verbose&#39;: False},
+ &#39;column_info&#39;: {&#39;_target_&#39;: &#39;ekorpkit.info.column.ColumnInfo&#39;,
                  &#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;,
                              &#39;merge_meta_on&#39;: None,
                              &#39;text&#39;: &#39;text&#39;,
                              &#39;timestamp&#39;: None},
                  &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;},
-                 &#39;datetime&#39;: {&#39;format&#39;: None, &#39;key&#39;: None, &#39;params&#39;: None},
+                 &#39;datetime&#39;: {&#39;_parms_&#39;: None, &#39;columns&#39;: None, &#39;format&#39;: None},
                  &#39;keys&#39;: {&#39;id&#39;: &#39;id&#39;,
                           &#39;split&#39;: &#39;split&#39;,
                           &#39;text&#39;: &#39;text&#39;,
                           &#39;timestamp&#39;: &#39;timestamp&#39;},
                  &#39;meta&#39;: None,
                  &#39;segment_separator&#39;: &#39;\\n\\n&#39;,
-                 &#39;timestamp&#39;: {&#39;format&#39;: None, &#39;key&#39;: None, &#39;params&#39;: None}},
+                 &#39;sentence_separator&#39;: &#39;\\n&#39;,
+                 &#39;timestamp&#39;: {&#39;_parms_&#39;: None, &#39;format&#39;: None, &#39;key&#39;: None}},
  &#39;data_dir&#39;: &#39;../data&#39;,
  &#39;filetype&#39;: None,
  &#39;metadata_dir&#39;: None,
@@ -1034,7 +1127,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell_output docutils container">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "b7e1bdd1137a4e4d8ff551e372985834", "version_major": 2, "version_minor": 0}
+{"model_id": "5f4d9391f0c34ae083af15de769773e1", "version_major": 2, "version_minor": 0}
 </script></div>
 </div>
 <div class="cell docutils container">
