@@ -51,8 +51,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Bank of Korea" href="../bok/index.html" />
@@ -735,22 +733,12 @@ const thebe_selector_output = ".output, .cell_output"
 
 <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/fomc&quot;</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+15.g2cbd42e
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/fomc&quot;</span>
-<span class="n">save_dataframe</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
-    <span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;_func_/save_dataframe&quot;</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="n">data_dir</span>
-<span class="p">)</span>
-<span class="n">load_dataframe</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;_func_/load_dataframe&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="o">=</span><span class="n">data_dir</span><span class="p">)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.32+6.ged4b0a1.dirty
 </pre></div>
 </div>
 </div>
@@ -768,8 +756,12 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.datasets.feature:Loaded info file: ../data/fomc/fomc_features_small/info-fomc_features_small.yaml
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;../data/fomc/fomc_features_small/fomc_features_small-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_features_small/fomc_features_small-train.parquet&#39;]
 INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_features_small/fomc_features_small-train.parquet
 INFO:ekorpkit.info.feature:Added a column [split] with value [train]
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;../data/fomc/fomc_features_small/fomc_features_small-test.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_features_small/fomc_features_small-test.parquet&#39;]
 INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_features_small/fomc_features_small-test.parquet
 INFO:ekorpkit.info.feature:Added a column [split] with value [test]
 </pre></div>
@@ -790,9 +782,77 @@ INFO:ekorpkit.info.feature:Added a column [split] with value [test]
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/lib/python3.8/site-packages/xgboost/compat.py:31: FutureWarning: pandas.Int64Index is deprecated and will be removed from pandas in a future version. Use pandas.Index with the appropriate dtype instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/resources/.pyenv/versions/3.8.12/envs/ekonml38/lib/python3.8/site-packages/xgboost/compat.py:31: FutureWarning: pandas.Int64Index is deprecated and will be removed from pandas in a future version. Use pandas.Index with the appropriate dtype instead.
   from pandas import MultiIndex, Int64Index
 INFO:ekorpkit.ekonf:No method defined to call
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">model_cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;_method_&#39;: None,
+ &#39;_target_&#39;: &#39;ekorpkit.models.automl.flaml.AutoML&#39;,
+ &#39;config&#39;: {&#39;log_file_name&#39;: &#39;automl_fomc_features_small.log&#39;,
+            &#39;metric&#39;: &#39;accuracy&#39;,
+            &#39;seed&#39;: 7654321,
+            &#39;task&#39;: &#39;classification&#39;,
+            &#39;time_budget&#39;: 600,
+            &#39;verbose&#39;: False},
+ &#39;dataset&#39;: {&#39;_target_&#39;: &#39;ekorpkit.datasets.feature.FeatureSet&#39;,
+             &#39;auto&#39;: {&#39;build&#39;: False, &#39;load&#39;: True},
+             &#39;column_info&#39;: {&#39;_target_&#39;: &#39;ekorpkit.info.feature.FeatureInfo&#39;,
+                             &#39;columns&#39;: {&#39;id&#39;: None,
+                                         &#39;index&#39;: None,
+                                         &#39;x&#39;: None,
+                                         &#39;y&#39;: None},
+                             &#39;data&#39;: None,
+                             &#39;datetime&#39;: {&#39;_parms_&#39;: None,
+                                          &#39;columns&#39;: None,
+                                          &#39;format&#39;: None},
+                             &#39;keys&#39;: {&#39;id&#39;: &#39;id&#39;,
+                                      &#39;index&#39;: &#39;index&#39;,
+                                      &#39;split&#39;: &#39;split&#39;,
+                                      &#39;x&#39;: &#39;x&#39;,
+                                      &#39;y&#39;: &#39;y&#39;}},
+             &#39;data_dir&#39;: &#39;../data/fomc&#39;,
+             &#39;data_file&#39;: None,
+             &#39;filetype&#39;: &#39;.parquet&#39;,
+             &#39;force&#39;: {&#39;rebuild&#39;: False},
+             &#39;name&#39;: &#39;fomc_features_small&#39;,
+             &#39;path&#39;: {&#39;cache&#39;: {&#39;cache_dir&#39;: &#39;/workspace/.cache&#39;,
+                                &#39;extract_archive&#39;: True,
+                                &#39;force_extract&#39;: False,
+                                &#39;path&#39;: None,
+                                &#39;return_parent_dir&#39;: True,
+                                &#39;uri&#39;: None,
+                                &#39;verbose&#39;: False},
+                      &#39;cached_path&#39;: None,
+                      &#39;columns&#39;: None,
+                      &#39;concat_data&#39;: False,
+                      &#39;data_dir&#39;: &#39;../data/fomc&#39;,
+                      &#39;data_file&#39;: None,
+                      &#39;filetype&#39;: &#39;.parquet&#39;,
+                      &#39;name&#39;: &#39;fomc_features_small&#39;,
+                      &#39;output_dir&#39;: None,
+                      &#39;output_file&#39;: None,
+                      &#39;root&#39;: &#39;/workspace/data/fomc_features_small&#39;,
+                      &#39;suffix&#39;: None,
+                      &#39;verbose&#39;: False},
+             &#39;use_name_as_subdir&#39;: True,
+             &#39;verbose&#39;: False},
+ &#39;log_file&#39;: &#39;automl_fomc_features_small.log&#39;,
+ &#39;model_file&#39;: &#39;automl_fomc_features_small.mdl&#39;,
+ &#39;name&#39;: &#39;automl_fomc_features_small&#39;,
+ &#39;output_dir&#39;: &#39;/workspace/projects/esgml/outputs/automl_fomc_features_small&#39;,
+ &#39;pred_output_file&#39;: &#39;automl_fomc_features_small_test_predictions.parquet&#39;,
+ &#39;to_predict&#39;: {&#39;X&#39;: None, &#39;y_preds&#39;: &#39;y_preds&#39;, &#39;y_probs&#39;: &#39;y_probs&#39;},
+ &#39;verbose&#39;: False}
 </pre></div>
 </div>
 </div>
@@ -876,87 +936,23 @@ Training duration of best run: 0.1351 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;time_history&#39;: [0.16283369064331055,
-  29.263866901397705,
-  53.26441550254822,
-  158.98795890808105,
-  161.9256660938263],
- &#39;best_valid_loss_history&#39;: [0.33731343283582094,
-  0.3343283582089553,
-  0.3342831298055179,
-  0.32528267752148354,
-  0.31931252826775214],
- &#39;valid_loss_history&#39;: [0.33731343283582094,
-  0.3343283582089553,
-  0.3342831298055179,
-  0.32528267752148354,
-  0.31931252826775214],
- &#39;config_history&#39;: [{&#39;Current Learner&#39;: &#39;lgbm&#39;,
-   &#39;Current Sample&#39;: 332,
-   &#39;Current Hyper-parameters&#39;: {&#39;n_estimators&#39;: 4,
-    &#39;num_leaves&#39;: 4,
-    &#39;min_child_samples&#39;: 20,
-    &#39;learning_rate&#39;: 0.09999999999999995,
-    &#39;log_max_bin&#39;: 8,
-    &#39;colsample_bytree&#39;: 1.0,
-    &#39;reg_alpha&#39;: 0.0009765625,
-    &#39;reg_lambda&#39;: 1.0},
-   &#39;Best Learner&#39;: &#39;lgbm&#39;,
-   &#39;Best Hyper-parameters&#39;: {&#39;n_estimators&#39;: 4,
-    &#39;num_leaves&#39;: 4,
-    &#39;min_child_samples&#39;: 20,
-    &#39;learning_rate&#39;: 0.09999999999999995,
-    &#39;log_max_bin&#39;: 8,
-    &#39;colsample_bytree&#39;: 1.0,
-    &#39;reg_alpha&#39;: 0.0009765625,
-    &#39;reg_lambda&#39;: 1.0}},
-  {&#39;Current Learner&#39;: &#39;extra&#39;,
-   &#39;Current Sample&#39;: 332,
-   &#39;Current Hyper-parameters&#39;: {&#39;n_estimators&#39;: 4,
-    &#39;max_features&#39;: 0.36037911316042676,
-    &#39;max_leaves&#39;: 4,
-    &#39;criterion&#39;: &#39;gini&#39;},
-   &#39;Best Learner&#39;: &#39;extra&#39;,
-   &#39;Best Hyper-parameters&#39;: {&#39;n_estimators&#39;: 4,
-    &#39;max_features&#39;: 0.36037911316042676,
-    &#39;max_leaves&#39;: 4,
-    &#39;criterion&#39;: &#39;gini&#39;}},
-  {&#39;Current Learner&#39;: &#39;extra&#39;,
-   &#39;Current Sample&#39;: 332,
-   &#39;Current Hyper-parameters&#39;: {&#39;n_estimators&#39;: 6,
-    &#39;max_features&#39;: 0.2686507948058836,
-    &#39;max_leaves&#39;: 5,
-    &#39;criterion&#39;: &#39;entropy&#39;},
-   &#39;Best Learner&#39;: &#39;extra&#39;,
-   &#39;Best Hyper-parameters&#39;: {&#39;n_estimators&#39;: 6,
-    &#39;max_features&#39;: 0.2686507948058836,
-    &#39;max_leaves&#39;: 5,
-    &#39;criterion&#39;: &#39;entropy&#39;}},
-  {&#39;Current Learner&#39;: &#39;rf&#39;,
-   &#39;Current Sample&#39;: 332,
-   &#39;Current Hyper-parameters&#39;: {&#39;n_estimators&#39;: 8,
-    &#39;max_features&#39;: 0.20888250913774078,
-    &#39;max_leaves&#39;: 6,
-    &#39;criterion&#39;: &#39;gini&#39;},
-   &#39;Best Learner&#39;: &#39;rf&#39;,
-   &#39;Best Hyper-parameters&#39;: {&#39;n_estimators&#39;: 8,
-    &#39;max_features&#39;: 0.20888250913774078,
-    &#39;max_leaves&#39;: 6,
-    &#39;criterion&#39;: &#39;gini&#39;}},
-  {&#39;Current Learner&#39;: &#39;rf&#39;,
-   &#39;Current Sample&#39;: 332,
-   &#39;Current Hyper-parameters&#39;: {&#39;n_estimators&#39;: 7,
-    &#39;max_features&#39;: 0.15085968785222795,
-    &#39;max_leaves&#39;: 10,
-    &#39;criterion&#39;: &#39;gini&#39;},
-   &#39;Best Learner&#39;: &#39;rf&#39;,
-   &#39;Best Hyper-parameters&#39;: {&#39;n_estimators&#39;: 7,
-    &#39;max_features&#39;: 0.15085968785222795,
-    &#39;max_leaves&#39;: 10,
-    &#39;criterion&#39;: &#39;gini&#39;}}],
- &#39;metric_history&#39;: [None, None, None, None, None]}
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:ekorpkit.models.automl.flaml:Log file automl_fomc_features_small.log not found
 </pre></div>
 </div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">plot_feature_importance</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting barplot with {&#39;x&#39;: &#39;importances&#39;, &#39;y&#39;: &#39;columns&#39;, &#39;hue&#39;: None}
+INFO:ekorpkit.visualize.base:Saved figure to ./figs/plot_BarPlot.png
+</pre></div>
+</div>
+<img alt="../../../_images/06_FOMC_AutoML_13_1.png" src="../../../_images/06_FOMC_AutoML_13_1.png" />
 </div>
 </div>
 </div>
