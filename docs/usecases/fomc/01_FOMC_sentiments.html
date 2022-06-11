@@ -51,6 +51,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Prepapring Numerical Data" href="02_FOMC_numerical_data.html" />
@@ -1147,7 +1149,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Predicting [text]: 100%|██████████| 91/91 [00:23&lt;00:00,  3.79it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Predicting [text]: 100%|██████████| 91/91 [00:27&lt;00:00,  3.32it/s]
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1178,12 +1180,14 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <th>negative</th>
       <th>num_tokens</th>
       <th>polarity</th>
+      <th>polarity2</th>
       <th>subjectivity</th>
       <th>polarity_label</th>
       <th>uncertainty</th>
     </tr>
     <tr>
       <th>timestamp</th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -1212,6 +1216,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <td>0.017515</td>
       <td>1199</td>
       <td>-0.555556</td>
+      <td>-0.012510</td>
       <td>0.022519</td>
       <td>negative</td>
       <td>0.019183</td>
@@ -1228,6 +1233,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <td>0.016963</td>
       <td>1238</td>
       <td>-0.555556</td>
+      <td>-0.012116</td>
       <td>0.021809</td>
       <td>negative</td>
       <td>0.018578</td>
@@ -1244,6 +1250,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <td>0.022688</td>
       <td>1146</td>
       <td>-0.238095</td>
+      <td>-0.008726</td>
       <td>0.036649</td>
       <td>negative</td>
       <td>0.020942</td>
@@ -1259,6 +1266,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <td>0.007042</td>
       <td>0.007042</td>
       <td>994</td>
+      <td>0.000000</td>
       <td>0.000000</td>
       <td>0.014085</td>
       <td>neutral</td>
@@ -1276,6 +1284,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <td>0.013145</td>
       <td>989</td>
       <td>-0.300000</td>
+      <td>-0.006067</td>
       <td>0.020222</td>
       <td>negative</td>
       <td>0.033367</td>
@@ -1325,12 +1334,14 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <th>negative</th>
       <th>num_tokens</th>
       <th>polarity</th>
+      <th>polarity2</th>
       <th>subjectivity</th>
       <th>polarity_label</th>
       <th>uncertainty</th>
     </tr>
     <tr>
       <th>timestamp</th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -1359,6 +1370,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <td>0.017515</td>
       <td>1199</td>
       <td>-0.555556</td>
+      <td>-0.012510</td>
       <td>0.022519</td>
       <td>negative</td>
       <td>0.019183</td>
@@ -1375,6 +1387,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <td>0.016963</td>
       <td>1238</td>
       <td>-0.555556</td>
+      <td>-0.012116</td>
       <td>0.021809</td>
       <td>negative</td>
       <td>0.018578</td>
@@ -1391,6 +1404,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <td>0.022688</td>
       <td>1146</td>
       <td>-0.238095</td>
+      <td>-0.008726</td>
       <td>0.036649</td>
       <td>negative</td>
       <td>0.020942</td>
@@ -1406,6 +1420,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <td>0.007042</td>
       <td>0.007042</td>
       <td>994</td>
+      <td>0.000000</td>
       <td>0.000000</td>
       <td>0.014085</td>
       <td>neutral</td>
@@ -1423,6 +1438,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <td>0.013145</td>
       <td>989</td>
       <td>-0.300000</td>
+      <td>-0.006067</td>
       <td>0.020222</td>
       <td>negative</td>
       <td>0.033367</td>
@@ -1470,7 +1486,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;visualize/plot=stackplot&#39;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;polarity&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;polarity&#39;</span> 
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;The polarity scores of the FOMC statements&#39;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">xtickmajorformatterfunc</span> <span class="o">=</span> <span class="s2">&quot;mdates.DateFormatter(&#39;%Y&#39;)&quot;</span>
@@ -1480,6 +1496,27 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
 </div>
 <div class="cell_output docutils container">
 <img alt="../../../_images/01_FOMC_sentiments_16_0.png" src="../../../_images/01_FOMC_sentiments_16_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;visualize/plot=lineplot&#39;</span><span class="p">)</span>
+<span class="n">plot2</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;polarity&#39;</span> 
+<span class="n">plot2</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;polarity2&#39;</span>
+<span class="n">plot2</span><span class="o">.</span><span class="n">_parms_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="n">plot2</span><span class="o">.</span><span class="n">secondary_y</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plot2</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ax2</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">fomc_sentiments</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/01_FOMC_sentiments_17_0.png" src="../../../_images/01_FOMC_sentiments_17_0.png" />
 </div>
 </div>
 <div class="section" id="merge-with-fed-rate-data">
@@ -1558,9 +1595,9 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <td>0.005004</td>
       <td>0.017515</td>
       <td>1199</td>
-      <td>-0.555556</td>
+      <td>-0.012510</td>
       <td>0.022519</td>
-      <td>negative</td>
+      <td>neutral</td>
       <td>0.019183</td>
       <td>5.75</td>
       <td>DFEDTAR</td>
@@ -1576,9 +1613,9 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <td>0.004847</td>
       <td>0.016963</td>
       <td>1238</td>
-      <td>-0.555556</td>
+      <td>-0.012116</td>
       <td>0.021809</td>
-      <td>negative</td>
+      <td>neutral</td>
       <td>0.018578</td>
       <td>6.00</td>
       <td>DFEDTAR</td>
@@ -1594,9 +1631,9 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <td>0.013962</td>
       <td>0.022688</td>
       <td>1146</td>
-      <td>-0.238095</td>
+      <td>-0.008726</td>
       <td>0.036649</td>
-      <td>negative</td>
+      <td>neutral</td>
       <td>0.020942</td>
       <td>6.50</td>
       <td>DFEDTAR</td>
@@ -1630,9 +1667,9 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <td>0.007078</td>
       <td>0.013145</td>
       <td>989</td>
-      <td>-0.300000</td>
+      <td>-0.006067</td>
       <td>0.020222</td>
-      <td>negative</td>
+      <td>neutral</td>
       <td>0.033367</td>
       <td>6.50</td>
       <td>DFEDTAR</td>
@@ -1708,7 +1745,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/01_FOMC_sentiments_22_0.png" src="../../../_images/01_FOMC_sentiments_22_0.png" />
+<img alt="../../../_images/01_FOMC_sentiments_23_0.png" src="../../../_images/01_FOMC_sentiments_23_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1790,7 +1827,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/01_FOMC_sentiments_24_0.png" src="../../../_images/01_FOMC_sentiments_24_0.png" />
+<img alt="../../../_images/01_FOMC_sentiments_25_0.png" src="../../../_images/01_FOMC_sentiments_25_0.png" />
 </div>
 </div>
 </div>
