@@ -801,13 +801,13 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
 
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.32+10.gbc2a912.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.32+15.gc4f9f0d.dirty
 </pre></div>
 </div>
 </div>
@@ -860,7 +860,7 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;model/sentiment=lm&#39;</span><span class="p">)</span>
 
 <span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;pipeline&#39;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">ds_cfg</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">_pipeline_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;predict&#39;</span><span class="p">]</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model_cfg</span>
@@ -874,11 +874,11 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell_output docutils container">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "bf67beb5a3ad4dcd95ec8e59d9bfb474", "version_major": 2, "version_minor": 0}
+{"model_id": "dd905a234d3a41d990397800309fc2ef", "version_major": 2, "version_minor": 0}
 </script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "0b91173d1554433891f589c322def84e", "version_major": 2, "version_minor": 0}
+{"model_id": "a2f838b636724fb0a888023066b3133d", "version_major": 2, "version_minor": 0}
 </script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "7bde9e40224642179d8e6d90a428ccad", "version_major": 2, "version_minor": 0}
+{"model_id": "5498df43045640dcb1c0ed0025a9a97d", "version_major": 2, "version_minor": 0}
 </script><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;train&#39;:          id                                               text    labels  \
  index                                                                      
  0       655  Customers in a wide range of industries use ou...   neutral   
@@ -922,46 +922,6 @@ const thebe_selector_output = ".output, .cell_output"
  1444    0.000000      0.000000        neutral          0.0  
  
  [1445 rows x 13 columns],
- &#39;dev&#39;:        id                                               text    labels  \
- 0    1449       The identity of the buyer is not yet known .   neutral   
- 1     165  Operating profit rose to EUR 3.2 mn from EUR 1...  positive   
- 2    1334  Previously , Grimaldi held a 46.43 pct stake i...   neutral   
- 3     907  A total of $ 78 million will be invested in th...   neutral   
- 4    1371  The 19,200-square metre technology center is l...   neutral   
- ..    ...                                                ...       ...   
- 357  1120  Under a preliminary estimation , the technolog...   neutral   
- 358   404  Operating profit improved by 27 % to EUR 579.8...  positive   
- 359  1708  Rohwedder Group is an automotive supplies , te...   neutral   
- 360   225  In January-September 2007 , the group &#39;s net s...  positive   
- 361  1008  Payment of shares shall be effected on subscri...   neutral   
- 
-                  subset split  positive  negative  num_tokens  polarity  \
- 0    sentences_allagree   dev  0.000000       0.0          10  0.000000   
- 1    sentences_allagree   dev  0.000000       0.0          18  0.000000   
- 2    sentences_allagree   dev  0.000000       0.0          21  0.000000   
- 3    sentences_allagree   dev  0.000000       0.0          13  0.000000   
- 4    sentences_allagree   dev  0.000000       0.0          15  0.000000   
- ..                  ...   ...       ...       ...         ...       ...   
- 357  sentences_allagree   dev  0.000000       0.0          15  0.000000   
- 358  sentences_allagree   dev  0.058824       0.0          17  0.999999   
- 359  sentences_allagree   dev  0.000000       0.0          22  0.000000   
- 360  sentences_allagree   dev  0.000000       0.0          28  0.000000   
- 361  sentences_allagree   dev  0.000000       0.0           9  0.000000   
- 
-      polarity2  subjectivity polarity_label  uncertainty  
- 0     0.000000      0.000000        neutral     0.000000  
- 1     0.000000      0.000000        neutral     0.000000  
- 2     0.000000      0.000000        neutral     0.000000  
- 3     0.000000      0.000000        neutral     0.000000  
- 4     0.000000      0.000000        neutral     0.000000  
- ..         ...           ...            ...          ...  
- 357   0.000000      0.000000        neutral     0.066667  
- 358   0.058824      0.058824       positive     0.000000  
- 359   0.000000      0.000000        neutral     0.000000  
- 360   0.000000      0.000000        neutral     0.000000  
- 361   0.000000      0.000000        neutral     0.000000  
- 
- [362 rows x 13 columns],
  &#39;test&#39;:        id                                               text    labels  \
  0     505  Los Angeles-based Pacific Office Properties Tr...   neutral   
  1     783  Investors will continue being interested in th...  positive   
@@ -1001,7 +961,47 @@ const thebe_selector_output = ".output, .cell_output"
  450        0.0           0.0        neutral          0.0  
  451        0.0           0.0        neutral          0.0  
  
- [452 rows x 13 columns]}
+ [452 rows x 13 columns],
+ &#39;dev&#39;:        id                                               text    labels  \
+ 0    1449       The identity of the buyer is not yet known .   neutral   
+ 1     165  Operating profit rose to EUR 3.2 mn from EUR 1...  positive   
+ 2    1334  Previously , Grimaldi held a 46.43 pct stake i...   neutral   
+ 3     907  A total of $ 78 million will be invested in th...   neutral   
+ 4    1371  The 19,200-square metre technology center is l...   neutral   
+ ..    ...                                                ...       ...   
+ 357  1120  Under a preliminary estimation , the technolog...   neutral   
+ 358   404  Operating profit improved by 27 % to EUR 579.8...  positive   
+ 359  1708  Rohwedder Group is an automotive supplies , te...   neutral   
+ 360   225  In January-September 2007 , the group &#39;s net s...  positive   
+ 361  1008  Payment of shares shall be effected on subscri...   neutral   
+ 
+                  subset split  positive  negative  num_tokens  polarity  \
+ 0    sentences_allagree   dev  0.000000       0.0          10  0.000000   
+ 1    sentences_allagree   dev  0.000000       0.0          18  0.000000   
+ 2    sentences_allagree   dev  0.000000       0.0          21  0.000000   
+ 3    sentences_allagree   dev  0.000000       0.0          13  0.000000   
+ 4    sentences_allagree   dev  0.000000       0.0          15  0.000000   
+ ..                  ...   ...       ...       ...         ...       ...   
+ 357  sentences_allagree   dev  0.000000       0.0          15  0.000000   
+ 358  sentences_allagree   dev  0.058824       0.0          17  0.999999   
+ 359  sentences_allagree   dev  0.000000       0.0          22  0.000000   
+ 360  sentences_allagree   dev  0.000000       0.0          28  0.000000   
+ 361  sentences_allagree   dev  0.000000       0.0           9  0.000000   
+ 
+      polarity2  subjectivity polarity_label  uncertainty  
+ 0     0.000000      0.000000        neutral     0.000000  
+ 1     0.000000      0.000000        neutral     0.000000  
+ 2     0.000000      0.000000        neutral     0.000000  
+ 3     0.000000      0.000000        neutral     0.000000  
+ 4     0.000000      0.000000        neutral     0.000000  
+ ..         ...           ...            ...          ...  
+ 357   0.000000      0.000000        neutral     0.066667  
+ 358   0.058824      0.058824       positive     0.000000  
+ 359   0.000000      0.000000        neutral     0.000000  
+ 360   0.000000      0.000000        neutral     0.000000  
+ 361   0.000000      0.000000        neutral     0.000000  
+ 
+ [362 rows x 13 columns]}
 </pre></div>
 </div>
 </div>
@@ -1051,6 +1051,8 @@ ___________________________________________________
     accuracy                           0.64      2259
    macro avg       0.57      0.48      0.48      2259
 weighted avg       0.63      0.64      0.60      2259
+
+{&#39;xlabel&#39;: &#39;Predicted label\n\nAccuracy=0.642&#39;, &#39;ylabel&#39;: &#39;Actual label&#39;}
 </pre></div>
 </div>
 <img alt="../../../../_images/sentiment_8_1.png" src="../../../../_images/sentiment_8_1.png" />
@@ -1133,9 +1135,9 @@ weighted avg       0.63      0.64      0.60      2259
 </div>
 <div class="cell_output docutils container">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "b5632ad0cb294083b2ac6a95f428472b", "version_major": 2, "version_minor": 0}
+{"model_id": "d9dc3d4d801a4f838f08492399b6bcd9", "version_major": 2, "version_minor": 0}
 </script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "4aaecd5f45d0451db36e1dd52ca663a0", "version_major": 2, "version_minor": 0}
+{"model_id": "39dfa0272c3f4fa98be5b80b4fdc286c", "version_major": 2, "version_minor": 0}
 </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy:  0.8030973451327433
 Precison:  0.8594311804274855
 Recall:  0.8030973451327433
@@ -1151,9 +1153,11 @@ ___________________________________________________
     accuracy                           0.80       452
    macro avg       0.84      0.62      0.57       452
 weighted avg       0.86      0.80      0.76       452
+
+{&#39;xlabel&#39;: &#39;Predicted label\n\nAccuracy=0.803&#39;, &#39;ylabel&#39;: &#39;Actual label&#39;}
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ekorpkit.models.transformer.simple.SimpleClassification at 0x7f65340a2760&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ekorpkit.models.transformer.simple.SimpleClassification at 0x7f01811c6490&gt;
 </pre></div>
 </div>
 <img alt="../../../../_images/sentiment_11_4.png" src="../../../../_images/sentiment_11_4.png" />
@@ -1176,57 +1180,56 @@ weighted avg       0.86      0.80      0.76       452
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">train_batch_size</span> <span class="o">=</span> <span class="mi">8</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">eval_batch_size</span> <span class="o">=</span> <span class="mi">8</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;positive&#39;</span><span class="p">,</span><span class="s1">&#39;neutral&#39;</span><span class="p">,</span><span class="s1">&#39;negative&#39;</span><span class="p">]</span>
-<span class="n">model_cfg</span><span class="o">.</span><span class="n">_method_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;eval&#39;</span><span class="p">]</span>
+<span class="c1"># model_cfg._method_ = [&#39;train&#39;, &#39;eval&#39;]</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">_method_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;eval&#39;</span><span class="p">]</span>
 <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">model_cfg</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "02b54beac5e34fe59c574f6ec46b8038", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "d30953dc9aff4ebb9c45d73821853b94", "version_major": 2, "version_minor": 0}
-</script><div class="output text_html">Finishing last run (ID:j0yohjcp) before initializing another...</div><div class="output text_html">Waiting for W&B process to finish... <strong style="color:green">(success).</strong></div><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_major": 2, "version_minor": 0}
-</script><div class="output text_html">Synced <strong style="color:#cdcd00">ethereal-frog-18</strong>: <a href="https://wandb.ai/entelecheia/esgml-model/runs/j0yohjcp" target="_blank">https://wandb.ai/entelecheia/esgml-model/runs/j0yohjcp</a><br/>Synced 5 W&B file(s), 1 media file(s), 1 artifact file(s) and 0 other file(s)</div><div class="output text_html">Find logs at: <code>/workspace/projects/esgml/outputs/esgml-model/finbert/wandb/run-20220613_095752-j0yohjcp/logs</code></div><div class="output text_html">Successfully finished last run (ID:j0yohjcp). Initializing new run:<br/></div><div class="output text_html">wandb version 0.12.18 is available!  To upgrade, please run:
- $ pip install wandb --upgrade</div><div class="output text_html">Tracking run with wandb version 0.12.17</div><div class="output text_html">Run data is saved locally in <code>/workspace/projects/esgml/outputs/esgml-model/t5-base/wandb/run-20220613_095843-3jueiu6d</code></div><div class="output text_html">Syncing run <strong><a href="https://wandb.ai/entelecheia/esgml-model/runs/3jueiu6d" target="_blank">fine-donkey-19</a></strong> to <a href="https://wandb.ai/entelecheia/esgml-model" target="_blank">Weights & Biases</a> (<a href="https://wandb.me/run" target="_blank">docs</a>)<br/></div><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "2072261e7109407cb23488ecd1fd15cb", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "4980b22cc7f841e4a255f4171b36ab08", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "fb2a7349426d4ae09df93cf55c72e27b", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "092b75c9fdf94bc68dafb1e3d6bc30a8", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "b328ee1f7f0a4a59b03d98fdfec8ae2b", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "2a10a4020bac4d2dab6021500cb1bfab", "version_major": 2, "version_minor": 0}
-</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;eval_loss&#39;: 0.10657118299116662}
+{"model_id": "2bfa721430e049308abf1dd039e776cd", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/lib/python3.8/site-packages/transformers/tokenization_utils_base.py:3538: FutureWarning: 
+`prepare_seq2seq_batch` is deprecated and will be removed in version 5 of HuggingFace Transformers. Use the regular
+`__call__` method to prepare your inputs and the tokenizer under the `as_target_tokenizer` context manager to prepare
+your targets.
+
+Here is a short example:
+
+model_inputs = tokenizer(src_texts, ...)
+with tokenizer.as_target_tokenizer():
+    labels = tokenizer(tgt_texts, ...)
+model_inputs[&quot;labels&quot;] = labels[&quot;input_ids&quot;]
+
+See the documentation of your specific tokenizer for more details on the specific arguments to the tokenizer of choice.
+For a more complete example, see the implementation of `prepare_seq2seq_batch`.
+
+  warnings.warn(formatted_warning, FutureWarning)
 </pre></div>
 </div>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "b289e1648fc04db69dc159588bcd07bf", "version_major": 2, "version_minor": 0}
-</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy:  0.9491150442477876
-Precison:  0.9498340427489275
-Recall:  0.9491150442477876
-F1 Score:  0.949335707792895
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy:  0.9513274336283186
+Precison:  0.9518958999269936
+Recall:  0.9513274336283186
+F1 Score:  0.9515036799966274
 Model Report: 
 ___________________________________________________
               precision    recall  f1-score   support
 
     negative       0.91      0.95      0.93        61
      neutral       0.97      0.96      0.97       277
-    positive       0.91      0.93      0.92       114
+    positive       0.92      0.93      0.93       114
 
     accuracy                           0.95       452
    macro avg       0.93      0.95      0.94       452
 weighted avg       0.95      0.95      0.95       452
+
+{&#39;xlabel&#39;: &#39;Predicted label\n\nAccuracy=0.951&#39;, &#39;ylabel&#39;: &#39;Actual label&#39;}
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ekorpkit.models.transformer.simple_t5.SimpleT5 at 0x7f617e177af0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ekorpkit.models.transformer.simple_t5.SimpleT5 at 0x7f0152117940&gt;
 </pre></div>
 </div>
-<img alt="../../../../_images/sentiment_13_22.png" src="../../../../_images/sentiment_13_22.png" />
+<img alt="../../../../_images/sentiment_13_4.png" src="../../../../_images/sentiment_13_4.png" />
 </div>
 </div>
 </div>

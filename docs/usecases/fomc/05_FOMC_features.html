@@ -733,13 +733,13 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
 
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.32+14.g05da54e.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.32+16.gc607689.dirty
 </pre></div>
 </div>
 </div>
@@ -759,7 +759,10 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;fomc_features_small&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;econ_train_small.parquet&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">force_rebuild</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">force</span><span class="o">.</span><span class="n">rebuild</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">split_sampling</span><span class="o">.</span><span class="n">stratify_on</span> <span class="o">=</span> <span class="s2">&quot;target&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">split_sampling</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="mi">123</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">split_sampling</span><span class="o">.</span><span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.25</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">reset_index</span><span class="o">.</span><span class="n">index_column_name</span> <span class="o">=</span> <span class="s2">&quot;date&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">column_info</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="s2">&quot;date&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">column_info</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="s2">&quot;index&quot;</span>
@@ -781,29 +784,6 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.datasets.feature:Loaded info file: ../data/fomc/fomc_features_small/info-fomc_features_small.yaml
-INFO:ekorpkit.pipelines.pipe:Applying pipeline: OrderedDict([(&#39;load_dataframe&#39;, &#39;load_dataframe&#39;), (&#39;reset_index&#39;, &#39;reset_index&#39;), (&#39;split_sampling&#39;, &#39;split_sampling&#39;)])
-INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function load_dataframe at 0x7fa9a7af3310&gt;)
-INFO:ekorpkit.io.file:Processing [1] files from [[&#39;econ_train_small.parquet&#39;]]
-INFO:ekorpkit.pipelines.pipe:Loading 1 dataframes from [&#39;../data/fomc/econ_train_small.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from ../data/fomc/econ_train_small.parquet
-INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function reset_index at 0x7fa9a7af4670&gt;)
-INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function split_sampling at 0x7fa9a7af4280&gt;)
-INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_features_small/fomc_features_small-train.parquet
-INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_features_small/fomc_features_small-test.parquet
-INFO:ekorpkit.datasets.feature:Dataset fomc_features_small built with 415 rows
-INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_features_small/fomc_features_small-train.parquet
-INFO:ekorpkit.info.feature:Added a column [split] with value [train]
-INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_features_small/fomc_features_small-test.parquet
-INFO:ekorpkit.info.feature:Added a column [split] with value [test]
-INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_features_small/fomc_features_small-train.parquet
-INFO:ekorpkit.info.stat: &gt;&gt; elapsed time to calculate statistics: 0:00:00.004483
-INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_features_small/fomc_features_small-test.parquet
-INFO:ekorpkit.info.stat: &gt;&gt; elapsed time to calculate statistics: 0:00:00.003802
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -811,15 +791,6 @@ INFO:ekorpkit.info.stat: &gt;&gt; elapsed time to calculate statistics: 0:00:00.
 <span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;fomc_features_small&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
 <span class="n">f_small</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.datasets.feature:Loaded info file: ../data/fomc/fomc_features_small/info-fomc_features_small.yaml
-INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_features_small/fomc_features_small-train.parquet
-INFO:ekorpkit.info.feature:Added a column [split] with value [train]
-INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_features_small/fomc_features_small-test.parquet
-INFO:ekorpkit.info.feature:Added a column [split] with value [test]
 </pre></div>
 </div>
 </div>
@@ -833,27 +804,28 @@ INFO:ekorpkit.info.feature:Added a column [split] with value [test]
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;splits&#39;: {&#39;train&#39;: {&#39;data_file&#39;: &#39;fomc_features_small-train.parquet&#39;,
    &#39;name&#39;: &#39;train&#39;,
-   &#39;num_examples&#39;: 332,
-   &#39;num_bytes&#39;: 49800,
-   &#39;human_bytes&#39;: &#39;48.63 KiB&#39;},
+   &#39;num_examples&#39;: 311,
+   &#39;num_bytes&#39;: 63207,
+   &#39;human_bytes&#39;: &#39;61.73 KiB&#39;},
   &#39;test&#39;: {&#39;data_file&#39;: &#39;fomc_features_small-test.parquet&#39;,
    &#39;name&#39;: &#39;test&#39;,
-   &#39;num_examples&#39;: 83,
-   &#39;num_bytes&#39;: 12367,
-   &#39;human_bytes&#39;: &#39;12.08 KiB&#39;}},
+   &#39;num_examples&#39;: 104,
+   &#39;num_bytes&#39;: 21118,
+   &#39;human_bytes&#39;: &#39;20.62 KiB&#39;}},
  &#39;num_examples&#39;: 415,
- &#39;size_in_bytes&#39;: 62167,
- &#39;size_in_human_bytes&#39;: &#39;60.71 KiB&#39;,
+ &#39;size_in_bytes&#39;: 84325,
+ &#39;size_in_human_bytes&#39;: &#39;82.35 KiB&#39;,
  &#39;data_files&#39;: {&#39;train&#39;: &#39;fomc_features_small-train.parquet&#39;,
   &#39;test&#39;: &#39;fomc_features_small-test.parquet&#39;},
  &#39;meta_files&#39;: {},
- &#39;data_files_modified&#39;: &#39;2022-06-05 07:59:18&#39;,
- &#39;info_updated&#39;: &#39;2022-06-05 07:59:18&#39;,
- &#39;column_info&#39;: {&#39;keys&#39;: {&#39;index&#39;: &#39;date&#39;,
+ &#39;data_files_modified&#39;: &#39;2022-06-14 10:23:24&#39;,
+ &#39;info_updated&#39;: &#39;2022-06-14 10:23:24&#39;,
+ &#39;column_info&#39;: {&#39;_keys_&#39;: {&#39;index&#39;: &#39;index&#39;,
    &#39;id&#39;: &#39;id&#39;,
    &#39;x&#39;: &#39;x&#39;,
    &#39;y&#39;: &#39;y&#39;,
-   &#39;split&#39;: &#39;split&#39;},
+   &#39;split&#39;: &#39;split&#39;,
+   &#39;dataset&#39;: &#39;dataset&#39;},
   &#39;columns&#39;: {&#39;index&#39;: &#39;date&#39;,
    &#39;id&#39;: [&#39;date&#39;, &#39;split&#39;],
    &#39;x&#39;: [&#39;prev_decision&#39;,
@@ -866,7 +838,12 @@ INFO:ekorpkit.info.feature:Added a column [split] with value [test]
     &#39;Inertia_diff&#39;,
     &#39;Balanced_diff&#39;],
    &#39;y&#39;: &#39;target&#39;},
-  &#39;data&#39;: {&#39;target&#39;: &#39;int64&#39;,
+  &#39;datetime&#39;: {&#39;columns&#39;: None,
+   &#39;format&#39;: None,
+   &#39;rcParams&#39;: None,
+   &#39;_parms_&#39;: None},
+  &#39;data&#39;: {&#39;date&#39;: &#39;datetime64[ns]&#39;,
+   &#39;target&#39;: &#39;object&#39;,
    &#39;prev_decision&#39;: &#39;float64&#39;,
    &#39;GDP_diff_prev&#39;: &#39;float64&#39;,
    &#39;PMI&#39;: &#39;float64&#39;,
@@ -877,7 +854,7 @@ INFO:ekorpkit.info.feature:Added a column [split] with value [test]
    &#39;Inertia_diff&#39;: &#39;float64&#39;,
    &#39;Balanced_diff&#39;: &#39;float64&#39;,
    &#39;split&#39;: &#39;str&#39;},
-  &#39;datetime&#39;: {&#39;columns&#39;: None, &#39;format&#39;: None, &#39;_parms_&#39;: None}}}
+  &#39;keys&#39;: {&#39;index&#39;: &#39;date&#39;, &#39;id&#39;: &#39;id&#39;, &#39;x&#39;: &#39;x&#39;, &#39;y&#39;: &#39;y&#39;, &#39;split&#39;: &#39;split&#39;}}}
 </pre></div>
 </div>
 </div>
@@ -885,7 +862,7 @@ INFO:ekorpkit.info.feature:Added a column [split] with value [test]
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_train</span> <span class="o">=</span> <span class="n">f_small</span><span class="o">.</span><span class="n">y_train</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">f_small</span><span class="o">.</span><span class="n">FEATURE</span><span class="o">.</span><span class="n">Y</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f_small</span><span class="o">.</span><span class="n">COLUMN</span><span class="o">.</span><span class="n">Y</span><span class="p">)</span>
 <span class="n">y_train</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -895,12 +872,12 @@ INFO:ekorpkit.info.feature:Added a column [split] with value [test]
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>date
-2020-12-16    0
-2007-03-21    0
-2000-05-16    1
-1986-02-12    0
-2014-10-29    1
-Name: target, dtype: int64
+0    Hold
+1    Hold
+2    Hold
+3     Cut
+4     Cut
+Name: target, dtype: object
 </pre></div>
 </div>
 </div>
@@ -908,7 +885,7 @@ Name: target, dtype: int64
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span> <span class="o">=</span> <span class="n">f_small</span><span class="o">.</span><span class="n">X_train</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">f_small</span><span class="o">.</span><span class="n">FEATURE</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f_small</span><span class="o">.</span><span class="n">COLUMN</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
 <span class="n">X_train</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -960,7 +937,7 @@ Name: target, dtype: int64
   </thead>
   <tbody>
     <tr>
-      <th>2020-12-16</th>
+      <th>0</th>
       <td>0.0</td>
       <td>7.547535</td>
       <td>57.7</td>
@@ -972,7 +949,7 @@ Name: target, dtype: int64
       <td>0.0</td>
     </tr>
     <tr>
-      <th>2007-03-21</th>
+      <th>1</th>
       <td>0.0</td>
       <td>0.843712</td>
       <td>51.9</td>
@@ -984,7 +961,7 @@ Name: target, dtype: int64
       <td>0.0</td>
     </tr>
     <tr>
-      <th>2000-05-16</th>
+      <th>2</th>
       <td>1.0</td>
       <td>0.364447</td>
       <td>54.7</td>
@@ -996,7 +973,7 @@ Name: target, dtype: int64
       <td>0.0</td>
     </tr>
     <tr>
-      <th>1986-02-12</th>
+      <th>3</th>
       <td>-1.0</td>
       <td>0.743327</td>
       <td>51.2</td>
@@ -1008,7 +985,7 @@ Name: target, dtype: int64
       <td>0.0</td>
     </tr>
     <tr>
-      <th>2014-10-29</th>
+      <th>4</th>
       <td>0.0</td>
       <td>1.284129</td>
       <td>56.1</td>
@@ -1025,10 +1002,51 @@ Name: target, dtype: int64
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">f_small</span><span class="o">.</span><span class="n">X</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">f_small</span><span class="o">.</span><span class="n">y</span>
-<span class="n">X_cols</span> <span class="o">=</span> <span class="n">f_small</span><span class="o">.</span><span class="n">FEATURE</span><span class="o">.</span><span class="n">X</span>
-<span class="n">y_cols</span> <span class="o">=</span> <span class="n">f_small</span><span class="o">.</span><span class="n">FEATURE</span><span class="o">.</span><span class="n">Y</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;dataset=feature_build&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;fomc_features_large&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;econ_train_large.parquet&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">force</span><span class="o">.</span><span class="n">rebuild</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">split_sampling</span><span class="o">.</span><span class="n">stratify_on</span> <span class="o">=</span> <span class="s2">&quot;target&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">split_sampling</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="mi">123</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">split_sampling</span><span class="o">.</span><span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.25</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">reset_index</span><span class="o">.</span><span class="n">index_column_name</span> <span class="o">=</span> <span class="s2">&quot;date&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">column_info</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="s2">&quot;date&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">column_info</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="s2">&quot;index&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">column_info</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;prev_decision&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GDP_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GDP_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GDPPOT_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GDPPOT_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PCE_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PCE_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CPI_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CPI_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UNEMP&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UNEMP_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UNEMP_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EMP&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EMP_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EMP_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PMI&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PMI_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PMI_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RSALES_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RSALES_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HSALES_diff_prev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HSALES_diff_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Taylor-Rate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Balanced-Rate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Inertia-Rate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Taylor_diff&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Balanced_diff&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Inertia_diff&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">column_info</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;target&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">f_large</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">f_large</span><span class="o">.</span><span class="n">persist</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1038,22 +1056,308 @@ Name: target, dtype: int64
 <h2>Visualize Features<a class="headerlink" href="#visualize-features" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=radviz&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">X_cols</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y_cols</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">classes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;cut&quot;</span><span class="p">,</span> <span class="s2">&quot;hold&quot;</span><span class="p">,</span> <span class="s2">&quot;hike&quot;</span><span class="p">]</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">f_small</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;dataset=feature&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;fomc_features_small&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
+<span class="n">f_small</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">f_small</span><span class="o">.</span><span class="n">train_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/05_FOMC_features_11_0.png" src="../../../_images/05_FOMC_features_11_0.png" />
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Saved figure to ./figs/plot_RadViz.png
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>date</th>
+      <th>target</th>
+      <th>prev_decision</th>
+      <th>GDP_diff_prev</th>
+      <th>PMI</th>
+      <th>EMP_diff_prev</th>
+      <th>RSALES_diff_year</th>
+      <th>UNEMP_diff_prev</th>
+      <th>HSALES_diff_year</th>
+      <th>Inertia_diff</th>
+      <th>Balanced_diff</th>
+      <th>split</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2002-09-24</td>
+      <td>Hold</td>
+      <td>0.0</td>
+      <td>0.615502</td>
+      <td>50.3</td>
+      <td>-0.002297</td>
+      <td>2.206995</td>
+      <td>-1.724138</td>
+      <td>17.090069</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1997-03-25</td>
+      <td>Hike</td>
+      <td>0.0</td>
+      <td>1.038398</td>
+      <td>53.1</td>
+      <td>0.257080</td>
+      <td>3.197859</td>
+      <td>-1.886792</td>
+      <td>4.161248</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2011-04-27</td>
+      <td>Hold</td>
+      <td>0.0</td>
+      <td>0.519595</td>
+      <td>59.1</td>
+      <td>0.179317</td>
+      <td>4.107119</td>
+      <td>0.000000</td>
+      <td>-21.259843</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1989-02-08</td>
+      <td>Hike</td>
+      <td>1.0</td>
+      <td>1.332501</td>
+      <td>54.7</td>
+      <td>0.246029</td>
+      <td>2.094256</td>
+      <td>1.886792</td>
+      <td>22.905983</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2008-09-16</td>
+      <td>Hold</td>
+      <td>0.0</td>
+      <td>0.572295</td>
+      <td>49.2</td>
+      <td>-0.202195</td>
+      <td>-4.803606</td>
+      <td>5.172414</td>
+      <td>-37.768240</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>train</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f_small</span><span class="o">.</span><span class="n">y_train</span> <span class="o">=</span> <span class="n">f_small</span><span class="o">.</span><span class="n">transform_labels</span><span class="p">(</span><span class="n">f_small</span><span class="o">.</span><span class="n">y_train</span><span class="p">)</span>
+<span class="n">f_small</span><span class="o">.</span><span class="n">y_dev</span> <span class="o">=</span> <span class="n">f_small</span><span class="o">.</span><span class="n">transform_labels</span><span class="p">(</span><span class="n">f_small</span><span class="o">.</span><span class="n">y_dev</span><span class="p">)</span>
+<span class="n">f_small</span><span class="o">.</span><span class="n">y_test</span> <span class="o">=</span> <span class="n">f_small</span><span class="o">.</span><span class="n">transform_labels</span><span class="p">(</span><span class="n">f_small</span><span class="o">.</span><span class="n">y_test</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 576x396 with 0 Axes&gt;
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_cols</span> <span class="o">=</span> <span class="n">f_small</span><span class="o">.</span><span class="n">COLUMN</span><span class="o">.</span><span class="n">X</span>
+<span class="n">y_col</span> <span class="o">=</span> <span class="n">f_small</span><span class="o">.</span><span class="n">COLUMN</span><span class="o">.</span><span class="n">Y</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f_small</span><span class="o">.</span><span class="n">classes</span><span class="p">,</span> <span class="n">X_cols</span><span class="p">,</span> <span class="n">y_col</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Cut&#39;, &#39;Hike&#39;, &#39;Hold&#39;] [&#39;prev_decision&#39;, &#39;GDP_diff_prev&#39;, &#39;PMI&#39;, &#39;EMP_diff_prev&#39;, &#39;RSALES_diff_year&#39;, &#39;UNEMP_diff_prev&#39;, &#39;HSALES_diff_year&#39;, &#39;Inertia_diff&#39;, &#39;Balanced_diff&#39;] target
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f_small</span><span class="o">.</span><span class="n">train_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>date</th>
+      <th>target</th>
+      <th>prev_decision</th>
+      <th>GDP_diff_prev</th>
+      <th>PMI</th>
+      <th>EMP_diff_prev</th>
+      <th>RSALES_diff_year</th>
+      <th>UNEMP_diff_prev</th>
+      <th>HSALES_diff_year</th>
+      <th>Inertia_diff</th>
+      <th>Balanced_diff</th>
+      <th>split</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2002-09-24</td>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.615502</td>
+      <td>50.3</td>
+      <td>-0.002297</td>
+      <td>2.206995</td>
+      <td>-1.724138</td>
+      <td>17.090069</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1997-03-25</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>1.038398</td>
+      <td>53.1</td>
+      <td>0.257080</td>
+      <td>3.197859</td>
+      <td>-1.886792</td>
+      <td>4.161248</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2011-04-27</td>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.519595</td>
+      <td>59.1</td>
+      <td>0.179317</td>
+      <td>4.107119</td>
+      <td>0.000000</td>
+      <td>-21.259843</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1989-02-08</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>1.332501</td>
+      <td>54.7</td>
+      <td>0.246029</td>
+      <td>2.094256</td>
+      <td>1.886792</td>
+      <td>22.905983</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2008-09-16</td>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.572295</td>
+      <td>49.2</td>
+      <td>-0.202195</td>
+      <td>-4.803606</td>
+      <td>5.172414</td>
+      <td>-37.768240</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>train</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cfg = eKonf.compose(config_group=&quot;visualize/plot=radviz&quot;)</span>
+<span class="c1"># cfg.plots[0].x = X_cols</span>
+<span class="c1"># cfg.plots[0].y = y_col</span>
+<span class="c1"># cfg.plots[0].classes = f_small.classes</span>
+<span class="c1"># cfg.figure.figsize = (10, 6)</span>
+<span class="c1"># cfg.figure.fontsize = 14</span>
+<span class="c1"># eKonf.instantiate(cfg, data=f_small.data)</span>
 </pre></div>
 </div>
 </div>
@@ -1062,8 +1366,8 @@ Name: target, dtype: int64
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=jointplot&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">X_cols</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y_cols</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;PMI&quot;</span><span class="p">,</span> <span class="s2">&quot;GDP_diff_prev&quot;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y_col</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;PMI&quot;</span><span class="p">,</span> <span class="s2">&quot;GDP_diff_prev&quot;</span><span class="p">]</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span>
 <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">f_small</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
@@ -1071,21 +1375,19 @@ Name: target, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/05_FOMC_features_12_0.png" src="../../../_images/05_FOMC_features_12_0.png" />
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Saved figure to ./figs/plot_JointPlot.png
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:matplotlib.font_manager:findfont: Font family [&#39;sans-serif&#39;] not found. Falling back to DejaVu Sans.
+WARNING:matplotlib.font_manager:findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial, Liberation Sans, Bitstream Vera Sans, sans-serif
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 576x396 with 0 Axes&gt;
-</pre></div>
-</div>
+<img alt="../../../_images/05_FOMC_features_16_1.png" src="../../../_images/05_FOMC_features_16_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=rank1d&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">X_cols</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y_cols</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">classes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;cut&quot;</span><span class="p">,</span> <span class="s2">&quot;hold&quot;</span><span class="p">,</span> <span class="s2">&quot;hike&quot;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y_col</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">classes</span> <span class="o">=</span> <span class="n">f_small</span><span class="o">.</span><span class="n">classes</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span>
 <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">f_small</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
@@ -1093,20 +1395,14 @@ Name: target, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/05_FOMC_features_13_0.png" src="../../../_images/05_FOMC_features_13_0.png" />
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Saved figure to ./figs/plot_Rank1D.png
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 576x396 with 0 Axes&gt;
-</pre></div>
-</div>
+<img alt="../../../_images/05_FOMC_features_17_0.png" src="../../../_images/05_FOMC_features_17_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=rank2d&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">X_cols</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y_cols</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y_col</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span>
 <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">f_small</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
@@ -1114,21 +1410,15 @@ Name: target, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/05_FOMC_features_14_0.png" src="../../../_images/05_FOMC_features_14_0.png" />
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Saved figure to ./figs/plot_Rank2D.png
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 576x396 with 0 Axes&gt;
-</pre></div>
-</div>
+<img alt="../../../_images/05_FOMC_features_18_0.png" src="../../../_images/05_FOMC_features_18_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=pcoords&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot=pcoords&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">X_cols</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y_cols</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">classes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;cut&quot;</span><span class="p">,</span> <span class="s2">&quot;hold&quot;</span><span class="p">,</span> <span class="s2">&quot;hike&quot;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y_col</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">classes</span> <span class="o">=</span> <span class="n">f_small</span><span class="o">.</span><span class="n">classes</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span> <span class="o">=</span> <span class="mf">0.8</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shuffle</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
@@ -1138,21 +1428,15 @@ Name: target, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/05_FOMC_features_15_0.png" src="../../../_images/05_FOMC_features_15_0.png" />
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Saved figure to ./figs/plot_ParallelCoordinates.png
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 576x396 with 0 Axes&gt;
-</pre></div>
-</div>
+<img alt="../../../_images/05_FOMC_features_19_0.png" src="../../../_images/05_FOMC_features_19_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=pca&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">X_cols</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y_cols</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">classes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;cut&quot;</span><span class="p">,</span> <span class="s2">&quot;hold&quot;</span><span class="p">,</span> <span class="s2">&quot;hike&quot;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y_col</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">classes</span> <span class="o">=</span> <span class="n">f_small</span><span class="o">.</span><span class="n">classes</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span>
 <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">f_small</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
@@ -1160,21 +1444,15 @@ Name: target, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/05_FOMC_features_16_0.png" src="../../../_images/05_FOMC_features_16_0.png" />
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Saved figure to ./figs/plot_PCA.png
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 576x396 with 0 Axes&gt;
-</pre></div>
-</div>
+<img alt="../../../_images/05_FOMC_features_20_0.png" src="../../../_images/05_FOMC_features_20_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=manifold&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">X_cols</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y_cols</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">classes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;cut&quot;</span><span class="p">,</span> <span class="s2">&quot;hold&quot;</span><span class="p">,</span> <span class="s2">&quot;hike&quot;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y_col</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">classes</span> <span class="o">=</span> <span class="n">f_small</span><span class="o">.</span><span class="n">classes</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">manifold</span><span class="o">=</span><span class="s2">&quot;isomap&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">4</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
@@ -1184,21 +1462,15 @@ Name: target, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/05_FOMC_features_17_0.png" src="../../../_images/05_FOMC_features_17_0.png" />
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Saved figure to ./figs/plot_Manifold.png
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 576x396 with 0 Axes&gt;
-</pre></div>
-</div>
+<img alt="../../../_images/05_FOMC_features_21_0.png" src="../../../_images/05_FOMC_features_21_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=manifold&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">X_cols</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y_cols</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">classes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;cut&quot;</span><span class="p">,</span> <span class="s2">&quot;hold&quot;</span><span class="p">,</span> <span class="s2">&quot;hike&quot;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y_col</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">classes</span> <span class="o">=</span> <span class="n">f_small</span><span class="o">.</span><span class="n">classes</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">manifold</span> <span class="o">=</span> <span class="s2">&quot;tsne&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span>
@@ -1207,19 +1479,13 @@ Name: target, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/resources/.pyenv/versions/3.8.12/envs/ekonml38/lib/python3.8/site-packages/sklearn/manifold/_t_sne.py:805: FutureWarning: The default learning rate in TSNE will change from 200.0 to &#39;auto&#39; in 1.2.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/lib/python3.8/site-packages/sklearn/manifold/_t_sne.py:805: FutureWarning: The default learning rate in TSNE will change from 200.0 to &#39;auto&#39; in 1.2.
   warnings.warn(
-/resources/.pyenv/versions/3.8.12/envs/ekonml38/lib/python3.8/site-packages/sklearn/manifold/_t_sne.py:991: FutureWarning: The PCA initialization in TSNE will change to have the standard deviation of PC1 equal to 1e-4 in 1.2. This will ensure better convergence.
+/opt/conda/lib/python3.8/site-packages/sklearn/manifold/_t_sne.py:991: FutureWarning: The PCA initialization in TSNE will change to have the standard deviation of PC1 equal to 1e-4 in 1.2. This will ensure better convergence.
   warnings.warn(
 </pre></div>
 </div>
-<img alt="../../../_images/05_FOMC_features_18_1.png" src="../../../_images/05_FOMC_features_18_1.png" />
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Saved figure to ./figs/plot_Manifold.png
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 576x396 with 0 Axes&gt;
-</pre></div>
-</div>
+<img alt="../../../_images/05_FOMC_features_22_1.png" src="../../../_images/05_FOMC_features_22_1.png" />
 </div>
 </div>
 </div>

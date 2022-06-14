@@ -51,6 +51,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Bank of Korea" href="../bok/index.html" />
@@ -729,16 +731,24 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_format=&#39;retina&#39;
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
 
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
-<span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/fomc&quot;</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.32+8.g4f2aeb9.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.32+16.gc607689
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/fomc&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -750,20 +760,7 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fs_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;dataset=feature&quot;</span><span class="p">)</span>
 <span class="n">fs_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;fomc_features_small&quot;</span>
 <span class="n">fs_cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
-<span class="n">fs_small</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">fs_cfg</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.datasets.feature:Loaded info file: ../data/fomc/fomc_features_small/info-fomc_features_small.yaml
-INFO:ekorpkit.io.file:Processing [1] files from [&#39;../data/fomc/fomc_features_small/fomc_features_small-train.parquet&#39;]
-INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_features_small/fomc_features_small-train.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_features_small/fomc_features_small-train.parquet
-INFO:ekorpkit.info.feature:Added a column [split] with value [train]
-INFO:ekorpkit.io.file:Processing [1] files from [&#39;../data/fomc/fomc_features_small/fomc_features_small-test.parquet&#39;]
-INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_features_small/fomc_features_small-test.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_features_small/fomc_features_small-test.parquet
-INFO:ekorpkit.info.feature:Added a column [split] with value [test]
+<span class="n">fs_fomc</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">fs_cfg</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -781,13 +778,6 @@ INFO:ekorpkit.info.feature:Added a column [split] with value [test]
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/lib/python3.8/site-packages/xgboost/compat.py:31: FutureWarning: pandas.Int64Index is deprecated and will be removed from pandas in a future version. Use pandas.Index with the appropriate dtype instead.
-  from pandas import MultiIndex, Int64Index
-INFO:ekorpkit.ekonf:No method defined to call
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -796,32 +786,10 @@ INFO:ekorpkit.ekonf:No method defined to call
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.datasets.feature:Loaded info file: ../data/fomc/fomc_features_small/info-fomc_features_small.yaml
-INFO:ekorpkit.io.file:Processing [1] files from [&#39;../data/fomc/fomc_features_small/fomc_features_small-train.parquet&#39;]
-INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_features_small/fomc_features_small-train.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_features_small/fomc_features_small-train.parquet
-INFO:ekorpkit.info.feature:Added a column [split] with value [train]
-INFO:ekorpkit.io.file:Processing [1] files from [&#39;../data/fomc/fomc_features_small/fomc_features_small-test.parquet&#39;]
-INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_features_small/fomc_features_small-test.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_features_small/fomc_features_small-test.parquet
-INFO:ekorpkit.info.feature:Added a column [split] with value [test]
-INFO:flaml.searcher.blendsearch:No low-cost partial config given to the search algorithm. For cost-frugal search, consider providing low-cost values for cost-related hps via &#39;low_cost_partial_config&#39;. More info can be found at https://microsoft.github.io/FLAML/docs/FAQ#about-low_cost_partial_config-in-tune
-/opt/conda/lib/python3.8/site-packages/sklearn/linear_model/_sag.py:350: ConvergenceWarning: The max_iter was reached which means the coef_ did not converge
-  warnings.warn(
-/opt/conda/lib/python3.8/site-packages/sklearn/linear_model/_sag.py:350: ConvergenceWarning: The max_iter was reached which means the coef_ did not converge
-  warnings.warn(
-/opt/conda/lib/python3.8/site-packages/sklearn/linear_model/_sag.py:350: ConvergenceWarning: The max_iter was reached which means the coef_ did not converge
-  warnings.warn(
-/opt/conda/lib/python3.8/site-packages/sklearn/linear_model/_sag.py:350: ConvergenceWarning: The max_iter was reached which means the coef_ did not converge
-  warnings.warn(
-/opt/conda/lib/python3.8/site-packages/sklearn/linear_model/_sag.py:350: ConvergenceWarning: The max_iter was reached which means the coef_ did not converge
-  warnings.warn(
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best ML leaner: extra_tree
-Best hyperparmeter config: {&#39;n_estimators&#39;: 7, &#39;max_leaves&#39;: 24, &#39;max_features&#39;: 0.3361487830842756, &#39;criterion&#39;: &#39;entropy&#39;}
-Best accuracy on validation data: 0.6809
-Training duration of best run: 0.268 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best ML leaner: rf
+Best hyperparmeter config: {&#39;n_estimators&#39;: 4, &#39;max_features&#39;: 0.6336706494056755, &#39;max_leaves&#39;: 7, &#39;criterion&#39;: &#39;entropy&#39;}
+Best accuracy on validation data: 0.6849
+Training duration of best run: 0.1748 s
 </pre></div>
 </div>
 </div>
@@ -833,9 +801,9 @@ Training duration of best run: 0.268 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><style>#sk-container-id-1 {color: black;background-color: white;}#sk-container-id-1 pre{padding: 0;}#sk-container-id-1 div.sk-toggleable {background-color: white;}#sk-container-id-1 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-1 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-1 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-1 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-1 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-1 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-1 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-1 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-1 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-1 div.sk-item {position: relative;z-index: 1;}#sk-container-id-1 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-1 div.sk-item::before, #sk-container-id-1 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-1 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-1 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-1 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-1 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-1 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-1 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-1 div.sk-label-container {text-align: center;}#sk-container-id-1 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-1 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>ExtraTreesClassifier(criterion=&#x27;entropy&#x27;, max_features=0.3361487830842756,
-                     max_leaf_nodes=24, n_estimators=7, n_jobs=-1)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label sk-toggleable__label-arrow">ExtraTreesClassifier</label><div class="sk-toggleable__content"><pre>ExtraTreesClassifier(criterion=&#x27;entropy&#x27;, max_features=0.3361487830842756,
-                     max_leaf_nodes=24, n_estimators=7, n_jobs=-1)</pre></div></div></div></div></div></div></div>
+<div class="output text_html"><style>#sk-container-id-1 {color: black;background-color: white;}#sk-container-id-1 pre{padding: 0;}#sk-container-id-1 div.sk-toggleable {background-color: white;}#sk-container-id-1 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-1 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-1 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-1 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-1 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-1 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-1 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-1 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-1 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-1 div.sk-item {position: relative;z-index: 1;}#sk-container-id-1 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-1 div.sk-item::before, #sk-container-id-1 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-1 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-1 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-1 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-1 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-1 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-1 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-1 div.sk-label-container {text-align: center;}#sk-container-id-1 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-1 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>RandomForestClassifier(criterion=&#x27;entropy&#x27;, max_features=0.6336706494056755,
+                       max_leaf_nodes=7, n_estimators=4, n_jobs=-1)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label sk-toggleable__label-arrow">RandomForestClassifier</label><div class="sk-toggleable__content"><pre>RandomForestClassifier(criterion=&#x27;entropy&#x27;, max_features=0.6336706494056755,
+                       max_leaf_nodes=7, n_estimators=4, n_jobs=-1)</pre></div></div></div></div></div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -843,20 +811,10 @@ Training duration of best run: 0.268 s
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.models.automl.flaml:Saved model to /workspace/projects/esgml/outputs/automl_fomc_features_small/automl_fomc_features_small.mdl
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.models.automl.flaml:Loaded model from /workspace/projects/esgml/outputs/automl_fomc_features_small/automl_fomc_features_small.mdl
 </pre></div>
 </div>
 </div>
@@ -868,57 +826,54 @@ Training duration of best run: 0.268 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best ML leaner: extra_tree
-Best hyperparmeter config: {&#39;n_estimators&#39;: 7, &#39;max_leaves&#39;: 24, &#39;max_features&#39;: 0.3361487830842756, &#39;criterion&#39;: &#39;entropy&#39;}
-Best accuracy on validation data: 0.6809
-Training duration of best run: 0.268 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best ML leaner: rf
+Best hyperparmeter config: {&#39;n_estimators&#39;: 4, &#39;max_features&#39;: 0.6336706494056755, &#39;max_leaves&#39;: 7, &#39;criterion&#39;: &#39;entropy&#39;}
+Best accuracy on validation data: 0.6849
+Training duration of best run: 0.1748 s
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">get_logs</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">plot_learning_curve</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;time_history&#39;: [0.5698027610778809, 47.84880495071411],
- &#39;best_valid_loss_history&#39;: [0.33731343283582094, 0.3282225237449118],
- &#39;valid_loss_history&#39;: [0.33731343283582094, 0.3282225237449118],
- &#39;config_history&#39;: [{&#39;Current Learner&#39;: &#39;lgbm&#39;,
-   &#39;Current Sample&#39;: 332,
-   &#39;Current Hyper-parameters&#39;: {&#39;n_estimators&#39;: 4,
-    &#39;num_leaves&#39;: 4,
-    &#39;min_child_samples&#39;: 20,
-    &#39;learning_rate&#39;: 0.09999999999999995,
-    &#39;log_max_bin&#39;: 8,
-    &#39;colsample_bytree&#39;: 1.0,
-    &#39;reg_alpha&#39;: 0.0009765625,
-    &#39;reg_lambda&#39;: 1.0},
-   &#39;Best Learner&#39;: &#39;lgbm&#39;,
-   &#39;Best Hyper-parameters&#39;: {&#39;n_estimators&#39;: 4,
-    &#39;num_leaves&#39;: 4,
-    &#39;min_child_samples&#39;: 20,
-    &#39;learning_rate&#39;: 0.09999999999999995,
-    &#39;log_max_bin&#39;: 8,
-    &#39;colsample_bytree&#39;: 1.0,
-    &#39;reg_alpha&#39;: 0.0009765625,
-    &#39;reg_lambda&#39;: 1.0}},
-  {&#39;Current Learner&#39;: &#39;extra&#39;,
-   &#39;Current Sample&#39;: 332,
-   &#39;Current Hyper-parameters&#39;: {&#39;n_estimators&#39;: 4,
-    &#39;max_features&#39;: 0.2258306801933513,
-    &#39;max_leaves&#39;: 6,
-    &#39;criterion&#39;: &#39;gini&#39;},
-   &#39;Best Learner&#39;: &#39;extra&#39;,
-   &#39;Best Hyper-parameters&#39;: {&#39;n_estimators&#39;: 4,
-    &#39;max_features&#39;: 0.2258306801933513,
-    &#39;max_leaves&#39;: 6,
-    &#39;criterion&#39;: &#39;gini&#39;}}],
- &#39;metric_history&#39;: [None, None]}
+<img alt="../../../_images/06_FOMC_AutoML_12_0.png" src="../../../_images/06_FOMC_AutoML_12_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>r2 = -0.37118039398169733
+mse = 0.8173076923076923
+mae = 0.49038461538461536
+Accuracy:  0.6730769230769231
+Precison:  0.5528554778554778
+Recall:  0.6730769230769231
+F1 Score:  0.5743400621118012
+Model Report: 
+___________________________________________________
+              precision    recall  f1-score   support
+
+         Cut       0.60      0.17      0.26        18
+        Hike       0.00      0.00      0.00        17
+        Hold       0.68      0.97      0.80        69
+
+    accuracy                           0.67       104
+   macro avg       0.43      0.38      0.35       104
+weighted avg       0.55      0.67      0.57       104
+
+{&#39;xlabel&#39;: &#39;Predicted label\n\nAccuracy=0.673&#39;, &#39;ylabel&#39;: &#39;Actual label&#39;}
+</pre></div>
+</div>
+<img alt="../../../_images/06_FOMC_AutoML_13_1.png" src="../../../_images/06_FOMC_AutoML_13_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -928,11 +883,7 @@ Training duration of best run: 0.268 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting barplot with {&#39;x&#39;: &#39;importances&#39;, &#39;y&#39;: &#39;columns&#39;, &#39;hue&#39;: None}
-INFO:ekorpkit.visualize.base:Saved figure to ./figs/fig_BarPlot.png
-</pre></div>
-</div>
-<img alt="../../../_images/06_FOMC_AutoML_12_1.png" src="../../../_images/06_FOMC_AutoML_12_1.png" />
+<img alt="../../../_images/06_FOMC_AutoML_14_0.png" src="../../../_images/06_FOMC_AutoML_14_0.png" />
 </div>
 </div>
 </div>
