@@ -817,7 +817,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+10.g751d414
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.32+14.g05da54e.dirty
 </pre></div>
 </div>
 </div>
@@ -825,10 +825,6 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/fomc&quot;</span>
-<span class="n">save_dataframe</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
-    <span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;_func_/save_dataframe&quot;</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="n">data_dir</span>
-<span class="p">)</span>
-<span class="n">load_dataframe</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;_func_/load_dataframe&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="o">=</span><span class="n">data_dir</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -837,7 +833,7 @@ const thebe_selector_output = ".output, .cell_output"
 <h2>Load preprocessed data<a class="headerlink" href="#load-preprocessed-data" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">econ_data</span> <span class="o">=</span> <span class="n">load_dataframe</span><span class="p">(</span><span class="n">data_file</span><span class="o">=</span><span class="s2">&quot;econ_data2.parquet&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">econ_data</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;econ_data2.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
 <span class="n">econ_data</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1160,6 +1156,7 @@ const thebe_selector_output = ".output, .cell_output"
       <th>GDPPOT_diff_prev</th>
       <th>GDPPOT_diff_year</th>
       <th>...</th>
+      <th>Balanced</th>
       <th>Inertia</th>
       <th>Taylor-Rate</th>
       <th>Balanced-Rate</th>
@@ -1167,7 +1164,6 @@ const thebe_selector_output = ".output, .cell_output"
       <th>Taylor_diff</th>
       <th>Balanced_diff</th>
       <th>Inertia_diff</th>
-      <th>rate_decision2</th>
       <th>prev_decision</th>
       <th>next_decision</th>
     </tr>
@@ -1210,6 +1206,7 @@ const thebe_selector_output = ".output, .cell_output"
       <td>0.643467</td>
       <td>2.616803</td>
       <td>...</td>
+      <td>3.324700</td>
       <td>2.893358</td>
       <td>0.005563</td>
       <td>-0.665962</td>
@@ -1217,7 +1214,6 @@ const thebe_selector_output = ".output, .cell_output"
       <td>0.002576</td>
       <td>0.005238</td>
       <td>-0.002322</td>
-      <td>-0.012048</td>
       <td>-0.014493</td>
       <td>-0.009662</td>
     </tr>
@@ -1234,6 +1230,7 @@ const thebe_selector_output = ".output, .cell_output"
       <td>0.185616</td>
       <td>0.756947</td>
       <td>...</td>
+      <td>2.069550</td>
       <td>2.373858</td>
       <td>1.899151</td>
       <td>2.141286</td>
@@ -1241,7 +1238,6 @@ const thebe_selector_output = ".output, .cell_output"
       <td>0.058706</td>
       <td>0.088255</td>
       <td>0.026755</td>
-      <td>0.579313</td>
       <td>0.577867</td>
       <td>0.577968</td>
     </tr>
@@ -1258,6 +1254,7 @@ const thebe_selector_output = ".output, .cell_output"
       <td>0.318708</td>
       <td>1.303969</td>
       <td>...</td>
+      <td>0.000000</td>
       <td>-1.027665</td>
       <td>-4.920215</td>
       <td>-8.061836</td>
@@ -1265,7 +1262,6 @@ const thebe_selector_output = ".output, .cell_output"
       <td>-0.400621</td>
       <td>-0.400621</td>
       <td>-0.425000</td>
-      <td>-1.000000</td>
       <td>-1.000000</td>
       <td>-1.000000</td>
     </tr>
@@ -1282,11 +1278,11 @@ const thebe_selector_output = ".output, .cell_output"
       <td>0.475884</td>
       <td>1.915027</td>
       <td>...</td>
+      <td>1.731034</td>
       <td>0.561801</td>
       <td>-1.470860</td>
       <td>-1.661544</td>
       <td>-1.567363</td>
-      <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -1306,11 +1302,11 @@ const thebe_selector_output = ".output, .cell_output"
       <td>0.642412</td>
       <td>2.615226</td>
       <td>...</td>
+      <td>3.386536</td>
       <td>2.788555</td>
       <td>0.052807</td>
       <td>-0.293935</td>
       <td>-1.130361</td>
-      <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -1330,11 +1326,11 @@ const thebe_selector_output = ".output, .cell_output"
       <td>0.777802</td>
       <td>3.150223</td>
       <td>...</td>
+      <td>4.723309</td>
       <td>4.507101</td>
       <td>1.361705</td>
       <td>0.475418</td>
       <td>-0.455663</td>
-      <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
@@ -1354,6 +1350,7 @@ const thebe_selector_output = ".output, .cell_output"
       <td>1.058177</td>
       <td>4.280368</td>
       <td>...</td>
+      <td>8.267766</td>
       <td>8.901506</td>
       <td>8.249377</td>
       <td>8.017766</td>
@@ -1363,11 +1360,10 @@ const thebe_selector_output = ".output, .cell_output"
       <td>0.060093</td>
       <td>1.000000</td>
       <td>1.000000</td>
-      <td>1.000000</td>
     </tr>
   </tbody>
 </table>
-<p>8 rows × 47 columns</p>
+<p>8 rows × 46 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -1377,18 +1373,18 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>unscheduled       0
-forecast          0
-confcall          0
-speaker           0
-rate              0
-                 ..
-Inertia_diff      0
-Rate Decision     0
-rate_decision2    0
-prev_decision     1
-next_decision     1
-Length: 62, dtype: int64
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>unscheduled      0
+forecast         0
+confcall         0
+speaker          0
+rate             0
+                ..
+Balanced_diff    0
+Inertia_diff     0
+Rate Decision    0
+prev_decision    1
+next_decision    1
+Length: 61, dtype: int64
 </pre></div>
 </div>
 </div>
@@ -1398,7 +1394,7 @@ Length: 62, dtype: int64
 <h2>Plot rate decision count<a class="headerlink" href="#plot-rate-decision-count" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=countplot&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot=countplot&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">countplot</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;Rate Decision&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span>
@@ -1460,7 +1456,7 @@ Length: 62, dtype: int64
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=heatmap&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot=heatmap&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">heatmap</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="s2">&quot;YlGnBu&quot;</span>
@@ -1502,7 +1498,7 @@ Length: 62, dtype: int64
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=heatmap&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot=heatmap&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">subplots</span><span class="o">.</span><span class="n">ncols</span> <span class="o">=</span> <span class="mi">2</span>
@@ -1533,11 +1529,11 @@ Length: 62, dtype: int64
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=lineplot&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot=lineplot&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">lineplot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">corr_columns</span>
 
-<span class="n">scatter_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot/scatter&quot;</span><span class="p">)</span>
+<span class="n">scatter_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot/scatter&quot;</span><span class="p">)</span>
 <span class="n">scatter_cfg</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;date&quot;</span>
 <span class="n">scatter_cfg</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;rate&quot;</span>
 <span class="n">scatter_cfg</span><span class="o">.</span><span class="n">hue</span> <span class="o">=</span> <span class="s2">&quot;rate_decision&quot;</span>
@@ -1565,7 +1561,7 @@ Length: 62, dtype: int64
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_distribution</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
-        <span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=kdeplot&quot;</span><span class="p">)</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot=kdeplot&quot;</span><span class="p">)</span>
         <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 
         <span class="n">cfg</span><span class="o">.</span><span class="n">kdeplot</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">col</span>
@@ -1584,7 +1580,7 @@ Length: 62, dtype: int64
         <span class="n">cfg</span><span class="o">.</span><span class="n">facetgrid</span><span class="o">.</span><span class="n">col</span> <span class="o">=</span> <span class="s2">&quot;Rate Decision&quot;</span>
         <span class="n">cfg</span><span class="o">.</span><span class="n">facetgrid</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="mi">3</span>
         <span class="n">cfg</span><span class="o">.</span><span class="n">facetgrid</span><span class="o">.</span><span class="n">map_dataframe</span><span class="o">.</span><span class="n">_func_</span> <span class="o">=</span> <span class="s2">&quot;histplot&quot;</span>
-        <span class="n">cfg</span><span class="o">.</span><span class="n">facetgrid</span><span class="o">.</span><span class="n">map_dataframe</span><span class="o">.</span><span class="n">_parms_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">facetgrid</span><span class="o">.</span><span class="n">map_dataframe</span><span class="o">.</span><span class="n">rcParams</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1914,7 +1910,7 @@ Length: 62, dtype: int64
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ax.set_xlim(0, 400)</span>
-<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=lineplot&quot;</span><span class="p">)</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot=lineplot&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">lineplot</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;date&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">lineplot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;HSALES_diff_year&quot;</span>
@@ -1968,8 +1964,8 @@ Length: 62, dtype: int64
 <h3>Save Data<a class="headerlink" href="#save-data" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">save_dataframe</span><span class="p">(</span><span class="n">econ_train_small</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;econ_train_small.parquet&quot;</span><span class="p">)</span>
-<span class="n">save_dataframe</span><span class="p">(</span><span class="n">econ_train_large</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;econ_train_large.parquet&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">econ_train_small</span><span class="p">,</span> <span class="s2">&quot;econ_train_small.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">econ_train_large</span><span class="p">,</span> <span class="s2">&quot;econ_train_large.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

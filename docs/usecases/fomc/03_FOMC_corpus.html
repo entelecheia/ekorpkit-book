@@ -817,7 +817,7 @@ Set logging level to Warning, if you don’t want to see verbose logging,</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+8.gdef1e03.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.32+14.g05da54e.dirty
 </pre></div>
 </div>
 </div>
@@ -825,15 +825,6 @@ Set logging level to Warning, if you don’t want to see verbose logging,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/fomc&quot;</span>
-<span class="n">save_dataframe</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
-    <span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;_func_/save_dataframe&quot;</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="n">data_dir</span>
-<span class="p">)</span>
-<span class="n">load_dataframe</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;_func_/load_dataframe&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="o">=</span><span class="n">data_dir</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.ekonf:initialized batcher with &lt;ekorpkit.utils.batch.batcher.Batcher object at 0x7f6fba18bee0&gt;
 </pre></div>
 </div>
 </div>
@@ -842,11 +833,11 @@ Set logging level to Warning, if you don’t want to see verbose logging,</p>
 <h2>Load FOMC corpus<a class="headerlink" href="#load-fomc-corpus" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;corpus&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;corpus&#39;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;fomc&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/entelecheia/ekorpkit-config/raw/main/data/fomc.zip&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">path</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">automerge</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/entelecheia/ekorpkit-config/raw/main/data/fomc.zip&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cached_path</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">auto</span><span class="o">.</span><span class="n">merge</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">fomc_corpus</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">fomc_corpus</span><span class="p">)</span>
 </pre></div>
@@ -857,9 +848,14 @@ Set logging level to Warning, if you don’t want to see verbose logging,</p>
 INFO:ekorpkit.io.cached_path:cached path: /workspace/.cache/cached_path/934fce31ba4df4fe3b1f2226f59e13f8073b9813717037a5e836a9898c124bc7.14993cbcce092b4473939a6ed9e8246dfeb3d500c53c11c6279991e9a0eba476-extracted
 INFO:cached_path:cache of https://github.com/entelecheia/ekorpkit-config/raw/main/data/fomc.zip is up-to-date
 INFO:ekorpkit.io.cached_path:cached path: /workspace/.cache/cached_path/934fce31ba4df4fe3b1f2226f59e13f8073b9813717037a5e836a9898c124bc7.14993cbcce092b4473939a6ed9e8246dfeb3d500c53c11c6279991e9a0eba476-extracted
-INFO:ekorpkit.io.file:Processing [1] files from [[&#39;fomc-train.parquet&#39;]]
+INFO:cached_path:cache of https://github.com/entelecheia/ekorpkit-config/raw/main/data/fomc.zip is up-to-date
+INFO:ekorpkit.io.cached_path:cached path: /workspace/.cache/cached_path/934fce31ba4df4fe3b1f2226f59e13f8073b9813717037a5e836a9898c124bc7.14993cbcce092b4473939a6ed9e8246dfeb3d500c53c11c6279991e9a0eba476-extracted
+INFO:ekorpkit.corpora.corpus:Loaded info file: /workspace/.cache/cached_path/934fce31ba4df4fe3b1f2226f59e13f8073b9813717037a5e836a9898c124bc7.14993cbcce092b4473939a6ed9e8246dfeb3d500c53c11c6279991e9a0eba476-extracted/fomc/info-fomc.yaml
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;fomc*.parquet*&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/.cache/cached_path/934fce31ba4df4fe3b1f2226f59e13f8073b9813717037a5e836a9898c124bc7.14993cbcce092b4473939a6ed9e8246dfeb3d500c53c11c6279991e9a0eba476-extracted/fomc/fomc-train.parquet&#39;]
 INFO:ekorpkit.io.file:Loading data from /workspace/.cache/cached_path/934fce31ba4df4fe3b1f2226f59e13f8073b9813717037a5e836a9898c124bc7.14993cbcce092b4473939a6ed9e8246dfeb3d500c53c11c6279991e9a0eba476-extracted/fomc/fomc-train.parquet
-INFO:ekorpkit.io.file:Processing [1] files from [[&#39;meta-fomc-train.parquet&#39;]]
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;meta-fomc-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/.cache/cached_path/934fce31ba4df4fe3b1f2226f59e13f8073b9813717037a5e836a9898c124bc7.14993cbcce092b4473939a6ed9e8246dfeb3d500c53c11c6279991e9a0eba476-extracted/fomc/meta-fomc-train.parquet&#39;]
 INFO:ekorpkit.io.file:Loading data from /workspace/.cache/cached_path/934fce31ba4df4fe3b1f2226f59e13f8073b9813717037a5e836a9898c124bc7.14993cbcce092b4473939a6ed9e8246dfeb3d500c53c11c6279991e9a0eba476-extracted/fomc/meta-fomc-train.parquet
 INFO:ekorpkit.info.column:Timestamp column timestamp added to data
 </pre></div>
@@ -874,8 +870,8 @@ INFO:ekorpkit.info.column:Timestamp column timestamp added to data
 <h2>Load FOMC class<a class="headerlink" href="#load-fomc-class" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;io/fetcher/fomc&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/fomc&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;io/fetcher/fomc&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
 <span class="n">fomc</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -893,7 +889,10 @@ INFO:ekorpkit.info.column:Timestamp column timestamp added to data
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_calendar.parquet
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.fetch.fomc.base:Loading calendar from cache...
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;../data/fomc/fomc_calendar.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_calendar.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_calendar.parquet
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1196,11 +1195,11 @@ INFO:ekorpkit.info.column:Timestamp column timestamp added to data
     <span class="s1">&#39;+pipeline=default&#39;</span><span class="p">,</span>
     <span class="s1">&#39;pipeline/filter_length=words&#39;</span><span class="p">,</span>
 <span class="p">]</span>
-<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;pipeline&quot;</span><span class="p">,</span> <span class="n">overrides</span><span class="o">=</span><span class="n">overrides</span><span class="p">)</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;pipeline&quot;</span><span class="p">,</span> <span class="n">overrides</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">_pipeline_</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;filter_length&quot;</span><span class="p">,</span> <span class="s2">&quot;save_dataframe&quot;</span><span class="p">]</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">filter_length</span><span class="o">.</span><span class="n">min_length</span> <span class="o">=</span> <span class="mi">50</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/fomc&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="s2">&quot;fomc_corpus.parquet&quot;</span>
 <span class="n">fomc_data</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">fomc_data</span><span class="p">)</span>
 <span class="n">fomc_data</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
@@ -1209,15 +1208,15 @@ INFO:ekorpkit.info.column:Timestamp column timestamp added to data
 </div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.pipelines.pipe:Applying pipeline: OrderedDict([(&#39;filter_length&#39;, &#39;filter_length&#39;), (&#39;save_dataframe&#39;, &#39;save_dataframe&#39;)])
-INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function filter_length at 0x7f70c616fa60&gt;, len_bytes={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}, len_words={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_words&#39;})
+INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function filter_length at 0x7fbbe71ed0d0&gt;, len_bytes={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}, len_words={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_words&#39;})
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "d7781fed807b49b4bc4738bf03efc922", "version_major": 2, "version_minor": 0}
+{"model_id": "604c2ceea01d47aa9c8f58cca982abec", "version_major": 2, "version_minor": 0}
 </script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.pipelines.pipe:removed 20 of 2822 documents with length &lt; 50
-INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to filter length: 0:00:01.004116
-INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function save_dataframe at 0x7f70c60e83a0&gt;)
-INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_corpus.parquet
+INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to filter length: 0:00:01.009625
+INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function save_dataframe at 0x7fbbd33838b0&gt;)
+INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_corpus.parquet
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1340,8 +1339,8 @@ INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_corpus.parquet
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;pipeline&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/fomc&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;pipeline&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;fomc_corpus.parquet&quot;</span>
 <span class="n">fomc_data</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
 <span class="n">fomc_data</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
@@ -1349,9 +1348,9 @@ INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_corpus.parquet
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.ekonf:Executing function functools.partial(&lt;function load_dataframe at 0x7f6f3b9fdee0&gt;) with parms {&#39;filepath&#39;: &#39;../data/fomc/fomc_corpus.parquet&#39;, &#39;columns&#39;: None, &#39;verbose&#39;: False}
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;fomc_corpus.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_corpus.parquet&#39;]
 INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_corpus.parquet
-INFO:ekorpkit.ekonf:Skipping execute of functools.partial(&lt;function concat_dataframes at 0x7f6f3b9fdd30&gt;)
 WARNING:ekorpkit.pipelines.pipe:No pipeline specified
 </pre></div>
 </div>
@@ -1479,33 +1478,39 @@ WARNING:ekorpkit.pipelines.pipe:No pipeline specified
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">content_types</span> <span class="o">=</span> <span class="n">fomc_data</span><span class="o">.</span><span class="n">content_type</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
 
-<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=histplot&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">form</span> <span class="o">=</span> <span class="s2">&quot;individual&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot=histplot&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">subplots</span><span class="o">.</span><span class="n">ncols</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">subplots</span><span class="o">.</span><span class="n">nrows</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">figure</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">histplot</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">histplot</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">histplot</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;text_num_words&quot;</span>
 <span class="n">histplot</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="mi">50</span>
 <span class="n">histplot</span><span class="o">.</span><span class="n">kde</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="p">[</span><span class="n">histplot</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">content_types</span><span class="p">))]</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">figures</span> <span class="o">=</span> <span class="p">[</span><span class="n">figure</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">content_types</span><span class="p">))]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">axes</span> <span class="o">=</span> <span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">content_types</span><span class="p">))]</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ctype</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">content_types</span><span class="p">):</span>
     <span class="n">plot</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
     <span class="n">plot</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;content_type == &#39;</span><span class="si">{</span><span class="n">ctype</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
     <span class="n">plot</span><span class="o">.</span><span class="n">axno</span> <span class="o">=</span> <span class="n">i</span>
-    <span class="n">fig</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">figures</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span>  <span class="sa">f</span><span class="s2">&quot;Distribution of number of words in [</span><span class="si">{</span><span class="n">ctype</span><span class="si">}</span><span class="s2">]&quot;</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">axno</span> <span class="o">=</span> <span class="n">i</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span>  <span class="sa">f</span><span class="s2">&quot;Distribution of number of words in [</span><span class="si">{</span><span class="n">ctype</span><span class="si">}</span><span class="s2">]&quot;</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axno</span> <span class="o">=</span> <span class="n">i</span>
 
 <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">fomc_data</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Saved figure to ./figs/distplot.png
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting histplot with {&#39;x&#39;: &#39;text_num_words&#39;, &#39;bins&#39;: 50, &#39;kde&#39;: True}
+INFO:ekorpkit.visualize.plot:Plotting histplot with {&#39;x&#39;: &#39;text_num_words&#39;, &#39;bins&#39;: 50, &#39;kde&#39;: True}
+INFO:ekorpkit.visualize.plot:Plotting histplot with {&#39;x&#39;: &#39;text_num_words&#39;, &#39;bins&#39;: 50, &#39;kde&#39;: True}
+INFO:ekorpkit.visualize.plot:Plotting histplot with {&#39;x&#39;: &#39;text_num_words&#39;, &#39;bins&#39;: 50, &#39;kde&#39;: True}
+INFO:ekorpkit.visualize.plot:Plotting histplot with {&#39;x&#39;: &#39;text_num_words&#39;, &#39;bins&#39;: 50, &#39;kde&#39;: True}
+INFO:ekorpkit.visualize.plot:Plotting histplot with {&#39;x&#39;: &#39;text_num_words&#39;, &#39;bins&#39;: 50, &#39;kde&#39;: True}
+INFO:ekorpkit.visualize.plot:Plotting histplot with {&#39;x&#39;: &#39;text_num_words&#39;, &#39;bins&#39;: 50, &#39;kde&#39;: True}
+INFO:ekorpkit.visualize.base:Saved figure to ./figs/fig_HistPlot.png
 </pre></div>
 </div>
 <img alt="../../../_images/03_FOMC_corpus_15_1.png" src="../../../_images/03_FOMC_corpus_15_1.png" />
@@ -1516,7 +1521,7 @@ WARNING:ekorpkit.pipelines.pipe:No pipeline specified
 <h3>Split corpus into sections<a class="headerlink" href="#split-corpus-into-sections" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;pipeline&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;pipeline&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">_pipeline_</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;explode_splits&quot;</span><span class="p">,</span> <span class="s2">&quot;filter_length&quot;</span><span class="p">,</span> <span class="s2">&quot;reset_index&quot;</span><span class="p">,</span> <span class="s2">&quot;save_dataframe&quot;</span><span class="p">]</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">explode_splits</span><span class="o">.</span><span class="n">id_key</span> <span class="o">=</span> <span class="s2">&quot;id&quot;</span>
@@ -1526,7 +1531,7 @@ WARNING:ekorpkit.pipelines.pipe:No pipeline specified
 <span class="n">cfg</span><span class="o">.</span><span class="n">filter_length</span><span class="o">.</span><span class="n">len_func</span> <span class="o">=</span> <span class="s2">&quot;len_words&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">filter_length</span><span class="o">.</span><span class="n">len_column</span> <span class="o">=</span> <span class="s2">&quot;num_words&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">reset_index</span><span class="o">.</span><span class="n">drop_index</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/fomc&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="s2">&quot;fomc_sections.parquet&quot;</span>
 <span class="n">fomc_sections</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">fomc_data</span><span class="p">)</span>
 <span class="n">fomc_sections</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
@@ -1535,17 +1540,17 @@ WARNING:ekorpkit.pipelines.pipe:No pipeline specified
 </div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.pipelines.pipe:Applying pipeline: OrderedDict([(&#39;explode_splits&#39;, &#39;explode_splits&#39;), (&#39;filter_length&#39;, &#39;filter_length&#39;), (&#39;reset_index&#39;, &#39;reset_index&#39;), (&#39;save_dataframe&#39;, &#39;save_dataframe&#39;)])
-INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function explode_splits at 0x7f70c616f940&gt;)
-INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function filter_length at 0x7f70c616fa60&gt;, len_bytes={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}, len_words={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_words&#39;})
+INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function explode_splits at 0x7fea9949eaf0&gt;)
+INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function filter_length at 0x7feb50137f70&gt;, len_bytes={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}, len_words={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_words&#39;})
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "76bbf14110f24db99a0400983fd7f9e8", "version_major": 2, "version_minor": 0}
+{"model_id": "9cf9c63363954b11bfbb182a51fdd00a", "version_major": 2, "version_minor": 0}
 </script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.pipelines.pipe:removed 120119 of 212170 documents with length &lt; 50
-INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to filter length: 0:00:01.383107
-INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function reset_index at 0x7f70c616f8b0&gt;)
-INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function save_dataframe at 0x7f70c60e83a0&gt;)
-INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_sections.parquet
+INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to filter length: 0:00:01.394513
+INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function reset_index at 0x7fea9949e160&gt;)
+INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function save_dataframe at 0x7feb4bd11550&gt;)
+INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_sections.parquet
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1674,15 +1679,17 @@ INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_sections.parquet
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fomc_sections</span> <span class="o">=</span> <span class="n">load_dataframe</span><span class="p">(</span><span class="n">data_file</span><span class="o">=</span><span class="s2">&quot;fomc_sections.parquet&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fomc_sections</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;fomc_sections.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
 <span class="n">fomc_sections</span> <span class="o">=</span> <span class="n">fomc</span><span class="o">.</span><span class="n">find_speaker_of_sections</span><span class="p">(</span><span class="n">fomc_sections</span><span class="p">)</span>
-<span class="n">save_dataframe</span><span class="p">(</span><span class="n">fomc_sections</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;fomc_sections.parquet&quot;</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">fomc_sections</span><span class="p">,</span> <span class="s2">&quot;fomc_sections.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sections.parquet
-INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_sections.parquet
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;fomc_sections.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_sections.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sections.parquet
+INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_sections.parquet
 </pre></div>
 </div>
 </div>
@@ -1692,33 +1699,39 @@ INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_sections.parquet
 <h3>Distribution of sectons<a class="headerlink" href="#distribution-of-sectons" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=histplot&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">form</span> <span class="o">=</span> <span class="s2">&quot;individual&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot=histplot&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">subplots</span><span class="o">.</span><span class="n">ncols</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">subplots</span><span class="o">.</span><span class="n">nrows</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">figure</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">histplot</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">histplot</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">histplot</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;text_num_words&quot;</span>
 <span class="n">histplot</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="mi">50</span>
 <span class="n">histplot</span><span class="o">.</span><span class="n">kde</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="p">[</span><span class="n">histplot</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">content_types</span><span class="p">))]</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">figures</span> <span class="o">=</span> <span class="p">[</span><span class="n">figure</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">content_types</span><span class="p">))]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">axes</span> <span class="o">=</span> <span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">content_types</span><span class="p">))]</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ctype</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">content_types</span><span class="p">):</span>
     <span class="n">plot</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
     <span class="n">plot</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;content_type == &#39;</span><span class="si">{</span><span class="n">ctype</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
     <span class="n">plot</span><span class="o">.</span><span class="n">axno</span> <span class="o">=</span> <span class="n">i</span>
-    <span class="n">fig</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">figures</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span>  <span class="sa">f</span><span class="s2">&quot;Distribution of number of words in [</span><span class="si">{</span><span class="n">ctype</span><span class="si">}</span><span class="s2">]&quot;</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">axno</span> <span class="o">=</span> <span class="n">i</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span>  <span class="sa">f</span><span class="s2">&quot;Distribution of number of words in [</span><span class="si">{</span><span class="n">ctype</span><span class="si">}</span><span class="s2">]&quot;</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axno</span> <span class="o">=</span> <span class="n">i</span>
 
 <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">fomc_sections</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Saved figure to ./figs/distplot.png
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting histplot with {&#39;x&#39;: &#39;text_num_words&#39;, &#39;bins&#39;: 50, &#39;kde&#39;: True}
+INFO:ekorpkit.visualize.plot:Plotting histplot with {&#39;x&#39;: &#39;text_num_words&#39;, &#39;bins&#39;: 50, &#39;kde&#39;: True}
+INFO:ekorpkit.visualize.plot:Plotting histplot with {&#39;x&#39;: &#39;text_num_words&#39;, &#39;bins&#39;: 50, &#39;kde&#39;: True}
+INFO:ekorpkit.visualize.plot:Plotting histplot with {&#39;x&#39;: &#39;text_num_words&#39;, &#39;bins&#39;: 50, &#39;kde&#39;: True}
+INFO:ekorpkit.visualize.plot:Plotting histplot with {&#39;x&#39;: &#39;text_num_words&#39;, &#39;bins&#39;: 50, &#39;kde&#39;: True}
+INFO:ekorpkit.visualize.plot:Plotting histplot with {&#39;x&#39;: &#39;text_num_words&#39;, &#39;bins&#39;: 50, &#39;kde&#39;: True}
+INFO:ekorpkit.visualize.plot:Plotting histplot with {&#39;x&#39;: &#39;text_num_words&#39;, &#39;bins&#39;: 50, &#39;kde&#39;: True}
+INFO:ekorpkit.visualize.base:Saved figure to ./figs/fig_HistPlot.png
 </pre></div>
 </div>
 <img alt="../../../_images/03_FOMC_corpus_20_1.png" src="../../../_images/03_FOMC_corpus_20_1.png" />
@@ -1729,10 +1742,10 @@ INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_sections.parquet
 <h3>Split sections into chunks<a class="headerlink" href="#split-sections-into-chunks" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">seg_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;preprocessor/segmenter=pysbd&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">seg_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;preprocessor/segmenter=pysbd&quot;</span><span class="p">)</span>
 
-<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;pipeline&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/fomc&quot;</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;pipeline&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;fomc_sections.parquet&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">_pipeline_</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;segment&quot;</span><span class="p">,</span>
@@ -1762,33 +1775,34 @@ INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_sections.parquet
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.ekonf:Executing function functools.partial(&lt;function load_dataframe at 0x7f6f3b9fdee0&gt;) with parms {&#39;filepath&#39;: &#39;../data/fomc/fomc_sections.parquet&#39;, &#39;columns&#39;: None, &#39;verbose&#39;: False}
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;fomc_sections.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_sections.parquet&#39;]
 INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sections.parquet
-INFO:ekorpkit.ekonf:Skipping execute of functools.partial(&lt;function concat_dataframes at 0x7f6f3b9fdd30&gt;)
 INFO:ekorpkit.pipelines.pipe:Applying pipeline: OrderedDict([(&#39;segment&#39;, &#39;segment&#39;), (&#39;chunk&#39;, &#39;chunk&#39;), (&#39;explode_splits&#39;, &#39;explode_splits&#39;), (&#39;filter_length&#39;, &#39;filter_length&#39;), (&#39;reset_index&#39;, &#39;reset_index&#39;), (&#39;save_dataframe&#39;, &#39;save_dataframe&#39;)])
-INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function segment at 0x7f70c616f9d0&gt;)
+INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function segment at 0x7fea9949eee0&gt;)
 INFO:ekorpkit.pipelines.pipe:instantiating segmenter
-INFO:ekorpkit.pipelines.pipe:Using batcher with minibatch size: 921
+INFO:ekorpkit.ekonf:instantiating ekorpkit.preprocessors.segmenter.PySBDSegmenter...
+INFO:ekorpkit.ekonf:Using batcher with minibatch size: 921
 INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 921  procs: 100  input_split: False  merge_output: True  len(data): 92051 len(args): 5
-Splitting column: text: 100%|██████████| 100/100 [00:50&lt;00:00,  1.98it/s]
-INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to segment: 0:00:50.620391
-INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function chunk at 0x7f70c616f4c0&gt;)
+Splitting column: text: 100%|██████████| 100/100 [00:49&lt;00:00,  2.01it/s]
+INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to segment: 0:00:49.922200
+INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function chunk at 0x7fea9949eca0&gt;)
 INFO:ekorpkit.pipelines.pipe:instantiating segmenter
-INFO:ekorpkit.pipelines.pipe:Using batcher with minibatch size: 921
+INFO:ekorpkit.ekonf:Using batcher with minibatch size: 921
 INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 921  procs: 100  input_split: False  merge_output: True  len(data): 92051 len(args): 5
-Chunking column: text: 100%|██████████| 100/100 [00:00&lt;00:00, 207.41it/s]
-INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to segment: 0:00:00.513335
-INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function explode_splits at 0x7f70c616f940&gt;)
-INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function filter_length at 0x7f70c616fa60&gt;, len_bytes={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}, len_words={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_words&#39;})
-INFO:ekorpkit.pipelines.pipe:Using batcher with minibatch size: 1000
+Chunking column: text: 100%|██████████| 100/100 [00:00&lt;00:00, 164.53it/s]
+INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to segment: 0:00:00.620582
+INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function explode_splits at 0x7fea9949eaf0&gt;)
+INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function filter_length at 0x7feb50137f70&gt;, len_bytes={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}, len_words={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_words&#39;})
+INFO:ekorpkit.ekonf:Using batcher with minibatch size: 1000
 INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 100  input_split: False  merge_output: True  len(data): 133938 len(args): 5
-Calculating length: 100%|██████████| 134/134 [00:00&lt;00:00, 404.18it/s]
+Calculating length: 100%|██████████| 134/134 [00:00&lt;00:00, 312.37it/s]
 INFO:ekorpkit.pipelines.pipe:removed 4798 of 133938 documents with length &lt; 50
 INFO:ekorpkit.pipelines.pipe:removed 34 of 129140 documents with length &gt; 350
-INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to filter length: 0:00:00.376275
-INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function reset_index at 0x7f70c616f8b0&gt;)
-INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function save_dataframe at 0x7f70c60e83a0&gt;)
-INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_chunks.parquet
+INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to filter length: 0:00:00.475098
+INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function reset_index at 0x7fea9949e160&gt;)
+INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function save_dataframe at 0x7feb4bd11550&gt;)
+INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_chunks.parquet
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1834,7 +1848,7 @@ INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_chunks.parquet
       <td>2014-12-17</td>
       <td>fomc_meeting_script</td>
       <td>2014-12-17</td>
-      <td>Janet Yellen</td>
+      <td>VICE CHAIRMAN DUDLEY</td>
       <td>FOMC Meeting Transcript</td>
       <td>0.0</td>
       <td>0.25</td>
@@ -1852,7 +1866,7 @@ INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_chunks.parquet
       <td>2014-12-17</td>
       <td>fomc_meeting_script</td>
       <td>2014-12-17</td>
-      <td>Janet Yellen</td>
+      <td>VICE CHAIRMAN DUDLEY</td>
       <td>FOMC Meeting Transcript</td>
       <td>0.0</td>
       <td>0.25</td>
@@ -1870,7 +1884,7 @@ INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_chunks.parquet
       <td>2014-12-17</td>
       <td>fomc_meeting_script</td>
       <td>2014-12-17</td>
-      <td>Janet Yellen</td>
+      <td>CHAIR YELLEN</td>
       <td>FOMC Meeting Transcript</td>
       <td>0.0</td>
       <td>0.25</td>
@@ -1888,7 +1902,7 @@ INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_chunks.parquet
       <td>2014-12-17</td>
       <td>fomc_meeting_script</td>
       <td>2014-12-17</td>
-      <td>Janet Yellen</td>
+      <td>MR. LUECKE</td>
       <td>FOMC Meeting Transcript</td>
       <td>0.0</td>
       <td>0.25</td>
@@ -1906,7 +1920,7 @@ INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_chunks.parquet
       <td>2014-12-17</td>
       <td>fomc_meeting_script</td>
       <td>2014-12-17</td>
-      <td>Janet Yellen</td>
+      <td>CHAIR YELLEN</td>
       <td>FOMC Meeting Transcript</td>
       <td>0.0</td>
       <td>0.25</td>
@@ -1928,33 +1942,39 @@ INFO:ekorpkit.io.file:Saving dataframe as ../data/fomc/fomc_chunks.parquet
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">content_types</span> <span class="o">=</span> <span class="n">fomc_chunks</span><span class="o">.</span><span class="n">content_type</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
 
-<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;visualize/plot=histplot&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">form</span> <span class="o">=</span> <span class="s2">&quot;individual&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot=histplot&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">subplots</span><span class="o">.</span><span class="n">ncols</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">subplots</span><span class="o">.</span><span class="n">nrows</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">figure</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">histplot</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">histplot</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">histplot</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;text_num_words&quot;</span>
 <span class="n">histplot</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="mi">50</span>
 <span class="n">histplot</span><span class="o">.</span><span class="n">kde</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="p">[</span><span class="n">histplot</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">content_types</span><span class="p">))]</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">figures</span> <span class="o">=</span> <span class="p">[</span><span class="n">figure</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">content_types</span><span class="p">))]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">axes</span> <span class="o">=</span> <span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">content_types</span><span class="p">))]</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ctype</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">content_types</span><span class="p">):</span>
     <span class="n">plot</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
     <span class="n">plot</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;content_type == &#39;</span><span class="si">{</span><span class="n">ctype</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
     <span class="n">plot</span><span class="o">.</span><span class="n">axno</span> <span class="o">=</span> <span class="n">i</span>
-    <span class="n">fig</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">figures</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span>  <span class="sa">f</span><span class="s2">&quot;Distribution of number of words in [</span><span class="si">{</span><span class="n">ctype</span><span class="si">}</span><span class="s2">]&quot;</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">axno</span> <span class="o">=</span> <span class="n">i</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span>  <span class="sa">f</span><span class="s2">&quot;Distribution of number of words in [</span><span class="si">{</span><span class="n">ctype</span><span class="si">}</span><span class="s2">]&quot;</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axno</span> <span class="o">=</span> <span class="n">i</span>
 
 <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">fomc_chunks</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Saved figure to ./figs/distplot.png
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting histplot with {&#39;x&#39;: &#39;text_num_words&#39;, &#39;bins&#39;: 50, &#39;kde&#39;: True}
+INFO:ekorpkit.visualize.plot:Plotting histplot with {&#39;x&#39;: &#39;text_num_words&#39;, &#39;bins&#39;: 50, &#39;kde&#39;: True}
+INFO:ekorpkit.visualize.plot:Plotting histplot with {&#39;x&#39;: &#39;text_num_words&#39;, &#39;bins&#39;: 50, &#39;kde&#39;: True}
+INFO:ekorpkit.visualize.plot:Plotting histplot with {&#39;x&#39;: &#39;text_num_words&#39;, &#39;bins&#39;: 50, &#39;kde&#39;: True}
+INFO:ekorpkit.visualize.plot:Plotting histplot with {&#39;x&#39;: &#39;text_num_words&#39;, &#39;bins&#39;: 50, &#39;kde&#39;: True}
+INFO:ekorpkit.visualize.plot:Plotting histplot with {&#39;x&#39;: &#39;text_num_words&#39;, &#39;bins&#39;: 50, &#39;kde&#39;: True}
+INFO:ekorpkit.visualize.plot:Plotting histplot with {&#39;x&#39;: &#39;text_num_words&#39;, &#39;bins&#39;: 50, &#39;kde&#39;: True}
+INFO:ekorpkit.visualize.base:Saved figure to ./figs/fig_HistPlot.png
 </pre></div>
 </div>
 <img alt="../../../_images/03_FOMC_corpus_24_1.png" src="../../../_images/03_FOMC_corpus_24_1.png" />
