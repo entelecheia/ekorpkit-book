@@ -12,7 +12,7 @@ kernelspec:
 
 # Installation
 
-Install the latest version of ekorpit:
+Install the latest version of ekorpkit:
 
 ```bash
 pip install -U ekorpkit
@@ -22,6 +22,12 @@ To install all extra dependencies,
 
 ```bash
 pip install ekorpkit[all]
+```
+
+To install all extra dependencies, exhaustively, (not recommended)
+
+```bash
+pip install ekorpkit[exhaustive]
 ```
 
 ## Extra dependencies
