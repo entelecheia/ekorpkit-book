@@ -263,7 +263,7 @@ const thebe_selector_output = ".output, .cell_output"
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="ngram_for_words.html">
-       N-Gram model for word lexicon features
+       N-Gram model for unigram lexicon features
       </a>
      </li>
     </ul>
@@ -720,13 +720,13 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
 
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.33+3.g88a2e60
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.33+7.g877961c.dirty
 </pre></div>
 </div>
 </div>
@@ -925,376 +925,112 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="n">ngram_cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;bok_minutes_tokens.parquet&quot;</span>
 <span class="n">ngram_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">ngram_cfg</span><span class="o">.</span><span class="n">auto</span><span class="o">.</span><span class="n">load</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">ngram_cfg</span><span class="o">.</span><span class="n">force</span><span class="o">.</span><span class="n">train</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">ngram_cfg</span><span class="o">.</span><span class="n">candidates</span><span class="o">.</span><span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.4</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">ngram_cfg</span><span class="p">)</span>
-<span class="c1"># ngram = eKonf.instantiate(ngram_cfg)</span>
+<span class="n">ngram</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">ngram_cfg</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;_method_&#39;: [&#39;initialize&#39;],
- &#39;_target_&#39;: &#39;ekorpkit.models.ngram.base.Ngrams&#39;,
- &#39;auto&#39;: {&#39;load&#39;: True},
- &#39;candidates&#39;: {&#39;max_candidates&#39;: 40000000,
-                &#39;min_count&#39;: 10,
-                &#39;num_sents_per_pruning&#39;: 10000,
-                &#39;prune_min_ngram_count&#39;: 2,
-                &#39;threshold&#39;: 0.4},
- &#39;data&#39;: {&#39;_target_&#39;: &#39;ekorpkit.pipelines.data.Data&#39;,
-          &#39;column_info&#39;: {&#39;_target_&#39;: &#39;ekorpkit.info.column.CorpusInfo&#39;,
-                          &#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;,
-                                      &#39;merge_meta_on&#39;: &#39;id&#39;,
-                                      &#39;text&#39;: &#39;text&#39;,
-                                      &#39;timestamp&#39;: None},
-                          &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;},
-                          &#39;datetime&#39;: {&#39;columns&#39;: None,
-                                       &#39;format&#39;: None,
-                                       &#39;rcParams&#39;: None},
-                          &#39;meta&#39;: None,
-                          &#39;segment_separator&#39;: &#39;\\n\\n&#39;,
-                          &#39;sentence_separator&#39;: &#39;\\n&#39;,
-                          &#39;timestamp&#39;: {&#39;format&#39;: None,
-                                        &#39;key&#39;: None,
-                                        &#39;rcParams&#39;: None}},
-          &#39;columns&#39;: None,
-          &#39;concat_data&#39;: True,
-          &#39;corpus&#39;: {&#39;_target_&#39;: &#39;ekorpkit.datasets.corpus.Corpus&#39;,
-                     &#39;auto&#39;: {&#39;load&#39;: True, &#39;merge&#39;: False},
-                     &#39;column_info&#39;: {&#39;_target_&#39;: &#39;ekorpkit.info.column.CorpusInfo&#39;,
-                                     &#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;,
-                                                 &#39;merge_meta_on&#39;: &#39;id&#39;,
-                                                 &#39;text&#39;: &#39;text&#39;,
-                                                 &#39;timestamp&#39;: None},
-                                     &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;},
-                                     &#39;datetime&#39;: {&#39;columns&#39;: None,
-                                                  &#39;format&#39;: None,
-                                                  &#39;rcParams&#39;: None},
-                                     &#39;meta&#39;: None,
-                                     &#39;segment_separator&#39;: &#39;\\n\\n&#39;,
-                                     &#39;sentence_separator&#39;: &#39;\\n&#39;,
-                                     &#39;timestamp&#39;: {&#39;format&#39;: None,
-                                                   &#39;key&#39;: None,
-                                                   &#39;rcParams&#39;: None}},
-                     &#39;data_dir&#39;: &#39;/workspace/data/datasets/corpus&#39;,
-                     &#39;filetype&#39;: None,
-                     &#39;force&#39;: {&#39;rebuild&#39;: False},
-                     &#39;metadata_dir&#39;: None,
-                     &#39;name&#39;: None,
-                     &#39;path&#39;: {&#39;cache&#39;: {&#39;cache_dir&#39;: &#39;/workspace/.cache&#39;,
-                                        &#39;extract_archive&#39;: True,
-                                        &#39;force_extract&#39;: False,
-                                        &#39;path&#39;: None,
-                                        &#39;return_parent_dir&#39;: True,
-                                        &#39;uri&#39;: None,
-                                        &#39;verbose&#39;: False},
-                              &#39;cached_path&#39;: None,
-                              &#39;columns&#39;: None,
-                              &#39;concat_data&#39;: False,
-                              &#39;data_columns&#39;: None,
-                              &#39;data_dir&#39;: &#39;/workspace/data/datasets/corpus&#39;,
-                              &#39;data_file&#39;: None,
-                              &#39;filetype&#39;: None,
-                              &#39;name&#39;: None,
-                              &#39;output_dir&#39;: None,
-                              &#39;output_file&#39;: None,
-                              &#39;root&#39;: &#39;/workspace/data/None&#39;,
-                              &#39;suffix&#39;: None,
-                              &#39;verbose&#39;: False},
-                     &#39;use_name_as_subdir&#39;: True,
-                     &#39;verbose&#39;: False},
-          &#39;data_dir&#39;: &#39;../data/bok&#39;,
-          &#39;data_file&#39;: &#39;bok_minutes_tokens.parquet&#39;,
-          &#39;dataset&#39;: {&#39;_target_&#39;: &#39;ekorpkit.datasets.dataset.Dataset&#39;,
-                      &#39;auto&#39;: {&#39;build&#39;: False, &#39;load&#39;: True},
-                      &#39;column_info&#39;: {&#39;_target_&#39;: &#39;ekorpkit.info.column.DatasetInfo&#39;,
-                                      &#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;, &#39;text&#39;: &#39;text&#39;},
-                                      &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;},
-                                      &#39;datetime&#39;: {&#39;columns&#39;: None,
-                                                   &#39;format&#39;: None,
-                                                   &#39;rcParams&#39;: None}},
-                      &#39;data_dir&#39;: &#39;/workspace/data/datasets/dataset&#39;,
-                      &#39;filetype&#39;: &#39;.parquet&#39;,
-                      &#39;force&#39;: {&#39;rebuild&#39;: False},
-                      &#39;info&#39;: {&#39;_target_&#39;: &#39;ekorpkit.info.stat.SummaryInfo&#39;,
-                               &#39;aggregate_info&#39;: {&#39;num_examples&#39;: &#39;num_examples&#39;,
-                                                  &#39;size_in_bytes&#39;: &#39;num_bytes&#39;},
-                               &#39;data_dir&#39;: &#39;/workspace/data/datasets/dataset&#39;,
-                               &#39;info_file&#39;: &#39;info-None.yaml&#39;,
-                               &#39;info_list&#39;: [&#39;name&#39;,
-                                             &#39;fullname&#39;,
-                                             &#39;domain&#39;,
-                                             &#39;task&#39;,
-                                             &#39;lang&#39;,
-                                             &#39;description&#39;,
-                                             &#39;license&#39;,
-                                             &#39;homepage&#39;,
-                                             &#39;version&#39;,
-                                             &#39;num_examples&#39;,
-                                             &#39;size_in_bytes&#39;,
-                                             &#39;size_in_human_bytes&#39;,
-                                             &#39;data_files_modified&#39;,
-                                             &#39;info_updated&#39;,
-                                             &#39;data_files&#39;,
-                                             &#39;column_info&#39;],
-                               &#39;key_columns&#39;: None,
-                               &#39;modified_info&#39;: {&#39;data_files_modified&#39;: &#39;data_file&#39;},
-                               &#39;name&#39;: None,
-                               &#39;stats&#39;: {&#39;_func_&#39;: {&#39;len_bytes&#39;: {&#39;_partial_&#39;: True,
-                                                                  &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}},
-                                         &#39;_partial_&#39;: True,
-                                         &#39;_target_&#39;: &#39;ekorpkit.info.stat.summary_stats&#39;,
-                                         &#39;agg_funcs&#39;: {&#39;num_bytes&#39;: [&#39;count&#39;,
-                                                                     &#39;sum&#39;,
-                                                                     &#39;median&#39;,
-                                                                     &#39;max&#39;,
-                                                                     &#39;min&#39;]},
-                                         &#39;convert_to_humanbytes&#39;: {&#39;num_bytes&#39;: &#39;human_bytes&#39;},
-                                         &#39;key_columns&#39;: None,
-                                         &#39;num_columns&#39;: {&#39;num_bytes&#39;: &#39;len_bytes&#39;},
-                                         &#39;num_workers&#39;: 1,
-                                         &#39;rename_columns&#39;: {&#39;num_bytes_count&#39;: &#39;num_examples&#39;,
-                                                            &#39;num_bytes_sum&#39;: &#39;num_bytes&#39;},
-                                         &#39;text_keys&#39;: &#39;text&#39;},
-                               &#39;update_files_info&#39;: {&#39;data_files&#39;: &#39;data_file&#39;,
-                                                     &#39;meta_files&#39;: &#39;meta_file&#39;},
-                               &#39;update_info&#39;: [&#39;fullname&#39;,
-                                               &#39;lang&#39;,
-                                               &#39;domain&#39;,
-                                               &#39;task&#39;,
-                                               &#39;description&#39;,
-                                               &#39;license&#39;,
-                                               &#39;homepage&#39;,
-                                               &#39;version&#39;],
-                               &#39;verbose&#39;: False},
-                      &#39;name&#39;: None,
-                      &#39;path&#39;: {&#39;cache&#39;: {&#39;cache_dir&#39;: &#39;/workspace/.cache&#39;,
-                                         &#39;extract_archive&#39;: True,
-                                         &#39;force_extract&#39;: False,
-                                         &#39;path&#39;: None,
-                                         &#39;return_parent_dir&#39;: True,
-                                         &#39;uri&#39;: None,
-                                         &#39;verbose&#39;: False},
-                               &#39;cached_path&#39;: None,
-                               &#39;columns&#39;: None,
-                               &#39;concat_data&#39;: False,
-                               &#39;data_columns&#39;: None,
-                               &#39;data_dir&#39;: &#39;/workspace/data/datasets/dataset&#39;,
-                               &#39;data_file&#39;: None,
-                               &#39;filetype&#39;: &#39;.parquet&#39;,
-                               &#39;name&#39;: None,
-                               &#39;output_dir&#39;: None,
-                               &#39;output_file&#39;: None,
-                               &#39;root&#39;: &#39;/workspace/data/None&#39;,
-                               &#39;suffix&#39;: None,
-                               &#39;verbose&#39;: False},
-                      &#39;use_name_as_subdir&#39;: True,
-                      &#39;verbose&#39;: False},
-          &#39;name&#39;: &#39;data&#39;,
-          &#39;output_dir&#39;: &#39;/workspace/projects/esgml/outputs/data&#39;,
-          &#39;output_file&#39;: None,
-          &#39;path&#39;: {&#39;cache&#39;: {&#39;cache_dir&#39;: &#39;/workspace/.cache&#39;,
-                             &#39;extract_archive&#39;: True,
-                             &#39;force_extract&#39;: False,
-                             &#39;path&#39;: None,
-                             &#39;return_parent_dir&#39;: True,
-                             &#39;uri&#39;: None,
-                             &#39;verbose&#39;: True},
-                   &#39;cached_path&#39;: None,
-                   &#39;columns&#39;: None,
-                   &#39;concat_data&#39;: True,
-                   &#39;data&#39;: {&#39;base_dir&#39;: &#39;../data/bok&#39;,
-                            &#39;columns&#39;: None,
-                            &#39;concatenate&#39;: True,
-                            &#39;dype&#39;: None,
-                            &#39;file&#39;: &#39;bok_minutes_tokens.parquet&#39;,
-                            &#39;filename&#39;: &#39;bok_minutes_tokens.parquet&#39;,
-                            &#39;filepath&#39;: &#39;../data/bok/bok_minutes_tokens.parquet&#39;,
-                            &#39;filetype&#39;: &#39;&#39;,
-                            &#39;parse_dates&#39;: None},
-                   &#39;data_columns&#39;: None,
-                   &#39;data_dir&#39;: &#39;../data/bok&#39;,
-                   &#39;data_file&#39;: &#39;bok_minutes_tokens.parquet&#39;,
-                   &#39;filetype&#39;: &#39;&#39;,
-                   &#39;name&#39;: &#39;data&#39;,
-                   &#39;output&#39;: {&#39;base_dir&#39;: &#39;/workspace/projects/esgml/outputs/data&#39;,
-                              &#39;columns&#39;: None,
-                              &#39;file&#39;: None,
-                              &#39;filename&#39;: None,
-                              &#39;filepath&#39;: &#39;/workspace/projects/esgml/outputs/data&#39;,
-                              &#39;filetype&#39;: &#39;&#39;,
-                              &#39;suffix&#39;: None},
-                   &#39;output_dir&#39;: &#39;/workspace/projects/esgml/outputs/data&#39;,
-                   &#39;output_file&#39;: None,
-                   &#39;root&#39;: &#39;/workspace/data/data&#39;,
-                   &#39;suffix&#39;: None,
-                   &#39;verbose&#39;: True},
-          &#39;verbose&#39;: True},
- &#39;force&#39;: {&#39;train&#39;: False},
- &#39;force_train&#39;: False,
- &#39;info&#39;: {&#39;description&#39;: None,
-          &#39;fullname&#39;: None,
-          &#39;lang&#39;: None,
-          &#39;name&#39;: None,
-          &#39;source&#39;: None},
- &#39;name&#39;: &#39;ngram&#39;,
- &#39;ngram&#39;: {&#39;delimiter&#39;: &#39;;&#39;,
-           &#39;max_n&#39;: 3,
-           &#39;max_skip&#39;: None,
-           &#39;max_window&#39;: 3,
-           &#39;postag_rules&#39;: None},
- &#39;ngramize&#39;: {&#39;apply_postag_rules&#39;: True,
-              &#39;delimiter&#39;: &#39;&#39;,
-              &#39;exclude_overlaps&#39;: True,
-              &#39;ignore_scores&#39;: False,
-              &#39;overlaps_to_keep&#39;: &#39;highest_score&#39;,
-              &#39;strip_pos&#39;: True,
-              &#39;threshold&#39;: None,
-              &#39;use_surfaces_to_score&#39;: False},
- &#39;postag&#39;: {&#39;delimiter&#39;: &#39;/&#39;,
-            &#39;max_len&#39;: 3,
-            &#39;stop_tags&#39;: [&#39;SP&#39;, &#39;SF&#39;, &#39;SE&#39;, &#39;SSO&#39;, &#39;SSC&#39;, &#39;SC&#39;, &#39;SY&#39;, &#39;SH&#39;],
-            &#39;strip_pos&#39;: False,
-            &#39;use_tags&#39;: None},
- &#39;preprocessor&#39;: {&#39;tokenizer&#39;: {&#39;_target_&#39;: &#39;ekorpkit.preprocessors.tokenizer.SimpleTokenizer&#39;,
-                                &#39;extract&#39;: {&#39;noun_postags&#39;: [&#39;NNG&#39;,
-                                                             &#39;NNP&#39;,
-                                                             &#39;XSN&#39;,
-                                                             &#39;SL&#39;,
-                                                             &#39;XR&#39;,
-                                                             &#39;NNB&#39;,
-                                                             &#39;NR&#39;],
-                                            &#39;postag_delim&#39;: &#39;/&#39;,
-                                            &#39;postag_length&#39;: None,
-                                            &#39;postags&#39;: None,
-                                            &#39;stop_postags&#39;: [&#39;SP&#39;,
-                                                             &#39;SF&#39;,
-                                                             &#39;SE&#39;,
-                                                             &#39;SSO&#39;,
-                                                             &#39;SSC&#39;,
-                                                             &#39;SC&#39;,
-                                                             &#39;SY&#39;,
-                                                             &#39;SH&#39;],
-                                            &#39;strip_pos&#39;: True},
-                                &#39;normalize&#39;: None,
-                                &#39;return_as_list&#39;: False,
-                                &#39;stopwords&#39;: {&#39;_target_&#39;: &#39;ekorpkit.preprocessors.stopwords.Stopwords&#39;,
-                                              &#39;lowercase&#39;: True,
-                                              &#39;name&#39;: &#39;stopwords&#39;,
-                                              &#39;nltk_stopwords&#39;: None,
-                                              &#39;stopwords&#39;: None,
-                                              &#39;stopwords_path&#39;: None,
-                                              &#39;verbose&#39;: False},
-                                &#39;stopwords_path&#39;: None,
-                                &#39;tagset&#39;: None,
-                                &#39;tokenize&#39;: {&#39;flatten&#39;: True,
-                                             &#39;include_whitespace_token&#39;: True,
-                                             &#39;lowercase&#39;: False,
-                                             &#39;postag_delim&#39;: &#39;/&#39;,
-                                             &#39;postag_length&#39;: None,
-                                             &#39;punct_postags&#39;: [&#39;SF&#39;,
-                                                               &#39;SP&#39;,
-                                                               &#39;SSO&#39;,
-                                                               &#39;SSC&#39;,
-                                                               &#39;SY&#39;],
-                                             &#39;strip_pos&#39;: False,
-                                             &#39;tokenize_each_word&#39;: False,
-                                             &#39;userdic_path&#39;: None,
-                                             &#39;wordpieces_prefix&#39;: &#39;##&#39;},
-                                &#39;tokenize_article&#39;: {&#39;sentence_separator&#39;: &#39;\\n&#39;},
-                                &#39;verbose&#39;: False}},
- &#39;progress_per&#39;: 1000,
- &#39;score_function&#39;: {&#39;_partial_&#39;: True,
-                    &#39;_target_&#39;: &#39;ekorpkit.models.ngram.score.mutual_information&#39;,
-                    &#39;delimiter&#39;: &#39;;&#39;,
-                    &#39;delta&#39;: 0.0,
-                    &#39;expansion_method&#39;: &#39;average&#39;,
-                    &#39;name&#39;: &#39;npmi&#39;,
-                    &#39;normalize&#39;: True},
- &#39;scores&#39;: {&#39;columns&#39;: {&#39;count&#39;: &#39;count&#39;, &#39;score&#39;: &#39;score&#39;, &#39;words&#39;: &#39;words&#39;},
-            &#39;features&#39;: [&#39;score&#39;, &#39;frequency&#39;, &#39;length&#39;],
-            &#39;lowercase&#39;: True,
-            &#39;ngram_delim&#39;: &#39;;&#39;,
-            &#39;score_dir&#39;: &#39;/workspace/projects/esgml/outputs/ngrams/&#39;,
-            &#39;score_file&#39;: &#39;ngram_npmi_scores.parquet&#39;,
-            &#39;score_path&#39;: &#39;/workspace/projects/esgml/outputs/ngrams/ngram_npmi_scores.parquet&#39;},
- &#39;verbose&#39;: True}
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:instantiating ekorpkit.models.ngram.train.NgramTrainer...
+INFO:ekorpkit.preprocessors.tokenizer:instantiating ekorpkit.preprocessors.stopwords.Stopwords...
+INFO:ekorpkit.base:Calling initialize
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;/workspace/projects/esgml/outputs/ngrams/ngram_npmi_scores.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/projects/esgml/outputs/ngrams/ngram_npmi_scores.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from /workspace/projects/esgml/outputs/ngrams/ngram_npmi_scores.parquet
+INFO:ekorpkit.io.file: &gt;&gt; elapsed time to load data: 0:00:00.038492
+INFO:ekorpkit.models.ngram.ngram:loaded 42627 candidates
+INFO:ekorpkit.base:instantiating ekorpkit.pipelines.data.Data...
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;bok_minutes_tokens.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/bok/bok_minutes_tokens.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/bok/bok_minutes_tokens.parquet
+9930it [00:09, 1036.58it/s]INFO:ekorpkit.models.ngram.score:pruned out 210818 tokens with count &lt;=2 (before 263398, after 52580)
+19929it [00:21, 864.90it/s]INFO:ekorpkit.models.ngram.score:pruned out 257768 tokens with count &lt;=2 (before 343124, after 85356)
+29911it [00:32, 1097.02it/s]INFO:ekorpkit.models.ngram.score:pruned out 191234 tokens with count &lt;=2 (before 293933, after 102699)
+36191it [00:38, 945.55it/s] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>learning ngrams was done. memory= 0.564 Gb
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 46494/46494 [00:00&lt;00:00, 118903.01it/s]
+INFO:ekorpkit.io.file:Saving dataframe to /workspace/projects/esgml/outputs/ngrams/ngram_npmi_scores.parquet
+INFO:ekorpkit.io.file: &gt;&gt; elapsed time to save data: 0:00:00.107443
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ngram</span><span class="o">.</span><span class="n">ngrams</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">ngram</span><span class="o">.</span><span class="n">candidates</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ngram</span><span class="o">.</span><span class="n">_ngrams</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">ngram</span><span class="o">.</span><span class="n">candidates</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 41005
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>46494 42627
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ngram</span><span class="o">.</span><span class="n">postag_rules</span> <span class="o">=</span> <span class="p">[[</span><span class="s2">&quot;/NN&quot;</span><span class="p">,</span> <span class="s2">&quot;/J&quot;</span><span class="p">,</span> <span class="s2">&quot;/NN&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;/XP&quot;</span><span class="p">,</span> <span class="s2">&quot;/NN&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;/XP&quot;</span><span class="p">,</span> <span class="s2">&quot;/NN&quot;</span><span class="p">,</span> <span class="s2">&quot;/NN&quot;</span><span class="p">]]</span>
-<span class="c1"># ngram.postag_rules = [&#39;/NN&#39;]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">postag_rules</span> <span class="o">=</span> <span class="p">[[</span><span class="s2">&quot;/NN&quot;</span><span class="p">,</span> <span class="s2">&quot;/J&quot;</span><span class="p">,</span> <span class="s2">&quot;/NN&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;/XP&quot;</span><span class="p">,</span> <span class="s2">&quot;/NN&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;/XP&quot;</span><span class="p">,</span> <span class="s2">&quot;/NN&quot;</span><span class="p">,</span> <span class="s2">&quot;/NN&quot;</span><span class="p">]]</span>
 
-<span class="n">ngram</span><span class="o">.</span><span class="n">export_ngrams</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">apply_postag_rules</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ngram</span><span class="o">.</span><span class="n">export_ngrams</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">postag_rules</span><span class="o">=</span><span class="n">postag_rules</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[((&#39;민/XPN&#39;, &#39;감도/NNG&#39;),
-  score(words=&#39;민/XPN;감도/NNG&#39;, score=0.9905600642226081, frequency=27, length=44827)),
+  score(words=&#39;민/XPN;감도/NNG&#39;, length=46494, frequency=27, score=0.990604973436752)),
  ((&#39;신/XPN&#39;, &#39;흥국/NNG&#39;),
-  score(words=&#39;신/XPN;흥국/NNG&#39;, score=0.9602497345784399, frequency=999, length=44827)),
+  score(words=&#39;신/XPN;흥국/NNG&#39;, length=46494, frequency=1022, score=0.9603989288750724)),
  ((&#39;문안/NNG&#39;, &#39;을/JKO&#39;, &#39;작성/NNG&#39;),
-  score(words=&#39;문안/NNG;을/JKO;작성/NNG&#39;, score=0.9550163996733796, frequency=43, length=44827)),
+  score(words=&#39;문안/NNG;을/JKO;작성/NNG&#39;, length=46494, frequency=49, score=0.9549515116468318)),
  ((&#39;예/NNG&#39;, &#39;의/JKG&#39;, &#39;주시/NNG&#39;),
-  score(words=&#39;예/NNG;의/JKG;주시/NNG&#39;, score=0.952158528049305, frequency=193, length=44827)),
+  score(words=&#39;예/NNG;의/JKG;주시/NNG&#39;, length=46494, frequency=212, score=0.952727184984961)),
  ((&#39;한국/NNP&#39;, &#39;은/JX&#39;, &#39;행법/NNG&#39;),
-  score(words=&#39;한국/NNP;은/JX;행법/NNG&#39;, score=0.9215496994789585, frequency=13, length=44827)),
+  score(words=&#39;한국/NNP;은/JX;행법/NNG&#39;, length=46494, frequency=13, score=0.9163779678011934)),
  ((&#39;한/NNP&#39;, &#39;은/JX&#39;, &#39;법/NNG&#39;),
-  score(words=&#39;한/NNP;은/JX;법/NNG&#39;, score=0.9115135958462448, frequency=17, length=44827)),
- ((&#39;차관/NNG&#39;, &#39;에게/JKB&#39;, &#39;발언/NNG&#39;),
-  score(words=&#39;차관/NNG;에게/JKB;발언/NNG&#39;, score=0.8730837780556813, frequency=48, length=44827)),
+  score(words=&#39;한/NNP;은/JX;법/NNG&#39;, length=46494, frequency=15, score=0.9038684845812752)),
  ((&#39;취지/NNG&#39;, &#39;로/JKB&#39;, &#39;발언/NNG&#39;),
-  score(words=&#39;취지/NNG;로/JKB;발언/NNG&#39;, score=0.8703677143686631, frequency=36, length=44827)),
+  score(words=&#39;취지/NNG;로/JKB;발언/NNG&#39;, length=46494, frequency=38, score=0.8748905201033002)),
  ((&#39;신/XPN&#39;, &#39;용스/NNP&#39;, &#39;프레드/NNP&#39;),
-  score(words=&#39;신/XPN;용스/NNP;프레드/NNP&#39;, score=0.8677320405182908, frequency=111, length=44827)),
+  score(words=&#39;신/XPN;용스/NNP;프레드/NNP&#39;, length=46494, frequency=112, score=0.8671915785294462)),
+ ((&#39;차관/NNG&#39;, &#39;에게/JKB&#39;, &#39;발언/NNG&#39;),
+  score(words=&#39;차관/NNG;에게/JKB;발언/NNG&#39;, length=46494, frequency=31, score=0.8615166170202944)),
  ((&#39;양질/NNG&#39;, &#39;의/JKG&#39;, &#39;일자리/NNG&#39;),
-  score(words=&#39;양질/NNG;의/JKG;일자리/NNG&#39;, score=0.8602652867490822, frequency=16, length=44827)),
+  score(words=&#39;양질/NNG;의/JKG;일자리/NNG&#39;, length=46494, frequency=15, score=0.8568614320936532)),
  ((&#39;시일/NNG&#39;, &#39;이/JKS&#39;, &#39;소요/NNG&#39;),
-  score(words=&#39;시일/NNG;이/JKS;소요/NNG&#39;, score=0.8577081983567416, frequency=25, length=44827)),
+  score(words=&#39;시일/NNG;이/JKS;소요/NNG&#39;, length=46494, frequency=28, score=0.8522311395365183)),
  ((&#39;고부/NNG&#39;, &#39;가/JKS&#39;, &#39;가치/NNG&#39;),
-  score(words=&#39;고부/NNG;가/JKS;가치/NNG&#39;, score=0.8441046212878132, frequency=10, length=44827)),
+  score(words=&#39;고부/NNG;가/JKS;가치/NNG&#39;, length=46494, frequency=10, score=0.8419083361774105)),
  ((&#39;저점/NNG&#39;, &#39;을/JKO&#39;, &#39;통과/NNG&#39;),
-  score(words=&#39;저점/NNG;을/JKO;통과/NNG&#39;, score=0.8280556580473707, frequency=13, length=44827)),
+  score(words=&#39;저점/NNG;을/JKO;통과/NNG&#39;, length=46494, frequency=13, score=0.8208059041912359)),
  ((&#39;북한/NNP&#39;, &#39;의/JKG&#39;, &#39;미사일/NNG&#39;),
-  score(words=&#39;북한/NNP;의/JKG;미사일/NNG&#39;, score=0.8209799127562951, frequency=11, length=44827)),
- ((&#39;끝/NNG&#39;, &#39;으로/JKB&#39;, &#39;동/NNG&#39;),
-  score(words=&#39;끝/NNG;으로/JKB;동/NNG&#39;, score=0.8060710940902794, frequency=62, length=44827)),
+  score(words=&#39;북한/NNP;의/JKG;미사일/NNG&#39;, length=46494, frequency=11, score=0.813089753035318)),
  ((&#39;재/XPN&#39;, &#39;정취/NNG&#39;, &#39;약국/NNG&#39;),
-  score(words=&#39;재/XPN;정취/NNG;약국/NNG&#39;, score=0.8059870646567988, frequency=13, length=44827)),
+  score(words=&#39;재/XPN;정취/NNG;약국/NNG&#39;, length=46494, frequency=14, score=0.8102225991026599)),
  ((&#39;결시/NNG&#39;, &#39;까지/JX&#39;, &#39;콜/NNG&#39;),
-  score(words=&#39;결시/NNG;까지/JX;콜/NNG&#39;, score=0.8008655335614991, frequency=20, length=44827))]
+  score(words=&#39;결시/NNG;까지/JX;콜/NNG&#39;, length=46494, frequency=25, score=0.8063747933078849)),
+ ((&#39;끝/NNG&#39;, &#39;으로/JKB&#39;, &#39;동/NNG&#39;),
+  score(words=&#39;끝/NNG;으로/JKB;동/NNG&#39;, length=46494, frequency=61, score=0.8030470926229916))]
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ngram</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
-<span class="n">sentence</span> <span class="o">=</span> <span class="n">ngram</span><span class="o">.</span><span class="n">sentences</span><span class="p">[</span><span class="mi">18</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sentence</span> <span class="o">=</span> <span class="n">ngram</span><span class="o">.</span><span class="n">sentences</span><span class="p">[</span><span class="mi">18</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
-<span class="n">tokens</span> <span class="o">=</span> <span class="n">ngram</span><span class="o">.</span><span class="n">ngramize_sentence</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">strip_pos</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">tokens</span> <span class="o">=</span> <span class="n">ngram</span><span class="o">.</span><span class="n">ngramize_sentence</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">strip_pos</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">surface_delim</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>이/NP 에/JKB 대해/VV+EC 관련/NNG 부서/NNG 에서/JKB 는/JX 실업/NNG 률/XSN 과/JC 경기/NNG 지수/NNG 와/JKB 의/JKG 상관/NNG 관계/NNG 는/JX 그렇게/MAG 높/VA 지/EC 않/VX 은/ETM 것/NNB 으로/JKB 나타나/VV 며/EC 통계청/NNG 에서/JKB 발표/NNG 하/XSV 는/ETM 공식/NNG 적/XSN 인/VCP+ETM 실업/NNG 률/XSN 을/JKO 구직/NNG 단념/NNG 자/XSN 를/JKO 포함/NNG 한/XSA+ETM 광의/NNG 의/JKG 실업/NNG 률/XSN 로/JKB 전환/NNG 할/XSV+ETM 경우/NNG 오히려/MAJ 경기/NNG 와/JKB 의/JKG 연관/NNG 성/XSN 이/JKS 좀/MAG 더/MAG 높/VA 은/ETM 것/NNB 으로/JKB 분석/NNG 되/XSV 므로/EC 경기/NNG 상환/NNG 판단/NNG 을/JKO 위해서/VV+EC 는/JX 공식/NNG 적/XSN 인/VCP+ETM 실업/NNG 률/XSN 보다/JKB 는/JX 광의/NNG 의/JKG 실업/NNG 률/XSN 을/JKO 이용/NNG 하/XSV 는/ETM 것/NNB 이/JKS 더/MAG 좋/VA 을/ETM 것/NNB 같/VA 다고/EC 설명/NNG 하/XSV 였/EP 음/ETN
-[&#39;이&#39;, &#39;에&#39;, &#39;대해&#39;, &#39;관련&#39;, &#39;부서&#39;, &#39;에서&#39;, &#39;는&#39;, &#39;실업&#39;, &#39;률&#39;, &#39;과&#39;, &#39;경기&#39;, &#39;지수&#39;, &#39;와&#39;, &#39;의&#39;, &#39;상관&#39;, &#39;관계&#39;, &#39;는&#39;, &#39;그렇게&#39;, &#39;높&#39;, &#39;지&#39;, &#39;않&#39;, &#39;은&#39;, &#39;것&#39;, &#39;으로&#39;, &#39;나타나&#39;, &#39;며&#39;, &#39;통계청&#39;, &#39;에서&#39;, &#39;발표&#39;, &#39;하&#39;, &#39;는&#39;, &#39;공식&#39;, &#39;적&#39;, &#39;인&#39;, &#39;실업&#39;, &#39;률&#39;, &#39;을&#39;, &#39;구직&#39;, &#39;단념&#39;, &#39;자&#39;, &#39;를&#39;, &#39;포함&#39;, &#39;한&#39;, &#39;광의의실업&#39;, &#39;률&#39;, &#39;로&#39;, &#39;전환&#39;, &#39;할&#39;, &#39;경우&#39;, &#39;오히려&#39;, &#39;경기&#39;, &#39;와&#39;, &#39;의&#39;, &#39;연관&#39;, &#39;성&#39;, &#39;이&#39;, &#39;좀&#39;, &#39;더&#39;, &#39;높&#39;, &#39;은&#39;, &#39;것으로분석&#39;, &#39;되&#39;, &#39;므로&#39;, &#39;경기&#39;, &#39;상환&#39;, &#39;판단&#39;, &#39;을&#39;, &#39;위해서&#39;, &#39;는&#39;, &#39;공식&#39;, &#39;적&#39;, &#39;인&#39;, &#39;실업&#39;, &#39;률&#39;, &#39;보다&#39;, &#39;는&#39;, &#39;광의의실업&#39;, &#39;률&#39;, &#39;을&#39;, &#39;이용&#39;, &#39;하&#39;, &#39;는&#39;, &#39;것&#39;, &#39;이&#39;, &#39;더&#39;, &#39;좋&#39;, &#39;을&#39;, &#39;것&#39;, &#39;같&#39;, &#39;다고&#39;, &#39;설명&#39;, &#39;하&#39;, &#39;였&#39;, &#39;음&#39;]
+[&#39;이/NP&#39;, &#39;에/JKB&#39;, &#39;대해/VV+&#39;, &#39;관련/NNG;부서/NNG&#39;, &#39;에서/JKB&#39;, &#39;는/JX&#39;, &#39;실업/NNG;률/XSN&#39;, &#39;과/JC&#39;, &#39;경기/NNG&#39;, &#39;지수/NNG&#39;, &#39;와/JKB&#39;, &#39;의/JKG&#39;, &#39;상관/NNG;관계/NNG&#39;, &#39;는/JX&#39;, &#39;그렇게/MAG&#39;, &#39;높/VA&#39;, &#39;지/EC;않/VX&#39;, &#39;은/ETM&#39;, &#39;것/NNB;으로/JKB&#39;, &#39;나타나/VV&#39;, &#39;며/EC&#39;, &#39;통계청/NNG;에서/JKB&#39;, &#39;발표/NNG&#39;, &#39;하/XSV;는/ETM&#39;, &#39;공식/NNG&#39;, &#39;적/XSN;인/VCP&#39;, &#39;실업/NNG;률/XSN&#39;, &#39;을/JKO&#39;, &#39;구직/NNG&#39;, &#39;단념/NNG&#39;, &#39;자/XSN&#39;, &#39;를/JKO&#39;, &#39;포함/NNG;한/XSA&#39;, &#39;광의/NNG;의/JKG;실업/NNG&#39;, &#39;률/XSN&#39;, &#39;로/JKB;전환/NNG&#39;, &#39;할/XSV;경우/NNG&#39;, &#39;오히려/MAJ&#39;, &#39;경기/NNG;와/JKB;의/JKG&#39;, &#39;연관/NNG&#39;, &#39;성/XSN;이/JKS&#39;, &#39;좀/MAG;더/MAG&#39;, &#39;높/VA;은/ETM&#39;, &#39;것/NNB;으로/JKB&#39;, &#39;분석/NNG&#39;, &#39;되/XSV&#39;, &#39;므로/EC&#39;, &#39;경기/NNG&#39;, &#39;상환/NNG&#39;, &#39;판단/NNG&#39;, &#39;을/JKO&#39;, &#39;위해서/VV+;는/JX&#39;, &#39;공식/NNG&#39;, &#39;적/XSN;인/VCP&#39;, &#39;실업/NNG;률/XSN&#39;, &#39;보다/JKB;는/JX&#39;, &#39;광의/NNG;의/JKG;실업/NNG&#39;, &#39;률/XSN&#39;, &#39;을/JKO&#39;, &#39;이용/NNG&#39;, &#39;하/XSV&#39;, &#39;는/ETM;것/NNB&#39;, &#39;이/JKS&#39;, &#39;더/MAG&#39;, &#39;좋/VA&#39;, &#39;을/ETM;것/NNB&#39;, &#39;같/VA&#39;, &#39;다고/EC&#39;, &#39;설명/NNG&#39;, &#39;하/XSV&#39;, &#39;였/EP;음/ETN&#39;]
 </pre></div>
 </div>
 </div>
@@ -1307,28 +1043,53 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;이&#39;, &#39;에&#39;, &#39;대해&#39;, &#39;관련&#39;, &#39;부서&#39;, &#39;에서&#39;, &#39;는&#39;, &#39;실업&#39;, &#39;률&#39;, &#39;과&#39;, &#39;경기&#39;, &#39;지수&#39;, &#39;와&#39;, &#39;의&#39;, &#39;상관&#39;, &#39;관계&#39;, &#39;는&#39;, &#39;그렇게&#39;, &#39;높&#39;, &#39;지&#39;, &#39;않&#39;, &#39;은&#39;, &#39;것&#39;, &#39;으로&#39;, &#39;나타나&#39;, &#39;며&#39;, &#39;통계청&#39;, &#39;에서&#39;, &#39;발표&#39;, &#39;하&#39;, &#39;는&#39;, &#39;공식&#39;, &#39;적&#39;, &#39;인&#39;, &#39;실업&#39;, &#39;률&#39;, &#39;을&#39;, &#39;구직&#39;, &#39;단념&#39;, &#39;자&#39;, &#39;를&#39;, &#39;포함&#39;, &#39;한&#39;, &#39;광의의실업&#39;, &#39;률&#39;, &#39;로&#39;, &#39;전환&#39;, &#39;할&#39;, &#39;경우&#39;, &#39;오히려&#39;, &#39;경기&#39;, &#39;와&#39;, &#39;의&#39;, &#39;연관&#39;, &#39;성&#39;, &#39;이&#39;, &#39;좀&#39;, &#39;더&#39;, &#39;높&#39;, &#39;은&#39;, &#39;것으로분석&#39;, &#39;되&#39;, &#39;므로&#39;, &#39;경기&#39;, &#39;상환&#39;, &#39;판단&#39;, &#39;을&#39;, &#39;위해서&#39;, &#39;는&#39;, &#39;공식&#39;, &#39;적&#39;, &#39;인&#39;, &#39;실업&#39;, &#39;률&#39;, &#39;보다&#39;, &#39;는&#39;, &#39;광의의실업&#39;, &#39;률&#39;, &#39;을&#39;, &#39;이용&#39;, &#39;하&#39;, &#39;는&#39;, &#39;것&#39;, &#39;이&#39;, &#39;더&#39;, &#39;좋&#39;, &#39;을&#39;, &#39;것&#39;, &#39;같&#39;, &#39;다고&#39;, &#39;설명&#39;, &#39;하&#39;, &#39;였&#39;, &#39;음&#39;]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;이&#39;, &#39;에&#39;, &#39;대해&#39;, &#39;관련부서&#39;, &#39;에서&#39;, &#39;는&#39;, &#39;실업률&#39;, &#39;과&#39;, &#39;경기&#39;, &#39;지수&#39;, &#39;와&#39;, &#39;의&#39;, &#39;상관관계&#39;, &#39;는&#39;, &#39;그렇게&#39;, &#39;높&#39;, &#39;지않&#39;, &#39;은&#39;, &#39;것으로&#39;, &#39;나타나&#39;, &#39;며&#39;, &#39;통계청에서&#39;, &#39;발표&#39;, &#39;하는&#39;, &#39;공식&#39;, &#39;적인&#39;, &#39;실업률&#39;, &#39;을&#39;, &#39;구직&#39;, &#39;단념&#39;, &#39;자&#39;, &#39;를&#39;, &#39;포함한&#39;, &#39;광의의실업&#39;, &#39;률&#39;, &#39;로전환&#39;, &#39;할경우&#39;, &#39;오히려&#39;, &#39;경기와의&#39;, &#39;연관&#39;, &#39;성이&#39;, &#39;좀더&#39;, &#39;높은&#39;, &#39;것으로&#39;, &#39;분석&#39;, &#39;되&#39;, &#39;므로&#39;, &#39;경기&#39;, &#39;상환&#39;, &#39;판단&#39;, &#39;을&#39;, &#39;위해서는&#39;, &#39;공식&#39;, &#39;적인&#39;, &#39;실업률&#39;, &#39;보다는&#39;, &#39;광의의실업&#39;, &#39;률&#39;, &#39;을&#39;, &#39;이용&#39;, &#39;하&#39;, &#39;는것&#39;, &#39;이&#39;, &#39;더&#39;, &#39;좋&#39;, &#39;을것&#39;, &#39;같&#39;, &#39;다고&#39;, &#39;설명&#39;, &#39;하&#39;, &#39;였음&#39;]
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_ngrams</span> <span class="o">=</span><span class="n">ngram</span><span class="o">.</span><span class="n">find_ngrams</span><span class="p">(</span>
-    <span class="n">ngram</span><span class="o">.</span><span class="n">sentences</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">105</span><span class="p">],</span> <span class="n">strip_pos</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">surface_delim</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_ngrams</span> <span class="o">=</span> <span class="n">ngram</span><span class="o">.</span><span class="n">find_ngrams</span><span class="p">(</span>
+    <span class="n">ngram</span><span class="o">.</span><span class="n">sentences</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span>
+    <span class="n">strip_pos</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">surface_delim</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">,</span>
+    <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">apply_postag_rules</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_ngrams</span>
+<span class="n">_ngrams</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{}
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.models.ngram.ngram:found 25 ngrams
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;동/MM;위원/NNG&#39;: {&#39;score&#39;: 0.8568080788235676, &#39;count&#39;: 1},
+ &#39;관련/NNG;하/XSV;여/EC&#39;: {&#39;score&#39;: 0.6744817132834611, &#39;count&#39;: 1},
+ &#39;고용/NNG;사정/NNG&#39;: {&#39;score&#39;: 0.6440199999085726, &#39;count&#39;: 1},
+ &#39;지/EC;않/VX&#39;: {&#39;score&#39;: 0.9294521637628269, &#39;count&#39;: 2},
+ &#39;우리/NP;나라/NNG&#39;: {&#39;score&#39;: 0.8562398240331328, &#39;count&#39;: 2},
+ &#39;실업/NNG;률/XSN&#39;: {&#39;score&#39;: 0.6494435441593894, &#39;count&#39;: 3},
+ &#39;에/JKB;비해/VV+&#39;: {&#39;score&#39;: 0.5012251931663576, &#39;count&#39;: 2},
+ &#39;지/EC;못하/VX&#39;: {&#39;score&#39;: 0.7024120167866501, &#39;count&#39;: 1},
+ &#39;구조/NNG;적/XSN;요인/NNG&#39;: {&#39;score&#39;: 0.546126756666045, &#39;count&#39;: 3},
+ &#39;적/XSN;인/VCP&#39;: {&#39;score&#39;: 0.7342274264210907, &#39;count&#39;: 1},
+ &#39;측면/NNG;에서/JKB&#39;: {&#39;score&#39;: 0.5471802970887485, &#39;count&#39;: 2},
+ &#39;해/XSV;보/VX;면/EC&#39;: {&#39;score&#39;: 0.7278386924178137, &#39;count&#39;: 1},
+ &#39;방향/NNG;으로/JKB;가/VV&#39;: {&#39;score&#39;: 0.5214619840461885, &#39;count&#39;: 2},
+ &#39;는/ETM;것/NNB&#39;: {&#39;score&#39;: 0.5236409165544453, &#39;count&#39;: 1},
+ &#39;다는/ETM;견해/NNG&#39;: {&#39;score&#39;: 0.7309617813933906, &#39;count&#39;: 1},
+ &#39;활동/NNG;참가/NNG&#39;: {&#39;score&#39;: 0.7741200525059377, &#39;count&#39;: 1},
+ &#39;기/ETN;때문/NNB&#39;: {&#39;score&#39;: 0.8196906558080235, &#39;count&#39;: 1},
+ &#39;같/VA;은/ETM&#39;: {&#39;score&#39;: 0.7999751061740198, &#39;count&#39;: 1},
+ &#39;과/JKB;함께/MAG&#39;: {&#39;score&#39;: 0.6284362488292308, &#39;count&#39;: 1},
+ &#39;좀/MAG;더/MAG&#39;: {&#39;score&#39;: 0.8453728443412079, &#39;count&#39;: 1},
+ &#39;심/VV;도/EC&#39;: {&#39;score&#39;: 0.9942257464499541, &#39;count&#39;: 1},
+ &#39;해/XSV;보/VX&#39;: {&#39;score&#39;: 0.7018456967682065, &#39;count&#39;: 1},
+ &#39;필요/NNG;가/JKS;있/VA&#39;: {&#39;score&#39;: 0.8839755298206097, &#39;count&#39;: 1},
+ &#39;의견/NNG;을/JKO;제시/NNG&#39;: {&#39;score&#39;: 0.7695350089945394, &#39;count&#39;: 1},
+ &#39;였/EP;음/ETN&#39;: {&#39;score&#39;: 0.8196123192196287, &#39;count&#39;: 1}}
 </pre></div>
 </div>
 </div>
