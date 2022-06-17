@@ -446,11 +446,6 @@ const thebe_selector_output = ".output, .cell_output"
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../../usecases/fomc/01_FOMC_sentiments.html">
-     Sentiment Analysis of FOMC Statements
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="../../../usecases/fomc/02_FOMC_numerical_data.html">
      Prepapring Numerical Data
     </a>
@@ -473,6 +468,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="../../../usecases/fomc/06_FOMC_AutoML.html">
      Checking Baseline with AutoML
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../usecases/fomc/07_FOMC_sentiments.html">
+     Sentiment Analysis of FOMC Statements
     </a>
    </li>
   </ul>
@@ -738,7 +738,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+19.gdb9b114.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.33+3.g88a2e60
 </pre></div>
 </div>
 </div>
@@ -749,18 +749,19 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ngram_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;model/ngram=lm&quot;</span><span class="p">)</span>
 <span class="n">ngram_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">ngram_cfg</span><span class="o">.</span><span class="n">autoload</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">ngram_cfg</span><span class="o">.</span><span class="n">auto</span><span class="o">.</span><span class="n">load</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">ngram</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">ngram_cfg</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.ekonf:Config is not instantiatable, returning config
-INFO:ekorpkit.models.ngram.base:instantiating ekorpkit.preprocessors.tokenizer.NLTKTokenizer...
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.ekonf:instantiating ekorpkit.models.ngram.base.Ngrams...
 INFO:ekorpkit.preprocessors.tokenizer:instantiating ekorpkit.preprocessors.stopwords.Stopwords...
 INFO:ekorpkit.ekonf:Calling load_candidates
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;/workspace/projects/ekorpkit/ekorpkit/resources/lexicons/LM.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/projects/ekorpkit/ekorpkit/resources/lexicons/LM.parquet&#39;]
 INFO:ekorpkit.io.file:Loading data from /workspace/projects/ekorpkit/ekorpkit/resources/lexicons/LM.parquet
-INFO:ekorpkit.io.file: &gt;&gt; elapsed time to load data: 0:00:00.021878
+INFO:ekorpkit.io.file: &gt;&gt; elapsed time to load data: 0:00:00.033225
 INFO:ekorpkit.models.ngram.base:loaded 58142 candidates
 </pre></div>
 </div>
@@ -800,8 +801,7 @@ INFO:ekorpkit.models.ngram.base:loaded 58142 candidates
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 1/1 [00:00&lt;00:00, 237.60it/s]
-INFO:ekorpkit.models.ngram.base:found 22 ngrams
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.models.ngram.base:found 22 ngrams
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;beyond&#39;: {&#39;Negative&#39;: 0,
@@ -1013,18 +1013,19 @@ INFO:ekorpkit.models.ngram.base:found 22 ngrams
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ngram_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;model/ngram=hiv4&quot;</span><span class="p">)</span>
 <span class="n">ngram_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">ngram_cfg</span><span class="o">.</span><span class="n">autoload</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">ngram_cfg</span><span class="o">.</span><span class="n">auto</span><span class="o">.</span><span class="n">load</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">ngram</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">ngram_cfg</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.ekonf:Config is not instantiatable, returning config
-INFO:ekorpkit.models.ngram.base:instantiating ekorpkit.preprocessors.tokenizer.NLTKTokenizer...
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.ekonf:instantiating ekorpkit.models.ngram.base.Ngrams...
 INFO:ekorpkit.preprocessors.tokenizer:instantiating ekorpkit.preprocessors.stopwords.Stopwords...
 INFO:ekorpkit.ekonf:Calling load_candidates
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;/workspace/projects/ekorpkit/ekorpkit/resources/lexicons/HIV-4.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/projects/ekorpkit/ekorpkit/resources/lexicons/HIV-4.parquet&#39;]
 INFO:ekorpkit.io.file:Loading data from /workspace/projects/ekorpkit/ekorpkit/resources/lexicons/HIV-4.parquet
-INFO:ekorpkit.io.file: &gt;&gt; elapsed time to load data: 0:00:00.041800
+INFO:ekorpkit.io.file: &gt;&gt; elapsed time to load data: 0:00:00.051534
 INFO:ekorpkit.models.ngram.base:loaded 11787 candidates
 </pre></div>
 </div>
@@ -1052,8 +1053,7 @@ INFO:ekorpkit.models.ngram.base:loaded 11787 candidates
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 1/1 [00:00&lt;00:00, 68.29it/s]
-INFO:ekorpkit.models.ngram.base:found 10 ngrams
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.models.ngram.base:found 10 ngrams
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;beyond&#39;: {&#39;Positiv&#39;: None,

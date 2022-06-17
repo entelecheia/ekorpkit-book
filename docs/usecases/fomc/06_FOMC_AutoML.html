@@ -51,9 +51,11 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Bank of Korea" href="../bok/index.html" />
+    <link rel="next" title="Sentiment Analysis of FOMC Statements" href="07_FOMC_sentiments.html" />
     <link rel="prev" title="Visualizing Features" href="05_FOMC_features.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -444,11 +446,6 @@ const thebe_selector_output = ".output, .cell_output"
   </label>
   <ul class="current">
    <li class="toctree-l2">
-    <a class="reference internal" href="01_FOMC_sentiments.html">
-     Sentiment Analysis of FOMC Statements
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="02_FOMC_numerical_data.html">
      Prepapring Numerical Data
     </a>
@@ -471,6 +468,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      Checking Baseline with AutoML
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="07_FOMC_sentiments.html">
+     Sentiment Analysis of FOMC Statements
     </a>
    </li>
   </ul>
@@ -732,14 +734,14 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
 
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.32+16.gc607689.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.33+1.g5713996.dirty
 </pre></div>
 </div>
 </div>
@@ -762,6 +764,20 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.datasets.base:Loaded info file: ../data/fomc/fomc_features_small/info-fomc_features_small.yaml
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;fomc_features_small-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_features_small/fomc_features_small-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_features_small/fomc_features_small-train.parquet
+INFO:ekorpkit.info.column:index: index, index of data: index, columns: [&#39;date&#39;, &#39;target&#39;, &#39;prev_decision&#39;, &#39;GDP_diff_prev&#39;, &#39;PMI&#39;, &#39;EMP_diff_prev&#39;, &#39;RSALES_diff_year&#39;, &#39;UNEMP_diff_prev&#39;, &#39;HSALES_diff_year&#39;, &#39;Inertia_diff&#39;, &#39;Balanced_diff&#39;, &#39;split&#39;], id: [&#39;date&#39;, &#39;split&#39;]
+INFO:ekorpkit.info.column:Added a column [split] with value [train]
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;fomc_features_small-test.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_features_small/fomc_features_small-test.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_features_small/fomc_features_small-test.parquet
+INFO:ekorpkit.info.column:Added a column [split] with value [test]
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 <div class="section" id="auto-ml">
@@ -776,18 +792,15 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.ekonf:No method defined to call
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best ML leaner: rf
-Best hyperparmeter config: {&#39;n_estimators&#39;: 4, &#39;max_features&#39;: 0.6336706494056755, &#39;max_leaves&#39;: 7, &#39;criterion&#39;: &#39;entropy&#39;}
-Best accuracy on validation data: 0.6849
-Training duration of best run: 0.1748 s
 </pre></div>
 </div>
 </div>
@@ -816,6 +829,11 @@ Training duration of best run: 0.1748 s
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.models.automl.flaml:Loaded model from /workspace/projects/esgml/outputs/automl_fomc_features_small/automl_fomc_features_small.mdl
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -824,10 +842,10 @@ Training duration of best run: 0.1748 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best ML leaner: rf
-Best hyperparmeter config: {&#39;n_estimators&#39;: 4, &#39;max_features&#39;: 0.6336706494056755, &#39;max_leaves&#39;: 7, &#39;criterion&#39;: &#39;entropy&#39;}
-Best accuracy on validation data: 0.6849
-Training duration of best run: 0.1748 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best ML leaner: lgbm
+Best hyperparmeter config: {&#39;n_estimators&#39;: 10, &#39;num_leaves&#39;: 4, &#39;min_child_samples&#39;: 18, &#39;learning_rate&#39;: 0.2293009676418639, &#39;log_max_bin&#39;: 9, &#39;colsample_bytree&#39;: 0.9086551727646448, &#39;reg_alpha&#39;: 0.0015561782752413472, &#39;reg_lambda&#39;: 0.33127416269768944}
+Best accuracy on validation data: 0.672
+Training duration of best run: 5.685 s
 </pre></div>
 </div>
 </div>
@@ -839,7 +857,12 @@ Training duration of best run: 0.1748 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/06_FOMC_AutoML_12_0.png" src="../../../_images/06_FOMC_AutoML_12_0.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;x&#39;: &#39;time_history&#39;, &#39;y&#39;: &#39;best_acc_history&#39;, &#39;linewidth&#39;: 2, &#39;palette&#39;: None, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: &#39;steps-post&#39;}
+INFO:ekorpkit.visualize.plot:Plotting scatterplot with {&#39;x&#39;: &#39;time_history&#39;, &#39;y&#39;: &#39;acc_history&#39;, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;palette&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;ci&#39;: 95, &#39;alpha&#39;: None, &#39;legend&#39;: False}
+INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/esgml/outputs/automl_fomc_features_small/fig_automl_fomc_features_small_learning_curve.png
+</pre></div>
+</div>
+<img alt="../../../_images/06_FOMC_AutoML_12_1.png" src="../../../_images/06_FOMC_AutoML_12_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -849,27 +872,45 @@ Training duration of best run: 0.1748 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>r2 = -0.37118039398169733
-mse = 0.8173076923076923
-mae = 0.49038461538461536
-Accuracy:  0.6730769230769231
-Precison:  0.5528554778554778
-Recall:  0.6730769230769231
-F1 Score:  0.5743400621118012
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.datasets.base:Loaded info file: ../data/fomc/fomc_features_small/info-fomc_features_small.yaml
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;fomc_features_small-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_features_small/fomc_features_small-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_features_small/fomc_features_small-train.parquet
+INFO:ekorpkit.info.column:index: index, index of data: index, columns: [&#39;date&#39;, &#39;target&#39;, &#39;prev_decision&#39;, &#39;GDP_diff_prev&#39;, &#39;PMI&#39;, &#39;EMP_diff_prev&#39;, &#39;RSALES_diff_year&#39;, &#39;UNEMP_diff_prev&#39;, &#39;HSALES_diff_year&#39;, &#39;Inertia_diff&#39;, &#39;Balanced_diff&#39;, &#39;split&#39;], id: [&#39;date&#39;, &#39;split&#39;]
+INFO:ekorpkit.info.column:Added a column [split] with value [train]
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;fomc_features_small-test.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_features_small/fomc_features_small-test.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_features_small/fomc_features_small-test.parquet
+INFO:ekorpkit.info.column:Added a column [split] with value [test]
+INFO:ekorpkit.datasets.base:LabelEncoder classes: [&#39;Cut&#39; &#39;Hike&#39; &#39;Hold&#39;]
+INFO:ekorpkit.io.file:Saving dataframe to /workspace/projects/esgml/outputs/automl_fomc_features_small/automl_fomc_features_small_test_predictions.parquet
+INFO:ekorpkit.visualize.classification:Confusion matrix: {&#39;display_labels&#39;: [&#39;Cut&#39;, &#39;Hike&#39;, &#39;Hold&#39;], &#39;matrix_labels&#39;: None, &#39;include_values&#39;: True, &#39;include_percentages&#39;: True, &#39;summary_stats&#39;: True, &#39;rcParams&#39;: {&#39;cbar&#39;: True, &#39;cmap&#39;: &#39;Blues&#39;}, &#39;_ax_&#39;: {&#39;xlabel&#39;: &#39;Predicted label&#39;, &#39;ylabel&#39;: &#39;Actual label&#39;}}
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>r2: -0.3066542577943232
+mse: 0.7788461538461539
+mae: 0.47115384615384615
+Accuracy:  0.6826923076923077
+Precison:  0.6514423076923077
+Recall:  0.6826923076923077
+F1 Score:  0.6251761059453366
 Model Report: 
 ___________________________________________________
               precision    recall  f1-score   support
 
-         Cut       0.60      0.17      0.26        18
-        Hike       0.00      0.00      0.00        17
-        Hold       0.68      0.97      0.80        69
+         Cut       0.62      0.28      0.38        18
+        Hike       0.50      0.12      0.19        17
+        Hold       0.70      0.93      0.80        69
 
-    accuracy                           0.67       104
-   macro avg       0.43      0.38      0.35       104
-weighted avg       0.55      0.67      0.57       104
+    accuracy                           0.68       104
+   macro avg       0.61      0.44      0.46       104
+weighted avg       0.65      0.68      0.63       104
 </pre></div>
 </div>
-<img alt="../../../_images/06_FOMC_AutoML_13_1.png" src="../../../_images/06_FOMC_AutoML_13_1.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/esgml/outputs/automl_fomc_features_small/confusion_matrix.png
+</pre></div>
+</div>
+<img alt="../../../_images/06_FOMC_AutoML_13_3.png" src="../../../_images/06_FOMC_AutoML_13_3.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -879,8 +920,91 @@ weighted avg       0.55      0.67      0.57       104
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/06_FOMC_AutoML_14_0.png" src="../../../_images/06_FOMC_AutoML_14_0.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting barplot with {&#39;x&#39;: &#39;importances&#39;, &#39;y&#39;: &#39;columns&#39;, &#39;hue&#39;: None}
+INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/esgml/outputs/automl_fomc_features_small/fig_automl_fomc_features_small_feature_importance.png
+</pre></div>
 </div>
+<img alt="../../../_images/06_FOMC_AutoML_14_1.png" src="../../../_images/06_FOMC_AutoML_14_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">get_feature_importance</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>columns</th>
+      <th>importances</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2</th>
+      <td>PMI</td>
+      <td>28</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>GDP_diff_prev</td>
+      <td>17</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>EMP_diff_prev</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>UNEMP_diff_prev</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>prev_decision</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>RSALES_diff_year</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>HSALES_diff_year</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Inertia_diff</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Balanced_diff</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 </div>
 </div>
@@ -917,10 +1041,10 @@ weighted avg       0.55      0.67      0.57       104
             <p class="prev-next-title">Visualizing Features</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="../bok/index.html" title="next page">
+    <a class='right-next' id="next-link" href="07_FOMC_sentiments.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Bank of Korea</p>
+        <p class="prev-next-title">Sentiment Analysis of FOMC Statements</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

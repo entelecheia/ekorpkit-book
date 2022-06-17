@@ -446,11 +446,6 @@ const thebe_selector_output = ".output, .cell_output"
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../../usecases/fomc/01_FOMC_sentiments.html">
-     Sentiment Analysis of FOMC Statements
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="../../../usecases/fomc/02_FOMC_numerical_data.html">
      Prepapring Numerical Data
     </a>
@@ -473,6 +468,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="../../../usecases/fomc/06_FOMC_AutoML.html">
      Checking Baseline with AutoML
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../usecases/fomc/07_FOMC_sentiments.html">
+     Sentiment Analysis of FOMC Statements
     </a>
    </li>
   </ul>
@@ -738,7 +738,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+19.gdb9b114.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.33+3.g88a2e60
 </pre></div>
 </div>
 </div>
@@ -747,7 +747,7 @@ const thebe_selector_output = ".output, .cell_output"
 <h2>Tokenize and extract tokens<a class="headerlink" href="#tokenize-and-extract-tokens" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corpus_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;corpus&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corpus_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;corpus&quot;</span><span class="p">)</span>
 <span class="n">corpus_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;bok_minutes&quot;</span>
 <span class="n">corpus_cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;/workspace/data/datasets/corpus/ekorpkit&quot;</span>
 </pre></div>
@@ -756,8 +756,8 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tkn_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;preprocessor/tokenizer=mecab&quot;</span><span class="p">)</span>
-<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;pipeline&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tkn_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;preprocessor/tokenizer=mecab&quot;</span><span class="p">)</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;pipeline&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">corpus</span> <span class="o">=</span> <span class="n">corpus_cfg</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">_pipeline_</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;tokenize&quot;</span><span class="p">,</span> <span class="s2">&quot;explode_splits&quot;</span><span class="p">,</span> <span class="s2">&quot;save_dataframe&quot;</span><span class="p">]</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">100</span>
@@ -775,7 +775,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell_output docutils container">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "398cfbac7d0c41e9bb56dde2d00ebc35", "version_major": 2, "version_minor": 0}
+{"model_id": "6a07b8108fb14113a6f1077b89e26459", "version_major": 2, "version_minor": 0}
 </script><div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -796,39 +796,45 @@ const thebe_selector_output = ".output, .cell_output"
       <th></th>
       <th>id</th>
       <th>text</th>
+      <th>split</th>
       <th>sent_id</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>162</th>
-      <td>162</td>
-      <td>앞/NNG 으로/JKB /SP 코로나/NNG 19/SN /SP 충격/NNG 에서/J...</td>
-      <td>337</td>
-    </tr>
-    <tr>
-      <th>162</th>
-      <td>162</td>
+      <th>181</th>
+      <td>181</td>
       <td>또한/MAJ /SP 글로벌/NNG /SP 공급/NNG 망/NNG /SP 재편/NNG...</td>
-      <td>338</td>
+      <td>train</td>
+      <td>321</td>
     </tr>
     <tr>
-      <th>162</th>
-      <td>162</td>
+      <th>181</th>
+      <td>181</td>
       <td>향후/NNG /SP 경제/NNG 회복세/NNG 와/JC /SP 물가/NNG 의/JK...</td>
-      <td>339</td>
+      <td>train</td>
+      <td>322</td>
     </tr>
     <tr>
-      <th>162</th>
-      <td>162</td>
+      <th>181</th>
+      <td>181</td>
       <td></td>
-      <td>340</td>
+      <td>train</td>
+      <td>323</td>
     </tr>
     <tr>
-      <th>162</th>
-      <td>162</td>
-      <td>Government/SL '/SY s/SL /SP View/SL</td>
-      <td>341</td>
+      <th>181</th>
+      <td>181</td>
+      <td>Government/SL ’/SY s/SL /SP View/SL</td>
+      <td>train</td>
+      <td>324</td>
+    </tr>
+    <tr>
+      <th>181</th>
+      <td>181</td>
+      <td></td>
+      <td>train</td>
+      <td>325</td>
     </tr>
   </tbody>
 </table>
@@ -836,10 +842,10 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tkn_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;preprocessor/tokenizer=mecab_econ&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tkn_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;preprocessor/tokenizer=mecab_econ&quot;</span><span class="p">)</span>
 <span class="n">tkn_cfg</span><span class="o">.</span><span class="n">extract</span><span class="o">.</span><span class="n">strip_pos</span> <span class="o">=</span> <span class="kc">False</span>
 
-<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;pipeline&quot;</span><span class="p">)</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;pipeline&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/bok&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;bok_minutes_tokenized.parquet&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">_pipeline_</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;extract_tokens&quot;</span><span class="p">,</span> <span class="s2">&quot;save_dataframe&quot;</span><span class="p">]</span>
@@ -856,7 +862,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell_output docutils container">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "22e2c8b5175d4a71be3ce92dfea4c4e3", "version_major": 2, "version_minor": 0}
+{"model_id": "9baca07af8fb496f8354aef92b2c8630", "version_major": 2, "version_minor": 0}
 </script><div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -877,39 +883,45 @@ const thebe_selector_output = ".output, .cell_output"
       <th></th>
       <th>id</th>
       <th>text</th>
+      <th>split</th>
       <th>sent_id</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>162</th>
-      <td>162</td>
-      <td>앞/NNG 으로/JKB 코로나/NNG 19/SN 충격/NNG 에서/JKB 점차/MA...</td>
-      <td>337</td>
-    </tr>
-    <tr>
-      <th>162</th>
-      <td>162</td>
+      <th>181</th>
+      <td>181</td>
       <td>또한/MAJ 글로벌/NNG 공급/NNG 망/NNG 재편/NNG 기후/NNG 변화/N...</td>
-      <td>338</td>
+      <td>train</td>
+      <td>321</td>
     </tr>
     <tr>
-      <th>162</th>
-      <td>162</td>
+      <th>181</th>
+      <td>181</td>
       <td>향후/NNG 경제/NNG 회복세/NNG 와/JC 물가/NNG 의/JKG 흐름/NNG...</td>
-      <td>339</td>
+      <td>train</td>
+      <td>322</td>
     </tr>
     <tr>
-      <th>162</th>
-      <td>162</td>
+      <th>181</th>
+      <td>181</td>
       <td></td>
-      <td>340</td>
+      <td>train</td>
+      <td>323</td>
     </tr>
     <tr>
-      <th>162</th>
-      <td>162</td>
+      <th>181</th>
+      <td>181</td>
       <td>Government/SL s/SL View/SL</td>
-      <td>341</td>
+      <td>train</td>
+      <td>324</td>
+    </tr>
+    <tr>
+      <th>181</th>
+      <td>181</td>
+      <td></td>
+      <td>train</td>
+      <td>325</td>
     </tr>
   </tbody>
 </table>
@@ -920,13 +932,304 @@ const thebe_selector_output = ".output, .cell_output"
 <h2>Train ngrams<a class="headerlink" href="#train-ngrams" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ngram_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;model/ngram=npmi&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ngram_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;model/ngram=npmi&quot;</span><span class="p">)</span>
 <span class="n">ngram_cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/bok&quot;</span>
 <span class="n">ngram_cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;bok_minutes_tokens.parquet&quot;</span>
 <span class="n">ngram_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">ngram_cfg</span><span class="o">.</span><span class="n">autoload</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">ngram_cfg</span><span class="o">.</span><span class="n">auto</span><span class="o">.</span><span class="n">load</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">ngram_cfg</span><span class="o">.</span><span class="n">candidates</span><span class="o">.</span><span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.4</span>
-<span class="n">ngram</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">ngram_cfg</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">ngram_cfg</span><span class="p">)</span>
+<span class="c1"># ngram = eKonf.instantiate(ngram_cfg)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;_method_&#39;: [&#39;initialize&#39;],
+ &#39;_target_&#39;: &#39;ekorpkit.models.ngram.base.Ngrams&#39;,
+ &#39;auto&#39;: {&#39;load&#39;: True},
+ &#39;candidates&#39;: {&#39;max_candidates&#39;: 40000000,
+                &#39;min_count&#39;: 10,
+                &#39;num_sents_per_pruning&#39;: 10000,
+                &#39;prune_min_ngram_count&#39;: 2,
+                &#39;threshold&#39;: 0.4},
+ &#39;data&#39;: {&#39;_target_&#39;: &#39;ekorpkit.pipelines.data.Data&#39;,
+          &#39;column_info&#39;: {&#39;_target_&#39;: &#39;ekorpkit.info.column.CorpusInfo&#39;,
+                          &#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;,
+                                      &#39;merge_meta_on&#39;: &#39;id&#39;,
+                                      &#39;text&#39;: &#39;text&#39;,
+                                      &#39;timestamp&#39;: None},
+                          &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;},
+                          &#39;datetime&#39;: {&#39;columns&#39;: None,
+                                       &#39;format&#39;: None,
+                                       &#39;rcParams&#39;: None},
+                          &#39;meta&#39;: None,
+                          &#39;segment_separator&#39;: &#39;\\n\\n&#39;,
+                          &#39;sentence_separator&#39;: &#39;\\n&#39;,
+                          &#39;timestamp&#39;: {&#39;format&#39;: None,
+                                        &#39;key&#39;: None,
+                                        &#39;rcParams&#39;: None}},
+          &#39;columns&#39;: None,
+          &#39;concat_data&#39;: True,
+          &#39;corpus&#39;: {&#39;_target_&#39;: &#39;ekorpkit.datasets.corpus.Corpus&#39;,
+                     &#39;auto&#39;: {&#39;load&#39;: True, &#39;merge&#39;: False},
+                     &#39;column_info&#39;: {&#39;_target_&#39;: &#39;ekorpkit.info.column.CorpusInfo&#39;,
+                                     &#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;,
+                                                 &#39;merge_meta_on&#39;: &#39;id&#39;,
+                                                 &#39;text&#39;: &#39;text&#39;,
+                                                 &#39;timestamp&#39;: None},
+                                     &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;},
+                                     &#39;datetime&#39;: {&#39;columns&#39;: None,
+                                                  &#39;format&#39;: None,
+                                                  &#39;rcParams&#39;: None},
+                                     &#39;meta&#39;: None,
+                                     &#39;segment_separator&#39;: &#39;\\n\\n&#39;,
+                                     &#39;sentence_separator&#39;: &#39;\\n&#39;,
+                                     &#39;timestamp&#39;: {&#39;format&#39;: None,
+                                                   &#39;key&#39;: None,
+                                                   &#39;rcParams&#39;: None}},
+                     &#39;data_dir&#39;: &#39;/workspace/data/datasets/corpus&#39;,
+                     &#39;filetype&#39;: None,
+                     &#39;force&#39;: {&#39;rebuild&#39;: False},
+                     &#39;metadata_dir&#39;: None,
+                     &#39;name&#39;: None,
+                     &#39;path&#39;: {&#39;cache&#39;: {&#39;cache_dir&#39;: &#39;/workspace/.cache&#39;,
+                                        &#39;extract_archive&#39;: True,
+                                        &#39;force_extract&#39;: False,
+                                        &#39;path&#39;: None,
+                                        &#39;return_parent_dir&#39;: True,
+                                        &#39;uri&#39;: None,
+                                        &#39;verbose&#39;: False},
+                              &#39;cached_path&#39;: None,
+                              &#39;columns&#39;: None,
+                              &#39;concat_data&#39;: False,
+                              &#39;data_columns&#39;: None,
+                              &#39;data_dir&#39;: &#39;/workspace/data/datasets/corpus&#39;,
+                              &#39;data_file&#39;: None,
+                              &#39;filetype&#39;: None,
+                              &#39;name&#39;: None,
+                              &#39;output_dir&#39;: None,
+                              &#39;output_file&#39;: None,
+                              &#39;root&#39;: &#39;/workspace/data/None&#39;,
+                              &#39;suffix&#39;: None,
+                              &#39;verbose&#39;: False},
+                     &#39;use_name_as_subdir&#39;: True,
+                     &#39;verbose&#39;: False},
+          &#39;data_dir&#39;: &#39;../data/bok&#39;,
+          &#39;data_file&#39;: &#39;bok_minutes_tokens.parquet&#39;,
+          &#39;dataset&#39;: {&#39;_target_&#39;: &#39;ekorpkit.datasets.dataset.Dataset&#39;,
+                      &#39;auto&#39;: {&#39;build&#39;: False, &#39;load&#39;: True},
+                      &#39;column_info&#39;: {&#39;_target_&#39;: &#39;ekorpkit.info.column.DatasetInfo&#39;,
+                                      &#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;, &#39;text&#39;: &#39;text&#39;},
+                                      &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;},
+                                      &#39;datetime&#39;: {&#39;columns&#39;: None,
+                                                   &#39;format&#39;: None,
+                                                   &#39;rcParams&#39;: None}},
+                      &#39;data_dir&#39;: &#39;/workspace/data/datasets/dataset&#39;,
+                      &#39;filetype&#39;: &#39;.parquet&#39;,
+                      &#39;force&#39;: {&#39;rebuild&#39;: False},
+                      &#39;info&#39;: {&#39;_target_&#39;: &#39;ekorpkit.info.stat.SummaryInfo&#39;,
+                               &#39;aggregate_info&#39;: {&#39;num_examples&#39;: &#39;num_examples&#39;,
+                                                  &#39;size_in_bytes&#39;: &#39;num_bytes&#39;},
+                               &#39;data_dir&#39;: &#39;/workspace/data/datasets/dataset&#39;,
+                               &#39;info_file&#39;: &#39;info-None.yaml&#39;,
+                               &#39;info_list&#39;: [&#39;name&#39;,
+                                             &#39;fullname&#39;,
+                                             &#39;domain&#39;,
+                                             &#39;task&#39;,
+                                             &#39;lang&#39;,
+                                             &#39;description&#39;,
+                                             &#39;license&#39;,
+                                             &#39;homepage&#39;,
+                                             &#39;version&#39;,
+                                             &#39;num_examples&#39;,
+                                             &#39;size_in_bytes&#39;,
+                                             &#39;size_in_human_bytes&#39;,
+                                             &#39;data_files_modified&#39;,
+                                             &#39;info_updated&#39;,
+                                             &#39;data_files&#39;,
+                                             &#39;column_info&#39;],
+                               &#39;key_columns&#39;: None,
+                               &#39;modified_info&#39;: {&#39;data_files_modified&#39;: &#39;data_file&#39;},
+                               &#39;name&#39;: None,
+                               &#39;stats&#39;: {&#39;_func_&#39;: {&#39;len_bytes&#39;: {&#39;_partial_&#39;: True,
+                                                                  &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}},
+                                         &#39;_partial_&#39;: True,
+                                         &#39;_target_&#39;: &#39;ekorpkit.info.stat.summary_stats&#39;,
+                                         &#39;agg_funcs&#39;: {&#39;num_bytes&#39;: [&#39;count&#39;,
+                                                                     &#39;sum&#39;,
+                                                                     &#39;median&#39;,
+                                                                     &#39;max&#39;,
+                                                                     &#39;min&#39;]},
+                                         &#39;convert_to_humanbytes&#39;: {&#39;num_bytes&#39;: &#39;human_bytes&#39;},
+                                         &#39;key_columns&#39;: None,
+                                         &#39;num_columns&#39;: {&#39;num_bytes&#39;: &#39;len_bytes&#39;},
+                                         &#39;num_workers&#39;: 1,
+                                         &#39;rename_columns&#39;: {&#39;num_bytes_count&#39;: &#39;num_examples&#39;,
+                                                            &#39;num_bytes_sum&#39;: &#39;num_bytes&#39;},
+                                         &#39;text_keys&#39;: &#39;text&#39;},
+                               &#39;update_files_info&#39;: {&#39;data_files&#39;: &#39;data_file&#39;,
+                                                     &#39;meta_files&#39;: &#39;meta_file&#39;},
+                               &#39;update_info&#39;: [&#39;fullname&#39;,
+                                               &#39;lang&#39;,
+                                               &#39;domain&#39;,
+                                               &#39;task&#39;,
+                                               &#39;description&#39;,
+                                               &#39;license&#39;,
+                                               &#39;homepage&#39;,
+                                               &#39;version&#39;],
+                               &#39;verbose&#39;: False},
+                      &#39;name&#39;: None,
+                      &#39;path&#39;: {&#39;cache&#39;: {&#39;cache_dir&#39;: &#39;/workspace/.cache&#39;,
+                                         &#39;extract_archive&#39;: True,
+                                         &#39;force_extract&#39;: False,
+                                         &#39;path&#39;: None,
+                                         &#39;return_parent_dir&#39;: True,
+                                         &#39;uri&#39;: None,
+                                         &#39;verbose&#39;: False},
+                               &#39;cached_path&#39;: None,
+                               &#39;columns&#39;: None,
+                               &#39;concat_data&#39;: False,
+                               &#39;data_columns&#39;: None,
+                               &#39;data_dir&#39;: &#39;/workspace/data/datasets/dataset&#39;,
+                               &#39;data_file&#39;: None,
+                               &#39;filetype&#39;: &#39;.parquet&#39;,
+                               &#39;name&#39;: None,
+                               &#39;output_dir&#39;: None,
+                               &#39;output_file&#39;: None,
+                               &#39;root&#39;: &#39;/workspace/data/None&#39;,
+                               &#39;suffix&#39;: None,
+                               &#39;verbose&#39;: False},
+                      &#39;use_name_as_subdir&#39;: True,
+                      &#39;verbose&#39;: False},
+          &#39;name&#39;: &#39;data&#39;,
+          &#39;output_dir&#39;: &#39;/workspace/projects/esgml/outputs/data&#39;,
+          &#39;output_file&#39;: None,
+          &#39;path&#39;: {&#39;cache&#39;: {&#39;cache_dir&#39;: &#39;/workspace/.cache&#39;,
+                             &#39;extract_archive&#39;: True,
+                             &#39;force_extract&#39;: False,
+                             &#39;path&#39;: None,
+                             &#39;return_parent_dir&#39;: True,
+                             &#39;uri&#39;: None,
+                             &#39;verbose&#39;: True},
+                   &#39;cached_path&#39;: None,
+                   &#39;columns&#39;: None,
+                   &#39;concat_data&#39;: True,
+                   &#39;data&#39;: {&#39;base_dir&#39;: &#39;../data/bok&#39;,
+                            &#39;columns&#39;: None,
+                            &#39;concatenate&#39;: True,
+                            &#39;dype&#39;: None,
+                            &#39;file&#39;: &#39;bok_minutes_tokens.parquet&#39;,
+                            &#39;filename&#39;: &#39;bok_minutes_tokens.parquet&#39;,
+                            &#39;filepath&#39;: &#39;../data/bok/bok_minutes_tokens.parquet&#39;,
+                            &#39;filetype&#39;: &#39;&#39;,
+                            &#39;parse_dates&#39;: None},
+                   &#39;data_columns&#39;: None,
+                   &#39;data_dir&#39;: &#39;../data/bok&#39;,
+                   &#39;data_file&#39;: &#39;bok_minutes_tokens.parquet&#39;,
+                   &#39;filetype&#39;: &#39;&#39;,
+                   &#39;name&#39;: &#39;data&#39;,
+                   &#39;output&#39;: {&#39;base_dir&#39;: &#39;/workspace/projects/esgml/outputs/data&#39;,
+                              &#39;columns&#39;: None,
+                              &#39;file&#39;: None,
+                              &#39;filename&#39;: None,
+                              &#39;filepath&#39;: &#39;/workspace/projects/esgml/outputs/data&#39;,
+                              &#39;filetype&#39;: &#39;&#39;,
+                              &#39;suffix&#39;: None},
+                   &#39;output_dir&#39;: &#39;/workspace/projects/esgml/outputs/data&#39;,
+                   &#39;output_file&#39;: None,
+                   &#39;root&#39;: &#39;/workspace/data/data&#39;,
+                   &#39;suffix&#39;: None,
+                   &#39;verbose&#39;: True},
+          &#39;verbose&#39;: True},
+ &#39;force&#39;: {&#39;train&#39;: False},
+ &#39;force_train&#39;: False,
+ &#39;info&#39;: {&#39;description&#39;: None,
+          &#39;fullname&#39;: None,
+          &#39;lang&#39;: None,
+          &#39;name&#39;: None,
+          &#39;source&#39;: None},
+ &#39;name&#39;: &#39;ngram&#39;,
+ &#39;ngram&#39;: {&#39;delimiter&#39;: &#39;;&#39;,
+           &#39;max_n&#39;: 3,
+           &#39;max_skip&#39;: None,
+           &#39;max_window&#39;: 3,
+           &#39;postag_rules&#39;: None},
+ &#39;ngramize&#39;: {&#39;apply_postag_rules&#39;: True,
+              &#39;delimiter&#39;: &#39;&#39;,
+              &#39;exclude_overlaps&#39;: True,
+              &#39;ignore_scores&#39;: False,
+              &#39;overlaps_to_keep&#39;: &#39;highest_score&#39;,
+              &#39;strip_pos&#39;: True,
+              &#39;threshold&#39;: None,
+              &#39;use_surfaces_to_score&#39;: False},
+ &#39;postag&#39;: {&#39;delimiter&#39;: &#39;/&#39;,
+            &#39;max_len&#39;: 3,
+            &#39;stop_tags&#39;: [&#39;SP&#39;, &#39;SF&#39;, &#39;SE&#39;, &#39;SSO&#39;, &#39;SSC&#39;, &#39;SC&#39;, &#39;SY&#39;, &#39;SH&#39;],
+            &#39;strip_pos&#39;: False,
+            &#39;use_tags&#39;: None},
+ &#39;preprocessor&#39;: {&#39;tokenizer&#39;: {&#39;_target_&#39;: &#39;ekorpkit.preprocessors.tokenizer.SimpleTokenizer&#39;,
+                                &#39;extract&#39;: {&#39;noun_postags&#39;: [&#39;NNG&#39;,
+                                                             &#39;NNP&#39;,
+                                                             &#39;XSN&#39;,
+                                                             &#39;SL&#39;,
+                                                             &#39;XR&#39;,
+                                                             &#39;NNB&#39;,
+                                                             &#39;NR&#39;],
+                                            &#39;postag_delim&#39;: &#39;/&#39;,
+                                            &#39;postag_length&#39;: None,
+                                            &#39;postags&#39;: None,
+                                            &#39;stop_postags&#39;: [&#39;SP&#39;,
+                                                             &#39;SF&#39;,
+                                                             &#39;SE&#39;,
+                                                             &#39;SSO&#39;,
+                                                             &#39;SSC&#39;,
+                                                             &#39;SC&#39;,
+                                                             &#39;SY&#39;,
+                                                             &#39;SH&#39;],
+                                            &#39;strip_pos&#39;: True},
+                                &#39;normalize&#39;: None,
+                                &#39;return_as_list&#39;: False,
+                                &#39;stopwords&#39;: {&#39;_target_&#39;: &#39;ekorpkit.preprocessors.stopwords.Stopwords&#39;,
+                                              &#39;lowercase&#39;: True,
+                                              &#39;name&#39;: &#39;stopwords&#39;,
+                                              &#39;nltk_stopwords&#39;: None,
+                                              &#39;stopwords&#39;: None,
+                                              &#39;stopwords_path&#39;: None,
+                                              &#39;verbose&#39;: False},
+                                &#39;stopwords_path&#39;: None,
+                                &#39;tagset&#39;: None,
+                                &#39;tokenize&#39;: {&#39;flatten&#39;: True,
+                                             &#39;include_whitespace_token&#39;: True,
+                                             &#39;lowercase&#39;: False,
+                                             &#39;postag_delim&#39;: &#39;/&#39;,
+                                             &#39;postag_length&#39;: None,
+                                             &#39;punct_postags&#39;: [&#39;SF&#39;,
+                                                               &#39;SP&#39;,
+                                                               &#39;SSO&#39;,
+                                                               &#39;SSC&#39;,
+                                                               &#39;SY&#39;],
+                                             &#39;strip_pos&#39;: False,
+                                             &#39;tokenize_each_word&#39;: False,
+                                             &#39;userdic_path&#39;: None,
+                                             &#39;wordpieces_prefix&#39;: &#39;##&#39;},
+                                &#39;tokenize_article&#39;: {&#39;sentence_separator&#39;: &#39;\\n&#39;},
+                                &#39;verbose&#39;: False}},
+ &#39;progress_per&#39;: 1000,
+ &#39;score_function&#39;: {&#39;_partial_&#39;: True,
+                    &#39;_target_&#39;: &#39;ekorpkit.models.ngram.score.mutual_information&#39;,
+                    &#39;delimiter&#39;: &#39;;&#39;,
+                    &#39;delta&#39;: 0.0,
+                    &#39;expansion_method&#39;: &#39;average&#39;,
+                    &#39;name&#39;: &#39;npmi&#39;,
+                    &#39;normalize&#39;: True},
+ &#39;scores&#39;: {&#39;columns&#39;: {&#39;count&#39;: &#39;count&#39;, &#39;score&#39;: &#39;score&#39;, &#39;words&#39;: &#39;words&#39;},
+            &#39;features&#39;: [&#39;score&#39;, &#39;frequency&#39;, &#39;length&#39;],
+            &#39;lowercase&#39;: True,
+            &#39;ngram_delim&#39;: &#39;;&#39;,
+            &#39;score_dir&#39;: &#39;/workspace/projects/esgml/outputs/ngrams/&#39;,
+            &#39;score_file&#39;: &#39;ngram_npmi_scores.parquet&#39;,
+            &#39;score_path&#39;: &#39;/workspace/projects/esgml/outputs/ngrams/ngram_npmi_scores.parquet&#39;},
+ &#39;verbose&#39;: True}
 </pre></div>
 </div>
 </div>
@@ -996,7 +1299,7 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ngram</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
 <span class="n">sentence</span> <span class="o">=</span> <span class="n">ngram</span><span class="o">.</span><span class="n">sentences</span><span class="p">[</span><span class="mi">18</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
-<span class="n">tokens</span> <span class="o">=</span> <span class="n">ngram</span><span class="o">.</span><span class="n">ngramize_sentence</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+<span class="n">tokens</span> <span class="o">=</span> <span class="n">ngram</span><span class="o">.</span><span class="n">ngramize_sentence</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">strip_pos</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1029,11 +1332,6 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 95/95 [00:00&lt;00:00, 229.54it/s]
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1042,59 +1340,19 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;의견/NNG;을/JKO;제시/NNG&#39;: {&#39;score&#39;: 0.7712962057207168, &#39;count&#39;: 4},
- &#39;것/NNB;으로/JKB;예상/NNG&#39;: {&#39;score&#39;: 0.6434462999127033, &#39;count&#39;: 9},
- &#39;광의/NNG;의/JKG;실업/NNG&#39;: {&#39;score&#39;: 0.7125695666268386, &#39;count&#39;: 7},
- &#39;위원/NNG;은/JX;최근/NNG&#39;: {&#39;score&#39;: 0.6384959743711969, &#39;count&#39;: 6},
- &#39;나라/NNG;의/JKG;경우/NNG&#39;: {&#39;score&#39;: 0.5392882244391282, &#39;count&#39;: 1},
- &#39;비중/NNG;을/JKO;차지/NNG&#39;: {&#39;score&#39;: 0.7072775299321461, &#39;count&#39;: 2},
- &#39;견해/NNG;를/JKO;피력/NNG&#39;: {&#39;score&#39;: 0.7097555785919298, &#39;count&#39;: 4},
- &#39;점/NNG;을/JKO;감안/NNG&#39;: {&#39;score&#39;: 0.6377572632677098, &#39;count&#39;: 3},
- &#39;견해/NNG;를/JKO;제시/NNG&#39;: {&#39;score&#39;: 0.6669627043316719, &#39;count&#39;: 1},
- &#39;것/NNB;으로/JKB;판단/NNG&#39;: {&#39;score&#39;: 0.6210796296158267, &#39;count&#39;: 8},
- &#39;요인/NNG;이/JKS;상존/NNG&#39;: {&#39;score&#39;: 0.5211343183357702, &#39;count&#39;: 1},
- &#39;부서/NNG;의/JKG;견해/NNG&#39;: {&#39;score&#39;: 0.6754271644040637, &#39;count&#39;: 2},
- &#39;요인/NNG;에/JKB;기인/NNG&#39;: {&#39;score&#39;: 0.5043339218152425, &#39;count&#39;: 1},
- &#39;예/NNG;의/JKG;주시/NNG&#39;: {&#39;score&#39;: 0.952158528049305, &#39;count&#39;: 2},
- &#39;것/NNB;으로/JKB;생각/NNG&#39;: {&#39;score&#39;: 0.5958825911374661, &#39;count&#39;: 8},
- &#39;수준/NNG;에서/JKB;유지/NNG&#39;: {&#39;score&#39;: 0.6636461971348067, &#39;count&#39;: 3},
- &#39;저점/NNG;을/JKO;통과/NNG&#39;: {&#39;score&#39;: 0.8280556580473707, &#39;count&#39;: 1},
- &#39;대/XPN;기업/NNG&#39;: {&#39;score&#39;: 0.5456359866836469, &#39;count&#39;: 5},
- &#39;요인/NNG;으로/JKB;작용/NNG&#39;: {&#39;score&#39;: 0.7708715487382776, &#39;count&#39;: 2},
- &#39;의견/NNG;을/JKO;개진/NNG&#39;: {&#39;score&#39;: 0.7384395627581938, &#39;count&#39;: 1},
- &#39;물가/NNG;의/JKG;상방/NNG&#39;: {&#39;score&#39;: 0.5074584872073851, &#39;count&#39;: 2},
- &#39;점/NNG;을/JKO;종합/NNG&#39;: {&#39;score&#39;: 0.556822420265398, &#39;count&#39;: 2},
- &#39;수준/NNG;에서/JKB;동결/NNG&#39;: {&#39;score&#39;: 0.6461681893860215, &#39;count&#39;: 1},
- &#39;견해/NNG;를/JKO;표명/NNG&#39;: {&#39;score&#39;: 0.6478129958286124, &#39;count&#39;: 1},
- &#39;재정/NNG;의/JKG;조기/NNG&#39;: {&#39;score&#39;: 0.5132700555256842, &#39;count&#39;: 1},
- &#39;위원/NNG;은/JX;다음/NNG&#39;: {&#39;score&#39;: 0.553448109164864, &#39;count&#39;: 3},
- &#39;수준/NNG;으로/JKB;유지/NNG&#39;: {&#39;score&#39;: 0.518649582527882, &#39;count&#39;: 4},
- &#39;물가/NNG;와/JC;근원/NNG&#39;: {&#39;score&#39;: 0.5100416604056133, &#39;count&#39;: 1},
- &#39;압력/NNG;으로/JKB;작용/NNG&#39;: {&#39;score&#39;: 0.6098929849604648, &#39;count&#39;: 2},
- &#39;방안/NNG;을/JKO;마련/NNG&#39;: {&#39;score&#39;: 0.6454923188451946, &#39;count&#39;: 1},
- &#39;전월/NNG;과/JC;동일/NNG&#39;: {&#39;score&#39;: 0.7439097224053924, &#39;count&#39;: 2},
- &#39;기조/NNG;를/JKO;유지/NNG&#39;: {&#39;score&#39;: 0.5969123748774878, &#39;count&#39;: 1},
- &#39;부/NNG;의/JKG;효과/NNG&#39;: {&#39;score&#39;: 0.6138078250845276, &#39;count&#39;: 1},
- &#39;회복/NNG;이/JKS;지연/NNG&#39;: {&#39;score&#39;: 0.6097978165821536, &#39;count&#39;: 1},
- &#39;불/XPN;투명/NNG&#39;: {&#39;score&#39;: 0.5551530211025784, &#39;count&#39;: 1},
- &#39;방향/NNG;으로/JKB;구체/NNG&#39;: {&#39;score&#39;: 0.601315871698512, &#39;count&#39;: 1},
- &#39;문안/NNG;을/JKO;작성/NNG&#39;: {&#39;score&#39;: 0.9550163996733796, &#39;count&#39;: 1},
- &#39;여부/NNG;를/JKO;판단/NNG&#39;: {&#39;score&#39;: 0.541207347065582, &#39;count&#39;: 1},
- &#39;재/XPN;건축/NNG&#39;: {&#39;score&#39;: 0.6862712987065251, &#39;count&#39;: 1},
- &#39;등/NNB;을/JKO;감안/NNG&#39;: {&#39;score&#39;: 0.5646998864710981, &#39;count&#39;: 3},
- &#39;부문/NNG;을/JKO;중심/NNG&#39;: {&#39;score&#39;: 0.5119575517507184, &#39;count&#39;: 1},
- &#39;사정/NNG;이/JKS;악화/NNG&#39;: {&#39;score&#39;: 0.5752082489368028, &#39;count&#39;: 1},
- &#39;고용/NNG;의/JKG;질/NNG&#39;: {&#39;score&#39;: 0.5587539187241448, &#39;count&#39;: 1},
- &#39;유럽/NNP;과/JC;일본/NNP&#39;: {&#39;score&#39;: 0.6067764382636405, &#39;count&#39;: 1},
- &#39;수출/NNG;이/JKS;호조/NNG&#39;: {&#39;score&#39;: 0.5622354169829481, &#39;count&#39;: 1},
- &#39;소폭/NNG;의/JKG;플러스/NNG&#39;: {&#39;score&#39;: 0.6654012719908597, &#39;count&#39;: 1},
- &#39;모형/NNG;에/JKB;반영/NNG&#39;: {&#39;score&#39;: 0.5302568474099705, &#39;count&#39;: 1}}
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{}
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
+
+
+<script type="application/vnd.jupyter.widget-state+json">
+{"state": {"2121ba5ed3ea4fc6bb6a8c19428365d5": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "2388b4a7a5214c0691b12884bd00cbe3": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "3de43a7c455a4b51844e33d2745e6c26": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "42d2b104d1ae4d9994c440585e1a985b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "6a07b8108fb14113a6f1077b89e26459": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_b80c5cb2c5af44609cec75868db8aff2", "IPY_MODEL_d40f958ef31147b7bdaa875143fd68ad", "IPY_MODEL_c6432eff63b2411f8dbec9dc4490415c"], "layout": "IPY_MODEL_2388b4a7a5214c0691b12884bd00cbe3"}}, "759944222fb542108cef600664d77832": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "816adaa566d249509b94f2b4255ce473": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "a2c5155a7a7a4317bf7ec48c7c8f2819": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "b80c5cb2c5af44609cec75868db8aff2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_816adaa566d249509b94f2b4255ce473", "style": "IPY_MODEL_a2c5155a7a7a4317bf7ec48c7c8f2819", "value": "Tokenizing column: text: 100%"}}, "c6432eff63b2411f8dbec9dc4490415c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_759944222fb542108cef600664d77832", "style": "IPY_MODEL_3de43a7c455a4b51844e33d2745e6c26", "value": " 182/182 [00:54&lt;00:00,  2.16it/s]"}}, "d40f958ef31147b7bdaa875143fd68ad": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_42d2b104d1ae4d9994c440585e1a985b", "max": 182, "style": "IPY_MODEL_2121ba5ed3ea4fc6bb6a8c19428365d5", "value": 182}}}, "version_major": 2, "version_minor": 0}
+</script>
+
 
     <script type="text/x-thebe-config">
     {

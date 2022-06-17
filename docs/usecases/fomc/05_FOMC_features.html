@@ -446,11 +446,6 @@ const thebe_selector_output = ".output, .cell_output"
   </label>
   <ul class="current">
    <li class="toctree-l2">
-    <a class="reference internal" href="01_FOMC_sentiments.html">
-     Sentiment Analysis of FOMC Statements
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="02_FOMC_numerical_data.html">
      Prepapring Numerical Data
     </a>
@@ -473,6 +468,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="06_FOMC_AutoML.html">
      Checking Baseline with AutoML
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="07_FOMC_sentiments.html">
+     Sentiment Analysis of FOMC Statements
     </a>
    </li>
   </ul>
@@ -733,13 +733,13 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
 
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.32+16.gc607689.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.32+22.g1490fd9.dirty
 </pre></div>
 </div>
 </div>
@@ -764,8 +764,8 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="n">cfg</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">split_sampling</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="mi">123</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">split_sampling</span><span class="o">.</span><span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.25</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">reset_index</span><span class="o">.</span><span class="n">index_column_name</span> <span class="o">=</span> <span class="s2">&quot;date&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">column_info</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="s2">&quot;date&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">column_info</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="s2">&quot;index&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">column_info</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="s2">&quot;index&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">column_info</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="s2">&quot;date&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">column_info</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;prev_decision&quot;</span><span class="p">,</span>
     <span class="s2">&quot;GDP_diff_prev&quot;</span><span class="p">,</span>
@@ -778,12 +778,266 @@ const thebe_selector_output = ".output, .cell_output"
     <span class="s2">&quot;Balanced_diff&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">column_info</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;target&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">f_small</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
 <span class="n">f_small</span><span class="o">.</span><span class="n">persist</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.pipelines.pipe:Applying pipeline: OrderedDict([(&#39;load_dataframe&#39;, &#39;load_dataframe&#39;), (&#39;reset_index&#39;, &#39;reset_index&#39;), (&#39;split_sampling&#39;, &#39;split_sampling&#39;)])
+INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function load_dataframe at 0x7fd4706e8310&gt;)
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;econ_train_small.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/econ_train_small.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/fomc/econ_train_small.parquet
+INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function reset_index at 0x7fd4706e7670&gt;)
+INFO:ekorpkit.ekonf:Applying pipe: functools.partial(&lt;function split_sampling at 0x7fd4706e7280&gt;)
+INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_features_small/fomc_features_small-train.parquet
+INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_features_small/fomc_features_small-test.parquet
+INFO:ekorpkit.datasets.feature:Dataset fomc_features_small built with 415 rows
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;fomc_features_small-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_features_small/fomc_features_small-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_features_small/fomc_features_small-train.parquet
+INFO:ekorpkit.info.column:index: index, index of data: None, columns: [&#39;date&#39;, &#39;target&#39;, &#39;prev_decision&#39;, &#39;GDP_diff_prev&#39;, &#39;PMI&#39;, &#39;EMP_diff_prev&#39;, &#39;RSALES_diff_year&#39;, &#39;UNEMP_diff_prev&#39;, &#39;HSALES_diff_year&#39;, &#39;Inertia_diff&#39;, &#39;Balanced_diff&#39;], id: [&#39;date&#39;]
+INFO:ekorpkit.info.column:Adding id [split] to [&#39;date&#39;]
+INFO:ekorpkit.info.column:Added id [split], now [&#39;date&#39;, &#39;split&#39;]
+INFO:ekorpkit.info.column:Added a column [split] with value [train]
+WARNING:ekorpkit.datasets.base:File fomc_features_small-dev.parquet not found.
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;fomc_features_small-test.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_features_small/fomc_features_small-test.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_features_small/fomc_features_small-test.parquet
+INFO:ekorpkit.info.column:Added a column [split] with value [test]
+INFO:ekorpkit.info.stat: &gt;&gt; elapsed time to calculate statistics: 0:00:00.004594
+INFO:ekorpkit.info.stat: &gt;&gt; elapsed time to calculate statistics: 0:00:00.003903
+INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_features_small/fomc_features_small-train.parquet
+INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_features_small/fomc_features_small-test.parquet
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f_small</span><span class="o">.</span><span class="n">train_data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>date</th>
+      <th>target</th>
+      <th>prev_decision</th>
+      <th>GDP_diff_prev</th>
+      <th>PMI</th>
+      <th>EMP_diff_prev</th>
+      <th>RSALES_diff_year</th>
+      <th>UNEMP_diff_prev</th>
+      <th>HSALES_diff_year</th>
+      <th>Inertia_diff</th>
+      <th>Balanced_diff</th>
+      <th>split</th>
+    </tr>
+    <tr>
+      <th>index</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2002-09-24</td>
+      <td>Hold</td>
+      <td>0.0</td>
+      <td>0.615502</td>
+      <td>50.3</td>
+      <td>-0.002297</td>
+      <td>2.206995</td>
+      <td>-1.724138</td>
+      <td>17.090069</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1997-03-25</td>
+      <td>Hike</td>
+      <td>0.0</td>
+      <td>1.038398</td>
+      <td>53.1</td>
+      <td>0.257080</td>
+      <td>3.197859</td>
+      <td>-1.886792</td>
+      <td>4.161248</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2011-04-27</td>
+      <td>Hold</td>
+      <td>0.0</td>
+      <td>0.519595</td>
+      <td>59.1</td>
+      <td>0.179317</td>
+      <td>4.107119</td>
+      <td>0.000000</td>
+      <td>-21.259843</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1989-02-08</td>
+      <td>Hike</td>
+      <td>1.0</td>
+      <td>1.332501</td>
+      <td>54.7</td>
+      <td>0.246029</td>
+      <td>2.094256</td>
+      <td>1.886792</td>
+      <td>22.905983</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2008-09-16</td>
+      <td>Hold</td>
+      <td>0.0</td>
+      <td>0.572295</td>
+      <td>49.2</td>
+      <td>-0.202195</td>
+      <td>-4.803606</td>
+      <td>5.172414</td>
+      <td>-37.768240</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>306</th>
+      <td>1998-08-18</td>
+      <td>Hold</td>
+      <td>0.0</td>
+      <td>0.925821</td>
+      <td>49.2</td>
+      <td>0.102319</td>
+      <td>2.026188</td>
+      <td>0.000000</td>
+      <td>8.819876</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>307</th>
+      <td>2021-04-28</td>
+      <td>Hold</td>
+      <td>0.0</td>
+      <td>1.115277</td>
+      <td>63.7</td>
+      <td>0.489818</td>
+      <td>26.945039</td>
+      <td>-3.225806</td>
+      <td>44.426230</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>308</th>
+      <td>2004-01-28</td>
+      <td>Hold</td>
+      <td>0.0</td>
+      <td>1.666896</td>
+      <td>60.1</td>
+      <td>0.087374</td>
+      <td>2.493088</td>
+      <td>-1.724138</td>
+      <td>7.729008</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>309</th>
+      <td>2015-06-17</td>
+      <td>Hold</td>
+      <td>0.0</td>
+      <td>0.813314</td>
+      <td>52.8</td>
+      <td>0.234429</td>
+      <td>2.662704</td>
+      <td>3.703704</td>
+      <td>11.308204</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>310</th>
+      <td>2007-08-16</td>
+      <td>Hold</td>
+      <td>0.0</td>
+      <td>0.638435</td>
+      <td>52.4</td>
+      <td>-0.022453</td>
+      <td>0.622821</td>
+      <td>2.173913</td>
+      <td>-19.378238</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>train</td>
+    </tr>
+  </tbody>
+</table>
+<p>311 rows × 12 columns</p>
+</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1379,7 +1633,7 @@ Name: target, dtype: object
 WARNING:matplotlib.font_manager:findfont: Generic family &#39;sans-serif&#39; not found because none of the following families were found: Arial, Liberation Sans, Bitstream Vera Sans, sans-serif
 </pre></div>
 </div>
-<img alt="../../../_images/05_FOMC_features_16_1.png" src="../../../_images/05_FOMC_features_16_1.png" />
+<img alt="../../../_images/05_FOMC_features_17_1.png" src="../../../_images/05_FOMC_features_17_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1395,7 +1649,7 @@ WARNING:matplotlib.font_manager:findfont: Generic family &#39;sans-serif&#39; no
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/05_FOMC_features_17_0.png" src="../../../_images/05_FOMC_features_17_0.png" />
+<img alt="../../../_images/05_FOMC_features_18_0.png" src="../../../_images/05_FOMC_features_18_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1410,7 +1664,7 @@ WARNING:matplotlib.font_manager:findfont: Generic family &#39;sans-serif&#39; no
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/05_FOMC_features_18_0.png" src="../../../_images/05_FOMC_features_18_0.png" />
+<img alt="../../../_images/05_FOMC_features_19_0.png" src="../../../_images/05_FOMC_features_19_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1428,7 +1682,7 @@ WARNING:matplotlib.font_manager:findfont: Generic family &#39;sans-serif&#39; no
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/05_FOMC_features_19_0.png" src="../../../_images/05_FOMC_features_19_0.png" />
+<img alt="../../../_images/05_FOMC_features_20_0.png" src="../../../_images/05_FOMC_features_20_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1444,7 +1698,7 @@ WARNING:matplotlib.font_manager:findfont: Generic family &#39;sans-serif&#39; no
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/05_FOMC_features_20_0.png" src="../../../_images/05_FOMC_features_20_0.png" />
+<img alt="../../../_images/05_FOMC_features_21_0.png" src="../../../_images/05_FOMC_features_21_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1462,7 +1716,7 @@ WARNING:matplotlib.font_manager:findfont: Generic family &#39;sans-serif&#39; no
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/05_FOMC_features_21_0.png" src="../../../_images/05_FOMC_features_21_0.png" />
+<img alt="../../../_images/05_FOMC_features_22_0.png" src="../../../_images/05_FOMC_features_22_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1485,7 +1739,7 @@ WARNING:matplotlib.font_manager:findfont: Generic family &#39;sans-serif&#39; no
   warnings.warn(
 </pre></div>
 </div>
-<img alt="../../../_images/05_FOMC_features_22_1.png" src="../../../_images/05_FOMC_features_22_1.png" />
+<img alt="../../../_images/05_FOMC_features_23_1.png" src="../../../_images/05_FOMC_features_23_1.png" />
 </div>
 </div>
 </div>

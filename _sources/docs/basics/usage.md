@@ -29,10 +29,10 @@ kernelspec:
     num_workers=1 \
     cmd=fetch_builtin_corpus \
     +corpus/builtin=_dummy_fomc_minutes \
-    corpus.builtin.io.calculate_stats=true \
-    corpus.builtin.io.preprocess_text=true \
-    corpus.builtin.io.overwrite=false \
-    corpus.builtin.io.force_download=false
+    corpus.builtin.io.force.summarize=true \
+    corpus.builtin.io.force.preprocess=true \
+    corpus.builtin.io.force.build=false \
+    corpus.builtin.io.force.download=false
 ```
 
 ### CLI Help

@@ -446,11 +446,6 @@ const thebe_selector_output = ".output, .cell_output"
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../../usecases/fomc/01_FOMC_sentiments.html">
-     Sentiment Analysis of FOMC Statements
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="../../../usecases/fomc/02_FOMC_numerical_data.html">
      Prepapring Numerical Data
     </a>
@@ -473,6 +468,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="../../../usecases/fomc/06_FOMC_AutoML.html">
      Checking Baseline with AutoML
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../usecases/fomc/07_FOMC_sentiments.html">
+     Sentiment Analysis of FOMC Statements
     </a>
    </li>
   </ul>
@@ -728,7 +728,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+19.gdb9b114.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.33+3.g88a2e60
 </pre></div>
 </div>
 </div>
@@ -739,19 +739,20 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ngram_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;model/ngram=mpko_lex&quot;</span><span class="p">)</span>
 <span class="n">ngram_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">ngram_cfg</span><span class="o">.</span><span class="n">autoload</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">ngram_cfg</span><span class="o">.</span><span class="n">auto</span><span class="o">.</span><span class="n">load</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">ngram</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">ngram_cfg</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.ekonf:instantiating ekorpkit.models.ngram.base.Ngrams...
-INFO:ekorpkit.models.ngram.base:instantiating ekorpkit.preprocessors.tokenizer.MecabTokenizer...
 INFO:ekorpkit.preprocessors.tokenizer:Initializing mecab with {&#39;userdic_path&#39;: None, &#39;backend&#39;: &#39;mecab-python3&#39;, &#39;verbose&#39;: False}...
 INFO:ekorpkit.preprocessors.tokenizer:instantiating ekorpkit.preprocessors.stopwords.Stopwords...
 INFO:ekorpkit.ekonf:Calling load_candidates
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;/workspace/projects/ekorpkit/ekorpkit/resources/lexicons/mpko/mp_polarity_lexicon_lex.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/projects/ekorpkit/ekorpkit/resources/lexicons/mpko/mp_polarity_lexicon_lex.parquet&#39;]
 INFO:ekorpkit.io.file:Loading data from /workspace/projects/ekorpkit/ekorpkit/resources/lexicons/mpko/mp_polarity_lexicon_lex.parquet
-INFO:ekorpkit.io.file: &gt;&gt; elapsed time to load data: 0:00:00.032933
+INFO:ekorpkit.io.file: &gt;&gt; elapsed time to load data: 0:00:00.029229
 INFO:ekorpkit.models.ngram.base:loaded 23956 candidates
 </pre></div>
 </div>
@@ -834,11 +835,20 @@ INFO:ekorpkit.models.ngram.base:loaded 23956 candidates
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [[&#39;bok_minutes-train.parquet&#39;]]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.datasets.base:Loaded info file: /workspace/data/datasets/corpus/ekorpkit/bok_minutes/info-bok_minutes.yaml
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;bok_minutes-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/data/datasets/corpus/ekorpkit/bok_minutes/bok_minutes-train.parquet&#39;]
 INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/corpus/ekorpkit/bok_minutes/bok_minutes-train.parquet
-INFO:ekorpkit.io.file:Processing [1] files from [[&#39;meta-bok_minutes-train.parquet&#39;]]
+INFO:ekorpkit.info.column:index: index, index of data: None, columns: [&#39;id&#39;, &#39;text&#39;], id: [&#39;id&#39;]
+INFO:ekorpkit.info.column:Adding id [split] to [&#39;id&#39;]
+INFO:ekorpkit.info.column:Added id [split], now [&#39;id&#39;, &#39;split&#39;]
+INFO:ekorpkit.info.column:Added a column [split] with value [train]
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;meta-bok_minutes-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/data/datasets/corpus/ekorpkit/bok_minutes/meta-bok_minutes-train.parquet&#39;]
 INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/corpus/ekorpkit/bok_minutes/meta-bok_minutes-train.parquet
+INFO:ekorpkit.info.column:Added a column [split] with value [train]
 INFO:ekorpkit.info.column:No timestamp key found
+INFO:ekorpkit.io.file:Concatenating 1 dataframes
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -861,33 +871,39 @@ INFO:ekorpkit.info.column:No timestamp key found
       <th></th>
       <th>id</th>
       <th>text</th>
+      <th>split</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>158</th>
-      <td>158</td>
-      <td>Economic Situation\n일부 위원은 최근의 경제흐름을 보면 지난 전망시...</td>
+      <th>177</th>
+      <td>177</td>
+      <td>Economic Situation\n일부 위원은 올해 국내 성장률 전망치가 4%로 ...</td>
+      <td>train</td>
     </tr>
     <tr>
-      <th>159</th>
-      <td>159</td>
+      <th>178</th>
+      <td>178</td>
       <td>Economic Situation\n일부 위원은 최근 코로나19가 빠르게 재확산되면...</td>
+      <td>train</td>
     </tr>
     <tr>
-      <th>160</th>
-      <td>160</td>
+      <th>179</th>
+      <td>179</td>
       <td>Economic Situation\n일부 위원은 이번 전망에서 가장 중요한 이슈는 ...</td>
+      <td>train</td>
     </tr>
     <tr>
-      <th>161</th>
-      <td>161</td>
+      <th>180</th>
+      <td>180</td>
       <td>Economic Situation\n일부 위원은 올해 국내경제는 생산차질 등으로 상...</td>
+      <td>train</td>
     </tr>
     <tr>
-      <th>162</th>
-      <td>162</td>
+      <th>181</th>
+      <td>181</td>
       <td>Economic Situation\n일부 위원은 이번 전망에서 올해 소비자물가 상승...</td>
+      <td>train</td>
     </tr>
   </tbody>
 </table>
@@ -904,7 +920,8 @@ INFO:ekorpkit.info.column:No timestamp key found
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.models.ngram.base:found 99 ngrams
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Concatenating 1 dataframes
+INFO:ekorpkit.models.ngram.base:found 99 ngrams
 </pre></div>
 </div>
 </div>
@@ -1027,7 +1044,8 @@ INFO:ekorpkit.info.column:No timestamp key found
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.models.ngram.base:found 99 ngrams
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Concatenating 1 dataframes
+INFO:ekorpkit.models.ngram.base:found 99 ngrams
 </pre></div>
 </div>
 </div>
