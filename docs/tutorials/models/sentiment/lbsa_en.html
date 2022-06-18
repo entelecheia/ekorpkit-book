@@ -51,8 +51,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
     <link rel="next" title="Evaluate LM with financial phrasebank" href="financial_phrasebank_lm.html" />
@@ -258,7 +256,7 @@ const thebe_selector_output = ".output, .cell_output"
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../ngram/ngram_for_lexicons.html">
-       N-Gram model for lexicon features
+       N-Gram model for ngram lexicon features
       </a>
      </li>
      <li class="toctree-l3">
@@ -710,13 +708,13 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
 
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+19.gdb9b114.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.33+10.g31cca44.dirty
 </pre></div>
 </div>
 </div>
@@ -725,25 +723,30 @@ const thebe_selector_output = ".output, .cell_output"
 <h2>Instantiating a sentiment analyser class<a class="headerlink" href="#instantiating-a-sentiment-analyser-class" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;model/sentiment=lm&#39;</span>
-<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="n">config_group</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;model/sentiment=lm&quot;</span><span class="p">)</span>
+<span class="c1"># cfg.verbose = True</span>
 <span class="c1"># eKonf.print(cfg)</span>
 <span class="n">lmsa</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
 
-<span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Fraud&quot;</span><span class="p">,</span> <span class="s2">&quot;Good&quot;</span><span class="p">,</span><span class="s2">&quot;Good&quot;</span><span class="p">,</span><span class="s2">&quot;Good&quot;</span><span class="p">,</span> <span class="s2">&quot;Sound&quot;</span><span class="p">,</span> <span class="s2">&quot;uncertain&quot;</span><span class="p">,</span> <span class="s2">&quot;beat&quot;</span><span class="p">,</span> <span class="s2">&quot;wrong&quot;</span><span class="p">]</span>
+<span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Fraud&quot;</span><span class="p">,</span> <span class="s2">&quot;Good&quot;</span><span class="p">,</span> <span class="s2">&quot;Good&quot;</span><span class="p">,</span> <span class="s2">&quot;Good&quot;</span><span class="p">,</span> <span class="s2">&quot;Sound&quot;</span><span class="p">,</span> <span class="s2">&quot;uncertain&quot;</span><span class="p">,</span> <span class="s2">&quot;beat&quot;</span><span class="p">,</span> <span class="s2">&quot;wrong&quot;</span><span class="p">]</span>
 
 <span class="n">lmsa</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;positive&#39;: 0.0,
- &#39;negative&#39;: 0.12499998437500197,
- &#39;num_tokens&#39;: 8,
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.preprocessors.tokenizer:instantiating ekorpkit.preprocessors.stopwords.Stopwords...
+INFO:ekorpkit.base:Calling load_candidates
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;/workspace/projects/ekorpkit/ekorpkit/resources/lexicons/LM.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/projects/ekorpkit/ekorpkit/resources/lexicons/LM.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from /workspace/projects/ekorpkit/ekorpkit/resources/lexicons/LM.parquet
+INFO:ekorpkit.models.ngram.ngram:loaded 58142 candidates
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;num_tokens&#39;: 8,
  &#39;polarity&#39;: -0.9999990000010001,
- &#39;subjectivity&#39;: 0.12499998437500197,
  &#39;polarity_label&#39;: &#39;negative&#39;,
- &#39;uncertainty&#39;: 0.12499998437500197}
+ &#39;uncertainty&#39;: 0.125001}
 </pre></div>
 </div>
 </div>
@@ -751,7 +754,9 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Beyond the improved voice capabilities, customers now have a streamlined way to comply with recalls and other traceability requirements, providing them with a competitive advantage.&quot;</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">lmsa</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Negative&#39;</span><span class="p">,</span> <span class="s1">&#39;Positive&#39;</span><span class="p">]))</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">lmsa</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Negative&#39;</span><span class="p">,</span> <span class="s1">&#39;Positive&#39;</span><span class="p">])</span>
+
+<span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -790,27 +795,35 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;positive&#39;: 0.0, &#39;negative&#39;: 0.045454543388429844, &#39;num_tokens&#39;: 22, &#39;polarity&#39;: -0.9999990000010001, &#39;subjectivity&#39;: 0.045454543388429844, &#39;polarity_label&#39;: &#39;negative&#39;, &#39;uncertainty&#39;: 0.0}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;num_tokens&#39;: 22, &#39;polarity&#39;: -0.9999990000010001, &#39;polarity_label&#39;: &#39;negative&#39;}
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
-
-<span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;model/sentiment=hiv4&#39;</span>
-<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="n">config_group</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;model/sentiment=hiv4&#39;</span><span class="p">)</span>
 <span class="n">hivsa</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
 
-<span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Fraud&quot;</span><span class="p">,</span> <span class="s2">&quot;Good&quot;</span><span class="p">,</span><span class="s2">&quot;Good&quot;</span><span class="p">,</span><span class="s2">&quot;Good&quot;</span><span class="p">,</span> <span class="s2">&quot;Sound&quot;</span><span class="p">,</span> <span class="s2">&quot;uncertain&quot;</span><span class="p">,</span> <span class="s2">&quot;beat&quot;</span><span class="p">,</span> <span class="s2">&quot;wrong&quot;</span><span class="p">]</span>
+<span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Fraud&quot;</span><span class="p">,</span> <span class="s2">&quot;Good&quot;</span><span class="p">,</span><span class="s2">&quot;Good&quot;</span><span class="p">,</span><span class="s2">&quot;Good&quot;</span><span class="p">,</span> <span class="s2">&quot;Sound&quot;</span><span class="p">,</span> <span class="s2">&quot;uncertain&quot;</span><span class="p">,</span> <span class="s2">&quot;beat&quot;</span><span class="p">,</span> <span class="s2">&quot;wrong&quot;</span><span class="p">,</span> <span class="s2">&quot;legal&quot;</span><span class="p">]</span>
 
 <span class="n">hivsa</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;polarity&#39;: 0.0, &#39;subjectivity&#39;: 0.0, &#39;label&#39;: &#39;neutral&#39;, &#39;legal&#39;: 0.0}
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.preprocessors.tokenizer:instantiating ekorpkit.preprocessors.stopwords.Stopwords...
+INFO:ekorpkit.base:Calling load_candidates
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;/workspace/projects/ekorpkit/ekorpkit/resources/lexicons/HIV-4.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/projects/ekorpkit/ekorpkit/resources/lexicons/HIV-4.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from /workspace/projects/ekorpkit/ekorpkit/resources/lexicons/HIV-4.parquet
+INFO:ekorpkit.models.ngram.ngram:loaded 11787 candidates
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;num_tokens&#39;: 9,
+ &#39;polarity&#39;: 0.9999990000010001,
+ &#39;polarity_label&#39;: &#39;positive&#39;,
+ &#39;legal&#39;: 0.1111121111111111}
 </pre></div>
 </div>
 </div>
@@ -818,7 +831,7 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Beyond the improved voice capabilities, customers now have a streamlined way to comply with recalls and other traceability requirements, providing them with a competitive advantage.&quot;</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">hivsa</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Negativ&#39;</span><span class="p">,</span> <span class="s1">&#39;Positiv&#39;</span><span class="p">]))</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">hivsa</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Negativ&#39;</span><span class="p">,</span> <span class="s1">&#39;Positiv&#39;</span><span class="p">]))</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">hivsa</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
 <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Operating loss amounted to EUR 0.7 mn compared to a profit of EUR 0.8 mn in the second quarter of 2005.&quot;</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">hivsa</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
@@ -836,8 +849,8 @@ const thebe_selector_output = ".output, .cell_output"
  &#39;the&#39;: {&#39;Negativ&#39;: None, &#39;Positiv&#39;: None, &#39;count&#39;: 1},
  &#39;them&#39;: {&#39;Negativ&#39;: None, &#39;Positiv&#39;: None, &#39;count&#39;: 1},
  &#39;with&#39;: {&#39;Negativ&#39;: None, &#39;Positiv&#39;: None, &#39;count&#39;: 2}}
-{&#39;polarity&#39;: 0.0, &#39;subjectivity&#39;: 0.07142856887755111, &#39;label&#39;: &#39;neutral&#39;, &#39;legal&#39;: 0.0}
-{&#39;polarity&#39;: -0.9999990000010001, &#39;subjectivity&#39;: 0.045454543388429844, &#39;label&#39;: &#39;negative&#39;, &#39;legal&#39;: 0.0}
+{&#39;num_tokens&#39;: 28, &#39;polarity&#39;: 0.0, &#39;polarity_label&#39;: &#39;neutral&#39;, &#39;legal&#39;: 1e-06}
+{&#39;num_tokens&#39;: 22, &#39;polarity&#39;: -0.9999990000010001, &#39;polarity_label&#39;: &#39;negative&#39;, &#39;legal&#39;: 1e-06}
 </pre></div>
 </div>
 </div>
