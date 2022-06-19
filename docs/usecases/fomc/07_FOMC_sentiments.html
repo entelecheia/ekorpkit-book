@@ -51,8 +51,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Bank of Korea" href="../bok/index.html" />
@@ -258,7 +256,7 @@ const thebe_selector_output = ".output, .cell_output"
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../../tutorials/models/ngram/ngram_for_lexicons.html">
-       N-Gram model for lexicon features
+       N-Gram model for ngram lexicon features
       </a>
      </li>
      <li class="toctree-l3">
@@ -766,13 +764,13 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
 
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.33+7.g877961c
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.33+12.g2877cf8.dirty
 </pre></div>
 </div>
 </div>
@@ -794,7 +792,7 @@ const thebe_selector_output = ".output, .cell_output"
 <h2>Load FRED Data<a class="headerlink" href="#load-fred-data" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s2">&quot;io/fetcher=quandl&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;io/fetcher=quandl&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">series_name</span> <span class="o">=</span> <span class="s2">&quot;DFEDTAR&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">series_id</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;DFEDTAR&quot;</span><span class="p">,</span> <span class="s2">&quot;DFEDTARU&quot;</span><span class="p">]</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">force_download</span> <span class="o">=</span> <span class="kc">True</span>
@@ -806,8 +804,11 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:ekorpkit.pipelines.pipe:No expressions specified
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function eval_columns at 0x7fb59bf0f550&gt;)
 WARNING:ekorpkit.pipelines.pipe:No expressions specified
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function eval_columns at 0x7fb59bf0f550&gt;)
+WARNING:ekorpkit.pipelines.pipe:No expressions specified
+INFO:ekorpkit.io.file:Saving dataframe to /workspace/.tmp/fred/DFEDTAR.parquet
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -869,38 +870,39 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <td>...</td>
     </tr>
     <tr>
-      <th>2022-06-09</th>
+      <th>2022-06-15</th>
       <td>1.00</td>
       <td>DFEDTARU</td>
     </tr>
     <tr>
-      <th>2022-06-10</th>
-      <td>1.00</td>
+      <th>2022-06-16</th>
+      <td>1.75</td>
       <td>DFEDTARU</td>
     </tr>
     <tr>
-      <th>2022-06-11</th>
-      <td>1.00</td>
+      <th>2022-06-17</th>
+      <td>1.75</td>
       <td>DFEDTARU</td>
     </tr>
     <tr>
-      <th>2022-06-12</th>
-      <td>1.00</td>
+      <th>2022-06-18</th>
+      <td>1.75</td>
       <td>DFEDTARU</td>
     </tr>
     <tr>
-      <th>2022-06-13</th>
-      <td>1.00</td>
+      <th>2022-06-19</th>
+      <td>1.75</td>
       <td>DFEDTARU</td>
     </tr>
   </tbody>
 </table>
-<p>14505 rows × 2 columns</p>
+<p>14511 rows × 2 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;visualize/plot=lineplot&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;visualize/plot=lineplot&#39;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;date&#39;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;DFEDTAR&#39;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Fed Rate&#39;</span>
@@ -909,7 +911,11 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/07_FOMC_sentiments_5_0.png" src="../../../_images/07_FOMC_sentiments_5_0.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;x&#39;: &#39;date&#39;, &#39;y&#39;: &#39;DFEDTAR&#39;, &#39;linewidth&#39;: 2, &#39;palette&#39;: None, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
+INFO:ekorpkit.visualize.base:Saved figure to ./figs/LinePlot.png
+</pre></div>
+</div>
+<img alt="../../../_images/07_FOMC_sentiments_5_1.png" src="../../../_images/07_FOMC_sentiments_5_1.png" />
 </div>
 </div>
 </div>
@@ -930,6 +936,28 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:cached_path:cache of https://github.com/entelecheia/ekorpkit-book/raw/main/data/fomc.zip is up-to-date
+INFO:ekorpkit.io.cached_path:cached path: /workspace/.cache/cached_path/bfb02a9385e069aa04bc8073f61e48b26d2b93943100d8a6851436fac63d2c6d.14993cbcce092b4473939a6ed9e8246dfeb3d500c53c11c6279991e9a0eba476-extracted
+INFO:cached_path:cache of https://github.com/entelecheia/ekorpkit-book/raw/main/data/fomc.zip is up-to-date
+INFO:ekorpkit.io.cached_path:cached path: /workspace/.cache/cached_path/bfb02a9385e069aa04bc8073f61e48b26d2b93943100d8a6851436fac63d2c6d.14993cbcce092b4473939a6ed9e8246dfeb3d500c53c11c6279991e9a0eba476-extracted
+INFO:cached_path:cache of https://github.com/entelecheia/ekorpkit-book/raw/main/data/fomc.zip is up-to-date
+INFO:ekorpkit.io.cached_path:cached path: /workspace/.cache/cached_path/bfb02a9385e069aa04bc8073f61e48b26d2b93943100d8a6851436fac63d2c6d.14993cbcce092b4473939a6ed9e8246dfeb3d500c53c11c6279991e9a0eba476-extracted
+INFO:ekorpkit.datasets.base:Loaded info file: /workspace/.cache/cached_path/bfb02a9385e069aa04bc8073f61e48b26d2b93943100d8a6851436fac63d2c6d.14993cbcce092b4473939a6ed9e8246dfeb3d500c53c11c6279991e9a0eba476-extracted/fomc/info-fomc.yaml
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;fomc-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/.cache/cached_path/bfb02a9385e069aa04bc8073f61e48b26d2b93943100d8a6851436fac63d2c6d.14993cbcce092b4473939a6ed9e8246dfeb3d500c53c11c6279991e9a0eba476-extracted/fomc/fomc-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from /workspace/.cache/cached_path/bfb02a9385e069aa04bc8073f61e48b26d2b93943100d8a6851436fac63d2c6d.14993cbcce092b4473939a6ed9e8246dfeb3d500c53c11c6279991e9a0eba476-extracted/fomc/fomc-train.parquet
+INFO:ekorpkit.info.column:index: index, index of data: None, columns: [&#39;id&#39;, &#39;text&#39;], id: [&#39;id&#39;]
+INFO:ekorpkit.info.column:Adding id [split] to [&#39;id&#39;]
+INFO:ekorpkit.info.column:Added id [split], now [&#39;id&#39;, &#39;split&#39;]
+INFO:ekorpkit.info.column:Added a column [split] with value [train]
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;meta-fomc-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/.cache/cached_path/bfb02a9385e069aa04bc8073f61e48b26d2b93943100d8a6851436fac63d2c6d.14993cbcce092b4473939a6ed9e8246dfeb3d500c53c11c6279991e9a0eba476-extracted/fomc/meta-fomc-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from /workspace/.cache/cached_path/bfb02a9385e069aa04bc8073f61e48b26d2b93943100d8a6851436fac63d2c6d.14993cbcce092b4473939a6ed9e8246dfeb3d500c53c11c6279991e9a0eba476-extracted/fomc/meta-fomc-train.parquet
+INFO:ekorpkit.info.column:Added a column [split] with value [train]
+INFO:ekorpkit.info.column:Timestamp column timestamp added to data
+INFO:ekorpkit.datasets.corpus:Metadata merged to data
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Corpus : fomc
 </pre></div>
 </div>
@@ -943,6 +971,10 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Concatenating 1 dataframes
+INFO:ekorpkit.io.file:Concatenating 1 dataframes
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;fomc_minutes&#39; &#39;fomc_statement&#39; &#39;fomc_speech&#39; &#39;fomc_beigebook&#39;
  &#39;fomc_testimony&#39; &#39;fomc_press_conf&#39; &#39;fomc_meeting_script&#39;]
 </pre></div>
@@ -967,6 +999,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <th></th>
       <th>id</th>
       <th>text</th>
+      <th>split</th>
       <th>timestamp</th>
       <th>content_type</th>
       <th>date</th>
@@ -979,6 +1012,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <th>0</th>
       <td>0</td>
       <td>A meeting of the Federal Open Market Committee...</td>
+      <td>train</td>
       <td>1993-02-03</td>
       <td>fomc_minutes</td>
       <td>1993-02-03</td>
@@ -989,6 +1023,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <th>1</th>
       <td>1</td>
       <td>A meeting of the Federal Open Market Committee...</td>
+      <td>train</td>
       <td>1993-03-23</td>
       <td>fomc_minutes</td>
       <td>1993-03-23</td>
@@ -999,6 +1034,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <th>2</th>
       <td>2</td>
       <td>A meeting of the Federal Open Market Committee...</td>
+      <td>train</td>
       <td>1993-05-18</td>
       <td>fomc_minutes</td>
       <td>1993-05-18</td>
@@ -1009,6 +1045,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <th>3</th>
       <td>3</td>
       <td>A meeting of the Federal Open Market Committee...</td>
+      <td>train</td>
       <td>1993-07-07</td>
       <td>fomc_minutes</td>
       <td>1993-07-07</td>
@@ -1019,6 +1056,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <th>4</th>
       <td>4</td>
       <td>A meeting of the Federal Open Market Committee...</td>
+      <td>train</td>
       <td>1993-08-17</td>
       <td>fomc_minutes</td>
       <td>1993-08-17</td>
@@ -1039,6 +1077,10 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Concatenating 1 dataframes
+INFO:ekorpkit.io.file:Concatenating 1 dataframes
+</pre></div>
+</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1059,6 +1101,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <th></th>
       <th>id</th>
       <th>text</th>
+      <th>split</th>
       <th>content_type</th>
       <th>date</th>
       <th>speaker</th>
@@ -1072,6 +1115,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <th></th>
       <th></th>
       <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -1079,6 +1123,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <th>2000-02-02</th>
       <td>250</td>
       <td>For immediate release The Federal Open Market ...</td>
+      <td>train</td>
       <td>fomc_statement</td>
       <td>2000-02-02</td>
       <td>Alan Greenspan</td>
@@ -1088,6 +1133,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <th>2000-03-21</th>
       <td>251</td>
       <td>For immediate release The Federal Open Market ...</td>
+      <td>train</td>
       <td>fomc_statement</td>
       <td>2000-03-21</td>
       <td>Alan Greenspan</td>
@@ -1097,6 +1143,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <th>2000-05-16</th>
       <td>252</td>
       <td>For immediate release The Federal Open Market ...</td>
+      <td>train</td>
       <td>fomc_statement</td>
       <td>2000-05-16</td>
       <td>Alan Greenspan</td>
@@ -1106,6 +1153,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <th>2000-06-28</th>
       <td>253</td>
       <td>For immediate release The Federal Open Market ...</td>
+      <td>train</td>
       <td>fomc_statement</td>
       <td>2000-06-28</td>
       <td>Alan Greenspan</td>
@@ -1115,6 +1163,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <th>2000-08-22</th>
       <td>254</td>
       <td>For immediate release The Federal Open Market ...</td>
+      <td>train</td>
       <td>fomc_statement</td>
       <td>2000-08-22</td>
       <td>Alan Greenspan</td>
@@ -1130,6 +1179,180 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;model/sentiment=lm&#39;</span><span class="p">)</span>
+<span class="c1"># model_cfg.verbose = True</span>
+<span class="n">lmsa</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">model_cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.preprocessors.tokenizer:instantiating ekorpkit.preprocessors.stopwords.Stopwords...
+INFO:ekorpkit.base:Calling load_candidates
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;/workspace/projects/ekorpkit/ekorpkit/resources/lexicons/LM.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/projects/ekorpkit/ekorpkit/resources/lexicons/LM.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from /workspace/projects/ekorpkit/ekorpkit/resources/lexicons/LM.parquet
+INFO:ekorpkit.models.ngram.ngram:loaded 58142 candidates
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">doc</span> <span class="o">=</span> <span class="n">fomc</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1"># doc = fomc_statements.text[3]</span>
+<span class="n">lmsa</span><span class="o">.</span><span class="n">predict_article</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Concatenating 1 dataframes
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;num_examples&#39;: 148,
+ &#39;polarity&#39;: -0.04563153235119518,
+ &#39;polarity_label&#39;: &#39;neutral&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">fomc_statements</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">lmsa</span><span class="o">.</span><span class="n">predict_article</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">res_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">index</span><span class="o">=</span><span class="n">res</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="n">res_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>num_examples</th>
+      <th>polarity</th>
+      <th>polarity_label</th>
+    </tr>
+    <tr>
+      <th>timestamp</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2000-02-02</th>
+      <td>8</td>
+      <td>-0.375000</td>
+      <td>negative</td>
+    </tr>
+    <tr>
+      <th>2000-03-21</th>
+      <td>8</td>
+      <td>-0.375000</td>
+      <td>negative</td>
+    </tr>
+    <tr>
+      <th>2000-05-16</th>
+      <td>8</td>
+      <td>-0.156250</td>
+      <td>neutral</td>
+    </tr>
+    <tr>
+      <th>2000-06-28</th>
+      <td>8</td>
+      <td>0.000000</td>
+      <td>neutral</td>
+    </tr>
+    <tr>
+      <th>2000-08-22</th>
+      <td>8</td>
+      <td>-0.250000</td>
+      <td>negative</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2021-06-16</th>
+      <td>47</td>
+      <td>0.045593</td>
+      <td>neutral</td>
+    </tr>
+    <tr>
+      <th>2021-07-28</th>
+      <td>47</td>
+      <td>0.050591</td>
+      <td>neutral</td>
+    </tr>
+    <tr>
+      <th>2021-09-22</th>
+      <td>47</td>
+      <td>0.044917</td>
+      <td>neutral</td>
+    </tr>
+    <tr>
+      <th>2021-11-03</th>
+      <td>47</td>
+      <td>0.045593</td>
+      <td>neutral</td>
+    </tr>
+    <tr>
+      <th>2021-12-15</th>
+      <td>47</td>
+      <td>0.052009</td>
+      <td>neutral</td>
+    </tr>
+  </tbody>
+</table>
+<p>182 rows × 3 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;visualize/plot=lineplot&#39;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;timestamp&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;polarity&#39;</span> 
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;The polarity scores of the FOMC statements&#39;</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">res_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;x&#39;: &#39;timestamp&#39;, &#39;y&#39;: &#39;polarity&#39;, &#39;linewidth&#39;: 2, &#39;palette&#39;: None, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
+INFO:ekorpkit.visualize.base:Saved figure to ./figs/LinePlot.png
+</pre></div>
+</div>
+<img alt="../../../_images/07_FOMC_sentiments_15_1.png" src="../../../_images/07_FOMC_sentiments_15_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;model/sentiment=lm&#39;</span><span class="p">)</span>
 
 <span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;pipeline/predict&#39;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;fomc_sentiments&#39;</span>
@@ -1137,13 +1360,29 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
 <span class="n">cfg</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/predict&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">-lm.parquet&#39;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="c1"># eKonf.print(cfg)</span>
 <span class="n">fomc_sentiments</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">fomc_statements</span><span class="p">)</span>
 <span class="n">fomc_sentiments</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Predicting [text]: 100%|██████████| 91/91 [00:28&lt;00:00,  3.17it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function predict at 0x7fb59bf0fe50&gt;)
+INFO:ekorpkit.pipelines.pipe:instantiating model
+INFO:ekorpkit.base:instantiating ekorpkit.models.sentiment.base.SentimentAnalyser...
+INFO:ekorpkit.preprocessors.tokenizer:instantiating ekorpkit.preprocessors.stopwords.Stopwords...
+INFO:ekorpkit.base:Calling load_candidates
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;/workspace/projects/ekorpkit/ekorpkit/resources/lexicons/LM.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/projects/ekorpkit/ekorpkit/resources/lexicons/LM.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from /workspace/projects/ekorpkit/ekorpkit/resources/lexicons/LM.parquet
+INFO:ekorpkit.models.ngram.ngram:loaded 58142 candidates
+INFO:ekorpkit.base:Using batcher with minibatch size: 2
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 2  procs: 100  input_split: False  merge_output: True  len(data): 182 len(args): 5
+Predicting [text]: 100%|██████████| 91/91 [00:31&lt;00:00,  2.93it/s]
+INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to predict: 0:00:31.077854
+INFO:ekorpkit.pipelines.pipe:Saving predictions to: {&#39;file&#39;: &#39;fomc_sentiments-lm.parquet&#39;, &#39;filename&#39;: &#39;fomc_sentiments-lm.parquet&#39;, &#39;base_dir&#39;: &#39;../data/predict&#39;, &#39;filetype&#39;: &#39;&#39;, &#39;columns&#39;: None, &#39;suffix&#39;: None, &#39;filepath&#39;: &#39;../data/predict/fomc_sentiments-lm.parquet&#39;}
+INFO:ekorpkit.io.file:Saving dataframe to ../data/predict/fomc_sentiments-lm.parquet
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1166,25 +1405,17 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <th></th>
       <th>id</th>
       <th>text</th>
+      <th>split</th>
       <th>content_type</th>
       <th>date</th>
       <th>speaker</th>
       <th>title</th>
-      <th>positive</th>
-      <th>negative</th>
-      <th>num_tokens</th>
+      <th>num_examples</th>
       <th>polarity</th>
-      <th>polarity2</th>
-      <th>subjectivity</th>
       <th>polarity_label</th>
-      <th>uncertainty</th>
     </tr>
     <tr>
       <th>timestamp</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -1202,86 +1433,66 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
       <th>2000-02-02</th>
       <td>250</td>
       <td>For immediate release The Federal Open Market ...</td>
+      <td>train</td>
       <td>fomc_statement</td>
       <td>2000-02-02</td>
       <td>Alan Greenspan</td>
       <td>FOMC Statement</td>
-      <td>0.005004</td>
-      <td>0.017515</td>
-      <td>1199</td>
-      <td>-0.555556</td>
-      <td>-0.012510</td>
-      <td>0.022519</td>
+      <td>8</td>
+      <td>-0.37500</td>
       <td>negative</td>
-      <td>0.019183</td>
     </tr>
     <tr>
       <th>2000-03-21</th>
       <td>251</td>
       <td>For immediate release The Federal Open Market ...</td>
+      <td>train</td>
       <td>fomc_statement</td>
       <td>2000-03-21</td>
       <td>Alan Greenspan</td>
       <td>FOMC Statement</td>
-      <td>0.004847</td>
-      <td>0.016963</td>
-      <td>1238</td>
-      <td>-0.555556</td>
-      <td>-0.012116</td>
-      <td>0.021809</td>
+      <td>8</td>
+      <td>-0.37500</td>
       <td>negative</td>
-      <td>0.018578</td>
     </tr>
     <tr>
       <th>2000-05-16</th>
       <td>252</td>
       <td>For immediate release The Federal Open Market ...</td>
+      <td>train</td>
       <td>fomc_statement</td>
       <td>2000-05-16</td>
       <td>Alan Greenspan</td>
       <td>FOMC Statement</td>
-      <td>0.013962</td>
-      <td>0.022688</td>
-      <td>1146</td>
-      <td>-0.238095</td>
-      <td>-0.008726</td>
-      <td>0.036649</td>
-      <td>negative</td>
-      <td>0.020942</td>
+      <td>8</td>
+      <td>-0.15625</td>
+      <td>neutral</td>
     </tr>
     <tr>
       <th>2000-06-28</th>
       <td>253</td>
       <td>For immediate release The Federal Open Market ...</td>
+      <td>train</td>
       <td>fomc_statement</td>
       <td>2000-06-28</td>
       <td>Alan Greenspan</td>
       <td>FOMC Statement</td>
-      <td>0.007042</td>
-      <td>0.007042</td>
-      <td>994</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.014085</td>
+      <td>8</td>
+      <td>0.00000</td>
       <td>neutral</td>
-      <td>0.049296</td>
     </tr>
     <tr>
       <th>2000-08-22</th>
       <td>254</td>
       <td>For immediate release The Federal Open Market ...</td>
+      <td>train</td>
       <td>fomc_statement</td>
       <td>2000-08-22</td>
       <td>Alan Greenspan</td>
       <td>FOMC Statement</td>
-      <td>0.007078</td>
-      <td>0.013145</td>
-      <td>989</td>
-      <td>-0.300000</td>
-      <td>-0.006067</td>
-      <td>0.020222</td>
+      <td>8</td>
+      <td>-0.25000</td>
       <td>negative</td>
-      <td>0.033367</td>
     </tr>
   </tbody>
 </table>
@@ -1456,7 +1667,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/07_FOMC_sentiments_14_0.png" src="../../../_images/07_FOMC_sentiments_14_0.png" />
+<img alt="../../../_images/07_FOMC_sentiments_19_0.png" src="../../../_images/07_FOMC_sentiments_19_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1473,7 +1684,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/07_FOMC_sentiments_15_0.png" src="../../../_images/07_FOMC_sentiments_15_0.png" />
+<img alt="../../../_images/07_FOMC_sentiments_20_0.png" src="../../../_images/07_FOMC_sentiments_20_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1488,7 +1699,10 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/07_FOMC_sentiments_16_0.png" src="../../../_images/07_FOMC_sentiments_16_0.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.base:Saved figure to ./figs/StackPlot.png
+</pre></div>
+</div>
+<img alt="../../../_images/07_FOMC_sentiments_21_1.png" src="../../../_images/07_FOMC_sentiments_21_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1509,7 +1723,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/07_FOMC_sentiments_17_0.png" src="../../../_images/07_FOMC_sentiments_17_0.png" />
+<img alt="../../../_images/07_FOMC_sentiments_22_0.png" src="../../../_images/07_FOMC_sentiments_22_0.png" />
 </div>
 </div>
 <div class="section" id="merge-with-fed-rate-data">
@@ -1745,7 +1959,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/07_FOMC_sentiments_23_0.png" src="../../../_images/07_FOMC_sentiments_23_0.png" />
+<img alt="../../../_images/07_FOMC_sentiments_28_0.png" src="../../../_images/07_FOMC_sentiments_28_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1827,7 +2041,7 @@ WARNING:ekorpkit.pipelines.pipe:No expressions specified
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/07_FOMC_sentiments_25_0.png" src="../../../_images/07_FOMC_sentiments_25_0.png" />
+<img alt="../../../_images/07_FOMC_sentiments_30_0.png" src="../../../_images/07_FOMC_sentiments_30_0.png" />
 </div>
 </div>
 </div>
