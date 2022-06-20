@@ -51,8 +51,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="EDA on Numerical Data" href="04_FOMC_EDA_numericals.html" />
@@ -2362,8 +2360,9 @@ INFO:ekorpkit.visualize.base:Saved figure to ./figs/HistPlot.png
 
 <span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;pipeline&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;fomc_sents.parquet&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;fomc_sections.parquet&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">_pipeline_</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;segment&quot;</span><span class="p">,</span>
     <span class="s2">&quot;chunk&quot;</span><span class="p">,</span>
     <span class="s2">&quot;explode_splits&quot;</span><span class="p">,</span>
     <span class="s2">&quot;filter_length&quot;</span><span class="p">,</span>
@@ -2390,26 +2389,33 @@ INFO:ekorpkit.visualize.base:Saved figure to ./figs/HistPlot.png
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;fomc_sents.parquet&#39;]
-INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_sents.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sents.parquet
-INFO:ekorpkit.pipelines.pipe:Applying pipeline: OrderedDict([(&#39;chunk&#39;, &#39;chunk&#39;), (&#39;explode_splits&#39;, &#39;explode_splits&#39;), (&#39;filter_length&#39;, &#39;filter_length&#39;), (&#39;reset_index&#39;, &#39;reset_index&#39;), (&#39;save_dataframe&#39;, &#39;save_dataframe&#39;)])
-INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function chunk at 0x7f03345d3550&gt;)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;fomc_sections.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_sections.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sections.parquet
+INFO:ekorpkit.pipelines.pipe:Applying pipeline: OrderedDict([(&#39;segment&#39;, &#39;segment&#39;), (&#39;chunk&#39;, &#39;chunk&#39;), (&#39;explode_splits&#39;, &#39;explode_splits&#39;), (&#39;filter_length&#39;, &#39;filter_length&#39;), (&#39;reset_index&#39;, &#39;reset_index&#39;), (&#39;save_dataframe&#39;, &#39;save_dataframe&#39;)])
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function segment at 0x7f72cc357700&gt;)
 INFO:ekorpkit.pipelines.pipe:instantiating segmenter
-INFO:ekorpkit.base:Using batcher with minibatch size: 272
-INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 272  procs: 100  input_split: False  merge_output: True  len(data): 27118 len(args): 5
-Chunking column: text: 100%|██████████| 100/100 [00:00&lt;00:00, 718.40it/s]
-INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to segment: 0:00:00.149619
-INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function explode_splits at 0x7f03345d3040&gt;)
-INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function filter_length at 0x7f03345d3790&gt;, len_bytes={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}, len_words={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_words&#39;})
-INFO:ekorpkit.base:Using batcher with minibatch size: 272
-INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 272  procs: 100  input_split: False  merge_output: True  len(data): 27118 len(args): 5
-Calculating length: 100%|██████████| 100/100 [00:00&lt;00:00, 906.72it/s]
-INFO:ekorpkit.pipelines.pipe:removed 0 of 27118 documents with length &lt; 50
-INFO:ekorpkit.pipelines.pipe:removed 0 of 27118 documents with length &gt; 350
-INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to filter length: 0:00:00.126643
-INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function reset_index at 0x7f03345d3160&gt;)
-INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function save_dataframe at 0x7f03345d3d30&gt;)
+INFO:ekorpkit.base:instantiating ekorpkit.preprocessors.segmenter.PySBDSegmenter...
+INFO:ekorpkit.base:Using batcher with minibatch size: 921
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 921  procs: 100  input_split: False  merge_output: True  len(data): 92051 len(args): 5
+Splitting column: text: 100%|██████████| 100/100 [00:49&lt;00:00,  2.01it/s]
+INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to segment: 0:00:49.652484
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function chunk at 0x7f72cc3570d0&gt;)
+INFO:ekorpkit.pipelines.pipe:instantiating segmenter
+INFO:ekorpkit.base:Using batcher with minibatch size: 921
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 921  procs: 100  input_split: False  merge_output: True  len(data): 92051 len(args): 5
+Chunking column: text: 100%|██████████| 100/100 [00:00&lt;00:00, 151.92it/s]
+INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to segment: 0:00:00.671154
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function explode_splits at 0x7f726987fe50&gt;)
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function filter_length at 0x7f7481a56ee0&gt;, len_bytes={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}, len_words={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_words&#39;})
+INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 100  input_split: False  merge_output: True  len(data): 133938 len(args): 5
+Calculating length: 100%|██████████| 134/134 [00:00&lt;00:00, 298.85it/s]
+INFO:ekorpkit.pipelines.pipe:removed 4798 of 133938 documents with length &lt; 50
+INFO:ekorpkit.pipelines.pipe:removed 34 of 129140 documents with length &gt; 350
+INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to filter length: 0:00:00.493998
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function reset_index at 0x7f726987fdc0&gt;)
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function save_dataframe at 0x7f72696a5160&gt;)
 INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_chunks.parquet
 </pre></div>
 </div>
@@ -2445,91 +2451,14 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_chunks.parquet
       <th>next_rate</th>
       <th>text_num_words</th>
       <th>section_id</th>
-      <th>sent_id</th>
       <th>chunk_id</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>27113</th>
+      <th>129101</th>
       <td>2854</td>
-      <td>I will say that one of the reasons why I’m inc...</td>
-      <td>2014-12-17</td>
-      <td>fomc_meeting_script</td>
-      <td>2014-12-17</td>
-      <td>MR. TARULLO</td>
-      <td>FOMC Meeting Transcript</td>
-      <td>0.0</td>
-      <td>0.25</td>
-      <td>2015-01-28</td>
-      <td>0.0</td>
-      <td>0.25</td>
-      <td>63</td>
-      <td>275</td>
-      <td>20</td>
-      <td>6</td>
-    </tr>
-    <tr>
-      <th>27114</th>
-      <td>2854</td>
-      <td>So it doesn’t feel like a circumstance in whic...</td>
-      <td>2014-12-17</td>
-      <td>fomc_meeting_script</td>
-      <td>2014-12-17</td>
-      <td>MR. TARULLO</td>
-      <td>FOMC Meeting Transcript</td>
-      <td>0.0</td>
-      <td>0.25</td>
-      <td>2015-01-28</td>
-      <td>0.0</td>
-      <td>0.25</td>
-      <td>55</td>
-      <td>275</td>
-      <td>21</td>
-      <td>7</td>
-    </tr>
-    <tr>
-      <th>27115</th>
-      <td>2854</td>
-      <td>So if you can imagine, we get three more emplo...</td>
-      <td>2014-12-17</td>
-      <td>fomc_meeting_script</td>
-      <td>2014-12-17</td>
-      <td>MR. POWELL</td>
-      <td>FOMC Meeting Transcript</td>
-      <td>0.0</td>
-      <td>0.25</td>
-      <td>2015-01-28</td>
-      <td>0.0</td>
-      <td>0.25</td>
-      <td>51</td>
-      <td>279</td>
-      <td>6</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>27116</th>
-      <td>2854</td>
-      <td>So I think it’s right to note, as alternative ...</td>
-      <td>2014-12-17</td>
-      <td>fomc_meeting_script</td>
-      <td>2014-12-17</td>
-      <td>MS. BRAINARD</td>
-      <td>FOMC Meeting Transcript</td>
-      <td>0.0</td>
-      <td>0.25</td>
-      <td>2015-01-28</td>
-      <td>0.0</td>
-      <td>0.25</td>
-      <td>63</td>
-      <td>281</td>
-      <td>18</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>27117</th>
-      <td>2854</td>
-      <td>Although we refer to a rise in the federal fun...</td>
+      <td>It also might help minimize the risks of the t...</td>
       <td>2014-12-17</td>
       <td>fomc_meeting_script</td>
       <td>2014-12-17</td>
@@ -2540,9 +2469,80 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_chunks.parquet
       <td>2015-01-28</td>
       <td>0.0</td>
       <td>0.25</td>
-      <td>63</td>
+      <td>172</td>
       <td>285</td>
-      <td>28</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>129102</th>
+      <td>2854</td>
+      <td>Getting the right message on inflation is very...</td>
+      <td>2014-12-17</td>
+      <td>fomc_meeting_script</td>
+      <td>2014-12-17</td>
+      <td>VICE CHAIRMAN DUDLEY</td>
+      <td>FOMC Meeting Transcript</td>
+      <td>0.0</td>
+      <td>0.25</td>
+      <td>2015-01-28</td>
+      <td>0.0</td>
+      <td>0.25</td>
+      <td>158</td>
+      <td>285</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>129103</th>
+      <td>2854</td>
+      <td>CHAIR YELLEN.  \nThank you.  \nOkay.  \nI thin...</td>
+      <td>2014-12-17</td>
+      <td>fomc_meeting_script</td>
+      <td>2014-12-17</td>
+      <td>CHAIR YELLEN</td>
+      <td>FOMC Meeting Transcript</td>
+      <td>0.0</td>
+      <td>0.25</td>
+      <td>2015-01-28</td>
+      <td>0.0</td>
+      <td>0.25</td>
+      <td>83</td>
+      <td>286</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>129104</th>
+      <td>2854</td>
+      <td>MR. LUECKE.  \nThis vote, as Chair Yellen indi...</td>
+      <td>2014-12-17</td>
+      <td>fomc_meeting_script</td>
+      <td>2014-12-17</td>
+      <td>MR. LUECKE</td>
+      <td>FOMC Meeting Transcript</td>
+      <td>0.0</td>
+      <td>0.25</td>
+      <td>2015-01-28</td>
+      <td>0.0</td>
+      <td>0.25</td>
+      <td>73</td>
+      <td>287</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>129105</th>
+      <td>2854</td>
+      <td>CHAIR YELLEN.  \nOkay.  \nThank you very much....</td>
+      <td>2014-12-17</td>
+      <td>fomc_meeting_script</td>
+      <td>2014-12-17</td>
+      <td>CHAIR YELLEN</td>
+      <td>FOMC Meeting Transcript</td>
+      <td>0.0</td>
+      <td>0.25</td>
+      <td>2015-01-28</td>
+      <td>0.0</td>
+      <td>0.25</td>
+      <td>77</td>
+      <td>288</td>
       <td>0</td>
     </tr>
   </tbody>
