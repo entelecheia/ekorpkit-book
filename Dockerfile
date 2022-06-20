@@ -1,4 +1,5 @@
-FROM nvcr.io/nvidia/pytorch:21.05-py3
+FROM nvcr.io/nvidia/pytorch:22.02-py3
+# FROM nvcr.io/nvidia/pytorch:21.05-py3
 RUN apt-get update && apt-get install -y fontconfig fonts-nanum
 
 ENV WORKSPACE_DIR /workspace

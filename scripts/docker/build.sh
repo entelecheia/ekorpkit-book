@@ -12,5 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-docker build . --rm -t ekorpkit-torch:21.05-py3
-
+# docker build . --rm -t ekorpkit-torch:21.05-py3
+docker build . --rm -t ekorpkit-torch:22.02-py3

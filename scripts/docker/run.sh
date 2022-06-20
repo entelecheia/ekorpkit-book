@@ -16,4 +16,4 @@ docker run -it --rm \
   -p $JUPYTER_HOST_PORT:$JUPYTER_PORT \
   -e WANDB_API_KEY=$WANDB_API_KEY \
   -v $WORKSPACE_HOST:$WORKSPACE_DOCKER \
-  ekorpkit-torch:21.05-py3 $CMD
+  ekorpkit-torch:22.02-py3 $CMD
