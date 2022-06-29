@@ -793,11 +793,11 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:IPython version: (6, 7, 0), client: jupyter_client
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:IPython version: (6, 9, 0), client: jupyter_client
 INFO:ekorpkit.base:Google Colab not detected.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.33+21.gf33ff55.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.33+23.gbb9860e.dirty
 is notebook? True
 is colab? False
 evironment varialbles:
@@ -1083,7 +1083,8 @@ INFO:ekorpkit.io.file:Concatenating 1 dataframes
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;model/sentiment=lm&#39;</span><span class="p">)</span>
-<span class="c1"># model_cfg.verbose = True</span>
+<span class="c1"># model_cfg.verbose = 10</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">lmsa</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">model_cfg</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1101,54 +1102,28 @@ INFO:ekorpkit.models.ngram.ngram:loaded 58142 candidates
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pred</span> <span class="o">=</span> <span class="n">lmsa</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">fomc_statements</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">article</span> <span class="o">=</span> <span class="n">fomc_statements</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span>
+<span class="n">lmsa</span><span class="o">.</span><span class="n">predict_article</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.models.sentiment.base:Predicting sentiments of the column [text] using predict_article
-INFO:ekorpkit.base:Using batcher with minibatch size: 1
-INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1  procs: 230  input_split: False  merge_output: True  len(data): 182 len(args): 5
-Predicting [text]: 100%|██████████| 182/182 [00:52&lt;00:00,  3.46it/s]
-INFO:ekorpkit.models.sentiment.base: &gt;&gt; elapsed time to predict: 0:00:52.583449
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;num_examples&#39;: 9,
+ &#39;polarity_mean&#39;: -0.5005290181607607,
+ &#39;polarity_median&#39;: -0.7142856122449125,
+ &#39;polarity_diffusion&#39;: -0.7777777777777778,
+ &#39;positive&#39;: 0.0,
+ &#39;negative&#39;: 7.0,
+ &#39;num_tokens_sum&#39;: 1458.0,
+ &#39;num_tokens_mean&#39;: 162.0,
+ &#39;num_tokens_median&#39;: 199.0,
+ &#39;polarity_mean_label&#39;: &#39;negative&#39;,
+ &#39;polarity_median_label&#39;: &#39;negative&#39;,
+ &#39;polarity_diffusion_label&#39;: &#39;negative&#39;,
+ &#39;uncertainty_mean&#39;: 0.038049539402185834,
+ &#39;uncertainty_median&#39;: 0.04365179365079365}
 </pre></div>
 </div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pred</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">workspace</span><span class="o">/</span><span class="n">projects</span><span class="o">/</span><span class="n">ekorpkit</span><span class="o">-</span><span class="n">book</span><span class="o">/</span><span class="n">ekorpkit</span><span class="o">-</span><span class="n">book</span><span class="o">/</span><span class="n">docs</span><span class="o">/</span><span class="n">usecases</span><span class="o">/</span><span class="n">fomc</span><span class="o">/</span><span class="mi">07</span><span class="n">_FOMC_sentiments</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">Cell</span> <span class="mi">11</span><span class="s1">&#39; in &lt;module&gt;</span>
-<span class="o">----&gt;</span> <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell://ssh-remote%2Bml-workspace-gpu/workspace/projects/ekorpkit-book/ekorpkit-book/docs/usecases/fomc/07_FOMC_sentiments.ipynb#ch0000010vscode-remote?line=0&#39;</span><span class="o">&gt;</span><span class="mi">1</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="k">del</span> <span class="n">lmsa</span>
-
-<span class="ne">NameError</span>: name &#39;lmsa&#39; is not defined
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;visualize/plot=lineplot&#39;</span><span class="p">)</span>
-<span class="c1"># cfg.plot.x = &#39;timestamp&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;polarity&#39;</span><span class="p">]</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="s1">&#39;(15, 8)&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;The polarity scores of the FOMC statements&#39;</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">pred</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;x&#39;: &#39;timestamp&#39;, &#39;y&#39;: &#39;polarity&#39;, &#39;linewidth&#39;: 2, &#39;palette&#39;: None, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
-INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/outputs/figs/LinePlot.png
-</pre></div>
-</div>
-<img alt="../../../_images/07_FOMC_sentiments_11_1.png" src="../../../_images/07_FOMC_sentiments_11_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1170,7 +1145,7 @@ INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/o
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function predict at 0x7f3dbc767e50&gt;)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function predict at 0x7fbc775590d0&gt;)
 INFO:ekorpkit.base:instantiating ekorpkit.models.sentiment.base.SentimentAnalyser...
 INFO:ekorpkit.preprocessors.tokenizer:instantiating ekorpkit.preprocessors.stopwords.Stopwords...
 INFO:ekorpkit.base:Calling load_candidates
@@ -1181,8 +1156,8 @@ INFO:ekorpkit.models.ngram.ngram:loaded 58142 candidates
 INFO:ekorpkit.models.sentiment.base:Predicting sentiments of the column [text] using predict_article
 INFO:ekorpkit.base:Using batcher with minibatch size: 19
 INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 19  procs: 10  input_split: False  merge_output: True  len(data): 182 len(args): 5
-Predicting [text]: 100%|██████████| 10/10 [00:13&lt;00:00,  1.35s/it]
-INFO:ekorpkit.models.sentiment.base: &gt;&gt; elapsed time to predict: 0:00:13.549674
+Predicting [text]: 100%|██████████| 10/10 [00:13&lt;00:00,  1.38s/it]
+INFO:ekorpkit.models.sentiment.base: &gt;&gt; elapsed time to predict: 0:00:13.807598
 INFO:ekorpkit.pipelines.pipe:Saving predictions to: {&#39;file&#39;: &#39;${..output_file}&#39;, &#39;filename&#39;: &#39;${.file}&#39;, &#39;base_dir&#39;: &#39;${..output_dir}&#39;, &#39;filetype&#39;: &#39;${..filetype}&#39;, &#39;columns&#39;: &#39;${..columns}&#39;, &#39;suffix&#39;: None, &#39;filepath&#39;: &#39;${join_path:${.base_dir},${.filename}}&#39;}
 INFO:ekorpkit.io.file:Saving dataframe to ../data/predict/fomc_sentiments-lm.parquet
 </pre></div>
@@ -1213,12 +1188,32 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/predict/fomc_sentiments-lm.par
       <th>speaker</th>
       <th>title</th>
       <th>num_examples</th>
-      <th>polarity</th>
-      <th>polarity_label</th>
-      <th>uncertainty</th>
+      <th>polarity_mean</th>
+      <th>polarity_median</th>
+      <th>...</th>
+      <th>positive</th>
+      <th>negative</th>
+      <th>num_tokens_sum</th>
+      <th>num_tokens_mean</th>
+      <th>num_tokens_median</th>
+      <th>polarity_mean_label</th>
+      <th>polarity_median_label</th>
+      <th>polarity_diffusion_label</th>
+      <th>uncertainty_mean</th>
+      <th>uncertainty_median</th>
     </tr>
     <tr>
       <th>timestamp</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -1244,8 +1239,18 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/predict/fomc_sentiments-lm.par
       <td>FOMC Statement</td>
       <td>8</td>
       <td>-0.37500</td>
+      <td>-0.600000</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>5.0</td>
+      <td>1199.0</td>
+      <td>149.875</td>
+      <td>184.5</td>
+      <td>negative</td>
+      <td>negative</td>
       <td>negative</td>
       <td>0.015972</td>
+      <td>0.019095</td>
     </tr>
     <tr>
       <th>2000-03-21</th>
@@ -1258,8 +1263,18 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/predict/fomc_sentiments-lm.par
       <td>FOMC Statement</td>
       <td>8</td>
       <td>-0.37500</td>
+      <td>-0.600000</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>5.0</td>
+      <td>1238.0</td>
+      <td>154.750</td>
+      <td>191.5</td>
+      <td>negative</td>
+      <td>negative</td>
       <td>negative</td>
       <td>0.015476</td>
+      <td>0.018478</td>
     </tr>
     <tr>
       <th>2000-05-16</th>
@@ -1272,8 +1287,18 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/predict/fomc_sentiments-lm.par
       <td>FOMC Statement</td>
       <td>8</td>
       <td>-0.15625</td>
-      <td>neutral</td>
+      <td>-0.250000</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>5.0</td>
+      <td>1146.0</td>
+      <td>143.250</td>
+      <td>179.5</td>
+      <td>negative</td>
+      <td>negative</td>
+      <td>negative</td>
       <td>0.024587</td>
+      <td>0.019705</td>
     </tr>
     <tr>
       <th>2000-06-28</th>
@@ -1286,8 +1311,18 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/predict/fomc_sentiments-lm.par
       <td>FOMC Statement</td>
       <td>8</td>
       <td>0.00000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>994.0</td>
+      <td>124.250</td>
+      <td>158.5</td>
+      <td>neutral</td>
+      <td>neutral</td>
       <td>neutral</td>
       <td>0.046369</td>
+      <td>0.045978</td>
     </tr>
     <tr>
       <th>2000-08-22</th>
@@ -1300,11 +1335,22 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/predict/fomc_sentiments-lm.par
       <td>FOMC Statement</td>
       <td>8</td>
       <td>-0.25000</td>
+      <td>-0.333333</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>6.0</td>
+      <td>989.0</td>
+      <td>123.625</td>
+      <td>158.5</td>
+      <td>negative</td>
+      <td>negative</td>
       <td>negative</td>
       <td>0.034581</td>
+      <td>0.028737</td>
     </tr>
   </tbody>
 </table>
+<p>5 rows × 21 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -1351,12 +1397,32 @@ INFO:ekorpkit.io.file:Loading data from ../data/predict/fomc_sentiments-lm.parqu
       <th>speaker</th>
       <th>title</th>
       <th>num_examples</th>
-      <th>polarity</th>
-      <th>polarity_label</th>
-      <th>uncertainty</th>
+      <th>polarity_mean</th>
+      <th>polarity_median</th>
+      <th>...</th>
+      <th>positive</th>
+      <th>negative</th>
+      <th>num_tokens_sum</th>
+      <th>num_tokens_mean</th>
+      <th>num_tokens_median</th>
+      <th>polarity_mean_label</th>
+      <th>polarity_median_label</th>
+      <th>polarity_diffusion_label</th>
+      <th>uncertainty_mean</th>
+      <th>uncertainty_median</th>
     </tr>
     <tr>
       <th>timestamp</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -1382,8 +1448,18 @@ INFO:ekorpkit.io.file:Loading data from ../data/predict/fomc_sentiments-lm.parqu
       <td>FOMC Statement</td>
       <td>8</td>
       <td>-0.37500</td>
+      <td>-0.600000</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>5.0</td>
+      <td>1199.0</td>
+      <td>149.875</td>
+      <td>184.5</td>
+      <td>negative</td>
+      <td>negative</td>
       <td>negative</td>
       <td>0.015972</td>
+      <td>0.019095</td>
     </tr>
     <tr>
       <th>2000-03-21</th>
@@ -1396,8 +1472,18 @@ INFO:ekorpkit.io.file:Loading data from ../data/predict/fomc_sentiments-lm.parqu
       <td>FOMC Statement</td>
       <td>8</td>
       <td>-0.37500</td>
+      <td>-0.600000</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>5.0</td>
+      <td>1238.0</td>
+      <td>154.750</td>
+      <td>191.5</td>
+      <td>negative</td>
+      <td>negative</td>
       <td>negative</td>
       <td>0.015476</td>
+      <td>0.018478</td>
     </tr>
     <tr>
       <th>2000-05-16</th>
@@ -1410,8 +1496,18 @@ INFO:ekorpkit.io.file:Loading data from ../data/predict/fomc_sentiments-lm.parqu
       <td>FOMC Statement</td>
       <td>8</td>
       <td>-0.15625</td>
-      <td>neutral</td>
+      <td>-0.250000</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>5.0</td>
+      <td>1146.0</td>
+      <td>143.250</td>
+      <td>179.5</td>
+      <td>negative</td>
+      <td>negative</td>
+      <td>negative</td>
       <td>0.024587</td>
+      <td>0.019705</td>
     </tr>
     <tr>
       <th>2000-06-28</th>
@@ -1424,8 +1520,18 @@ INFO:ekorpkit.io.file:Loading data from ../data/predict/fomc_sentiments-lm.parqu
       <td>FOMC Statement</td>
       <td>8</td>
       <td>0.00000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>994.0</td>
+      <td>124.250</td>
+      <td>158.5</td>
+      <td>neutral</td>
+      <td>neutral</td>
       <td>neutral</td>
       <td>0.046369</td>
+      <td>0.045978</td>
     </tr>
     <tr>
       <th>2000-08-22</th>
@@ -1438,11 +1544,22 @@ INFO:ekorpkit.io.file:Loading data from ../data/predict/fomc_sentiments-lm.parqu
       <td>FOMC Statement</td>
       <td>8</td>
       <td>-0.25000</td>
+      <td>-0.333333</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>6.0</td>
+      <td>989.0</td>
+      <td>123.625</td>
+      <td>158.5</td>
+      <td>negative</td>
+      <td>negative</td>
       <td>negative</td>
       <td>0.034581</td>
+      <td>0.028737</td>
     </tr>
   </tbody>
 </table>
+<p>5 rows × 21 columns</p>
 </div></div></div>
 </div>
 </div>
@@ -1451,32 +1568,59 @@ INFO:ekorpkit.io.file:Loading data from ../data/predict/fomc_sentiments-lm.parqu
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;visualize/plot=lineplot&#39;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;num_examples&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;The number of sentences in the FOMC statements&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">legend</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1"># cfg.plot.x = &#39;timestamp&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;polarity_mean&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_diffusion&#39;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="s1">&#39;(15, 8)&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;The polarity scores of the FOMC statements&#39;</span>
 <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">fomc_sentiments</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;x&#39;: &#39;timestamp&#39;, &#39;y&#39;: &#39;num_examples&#39;, &#39;linewidth&#39;: 2, &#39;palette&#39;: None, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;linewidth&#39;: 2, &#39;palette&#39;: None, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
 INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/outputs/figs/LinePlot.png
 </pre></div>
 </div>
-<img alt="../../../_images/07_FOMC_sentiments_15_1.png" src="../../../_images/07_FOMC_sentiments_15_1.png" />
+<img alt="../../../_images/07_FOMC_sentiments_13_1.png" src="../../../_images/07_FOMC_sentiments_13_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;visualize/plot=lineplot&#39;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;num_tokens&#39;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;The number of words in the FOMC statements&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">legend</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;num_tokens_sum&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">rcParams</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;num_examples&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rcParams</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">secondary_y</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">legend</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">labels</span><span class="o">=</span><span class="p">[</span>
+        <span class="s2">&quot;The number of tokens in the FOMC statements (LHS)&quot;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">secondary_y</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">legend</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;The number of sentences in the FOMC statements (RHS)&quot;</span><span class="p">],</span>
+    <span class="n">loc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ax2</span><span class="p">)</span>
+
 <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">fomc_sentiments</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;linewidth&#39;: 2, &#39;color&#39;: &#39;red&#39;, &#39;x&#39;: &#39;timestamp&#39;, &#39;y&#39;: &#39;num_tokens_sum&#39;, &#39;palette&#39;: None, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
+INFO:ekorpkit.visualize.plot:Creating secondary axis to axis[0]
+INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;linewidth&#39;: 2, &#39;color&#39;: &#39;green&#39;, &#39;x&#39;: &#39;timestamp&#39;, &#39;y&#39;: &#39;num_examples&#39;, &#39;palette&#39;: None, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
+INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/outputs/figs/LinePlot.png
+</pre></div>
+</div>
+<img alt="../../../_images/07_FOMC_sentiments_14_1.png" src="../../../_images/07_FOMC_sentiments_14_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1486,20 +1630,24 @@ INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/o
 <span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">palette</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">]</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">linewidth</span> <span class="o">=</span> <span class="mf">2.5</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;The positive/negative scores of the FOMC statements&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Positive Score&quot;</span><span class="p">,</span> <span class="s2">&quot;Negative Score&quot;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;The positive/negative sentences of the FOMC statements&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Positive&quot;</span><span class="p">,</span> <span class="s2">&quot;Negative&quot;</span><span class="p">]</span>
 <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">fomc_sentiments</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/07_FOMC_sentiments_17_0.png" src="../../../_images/07_FOMC_sentiments_17_0.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;linewidth&#39;: 2.5, &#39;palette&#39;: [&#39;b&#39;, &#39;r&#39;], &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
+INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/outputs/figs/LinePlot.png
+</pre></div>
+</div>
+<img alt="../../../_images/07_FOMC_sentiments_15_1.png" src="../../../_images/07_FOMC_sentiments_15_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;visualize/plot=stackplot&#39;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;polarity&#39;</span> 
+<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;polarity_diffusion&#39;</span><span class="p">]</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;The polarity scores of the FOMC statements&#39;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">xtickmajorformatterfunc</span> <span class="o">=</span> <span class="s2">&quot;mdates.DateFormatter(&#39;%Y&#39;)&quot;</span>
@@ -1508,31 +1656,10 @@ INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/o
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.base:Saved figure to ./figs/StackPlot.png
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/outputs/figs/StackPlot.png
 </pre></div>
 </div>
-<img alt="../../../_images/07_FOMC_sentiments_18_1.png" src="../../../_images/07_FOMC_sentiments_18_1.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;visualize/plot=lineplot&#39;</span><span class="p">)</span>
-<span class="n">plot2</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;polarity&#39;</span> 
-<span class="n">plot2</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;polarity2&#39;</span>
-<span class="n">plot2</span><span class="o">.</span><span class="n">rcParams</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
-<span class="n">plot2</span><span class="o">.</span><span class="n">secondary_y</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plot2</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-<span class="n">ax2</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ax2</span><span class="p">)</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">fomc_sentiments</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../../_images/07_FOMC_sentiments_19_0.png" src="../../../_images/07_FOMC_sentiments_19_0.png" />
+<img alt="../../../_images/07_FOMC_sentiments_16_1.png" src="../../../_images/07_FOMC_sentiments_16_1.png" />
 </div>
 </div>
 <div class="section" id="merge-with-fed-rate-data">
@@ -1555,6 +1682,18 @@ INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/o
 <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">fedrates</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function eval_columns at 0x7fbc77552790&gt;)
+WARNING:ekorpkit.pipelines.pipe:No expressions specified
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function eval_columns at 0x7fbc77552790&gt;)
+WARNING:ekorpkit.pipelines.pipe:No expressions specified
+INFO:ekorpkit.io.file:Saving dataframe to /workspace/.tmp/fred/DFEDTAR.parquet
+INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;x&#39;: &#39;date&#39;, &#39;y&#39;: &#39;DFEDTAR&#39;, &#39;linewidth&#39;: 2, &#39;palette&#39;: None, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
+INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/outputs/figs/LinePlot.png
+</pre></div>
+</div>
+<img alt="../../../_images/07_FOMC_sentiments_18_1.png" src="../../../_images/07_FOMC_sentiments_18_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1586,23 +1725,33 @@ INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/o
       <th></th>
       <th>id</th>
       <th>text</th>
+      <th>split</th>
       <th>content_type</th>
       <th>date</th>
       <th>speaker</th>
       <th>title</th>
-      <th>positive</th>
-      <th>negative</th>
-      <th>num_tokens</th>
-      <th>polarity</th>
-      <th>polarity2</th>
-      <th>subjectivity</th>
-      <th>polarity_label</th>
-      <th>uncertainty</th>
+      <th>num_examples</th>
+      <th>polarity_mean</th>
+      <th>polarity_median</th>
+      <th>...</th>
+      <th>num_tokens_sum</th>
+      <th>num_tokens_mean</th>
+      <th>num_tokens_median</th>
+      <th>polarity_mean_label</th>
+      <th>polarity_median_label</th>
+      <th>polarity_diffusion_label</th>
+      <th>uncertainty_mean</th>
+      <th>uncertainty_median</th>
       <th>DFEDTAR</th>
       <th>series_id</th>
     </tr>
     <tr>
       <th>timestamp</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -1626,18 +1775,23 @@ INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/o
       <th>2000-02-02</th>
       <td>250</td>
       <td>For immediate release The Federal Open Market ...</td>
+      <td>train</td>
       <td>fomc_statement</td>
       <td>2000-02-02</td>
       <td>Alan Greenspan</td>
       <td>FOMC Statement</td>
-      <td>0.005004</td>
-      <td>0.017515</td>
-      <td>1199</td>
-      <td>-0.555556</td>
-      <td>-0.012510</td>
-      <td>0.022519</td>
+      <td>8</td>
+      <td>-0.37500</td>
+      <td>-0.600000</td>
+      <td>...</td>
+      <td>1199.0</td>
+      <td>149.875</td>
+      <td>184.5</td>
       <td>negative</td>
-      <td>0.019183</td>
+      <td>negative</td>
+      <td>negative</td>
+      <td>0.015972</td>
+      <td>0.019095</td>
       <td>5.75</td>
       <td>DFEDTAR</td>
     </tr>
@@ -1645,18 +1799,23 @@ INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/o
       <th>2000-03-21</th>
       <td>251</td>
       <td>For immediate release The Federal Open Market ...</td>
+      <td>train</td>
       <td>fomc_statement</td>
       <td>2000-03-21</td>
       <td>Alan Greenspan</td>
       <td>FOMC Statement</td>
-      <td>0.004847</td>
-      <td>0.016963</td>
-      <td>1238</td>
-      <td>-0.555556</td>
-      <td>-0.012116</td>
-      <td>0.021809</td>
+      <td>8</td>
+      <td>-0.37500</td>
+      <td>-0.600000</td>
+      <td>...</td>
+      <td>1238.0</td>
+      <td>154.750</td>
+      <td>191.5</td>
       <td>negative</td>
-      <td>0.018578</td>
+      <td>negative</td>
+      <td>negative</td>
+      <td>0.015476</td>
+      <td>0.018478</td>
       <td>6.00</td>
       <td>DFEDTAR</td>
     </tr>
@@ -1664,18 +1823,23 @@ INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/o
       <th>2000-05-16</th>
       <td>252</td>
       <td>For immediate release The Federal Open Market ...</td>
+      <td>train</td>
       <td>fomc_statement</td>
       <td>2000-05-16</td>
       <td>Alan Greenspan</td>
       <td>FOMC Statement</td>
-      <td>0.013962</td>
-      <td>0.022688</td>
-      <td>1146</td>
-      <td>-0.238095</td>
-      <td>-0.008726</td>
-      <td>0.036649</td>
+      <td>8</td>
+      <td>-0.15625</td>
+      <td>-0.250000</td>
+      <td>...</td>
+      <td>1146.0</td>
+      <td>143.250</td>
+      <td>179.5</td>
       <td>negative</td>
-      <td>0.020942</td>
+      <td>negative</td>
+      <td>negative</td>
+      <td>0.024587</td>
+      <td>0.019705</td>
       <td>6.50</td>
       <td>DFEDTAR</td>
     </tr>
@@ -1683,18 +1847,23 @@ INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/o
       <th>2000-06-28</th>
       <td>253</td>
       <td>For immediate release The Federal Open Market ...</td>
+      <td>train</td>
       <td>fomc_statement</td>
       <td>2000-06-28</td>
       <td>Alan Greenspan</td>
       <td>FOMC Statement</td>
-      <td>0.007042</td>
-      <td>0.007042</td>
-      <td>994</td>
+      <td>8</td>
+      <td>0.00000</td>
       <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.014085</td>
+      <td>...</td>
+      <td>994.0</td>
+      <td>124.250</td>
+      <td>158.5</td>
       <td>neutral</td>
-      <td>0.049296</td>
+      <td>neutral</td>
+      <td>neutral</td>
+      <td>0.046369</td>
+      <td>0.045978</td>
       <td>6.50</td>
       <td>DFEDTAR</td>
     </tr>
@@ -1702,23 +1871,29 @@ INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/o
       <th>2000-08-22</th>
       <td>254</td>
       <td>For immediate release The Federal Open Market ...</td>
+      <td>train</td>
       <td>fomc_statement</td>
       <td>2000-08-22</td>
       <td>Alan Greenspan</td>
       <td>FOMC Statement</td>
-      <td>0.007078</td>
-      <td>0.013145</td>
-      <td>989</td>
-      <td>-0.300000</td>
-      <td>-0.006067</td>
-      <td>0.020222</td>
+      <td>8</td>
+      <td>-0.25000</td>
+      <td>-0.333333</td>
+      <td>...</td>
+      <td>989.0</td>
+      <td>123.625</td>
+      <td>158.5</td>
       <td>negative</td>
-      <td>0.033367</td>
+      <td>negative</td>
+      <td>negative</td>
+      <td>0.034581</td>
+      <td>0.028737</td>
       <td>6.50</td>
       <td>DFEDTAR</td>
     </tr>
   </tbody>
 </table>
+<p>5 rows × 23 columns</p>
 </div></div></div>
 </div>
 </div>
@@ -1729,6 +1904,11 @@ INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/o
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;io/fetcher/fomc&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/fomc&quot;</span>
 <span class="n">fomc</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.fetch.fomc.base:Initializing fomc_base
 </pre></div>
 </div>
 </div>
@@ -1764,7 +1944,7 @@ INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/o
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">window</span> <span class="o">=</span> <span class="mi">16</span>
-<span class="n">fomc_sentiments</span><span class="p">[</span><span class="s2">&quot;polarity_ma&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fomc_sentiments</span><span class="o">.</span><span class="n">polarity</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">fomc_sentiments</span><span class="p">[</span><span class="s2">&quot;polarity_ma&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fomc_sentiments</span><span class="o">.</span><span class="n">polarity_diffusion</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 
 <span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot=lineplot&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
@@ -1773,7 +1953,7 @@ INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/o
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;polarity_ma&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">linewidth</span> <span class="o">=</span> <span class="mf">2.5</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">palette</span> <span class="o">=</span> <span class="s2">&quot;r&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;polarity&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;polarity_diffusion&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">linewidth</span> <span class="o">=</span> <span class="mf">1.5</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">palette</span> <span class="o">=</span> <span class="s2">&quot;g&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Moving average of last </span><span class="si">{</span><span class="n">window</span><span class="si">}</span><span class="s2"> statements&quot;</span>
@@ -1788,7 +1968,12 @@ INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/o
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/07_FOMC_sentiments_26_0.png" src="../../../_images/07_FOMC_sentiments_26_0.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;x&#39;: &#39;timestamp&#39;, &#39;y&#39;: &#39;polarity_ma&#39;, &#39;linewidth&#39;: 2.5, &#39;palette&#39;: &#39;r&#39;, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
+INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;x&#39;: &#39;timestamp&#39;, &#39;y&#39;: &#39;polarity_diffusion&#39;, &#39;linewidth&#39;: 1.5, &#39;palette&#39;: &#39;g&#39;, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
+INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/outputs/figs/LinePlot.png
+</pre></div>
+</div>
+<img alt="../../../_images/07_FOMC_sentiments_23_1.png" src="../../../_images/07_FOMC_sentiments_23_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1838,7 +2023,7 @@ INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/o
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;polarity_ma&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">rcParams</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;polarity&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;polarity_diffusion&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rcParams</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Moving average of last </span><span class="si">{</span><span class="n">window</span><span class="si">}</span><span class="s2"> statements&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">legend</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -1848,7 +2033,7 @@ INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/o
     <span class="p">],</span>
     <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">scatter_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot/scatter&quot;</span><span class="p">)</span>
+<span class="n">scatter_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot/scatterplot&quot;</span><span class="p">)</span>
 <span class="n">scatter_cfg</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;DFEDTAR&quot;</span>
 <span class="n">scatter_cfg</span><span class="o">.</span><span class="n">secondary_y</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">scatter_cfg</span><span class="o">.</span><span class="n">rcParams</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
@@ -1870,7 +2055,14 @@ INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/o
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/07_FOMC_sentiments_28_0.png" src="../../../_images/07_FOMC_sentiments_28_0.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;linewidth&#39;: 2, &#39;color&#39;: &#39;red&#39;, &#39;x&#39;: &#39;timestamp&#39;, &#39;y&#39;: &#39;polarity_ma&#39;, &#39;palette&#39;: None, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
+INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;linewidth&#39;: 2, &#39;color&#39;: &#39;green&#39;, &#39;x&#39;: &#39;timestamp&#39;, &#39;y&#39;: &#39;polarity_diffusion&#39;, &#39;palette&#39;: None, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
+INFO:ekorpkit.visualize.plot:Creating secondary axis to axis[0]
+INFO:ekorpkit.visualize.plot:Plotting scatterplot with {&#39;color&#39;: &#39;blue&#39;, &#39;alpha&#39;: None, &#39;x&#39;: &#39;timestamp&#39;, &#39;y&#39;: &#39;DFEDTAR&#39;, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;palette&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;ci&#39;: 95, &#39;legend&#39;: False}
+INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/outputs/figs/LinePlot.png
+</pre></div>
+</div>
+<img alt="../../../_images/07_FOMC_sentiments_25_1.png" src="../../../_images/07_FOMC_sentiments_25_1.png" />
 </div>
 </div>
 </div>
