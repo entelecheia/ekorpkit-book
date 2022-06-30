@@ -701,6 +701,16 @@ const thebe_selector_output = ".output, .cell_output"
    Process a pipeline  with the ekorpkit configs
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#melt">
+   Melt
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pivot">
+   Pivot
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -729,6 +739,16 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#process-a-pipeline-with-the-ekorpkit-configs">
    Process a pipeline  with the ekorpkit configs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#melt">
+   Melt
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pivot">
+   Pivot
   </a>
  </li>
 </ul>
@@ -1223,6 +1243,27 @@ INFO:ekorpkit.pipelines.pipe:Saving summary stats: ../data/output/bok_minutes_st
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;num_examples&#39;: 1, &#39;num_bytes&#39;: 88934, &#39;num_bytes_median&#39;: 88934.0, &#39;num_bytes_max&#39;: 88934, &#39;num_bytes_min&#39;: 88934, &#39;human_bytes&#39;: &#39;86.85 KiB&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="melt">
+<h2>Melt<a class="headerlink" href="#melt" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pivot">
+<h2>Pivot<a class="headerlink" href="#pivot" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/fomc&quot;</span>
+<span class="n">fomc_sentiments</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;fomc_sentiments.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;pipeline/pivot&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="s2">&quot;recent_meeting&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="s2">&quot;content_type&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;polarity_mean&quot;</span><span class="p">,</span> <span class="s2">&quot;polarity_diffusion&quot;</span><span class="p">,</span> <span class="s2">&quot;num_examples&quot;</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">fomc_sentiments</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
