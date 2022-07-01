@@ -51,8 +51,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Predicting the next decisions with tones" href="09_FOMC_AutoML_with_tones.html" />
@@ -742,6 +740,11 @@ const thebe_selector_output = ".output, .cell_output"
    Visualize Features
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#monetary-policy-shocks">
+   Monetary Policy Shocks
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -799,6 +802,11 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#visualize-features">
    Visualize Features
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#monetary-policy-shocks">
+   Monetary Policy Shocks
   </a>
  </li>
 </ul>
@@ -4285,6 +4293,582 @@ WARNING:ekorpkit.datasets.base:File fomc_tone_features_t5-dev.parquet not found.
 <div class="cell_output docutils container">
 <img alt="../../../_images/08_FOMC_EDA_sentiments_42_0.png" src="../../../_images/08_FOMC_EDA_sentiments_42_0.png" />
 </div>
+</div>
+</div>
+<div class="section" id="monetary-policy-shocks">
+<h2>Monetary Policy Shocks<a class="headerlink" href="#monetary-policy-shocks" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ids</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;GDPC1&#39;</span><span class="p">,</span>     <span class="c1"># Real GDP    </span>
+    <span class="s1">&#39;PCECC96&#39;</span><span class="p">,</span>   <span class="c1"># Real Consumption    </span>
+    <span class="s1">&#39;GDPDEF&#39;</span><span class="p">,</span>    <span class="c1"># GDP Deflator</span>
+    <span class="s1">&#39;GPDIC1&#39;</span><span class="p">,</span>    <span class="c1"># Real investment</span>
+    <span class="s1">&#39;COMPRNFB&#39;</span><span class="p">,</span>  <span class="c1"># Real wage</span>
+    <span class="s1">&#39;OPHNFB&#39;</span><span class="p">,</span>    <span class="c1"># Labor productivity</span>
+    <span class="s1">&#39;FEDFUNDS&#39;</span><span class="p">,</span>  <span class="c1"># Federal funds rate</span>
+    <span class="s1">&#39;CP&#39;</span><span class="p">,</span>        <span class="c1"># Real profit</span>
+    <span class="s1">&#39;M2SL&#39;</span><span class="p">,</span>      <span class="c1"># M2</span>
+    <span class="s1">&#39;SP500&#39;</span><span class="p">,</span>     <span class="c1"># SP500</span>
+    <span class="s1">&#39;CPIAUCSL&#39;</span><span class="p">,</span>  <span class="c1"># CPI</span>
+<span class="p">]</span>
+    
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;io/fetcher=quandl&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">series_name</span> <span class="o">=</span> <span class="s1">&#39;value&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">series_id</span> <span class="o">=</span> <span class="n">ids</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">force_download</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">quandl</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+
+<span class="n">econ_data</span> <span class="o">=</span> <span class="n">quandl</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:ekorpkit.pipelines.pipe:No expressions specified
+WARNING:ekorpkit.pipelines.pipe:No expressions specified
+WARNING:ekorpkit.pipelines.pipe:No expressions specified
+WARNING:ekorpkit.pipelines.pipe:No expressions specified
+WARNING:ekorpkit.pipelines.pipe:No expressions specified
+WARNING:ekorpkit.pipelines.pipe:No expressions specified
+WARNING:ekorpkit.pipelines.pipe:No expressions specified
+WARNING:ekorpkit.pipelines.pipe:No expressions specified
+WARNING:ekorpkit.pipelines.pipe:No expressions specified
+WARNING:ekorpkit.pipelines.pipe:No expressions specified
+WARNING:ekorpkit.pipelines.pipe:No expressions specified
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># econ_data_q = econ_data.resample(&quot;Q&quot;).last().reset_index()</span>
+<span class="c1"># econ_data_q</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>date</th>
+      <th>value</th>
+      <th>series_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1946-03-31</td>
+      <td>NaN</td>
+      <td>CP</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1946-06-30</td>
+      <td>NaN</td>
+      <td>CP</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1946-09-30</td>
+      <td>NaN</td>
+      <td>CP</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1946-12-31</td>
+      <td>NaN</td>
+      <td>CP</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1947-03-31</td>
+      <td>22.000</td>
+      <td>CPIAUCSL</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>301</th>
+      <td>2021-06-30</td>
+      <td>270.955</td>
+      <td>CPIAUCSL</td>
+    </tr>
+    <tr>
+      <th>302</th>
+      <td>2021-09-30</td>
+      <td>274.214</td>
+      <td>CPIAUCSL</td>
+    </tr>
+    <tr>
+      <th>303</th>
+      <td>2021-12-31</td>
+      <td>280.126</td>
+      <td>CPIAUCSL</td>
+    </tr>
+    <tr>
+      <th>304</th>
+      <td>2022-03-31</td>
+      <td>287.708</td>
+      <td>CPIAUCSL</td>
+    </tr>
+    <tr>
+      <th>305</th>
+      <td>2022-06-30</td>
+      <td>291.474</td>
+      <td>CPIAUCSL</td>
+    </tr>
+  </tbody>
+</table>
+<p>306 rows × 3 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;pipeline/pivot&#39;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="s1">&#39;date&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;series_id&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+<span class="n">econ_data_pivot</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">econ_data</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+<span class="n">econ_data_pivot</span>
+<span class="c1"># eKonf.save_data(tone_data_lm, &#39;fomc_tone_data_lm.parquet&#39;, data_dir)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>series_id</th>
+      <th>date</th>
+      <th>COMPRNFB</th>
+      <th>CP</th>
+      <th>CPIAUCSL</th>
+      <th>FEDFUNDS</th>
+      <th>GDPC1</th>
+      <th>GDPDEF</th>
+      <th>GPDIC1</th>
+      <th>M2SL</th>
+      <th>OPHNFB</th>
+      <th>PCECC96</th>
+      <th>SP500</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1946-01-01</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1946-04-01</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1946-07-01</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1946-10-01</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1947-01-01</td>
+      <td>35.824</td>
+      <td>21.97</td>
+      <td>21.48</td>
+      <td>NaN</td>
+      <td>2034.45</td>
+      <td>11.952</td>
+      <td>218.091</td>
+      <td>NaN</td>
+      <td>23.213</td>
+      <td>1277.44</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>3450</th>
+      <td>2022-06-24</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>3911.74</td>
+    </tr>
+    <tr>
+      <th>3451</th>
+      <td>2022-06-27</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>3900.11</td>
+    </tr>
+    <tr>
+      <th>3452</th>
+      <td>2022-06-28</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>3821.55</td>
+    </tr>
+    <tr>
+      <th>3453</th>
+      <td>2022-06-29</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>3818.83</td>
+    </tr>
+    <tr>
+      <th>3454</th>
+      <td>2022-06-30</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>3785.38</td>
+    </tr>
+  </tbody>
+</table>
+<p>3455 rows × 12 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">econ_data_pivot</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;Q&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">last</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>series_id</th>
+      <th>COMPRNFB</th>
+      <th>CP</th>
+      <th>CPIAUCSL</th>
+      <th>FEDFUNDS</th>
+      <th>GDPC1</th>
+      <th>GDPDEF</th>
+      <th>GPDIC1</th>
+      <th>M2SL</th>
+      <th>OPHNFB</th>
+      <th>PCECC96</th>
+      <th>SP500</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1946-03-31</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1946-06-30</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1946-09-30</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1946-12-31</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1947-03-31</th>
+      <td>35.824</td>
+      <td>21.970</td>
+      <td>22.000</td>
+      <td>NaN</td>
+      <td>2034.450</td>
+      <td>11.952</td>
+      <td>218.091</td>
+      <td>NaN</td>
+      <td>23.213</td>
+      <td>1277.440</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2021-06-30</th>
+      <td>115.152</td>
+      <td>2690.388</td>
+      <td>270.955</td>
+      <td>0.08</td>
+      <td>19368.310</td>
+      <td>117.413</td>
+      <td>3506.014</td>
+      <td>20459.1</td>
+      <td>112.563</td>
+      <td>13665.610</td>
+      <td>4297.50</td>
+    </tr>
+    <tr>
+      <th>2021-09-30</th>
+      <td>115.035</td>
+      <td>2721.601</td>
+      <td>274.214</td>
+      <td>0.08</td>
+      <td>19478.893</td>
+      <td>119.115</td>
+      <td>3609.693</td>
+      <td>20991.4</td>
+      <td>111.441</td>
+      <td>13732.408</td>
+      <td>4307.54</td>
+    </tr>
+    <tr>
+      <th>2021-12-31</th>
+      <td>115.726</td>
+      <td>2700.326</td>
+      <td>280.126</td>
+      <td>0.08</td>
+      <td>19806.290</td>
+      <td>121.188</td>
+      <td>3903.047</td>
+      <td>21483.2</td>
+      <td>113.167</td>
+      <td>13818.356</td>
+      <td>4766.18</td>
+    </tr>
+    <tr>
+      <th>2022-03-31</th>
+      <td>114.427</td>
+      <td>2726.711</td>
+      <td>287.708</td>
+      <td>0.20</td>
+      <td>19727.918</td>
+      <td>123.615</td>
+      <td>3951.071</td>
+      <td>21809.0</td>
+      <td>111.029</td>
+      <td>13881.110</td>
+      <td>4530.41</td>
+    </tr>
+    <tr>
+      <th>2022-06-30</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>291.474</td>
+      <td>0.77</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>21754.2</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>3785.38</td>
+    </tr>
+  </tbody>
+</table>
+<p>306 rows × 11 columns</p>
+</div></div></div>
 </div>
 </div>
 </div>
