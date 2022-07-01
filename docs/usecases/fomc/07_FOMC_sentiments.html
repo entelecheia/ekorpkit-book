@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sentiment Analysis of FOMC Statements &#8212; eKorpkit Tutorials</title>
+    <title>Predicting Sentiments of FOMC Corpus &#8212; eKorpkit Tutorials</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
   <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -51,9 +51,11 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Bank of Korea" href="../bok/index.html" />
+    <link rel="next" title="EDA on Sentiment Data" href="08_FOMC_EDA_sentiments.html" />
     <link rel="prev" title="Checking Baseline with AutoML" href="06_FOMC_AutoML.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -487,7 +489,12 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     Sentiment Analysis of FOMC Statements
+     Predicting Sentiments of FOMC Corpus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="08_FOMC_EDA_sentiments.html">
+     EDA on Sentiment Data
     </a>
    </li>
   </ul>
@@ -719,28 +726,14 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#correlation">
-   Correlation
+  <a class="reference internal nav-link" href="#predict-sentiments-with-the-finbert">
+   Predict sentiments with the finbert
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#merge-with-fed-rate-data">
-     Merge with fed rate data
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#plot-the-sentiment-scores">
-   Plot the sentiment scores
+  <a class="reference internal nav-link" href="#predict-sentiments-with-the-t5">
+   Predict sentiments with the T5
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#plot-the-results-and-compare-to-the-economical-uncertainty-systemic-risk-periods">
-     Plot the results and compare to the economical uncertainty / systemic risk periods
-    </a>
-   </li>
-  </ul>
  </li>
 </ul>
 
@@ -752,7 +745,7 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Sentiment Analysis of FOMC Statements</h1>
+                <h1>Predicting Sentiments of FOMC Corpus</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -790,28 +783,14 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#correlation">
-   Correlation
+  <a class="reference internal nav-link" href="#predict-sentiments-with-the-finbert">
+   Predict sentiments with the finbert
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#merge-with-fed-rate-data">
-     Merge with fed rate data
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#plot-the-sentiment-scores">
-   Plot the sentiment scores
+  <a class="reference internal nav-link" href="#predict-sentiments-with-the-t5">
+   Predict sentiments with the T5
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#plot-the-results-and-compare-to-the-economical-uncertainty-systemic-risk-periods">
-     Plot the results and compare to the economical uncertainty / systemic risk periods
-    </a>
-   </li>
-  </ul>
  </li>
 </ul>
 
@@ -822,16 +801,16 @@ const thebe_selector_output = ".output, .cell_output"
             
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="sentiment-analysis-of-fomc-statements">
-<h1>Sentiment Analysis of FOMC Statements<a class="headerlink" href="#sentiment-analysis-of-fomc-statements" title="Permalink to this headline">¶</a></h1>
-<p>Analyse statement by Loughran and McDonald dictionary</p>
+  <div class="tex2jax_ignore mathjax_ignore section" id="predicting-sentiments-of-fomc-corpus">
+<h1>Predicting Sentiments of FOMC Corpus<a class="headerlink" href="#predicting-sentiments-of-fomc-corpus" title="Permalink to this headline">¶</a></h1>
+<p>Analyse statement by Loughran and McDonald dictionary, finbert, and T5 model</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_format=&#39;retina&#39;
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
 
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;version:&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is notebook?&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_notebook</span><span class="p">())</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is colab?&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">())</span>
@@ -841,11 +820,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:IPython version: (6, 9, 0), client: jupyter_client
-INFO:ekorpkit.base:Google Colab not detected.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.33+24.gd2d9e99.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.33+27.g5c22afc.dirty
 is notebook? True
 is colab? False
 evironment varialbles:
@@ -884,11 +859,6 @@ evironment varialbles:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;fomc_sents.parquet&#39;]
-INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_sents.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sents.parquet
-</pre></div>
-</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -2212,11 +2182,6 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_sentiment_data_recen
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;fomc_sentiment_data_recent.parquet&#39;]
-INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_sentiment_data_recent.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sentiment_data_recent.parquet
-</pre></div>
-</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -2579,11 +2544,6 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_sentiment_data_next.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;fomc_sentiment_data_next.parquet&#39;]
-INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_sentiment_data_next.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sentiment_data_next.parquet
-</pre></div>
-</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -3347,7 +3307,7 @@ INFO:ekorpkit.base:instantiating ekorpkit.models.sentiment.base.BaseSentimentAna
 INFO:ekorpkit.pipelines.pipe:filename not specified
 INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function general_function at 0x7f0abf86cc10&gt;)
 INFO:ekorpkit.pipelines.pipe:processing column: content_type
-INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to replace: 0:00:00.003589
+INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to replace: 0:00:00.003082
 INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function pivot at 0x7f0abf86c1f0&gt;)
 INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function save_dataframe at 0x7f0abf7043a0&gt;)
 INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_sentiment_data_next.parquet
@@ -3689,33 +3649,1262 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_sentiment_data_next.
 </div></div></div>
 </div>
 </div>
-<div class="section" id="correlation">
-<h2>Correlation<a class="headerlink" href="#correlation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="predict-sentiments-with-the-finbert">
+<h2>Predict sentiments with the finbert<a class="headerlink" href="#predict-sentiments-with-the-finbert" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;io/fetcher/fomc&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
-<span class="n">fomc</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;dataset&#39;</span><span class="p">)</span>
+<span class="n">ds_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;financial_phrasebank&#39;</span>
+<span class="n">ds_cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/entelecheia/ekorpkit-book/raw/main/data/financial_phrasebank.zip&#39;</span>
+<span class="n">ds_cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">ds_cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cached_path</span>
+<span class="n">ds_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">overrides</span><span class="o">=</span><span class="p">[</span>
+    <span class="s1">&#39;+model/transformer=classification&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;+model/transformer/pretrained=finbert&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;model/transformer=classification&#39;</span><span class="p">,</span> <span class="n">overrides</span><span class="p">)</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;fomc_finbert&#39;</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">ds_cfg</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">num_train_epochs</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_seq_length</span> <span class="o">=</span> <span class="mi">256</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">train_batch_size</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">eval_batch_size</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">_method_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;eval&#39;</span><span class="p">]</span>
+<span class="c1"># model_cfg._method_ = [&#39;train&#39;, &#39;eval&#39;]</span>
+<span class="n">finbert_model</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">model_cfg</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.fetch.fomc.base:Initializing fomc_base
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "3e7f3be465f449c7a3387b3a8411c554", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "064c4e197d7447cb949938bbaefa3e85", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy:  0.8960176991150443
+Precison:  0.8957698961367982
+Recall:  0.8960176991150443
+F1 Score:  0.8958088377661515
+Model Report: 
+___________________________________________________
+              precision    recall  f1-score   support
+
+    negative       0.81      0.77      0.79        61
+     neutral       0.96      0.96      0.96       277
+    positive       0.79      0.81      0.80       114
+
+    accuracy                           0.90       452
+   macro avg       0.85      0.85      0.85       452
+weighted avg       0.90      0.90      0.90       452
 </pre></div>
 </div>
+<img alt="../../../_images/07_FOMC_sentiments_23_3.png" src="../../../_images/07_FOMC_sentiments_23_3.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fomc</span><span class="o">.</span><span class="n">load_calendar</span><span class="p">(</span><span class="n">from_year</span><span class="o">=</span><span class="mi">1982</span><span class="p">,</span> <span class="n">force_download</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_cfg</span><span class="o">.</span><span class="n">_method_</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;pipeline&#39;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;fomc_sent_sentiments&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;fomc_sents.parquet&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">_pipeline_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;predict&#39;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model_cfg</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">_finbert.parquet&#39;</span>
+<span class="n">fomc_sent_sentiments_finbert</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">fomc_sent_sentiments_finbert</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.fetch.fomc.base:Loading calendar from cache...
-INFO:ekorpkit.io.file:Processing [1] files from [&#39;../data/fomc/fomc_calendar.parquet&#39;]
-INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_calendar.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_calendar.parquet
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "1dd484982db14ccfb46faac97c75c2ed", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "75ff9369bab94e20871f62aeeb8ead1d", "version_major": 2, "version_minor": 0}
+</script><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>text</th>
+      <th>split</th>
+      <th>timestamp</th>
+      <th>content_type</th>
+      <th>date</th>
+      <th>speaker</th>
+      <th>title</th>
+      <th>decision</th>
+      <th>rate</th>
+      <th>...</th>
+      <th>recent_rate</th>
+      <th>next_meeting</th>
+      <th>next_decision</th>
+      <th>next_rate</th>
+      <th>text_num_words</th>
+      <th>section_id</th>
+      <th>sent_id</th>
+      <th>pred_labels</th>
+      <th>raw_preds</th>
+      <th>pred_probs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>The Secretary reported that advices of the ele...</td>
+      <td>train</td>
+      <td>1993-02-03</td>
+      <td>fomc_minutes</td>
+      <td>1993-02-03</td>
+      <td>Alan Greenspan</td>
+      <td>FOMC Meeting Minutes</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>...</td>
+      <td>3.0</td>
+      <td>1993-02-18</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>47</td>
+      <td>29</td>
+      <td>0</td>
+      <td>neutral</td>
+      <td>[2.2915966510772705, -0.9586986899375916, -2.4...</td>
+      <td>0.955035</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>By unanimous vote, the Committee elected the f...</td>
+      <td>train</td>
+      <td>1993-02-03</td>
+      <td>fomc_minutes</td>
+      <td>1993-02-03</td>
+      <td>Alan Greenspan</td>
+      <td>FOMC Meeting Minutes</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>...</td>
+      <td>3.0</td>
+      <td>1993-02-18</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>73</td>
+      <td>35</td>
+      <td>0</td>
+      <td>neutral</td>
+      <td>[1.692587971687317, -0.2049560397863388, -2.53...</td>
+      <td>0.858684</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0</td>
+      <td>By unanimous vote, William J. McDonough, Marga...</td>
+      <td>train</td>
+      <td>1993-02-03</td>
+      <td>fomc_minutes</td>
+      <td>1993-02-03</td>
+      <td>Alan Greenspan</td>
+      <td>FOMC Meeting Minutes</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>...</td>
+      <td>3.0</td>
+      <td>1993-02-18</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>74</td>
+      <td>37</td>
+      <td>0</td>
+      <td>neutral</td>
+      <td>[1.8892569541931152, -0.3972317576408386, -2.6...</td>
+      <td>0.898655</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>On January 15, 1993, the continuing rules, reg...</td>
+      <td>train</td>
+      <td>1993-02-03</td>
+      <td>fomc_minutes</td>
+      <td>1993-02-03</td>
+      <td>Alan Greenspan</td>
+      <td>FOMC Meeting Minutes</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>...</td>
+      <td>3.0</td>
+      <td>1993-02-18</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>59</td>
+      <td>39</td>
+      <td>0</td>
+      <td>neutral</td>
+      <td>[2.335063934326172, -1.0927255153656006, -2.45...</td>
+      <td>0.960805</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>Members were asked to indicate if they wished ...</td>
+      <td>train</td>
+      <td>1993-02-03</td>
+      <td>fomc_minutes</td>
+      <td>1993-02-03</td>
+      <td>Alan Greenspan</td>
+      <td>FOMC Meeting Minutes</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>...</td>
+      <td>3.0</td>
+      <td>1993-02-18</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>25</td>
+      <td>39</td>
+      <td>1</td>
+      <td>neutral</td>
+      <td>[2.3842966556549072, -1.327033519744873, -2.36...</td>
+      <td>0.967973</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 22 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fomc_sent_sentiments_finbert</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;fomc_sent_sentiments_finbert.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+<span class="n">fomc_sent_sentiments_finbert</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>text</th>
+      <th>split</th>
+      <th>timestamp</th>
+      <th>content_type</th>
+      <th>date</th>
+      <th>speaker</th>
+      <th>title</th>
+      <th>decision</th>
+      <th>rate</th>
+      <th>...</th>
+      <th>recent_rate</th>
+      <th>next_meeting</th>
+      <th>next_decision</th>
+      <th>next_rate</th>
+      <th>text_num_words</th>
+      <th>section_id</th>
+      <th>sent_id</th>
+      <th>pred_labels</th>
+      <th>raw_preds</th>
+      <th>pred_probs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>The Secretary reported that advices of the ele...</td>
+      <td>train</td>
+      <td>1993-02-03</td>
+      <td>fomc_minutes</td>
+      <td>1993-02-03</td>
+      <td>Alan Greenspan</td>
+      <td>FOMC Meeting Minutes</td>
+      <td>0.0</td>
+      <td>3.00</td>
+      <td>...</td>
+      <td>3.00</td>
+      <td>1993-02-18</td>
+      <td>0.0</td>
+      <td>3.00</td>
+      <td>47</td>
+      <td>29</td>
+      <td>0</td>
+      <td>neutral</td>
+      <td>[2.2915966510772705, -0.9586986899375916, -2.4...</td>
+      <td>0.955035</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>By unanimous vote, the Committee elected the f...</td>
+      <td>train</td>
+      <td>1993-02-03</td>
+      <td>fomc_minutes</td>
+      <td>1993-02-03</td>
+      <td>Alan Greenspan</td>
+      <td>FOMC Meeting Minutes</td>
+      <td>0.0</td>
+      <td>3.00</td>
+      <td>...</td>
+      <td>3.00</td>
+      <td>1993-02-18</td>
+      <td>0.0</td>
+      <td>3.00</td>
+      <td>73</td>
+      <td>35</td>
+      <td>0</td>
+      <td>neutral</td>
+      <td>[1.692587971687317, -0.2049560397863388, -2.53...</td>
+      <td>0.858684</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0</td>
+      <td>By unanimous vote, William J. McDonough, Marga...</td>
+      <td>train</td>
+      <td>1993-02-03</td>
+      <td>fomc_minutes</td>
+      <td>1993-02-03</td>
+      <td>Alan Greenspan</td>
+      <td>FOMC Meeting Minutes</td>
+      <td>0.0</td>
+      <td>3.00</td>
+      <td>...</td>
+      <td>3.00</td>
+      <td>1993-02-18</td>
+      <td>0.0</td>
+      <td>3.00</td>
+      <td>74</td>
+      <td>37</td>
+      <td>0</td>
+      <td>neutral</td>
+      <td>[1.8892569541931152, -0.3972317576408386, -2.6...</td>
+      <td>0.898655</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>On January 15, 1993, the continuing rules, reg...</td>
+      <td>train</td>
+      <td>1993-02-03</td>
+      <td>fomc_minutes</td>
+      <td>1993-02-03</td>
+      <td>Alan Greenspan</td>
+      <td>FOMC Meeting Minutes</td>
+      <td>0.0</td>
+      <td>3.00</td>
+      <td>...</td>
+      <td>3.00</td>
+      <td>1993-02-18</td>
+      <td>0.0</td>
+      <td>3.00</td>
+      <td>59</td>
+      <td>39</td>
+      <td>0</td>
+      <td>neutral</td>
+      <td>[2.335063934326172, -1.0927255153656006, -2.45...</td>
+      <td>0.960805</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>Members were asked to indicate if they wished ...</td>
+      <td>train</td>
+      <td>1993-02-03</td>
+      <td>fomc_minutes</td>
+      <td>1993-02-03</td>
+      <td>Alan Greenspan</td>
+      <td>FOMC Meeting Minutes</td>
+      <td>0.0</td>
+      <td>3.00</td>
+      <td>...</td>
+      <td>3.00</td>
+      <td>1993-02-18</td>
+      <td>0.0</td>
+      <td>3.00</td>
+      <td>25</td>
+      <td>39</td>
+      <td>1</td>
+      <td>neutral</td>
+      <td>[2.3842966556549072, -1.327033519744873, -2.36...</td>
+      <td>0.967973</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>653463</th>
+      <td>2854</td>
+      <td>It will not have the word “somewhat” on line 3.</td>
+      <td>train</td>
+      <td>2014-12-17</td>
+      <td>fomc_meeting_script</td>
+      <td>2014-12-17</td>
+      <td>MR. LUECKE</td>
+      <td>FOMC Meeting Transcript</td>
+      <td>0.0</td>
+      <td>0.25</td>
+      <td>...</td>
+      <td>0.25</td>
+      <td>2015-01-28</td>
+      <td>0.0</td>
+      <td>0.25</td>
+      <td>10</td>
+      <td>287</td>
+      <td>2</td>
+      <td>neutral</td>
+      <td>[2.3733553886413574, -1.3893874883651733, -2.2...</td>
+      <td>0.967620</td>
+    </tr>
+    <tr>
+      <th>653464</th>
+      <td>2854</td>
+      <td>Chair Yellen      Yes Vice Chairman Dudley    ...</td>
+      <td>train</td>
+      <td>2014-12-17</td>
+      <td>fomc_meeting_script</td>
+      <td>2014-12-17</td>
+      <td>MR. LUECKE</td>
+      <td>FOMC Meeting Transcript</td>
+      <td>0.0</td>
+      <td>0.25</td>
+      <td>...</td>
+      <td>0.25</td>
+      <td>2015-01-28</td>
+      <td>0.0</td>
+      <td>0.25</td>
+      <td>31</td>
+      <td>287</td>
+      <td>4</td>
+      <td>neutral</td>
+      <td>[2.224238872528076, -0.893900990486145, -2.421...</td>
+      <td>0.948905</td>
+    </tr>
+    <tr>
+      <th>653465</th>
+      <td>2854</td>
+      <td>And let me confirm that the next meeting will ...</td>
+      <td>train</td>
+      <td>2014-12-17</td>
+      <td>fomc_meeting_script</td>
+      <td>2014-12-17</td>
+      <td>CHAIR YELLEN</td>
+      <td>FOMC Meeting Transcript</td>
+      <td>0.0</td>
+      <td>0.25</td>
+      <td>...</td>
+      <td>0.25</td>
+      <td>2015-01-28</td>
+      <td>0.0</td>
+      <td>0.25</td>
+      <td>19</td>
+      <td>288</td>
+      <td>3</td>
+      <td>neutral</td>
+      <td>[2.349479913711548, -1.391977071762085, -2.298...</td>
+      <td>0.967770</td>
+    </tr>
+    <tr>
+      <th>653466</th>
+      <td>2854</td>
+      <td>I believe box lunches are now available for pe...</td>
+      <td>train</td>
+      <td>2014-12-17</td>
+      <td>fomc_meeting_script</td>
+      <td>2014-12-17</td>
+      <td>CHAIR YELLEN</td>
+      <td>FOMC Meeting Transcript</td>
+      <td>0.0</td>
+      <td>0.25</td>
+      <td>...</td>
+      <td>0.25</td>
+      <td>2015-01-28</td>
+      <td>0.0</td>
+      <td>0.25</td>
+      <td>33</td>
+      <td>288</td>
+      <td>4</td>
+      <td>neutral</td>
+      <td>[2.311434030532837, -1.1415460109710693, -2.37...</td>
+      <td>0.960746</td>
+    </tr>
+    <tr>
+      <th>653467</th>
+      <td>2854</td>
+      <td>I will do my best, and I will consider at the ...</td>
+      <td>train</td>
+      <td>2014-12-17</td>
+      <td>fomc_meeting_script</td>
+      <td>2014-12-17</td>
+      <td>CHAIR YELLEN</td>
+      <td>FOMC Meeting Transcript</td>
+      <td>0.0</td>
+      <td>0.25</td>
+      <td>...</td>
+      <td>0.25</td>
+      <td>2015-01-28</td>
+      <td>0.0</td>
+      <td>0.25</td>
+      <td>18</td>
+      <td>288</td>
+      <td>5</td>
+      <td>neutral</td>
+      <td>[2.3932976722717285, -1.2607381343841553, -2.4...</td>
+      <td>0.967106</td>
+    </tr>
+  </tbody>
+</table>
+<p>653468 rows × 22 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;pipeline&#39;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">_pipeline_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;aggregate_scores&#39;</span><span class="p">,</span> <span class="s1">&#39;replace&#39;</span><span class="p">,</span> <span class="s1">&#39;pivot&#39;</span><span class="p">,</span> <span class="s1">&#39;save_dataframe&#39;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;fomc_sent_sentiments_finbert.parquet&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">aggregate_scores</span><span class="o">.</span><span class="n">groupby</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;content_type&#39;</span><span class="p">,</span> <span class="s1">&#39;next_meeting&#39;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">aggregate_scores</span><span class="o">.</span><span class="n">_method_</span> <span class="o">=</span> <span class="s1">&#39;classification&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">apply_to</span> <span class="o">=</span> <span class="s1">&#39;content_type&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">to_replace</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fomc_&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">regex</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">pivot</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="s1">&#39;next_meeting&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">pivot</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;content_type&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">pivot</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;polarity_mean&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_diffusion&#39;</span><span class="p">,</span> <span class="s1">&#39;num_examples&#39;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="s1">&#39;fomc_sentiment_finbert_next.parquet&#39;</span>
+<span class="n">finbert_next</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">finbert_next</span> <span class="o">=</span> <span class="n">finbert_next</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;next_meeting&#39;</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">finbert_next</span><span class="p">,</span> <span class="s1">&#39;fomc_sentiment_finbert_next.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+<span class="n">finbert_next</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>polarity_mean_beigebook</th>
+      <th>polarity_mean_meeting_script</th>
+      <th>polarity_mean_minutes</th>
+      <th>polarity_mean_press_conf</th>
+      <th>polarity_mean_speech</th>
+      <th>polarity_mean_statement</th>
+      <th>polarity_mean_testimony</th>
+      <th>polarity_diffusion_beigebook</th>
+      <th>polarity_diffusion_meeting_script</th>
+      <th>polarity_diffusion_minutes</th>
+      <th>...</th>
+      <th>polarity_diffusion_speech</th>
+      <th>polarity_diffusion_statement</th>
+      <th>polarity_diffusion_testimony</th>
+      <th>num_examples_beigebook</th>
+      <th>num_examples_meeting_script</th>
+      <th>num_examples_minutes</th>
+      <th>num_examples_press_conf</th>
+      <th>num_examples_speech</th>
+      <th>num_examples_statement</th>
+      <th>num_examples_testimony</th>
+    </tr>
+    <tr>
+      <th>next_meeting</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1990-03-27</th>
+      <td>NaN</td>
+      <td>0.335507</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.443878</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>784.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1990-04-11</th>
+      <td>NaN</td>
+      <td>0.264770</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.350093</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1074.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1990-07-03</th>
+      <td>NaN</td>
+      <td>0.377872</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.501845</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>542.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1990-08-21</th>
+      <td>NaN</td>
+      <td>0.328752</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.434837</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>798.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1990-09-07</th>
+      <td>NaN</td>
+      <td>0.377492</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.507463</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>670.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2021-07-28</th>
+      <td>0.568735</td>
+      <td>NaN</td>
+      <td>0.484200</td>
+      <td>0.291998</td>
+      <td>0.189272</td>
+      <td>0.376550</td>
+      <td>0.464566</td>
+      <td>0.752033</td>
+      <td>NaN</td>
+      <td>0.640138</td>
+      <td>...</td>
+      <td>0.257384</td>
+      <td>0.461538</td>
+      <td>0.640449</td>
+      <td>738.0</td>
+      <td>NaN</td>
+      <td>289.0</td>
+      <td>380.0</td>
+      <td>237.0</td>
+      <td>13.0</td>
+      <td>89.0</td>
+    </tr>
+    <tr>
+      <th>2021-09-22</th>
+      <td>0.567048</td>
+      <td>NaN</td>
+      <td>0.465281</td>
+      <td>0.278891</td>
+      <td>0.294276</td>
+      <td>0.429236</td>
+      <td>NaN</td>
+      <td>0.743386</td>
+      <td>NaN</td>
+      <td>0.611842</td>
+      <td>...</td>
+      <td>0.392936</td>
+      <td>0.538462</td>
+      <td>NaN</td>
+      <td>756.0</td>
+      <td>NaN</td>
+      <td>304.0</td>
+      <td>344.0</td>
+      <td>453.0</td>
+      <td>13.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2021-11-03</th>
+      <td>0.496663</td>
+      <td>NaN</td>
+      <td>0.499861</td>
+      <td>0.222723</td>
+      <td>0.339912</td>
+      <td>0.448015</td>
+      <td>0.321341</td>
+      <td>0.653669</td>
+      <td>NaN</td>
+      <td>0.651163</td>
+      <td>...</td>
+      <td>0.449905</td>
+      <td>0.571429</td>
+      <td>0.428571</td>
+      <td>16259.0</td>
+      <td>NaN</td>
+      <td>258.0</td>
+      <td>341.0</td>
+      <td>1058.0</td>
+      <td>14.0</td>
+      <td>42.0</td>
+    </tr>
+    <tr>
+      <th>2021-12-15</th>
+      <td>0.503438</td>
+      <td>NaN</td>
+      <td>0.529321</td>
+      <td>0.251157</td>
+      <td>0.283788</td>
+      <td>0.495847</td>
+      <td>0.466916</td>
+      <td>0.662495</td>
+      <td>NaN</td>
+      <td>0.706383</td>
+      <td>...</td>
+      <td>0.378676</td>
+      <td>0.647059</td>
+      <td>0.600000</td>
+      <td>14862.0</td>
+      <td>NaN</td>
+      <td>235.0</td>
+      <td>336.0</td>
+      <td>816.0</td>
+      <td>17.0</td>
+      <td>20.0</td>
+    </tr>
+    <tr>
+      <th>2022-01-26</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.509806</td>
+      <td>0.280516</td>
+      <td>0.408242</td>
+      <td>0.412947</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.675000</td>
+      <td>...</td>
+      <td>0.547619</td>
+      <td>0.555556</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>280.0</td>
+      <td>286.0</td>
+      <td>126.0</td>
+      <td>18.0</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>286 rows × 21 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">finbert_next</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;fomc_sentiment_finbert_next.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;polarity_mean_minutes&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_mean_press_conf&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_mean_speech&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_mean_statement&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;polarity_diffusion_minutes&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_diffusion_press_conf&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_diffusion_speech&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_diffusion_statement&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">finbert_tone_next</span> <span class="o">=</span>  <span class="n">finbert_next</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">finbert_tone_next</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">finbert_tone_next</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;polarity&#39;</span><span class="p">,</span> <span class="s1">&#39;finbert&#39;</span><span class="p">)</span>
+<span class="n">finbert_tone_next</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>finbert_mean_minutes</th>
+      <th>finbert_mean_press_conf</th>
+      <th>finbert_mean_speech</th>
+      <th>finbert_mean_statement</th>
+      <th>finbert_diffusion_minutes</th>
+      <th>finbert_diffusion_press_conf</th>
+      <th>finbert_diffusion_speech</th>
+      <th>finbert_diffusion_statement</th>
+    </tr>
+    <tr>
+      <th>next_meeting</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1990-03-27</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1990-04-11</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1990-07-03</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1990-08-21</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1990-09-07</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2021-07-28</th>
+      <td>0.484200</td>
+      <td>0.291998</td>
+      <td>0.189272</td>
+      <td>0.376550</td>
+      <td>0.640138</td>
+      <td>0.386842</td>
+      <td>0.257384</td>
+      <td>0.461538</td>
+    </tr>
+    <tr>
+      <th>2021-09-22</th>
+      <td>0.465281</td>
+      <td>0.278891</td>
+      <td>0.294276</td>
+      <td>0.429236</td>
+      <td>0.611842</td>
+      <td>0.369186</td>
+      <td>0.392936</td>
+      <td>0.538462</td>
+    </tr>
+    <tr>
+      <th>2021-11-03</th>
+      <td>0.499861</td>
+      <td>0.222723</td>
+      <td>0.339912</td>
+      <td>0.448015</td>
+      <td>0.651163</td>
+      <td>0.299120</td>
+      <td>0.449905</td>
+      <td>0.571429</td>
+    </tr>
+    <tr>
+      <th>2021-12-15</th>
+      <td>0.529321</td>
+      <td>0.251157</td>
+      <td>0.283788</td>
+      <td>0.495847</td>
+      <td>0.706383</td>
+      <td>0.333333</td>
+      <td>0.378676</td>
+      <td>0.647059</td>
+    </tr>
+    <tr>
+      <th>2022-01-26</th>
+      <td>0.509806</td>
+      <td>0.280516</td>
+      <td>0.408242</td>
+      <td>0.412947</td>
+      <td>0.675000</td>
+      <td>0.377622</td>
+      <td>0.547619</td>
+      <td>0.555556</td>
+    </tr>
+  </tbody>
+</table>
+<p>286 rows × 8 columns</p>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="predict-sentiments-with-the-t5">
+<h2>Predict sentiments with the T5<a class="headerlink" href="#predict-sentiments-with-the-t5" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;dataset&#39;</span><span class="p">)</span>
+<span class="n">ds_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;financial_phrasebank&#39;</span>
+<span class="n">ds_cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/entelecheia/ekorpkit-book/raw/main/data/financial_phrasebank.zip&#39;</span>
+<span class="n">ds_cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">ds_cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cached_path</span>
+<span class="n">ds_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">overrides</span><span class="o">=</span><span class="p">[</span>
+    <span class="s1">&#39;+model/transformer=t5_classification_with_simple&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;+model/transformer/pretrained=t5-base&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;model/transformer=t5_classification_with_simple&#39;</span><span class="p">,</span> <span class="n">overrides</span><span class="p">)</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;fomc_t5&#39;</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">ds_cfg</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">num_train_epochs</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_seq_length</span> <span class="o">=</span> <span class="mi">256</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">train_batch_size</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">eval_batch_size</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">_method_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;eval&#39;</span><span class="p">]</span>
+<span class="c1"># model_cfg._method_ = [&#39;eval&#39;]</span>
+<span class="n">t5_model</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">model_cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/lib/python3.8/site-packages/transformers/models/t5/tokenization_t5.py:164: FutureWarning: This tokenizer was incorrectly instantiated with a model max length of 512 which will be corrected in Transformers v5.
+For now, this behavior is kept to avoid breaking backwards compatibility when padding/encoding with `truncation is True`.
+- Be aware that you SHOULD NOT rely on t5-base automatically truncating your input to 512 when padding/encoding.
+- If you want to encode/pad to sequences longer than 512 you can either instantiate this tokenizer with `model_max_length` or pass `max_length` when encoding/padding.
+- To avoid this warning, please instantiate this tokenizer with `model_max_length` set to your preferred value.
+  warnings.warn(
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "424c711520fb441eb0aee942cdeaaf77", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/lib/python3.8/site-packages/transformers/tokenization_utils_base.py:3557: FutureWarning: 
+`prepare_seq2seq_batch` is deprecated and will be removed in version 5 of HuggingFace Transformers. Use the regular
+`__call__` method to prepare your inputs and the tokenizer under the `as_target_tokenizer` context manager to prepare
+your targets.
+
+Here is a short example:
+
+model_inputs = tokenizer(src_texts, ...)
+with tokenizer.as_target_tokenizer():
+    labels = tokenizer(tgt_texts, ...)
+model_inputs[&quot;labels&quot;] = labels[&quot;input_ids&quot;]
+
+See the documentation of your specific tokenizer for more details on the specific arguments to the tokenizer of choice.
+For a more complete example, see the implementation of `prepare_seq2seq_batch`.
+
+  warnings.warn(formatted_warning, FutureWarning)
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "065857e5d009483e924682ecfb50fe13", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Blue">wandb</span>: Currently logged in as: <span class=" -Color -Color-Yellow">entelecheia</span>. Use <span class=" -Color -Color-Bold">`wandb login --relogin`</span> to force relogin
+</pre></div>
+</div>
+<div class="output text_html">wandb version 0.12.20 is available!  To upgrade, please run:
+ $ pip install wandb --upgrade</div><div class="output text_html">Tracking run with wandb version 0.12.19</div><div class="output text_html">Run data is saved locally in <code>/workspace/projects/ekorpkit-book/outputs/fomc_t5/t5-base/wandb/run-20220701_020155-3fyvrvgf</code></div><div class="output text_html">Syncing run <strong><a href="https://wandb.ai/entelecheia/ekorpkit-book-fomc_t5/runs/3fyvrvgf" target="_blank">wandering-moon-1</a></strong> to <a href="https://wandb.ai/entelecheia/ekorpkit-book-fomc_t5" target="_blank">Weights & Biases</a> (<a href="https://wandb.me/run" target="_blank">docs</a>)<br/></div><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "4c7725f3f17c4bd8ab5ae5ca28621841", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "264e5fe84d3d4991825552e2b2c3b212", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/lib/python3.8/site-packages/transformers/tokenization_utils_base.py:3557: FutureWarning: 
+`prepare_seq2seq_batch` is deprecated and will be removed in version 5 of HuggingFace Transformers. Use the regular
+`__call__` method to prepare your inputs and the tokenizer under the `as_target_tokenizer` context manager to prepare
+your targets.
+
+Here is a short example:
+
+model_inputs = tokenizer(src_texts, ...)
+with tokenizer.as_target_tokenizer():
+    labels = tokenizer(tgt_texts, ...)
+model_inputs[&quot;labels&quot;] = labels[&quot;input_ids&quot;]
+
+See the documentation of your specific tokenizer for more details on the specific arguments to the tokenizer of choice.
+For a more complete example, see the implementation of `prepare_seq2seq_batch`.
+
+  warnings.warn(formatted_warning, FutureWarning)
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "50fc145a70a04c049e5ccd6f4e6cf0b0", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "6b03561dc95c44b5bc6d915fe10b767b", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "2109ab3dbcb24cbc9d5101bb5304a189", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "41667c41eb044ff1b90bcb48518bf984", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;eval_loss&#39;: 0.06258307859733529}
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "eb7386edda1f4544bb80d8f55a42d45c", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy:  0.9491150442477876
+Precison:  0.9495910765330818
+Recall:  0.9491150442477876
+F1 Score:  0.9474806981643329
+Model Report: 
+___________________________________________________
+              precision    recall  f1-score   support
+
+    negative       0.96      0.75      0.84        61
+     neutral       0.97      1.00      0.98       277
+    positive       0.90      0.94      0.92       114
+
+    accuracy                           0.95       452
+   macro avg       0.94      0.90      0.91       452
+weighted avg       0.95      0.95      0.95       452
+</pre></div>
+</div>
+<img alt="../../../_images/07_FOMC_sentiments_29_19.png" src="../../../_images/07_FOMC_sentiments_29_19.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_cfg</span><span class="o">.</span><span class="n">_method_</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;pipeline&#39;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;fomc_sent_sentiments&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;fomc_sents.parquet&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">_pipeline_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;predict&#39;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model_cfg</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">_t5.parquet&#39;</span>
+<span class="n">fomc_sent_sentiments_t5</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">fomc_sent_sentiments_t5</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "8e778d63986e4e3f97ac43b2cd397a55", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/lib/python3.8/site-packages/transformers/tokenization_utils_base.py:3557: FutureWarning: 
+`prepare_seq2seq_batch` is deprecated and will be removed in version 5 of HuggingFace Transformers. Use the regular
+`__call__` method to prepare your inputs and the tokenizer under the `as_target_tokenizer` context manager to prepare
+your targets.
+
+Here is a short example:
+
+model_inputs = tokenizer(src_texts, ...)
+with tokenizer.as_target_tokenizer():
+    labels = tokenizer(tgt_texts, ...)
+model_inputs[&quot;labels&quot;] = labels[&quot;input_ids&quot;]
+
+See the documentation of your specific tokenizer for more details on the specific arguments to the tokenizer of choice.
+For a more complete example, see the implementation of `prepare_seq2seq_batch`.
+
+  warnings.warn(formatted_warning, FutureWarning)
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -3736,17 +4925,220 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_calendar.parquet
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>unscheduled</th>
-      <th>forecast</th>
-      <th>confcall</th>
+      <th>id</th>
+      <th>text</th>
+      <th>split</th>
+      <th>timestamp</th>
+      <th>content_type</th>
+      <th>date</th>
       <th>speaker</th>
+      <th>title</th>
+      <th>decision</th>
       <th>rate</th>
-      <th>rate_change</th>
-      <th>rate_decision</th>
-      <th>rate_changed</th>
+      <th>...</th>
+      <th>recent_decision</th>
+      <th>recent_rate</th>
+      <th>next_meeting</th>
+      <th>next_decision</th>
+      <th>next_rate</th>
+      <th>text_num_words</th>
+      <th>section_id</th>
+      <th>sent_id</th>
+      <th>prefix</th>
+      <th>pred_labels</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>The Secretary reported that advices of the ele...</td>
+      <td>train</td>
+      <td>1993-02-03</td>
+      <td>fomc_minutes</td>
+      <td>1993-02-03</td>
+      <td>Alan Greenspan</td>
+      <td>FOMC Meeting Minutes</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>1993-02-18</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>47</td>
+      <td>29</td>
+      <td>0</td>
+      <td>classification</td>
+      <td>neutral</td>
     </tr>
     <tr>
-      <th>date</th>
+      <th>1</th>
+      <td>0</td>
+      <td>By unanimous vote, the Committee elected the f...</td>
+      <td>train</td>
+      <td>1993-02-03</td>
+      <td>fomc_minutes</td>
+      <td>1993-02-03</td>
+      <td>Alan Greenspan</td>
+      <td>FOMC Meeting Minutes</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>1993-02-18</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>73</td>
+      <td>35</td>
+      <td>0</td>
+      <td>classification</td>
+      <td>neutral</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0</td>
+      <td>By unanimous vote, William J. McDonough, Marga...</td>
+      <td>train</td>
+      <td>1993-02-03</td>
+      <td>fomc_minutes</td>
+      <td>1993-02-03</td>
+      <td>Alan Greenspan</td>
+      <td>FOMC Meeting Minutes</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>1993-02-18</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>74</td>
+      <td>37</td>
+      <td>0</td>
+      <td>classification</td>
+      <td>neutral</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>On January 15, 1993, the continuing rules, reg...</td>
+      <td>train</td>
+      <td>1993-02-03</td>
+      <td>fomc_minutes</td>
+      <td>1993-02-03</td>
+      <td>Alan Greenspan</td>
+      <td>FOMC Meeting Minutes</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>1993-02-18</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>59</td>
+      <td>39</td>
+      <td>0</td>
+      <td>classification</td>
+      <td>neutral</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>Members were asked to indicate if they wished ...</td>
+      <td>train</td>
+      <td>1993-02-03</td>
+      <td>fomc_minutes</td>
+      <td>1993-02-03</td>
+      <td>Alan Greenspan</td>
+      <td>FOMC Meeting Minutes</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>1993-02-18</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>25</td>
+      <td>39</td>
+      <td>1</td>
+      <td>classification</td>
+      <td>neutral</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 21 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;pipeline&#39;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">_pipeline_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;aggregate_scores&#39;</span><span class="p">,</span> <span class="s1">&#39;replace&#39;</span><span class="p">,</span> <span class="s1">&#39;pivot&#39;</span><span class="p">,</span> <span class="s1">&#39;save_dataframe&#39;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;fomc_sent_sentiments_t5.parquet&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">aggregate_scores</span><span class="o">.</span><span class="n">groupby</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;content_type&#39;</span><span class="p">,</span> <span class="s1">&#39;next_meeting&#39;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">aggregate_scores</span><span class="o">.</span><span class="n">_method_</span> <span class="o">=</span> <span class="s1">&#39;classification_t5&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">apply_to</span> <span class="o">=</span> <span class="s1">&#39;content_type&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">to_replace</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fomc_&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">regex</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">pivot</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="s1">&#39;next_meeting&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">pivot</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;content_type&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">pivot</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;polarity_diffusion&#39;</span><span class="p">,</span> <span class="s1">&#39;num_examples&#39;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="s1">&#39;fomc_sentiment_t5_next.parquet&#39;</span>
+<span class="n">t5_next</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">t5_next</span> <span class="o">=</span> <span class="n">t5_next</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;next_meeting&#39;</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">t5_next</span><span class="p">,</span> <span class="s1">&#39;fomc_sentiment_t5_next.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>polarity_diffusion_beigebook</th>
+      <th>polarity_diffusion_meeting_script</th>
+      <th>polarity_diffusion_minutes</th>
+      <th>polarity_diffusion_press_conf</th>
+      <th>polarity_diffusion_speech</th>
+      <th>polarity_diffusion_statement</th>
+      <th>polarity_diffusion_testimony</th>
+      <th>num_examples_beigebook</th>
+      <th>num_examples_meeting_script</th>
+      <th>num_examples_minutes</th>
+      <th>num_examples_press_conf</th>
+      <th>num_examples_speech</th>
+      <th>num_examples_statement</th>
+      <th>num_examples_testimony</th>
+    </tr>
+    <tr>
+      <th>next_meeting</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -3759,59 +5151,89 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_calendar.parquet
   </thead>
   <tbody>
     <tr>
-      <th>1982-10-05</th>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>Paul Volcker</td>
-      <td>9.50</td>
-      <td>-0.50</td>
-      <td>-1.0</td>
-      <td>1</td>
+      <th>1990-03-27</th>
+      <td>NaN</td>
+      <td>0.187500</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>784.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
-      <th>1982-11-16</th>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>Paul Volcker</td>
-      <td>9.00</td>
-      <td>-0.50</td>
-      <td>-1.0</td>
-      <td>1</td>
+      <th>1990-04-11</th>
+      <td>NaN</td>
+      <td>0.161080</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1074.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
-      <th>1982-12-21</th>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>Paul Volcker</td>
-      <td>8.50</td>
-      <td>0.00</td>
-      <td>0.0</td>
-      <td>0</td>
+      <th>1990-07-03</th>
+      <td>NaN</td>
+      <td>0.221402</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>542.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
-      <th>1983-01-14</th>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>Paul Volcker</td>
-      <td>8.50</td>
-      <td>0.00</td>
-      <td>0.0</td>
-      <td>0</td>
+      <th>1990-08-21</th>
+      <td>NaN</td>
+      <td>0.106516</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>798.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
-      <th>1983-01-21</th>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>Paul Volcker</td>
-      <td>8.50</td>
-      <td>0.00</td>
-      <td>0.0</td>
-      <td>0</td>
+      <th>1990-09-07</th>
+      <td>NaN</td>
+      <td>0.191045</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>670.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>...</th>
@@ -3823,519 +5245,231 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_calendar.parquet
       <td>...</td>
       <td>...</td>
       <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2021-07-28</th>
+      <td>0.657182</td>
+      <td>NaN</td>
+      <td>0.456747</td>
+      <td>0.194737</td>
+      <td>0.219409</td>
+      <td>0.615385</td>
+      <td>0.52809</td>
+      <td>738.0</td>
+      <td>NaN</td>
+      <td>289.0</td>
+      <td>380.0</td>
+      <td>237.0</td>
+      <td>13.0</td>
+      <td>89.0</td>
+    </tr>
+    <tr>
+      <th>2021-09-22</th>
+      <td>0.558201</td>
+      <td>NaN</td>
+      <td>0.414474</td>
+      <td>0.197674</td>
+      <td>0.227373</td>
+      <td>0.538462</td>
+      <td>NaN</td>
+      <td>756.0</td>
+      <td>NaN</td>
+      <td>304.0</td>
+      <td>344.0</td>
+      <td>453.0</td>
+      <td>13.0</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>2021-11-03</th>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>Jerome Powell</td>
-      <td>0.25</td>
-      <td>0.00</td>
-      <td>0.0</td>
-      <td>0</td>
+      <td>0.443508</td>
+      <td>NaN</td>
+      <td>0.395349</td>
+      <td>0.143695</td>
+      <td>0.234405</td>
+      <td>0.571429</td>
+      <td>0.50000</td>
+      <td>16259.0</td>
+      <td>NaN</td>
+      <td>258.0</td>
+      <td>341.0</td>
+      <td>1058.0</td>
+      <td>14.0</td>
+      <td>42.0</td>
     </tr>
     <tr>
       <th>2021-12-15</th>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>Jerome Powell</td>
-      <td>0.25</td>
-      <td>0.00</td>
-      <td>0.0</td>
-      <td>0</td>
+      <td>0.454448</td>
+      <td>NaN</td>
+      <td>0.476596</td>
+      <td>0.172619</td>
+      <td>0.209559</td>
+      <td>0.705882</td>
+      <td>0.55000</td>
+      <td>14862.0</td>
+      <td>NaN</td>
+      <td>235.0</td>
+      <td>336.0</td>
+      <td>816.0</td>
+      <td>17.0</td>
+      <td>20.0</td>
     </tr>
     <tr>
       <th>2022-01-26</th>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>Jerome Powell</td>
-      <td>0.25</td>
-      <td>0.00</td>
-      <td>0.0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>2022-03-16</th>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>Jerome Powell</td>
-      <td>0.50</td>
-      <td>0.25</td>
-      <td>1.0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>2022-05-04</th>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>Jerome Powell</td>
-      <td>1.00</td>
-      <td>0.50</td>
-      <td>1.0</td>
-      <td>1</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.403571</td>
+      <td>0.216783</td>
+      <td>0.174603</td>
+      <td>0.444444</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>280.0</td>
+      <td>286.0</td>
+      <td>126.0</td>
+      <td>18.0</td>
+      <td>NaN</td>
     </tr>
   </tbody>
 </table>
-<p>415 rows × 8 columns</p>
+<p>286 rows × 14 columns</p>
 </div></div></div>
 </div>
-<div class="section" id="merge-with-fed-rate-data">
-<h3>Merge with fed rate data<a class="headerlink" href="#merge-with-fed-rate-data" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;io/fetcher=quandl&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">series_name</span> <span class="o">=</span> <span class="s2">&quot;DFEDTAR&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">series_id</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;DFEDTAR&quot;</span><span class="p">,</span> <span class="s2">&quot;DFEDTARU&quot;</span><span class="p">]</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">force_download</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">quandl</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t5_next</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;fomc_sentiment_t5_next.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
 
-<span class="n">fedrates</span> <span class="o">=</span> <span class="n">quandl</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
-<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;visualize/plot=lineplot&#39;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;date&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;DFEDTAR&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Fed Rate&#39;</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">fedrates</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function eval_columns at 0x7f0abf709ee0&gt;)
-WARNING:ekorpkit.pipelines.pipe:No expressions specified
-INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function eval_columns at 0x7f0abf709ee0&gt;)
-WARNING:ekorpkit.pipelines.pipe:No expressions specified
-INFO:ekorpkit.io.file:Saving dataframe to /workspace/.tmp/fred/DFEDTAR.parquet
-INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;x&#39;: &#39;date&#39;, &#39;y&#39;: &#39;DFEDTAR&#39;, &#39;linewidth&#39;: 2, &#39;palette&#39;: None, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
-INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/outputs/figs/LinePlot.png
-</pre></div>
-</div>
-<img alt="../../../_images/07_FOMC_sentiments_26_1.png" src="../../../_images/07_FOMC_sentiments_26_1.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merged_data_recent</span> <span class="o">=</span> <span class="n">data_recent</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">fomc</span><span class="o">.</span><span class="n">calendar</span><span class="p">,</span> <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">merged_data_recent</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;timestamp&#39;</span>
-<span class="n">merged_data_recent</span> <span class="o">=</span> <span class="n">merged_data_recent</span><span class="p">[</span><span class="n">merged_data_recent</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span> <span class="o">&gt;=</span> <span class="n">start_year</span><span class="p">]</span>
-
-<span class="n">merged_data_next</span> <span class="o">=</span> <span class="n">data_next</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">fomc</span><span class="o">.</span><span class="n">calendar</span><span class="p">,</span> <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">merged_data_next</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;timestamp&#39;</span>
-<span class="n">merged_data_next</span> <span class="o">=</span> <span class="n">merged_data_next</span><span class="p">[</span><span class="n">merged_data_next</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span> <span class="o">&gt;=</span> <span class="n">start_year</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corr_columns</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;polarity_mean_minutes&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_mean_press_conf&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_mean_speech&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_mean_statement&#39;</span><span class="p">,</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;polarity_diffusion_minutes&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_diffusion_press_conf&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_diffusion_speech&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_diffusion_statement&#39;</span><span class="p">,</span>
-    <span class="s2">&quot;rate&quot;</span><span class="p">,</span> <span class="s2">&quot;rate_change&quot;</span><span class="p">,</span> <span class="s2">&quot;rate_decision&quot;</span>
 <span class="p">]</span>
 
-<span class="n">corr_data_recent</span> <span class="o">=</span> <span class="n">merged_data_recent</span><span class="p">[</span><span class="n">corr_columns</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
-<span class="n">corr_data_next</span> <span class="o">=</span> <span class="n">merged_data_next</span><span class="p">[</span><span class="n">corr_columns</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot=heatmap&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">subplots</span><span class="o">.</span><span class="n">ncols</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">subplots</span><span class="o">.</span><span class="n">nrows</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">heatmap</span><span class="o">.</span><span class="n">axno</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">heatmap</span><span class="o">.</span><span class="n">datano</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">heatmap</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="s2">&quot;YlGnBu&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">heatmap</span><span class="o">.</span><span class="n">vmin</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">heatmap</span><span class="o">.</span><span class="n">vmax</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">heatmap</span><span class="o">.</span><span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;.2f&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Correlation between sentiments and recent rate decisions&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axno</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">heatmap2</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">heatmap</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">heatmap2</span><span class="o">.</span><span class="n">axno</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">heatmap2</span><span class="o">.</span><span class="n">datano</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">ax2</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Correlation between sentiments and next rate decisions&quot;</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">axno</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">heatmap2</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ax2</span><span class="p">)</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">corr_data_recent</span><span class="p">,</span> <span class="n">corr_data_next</span><span class="p">])</span>
+<span class="n">t5_tone_next</span> <span class="o">=</span>  <span class="n">t5_next</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">t5_tone_next</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">t5_tone_next</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;polarity&#39;</span><span class="p">,</span> <span class="s1">&#39;t5&#39;</span><span class="p">)</span>
+<span class="n">t5_tone_next</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/outputs/figs/HeatMap.png
-</pre></div>
-</div>
-<img alt="../../../_images/07_FOMC_sentiments_29_1.png" src="../../../_images/07_FOMC_sentiments_29_1.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot=heatmap&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">heatmap</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="s2">&quot;YlGnBu&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">heatmap</span><span class="o">.</span><span class="n">vmin</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">heatmap</span><span class="o">.</span><span class="n">vmax</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">heatmap</span><span class="o">.</span><span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;.2f&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Correlation&quot;</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">corr_data_recent</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/outputs/figs/HeatMap.png
-</pre></div>
-</div>
-<img alt="../../../_images/07_FOMC_sentiments_30_1.png" src="../../../_images/07_FOMC_sentiments_30_1.png" />
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="plot-the-sentiment-scores">
-<h2>Plot the sentiment scores<a class="headerlink" href="#plot-the-sentiment-scores" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;visualize/plot=lineplot&#39;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;polarity_mean_minutes&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_mean_press_conf&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_mean_speech&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_mean_statement&#39;</span><span class="p">]</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="s1">&#39;(15, 8)&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;The polarity scores of the FOMC corpus&#39;</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_recent</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;linewidth&#39;: 2, &#39;palette&#39;: None, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
-INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/outputs/figs/LinePlot.png
-</pre></div>
-</div>
-<img alt="../../../_images/07_FOMC_sentiments_32_1.png" src="../../../_images/07_FOMC_sentiments_32_1.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;visualize/plot=lineplot&#39;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;polarity_diffusion_minutes&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_diffusion_press_conf&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_diffusion_speech&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_diffusion_statement&#39;</span><span class="p">]</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="s1">&#39;(15, 8)&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;The polarity scores of the FOMC corpus&#39;</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_recent</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;linewidth&#39;: 2, &#39;palette&#39;: None, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
-INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/outputs/figs/LinePlot.png
-</pre></div>
-</div>
-<img alt="../../../_images/07_FOMC_sentiments_33_1.png" src="../../../_images/07_FOMC_sentiments_33_1.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;visualize/plot=lineplot&#39;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;polarity_mean_statement&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_diffusion_statement&#39;</span><span class="p">]</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="s1">&#39;(15, 8)&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;The polarity scores of the FOMC statements&#39;</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_recent</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;linewidth&#39;: 2, &#39;palette&#39;: None, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
-INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/outputs/figs/LinePlot.png
-</pre></div>
-</div>
-<img alt="../../../_images/07_FOMC_sentiments_34_1.png" src="../../../_images/07_FOMC_sentiments_34_1.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;visualize/plot=lineplot&#39;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;num_tokens_sum_statement&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">rcParams</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;num_examples_statement&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rcParams</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">secondary_y</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">legend</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">labels</span><span class="o">=</span><span class="p">[</span>
-        <span class="s2">&quot;The number of tokens in the FOMC statements (LHS)&quot;</span><span class="p">,</span>
-    <span class="p">],</span>
-    <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">ax2</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">secondary_y</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">legend</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;The number of sentences in the FOMC statements (RHS)&quot;</span><span class="p">],</span>
-    <span class="n">loc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ax2</span><span class="p">)</span>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_recent</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;linewidth&#39;: 2, &#39;color&#39;: &#39;red&#39;, &#39;x&#39;: &#39;recent_meeting&#39;, &#39;y&#39;: &#39;num_tokens_sum_statement&#39;, &#39;palette&#39;: None, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
-INFO:ekorpkit.visualize.plot:Creating secondary axis to axis[0]
-INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;linewidth&#39;: 2, &#39;color&#39;: &#39;green&#39;, &#39;x&#39;: &#39;recent_meeting&#39;, &#39;y&#39;: &#39;num_examples_statement&#39;, &#39;palette&#39;: None, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
-INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/outputs/figs/LinePlot.png
-</pre></div>
-</div>
-<img alt="../../../_images/07_FOMC_sentiments_35_1.png" src="../../../_images/07_FOMC_sentiments_35_1.png" />
-</div>
-</div>
-<div class="section" id="plot-the-results-and-compare-to-the-economical-uncertainty-systemic-risk-periods">
-<h3>Plot the results and compare to the economical uncertainty / systemic risk periods<a class="headerlink" href="#plot-the-results-and-compare-to-the-economical-uncertainty-systemic-risk-periods" title="Permalink to this headline">¶</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">recessions</span> <span class="o">=</span> <span class="n">fomc</span><span class="o">.</span><span class="n">recessions</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">)</span>
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
 
-<span class="n">span_args</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot/ax/axvspan&quot;</span><span class="p">)</span>
-<span class="n">annot_args</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot/ax/annotation&quot;</span><span class="p">)</span>
-<span class="n">span_args</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;crimson&quot;</span>
-<span class="n">span_args</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.4</span>
-
-<span class="n">spans</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">annotations</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">span</span> <span class="ow">in</span> <span class="n">recessions</span><span class="p">:</span>
-    <span class="n">annotation</span> <span class="o">=</span> <span class="n">span</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
-    <span class="n">start</span> <span class="o">=</span> <span class="n">span</span><span class="p">[</span><span class="s2">&quot;from_date&quot;</span><span class="p">]</span>
-    <span class="n">end</span> <span class="o">=</span> <span class="n">span</span><span class="p">[</span><span class="s2">&quot;to_date&quot;</span><span class="p">]</span>
-    <span class="n">span</span> <span class="o">=</span> <span class="n">span_args</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">span</span><span class="o">.</span><span class="n">xmin</span><span class="p">,</span> <span class="n">span</span><span class="o">.</span><span class="n">xmax</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">to_dateparm</span><span class="p">(</span><span class="n">start</span><span class="p">),</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">to_dateparm</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
-
-    <span class="n">x</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.75</span>
-    <span class="n">annot</span> <span class="o">=</span> <span class="n">annot_args</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">annot</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">annot</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">annot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">annotation</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">to_dateparm</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">y</span>
-    <span class="n">spans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">span</span><span class="p">)</span>
-    <span class="n">annotations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">annot</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">window</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">merged_data_recent</span><span class="p">[</span><span class="s2">&quot;polarity_ma&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">merged_data_recent</span><span class="p">[</span><span class="s1">&#39;polarity_diffusion_statement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-
-<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot=lineplot&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;timestamp&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;polarity_ma&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">linewidth</span> <span class="o">=</span> <span class="mf">2.5</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">palette</span> <span class="o">=</span> <span class="s2">&quot;r&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;polarity_diffusion_statement&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">linewidth</span> <span class="o">=</span> <span class="mf">1.5</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">palette</span> <span class="o">=</span> <span class="s2">&quot;g&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Moving average of last </span><span class="si">{</span><span class="n">window</span><span class="si">}</span><span class="s2"> statements&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">window</span><span class="si">}</span><span class="s2"> statement MA&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Polarity score of individual statements&quot;</span><span class="p">,</span>
-<span class="p">]</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axvspans</span> <span class="o">=</span> <span class="n">spans</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">annotations</span> <span class="o">=</span> <span class="n">annotations</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">merged_data_recent</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;x&#39;: &#39;timestamp&#39;, &#39;y&#39;: &#39;polarity_ma&#39;, &#39;linewidth&#39;: 2.5, &#39;palette&#39;: &#39;r&#39;, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
-INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;x&#39;: &#39;timestamp&#39;, &#39;y&#39;: &#39;polarity_diffusion_statement&#39;, &#39;linewidth&#39;: 1.5, &#39;palette&#39;: &#39;g&#39;, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
-INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/outputs/figs/LinePlot.png
-</pre></div>
-</div>
-<img alt="../../../_images/07_FOMC_sentiments_38_1.png" src="../../../_images/07_FOMC_sentiments_38_1.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">window</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">merged_data_recent</span><span class="p">[</span><span class="s2">&quot;polarity_minutes_ma&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">merged_data_recent</span><span class="p">[</span><span class="s1">&#39;polarity_diffusion_minutes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-
-<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot=lineplot&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;timestamp&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;polarity_minutes_ma&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">linewidth</span> <span class="o">=</span> <span class="mf">2.5</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">palette</span> <span class="o">=</span> <span class="s2">&quot;r&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;polarity_diffusion_minutes&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">linewidth</span> <span class="o">=</span> <span class="mf">1.5</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">palette</span> <span class="o">=</span> <span class="s2">&quot;g&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Moving average of last </span><span class="si">{</span><span class="n">window</span><span class="si">}</span><span class="s2"> minutes&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">window</span><span class="si">}</span><span class="s2"> minutes MA&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Polarity score of individual minutes&quot;</span><span class="p">,</span>
-<span class="p">]</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axvspans</span> <span class="o">=</span> <span class="n">spans</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">annotations</span> <span class="o">=</span> <span class="n">annotations</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">merged_data_recent</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;x&#39;: &#39;timestamp&#39;, &#39;y&#39;: &#39;polarity_minutes_ma&#39;, &#39;linewidth&#39;: 2.5, &#39;palette&#39;: &#39;r&#39;, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
-INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;x&#39;: &#39;timestamp&#39;, &#39;y&#39;: &#39;polarity_diffusion_minutes&#39;, &#39;linewidth&#39;: 1.5, &#39;palette&#39;: &#39;g&#39;, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
-INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/outputs/figs/LinePlot.png
-</pre></div>
-</div>
-<img alt="../../../_images/07_FOMC_sentiments_39_1.png" src="../../../_images/07_FOMC_sentiments_39_1.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-
-<span class="n">chair</span> <span class="o">=</span> <span class="n">fomc</span><span class="o">.</span><span class="n">chairpersons</span>
-<span class="n">chair</span> <span class="o">=</span> <span class="n">chair</span><span class="p">[</span><span class="n">chair</span><span class="o">.</span><span class="n">to_date</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">&gt;=</span> <span class="n">start_year</span><span class="p">]</span>
-<span class="n">annot_args</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot/ax/annotation&quot;</span><span class="p">)</span>
-
-<span class="n">spans</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">annotations</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">chair</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-    <span class="n">row_num</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">start</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;from_date&quot;</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">start</span><span class="o">.</span><span class="n">year</span> <span class="o">&lt;</span> <span class="n">start_year</span><span class="p">:</span>
-        <span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">end</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;to_date&quot;</span><span class="p">]</span>
-    <span class="n">annotation</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;last_name&quot;</span><span class="p">]</span>
-    <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;crimson&quot;</span> <span class="k">if</span> <span class="n">row_num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">&quot;darkblue&quot;</span>
-    <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.4</span> <span class="k">if</span> <span class="n">row_num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.2</span>
-    <span class="n">span</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;xmin&quot;</span><span class="p">:</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">to_dateparm</span><span class="p">(</span><span class="n">start</span><span class="p">),</span>
-        <span class="s2">&quot;xmax&quot;</span><span class="p">:</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">to_dateparm</span><span class="p">(</span><span class="n">end</span><span class="p">),</span>
-        <span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="n">alpha</span><span class="p">,</span>
-        <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="n">color</span><span class="p">,</span>
-    <span class="p">}</span>
-
-    <span class="n">x</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.75</span>
-    <span class="n">annot</span> <span class="o">=</span> <span class="n">annot_args</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">annot</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">annot</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">annot</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">annotation</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">to_dateparm</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">y</span>
-
-    <span class="n">spans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">span</span><span class="p">)</span>
-    <span class="n">annotations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">annot</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot=lineplot&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;timestamp&quot;</span>
-<span class="n">ax2</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
-<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;polarity_ma&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">rcParams</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;polarity_diffusion_statement&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rcParams</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Moving average of last </span><span class="si">{</span><span class="n">window</span><span class="si">}</span><span class="s2"> statements&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">legend</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">labels</span><span class="o">=</span><span class="p">[</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">window</span><span class="si">}</span><span class="s2"> statement MA&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;Polarity score of individual statements&quot;</span><span class="p">,</span>
-    <span class="p">],</span>
-    <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">scatter_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot/scatterplot&quot;</span><span class="p">)</span>
-<span class="n">scatter_cfg</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;rate&quot;</span>
-<span class="n">scatter_cfg</span><span class="o">.</span><span class="n">secondary_y</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">scatter_cfg</span><span class="o">.</span><span class="n">rcParams</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scatter_cfg</span><span class="p">)</span>
-
-<span class="n">ax2</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">secondary_y</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">ylim</span> <span class="o">=</span> <span class="s2">&quot;(-4, 10)&quot;</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">legend</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Fed Rate&quot;</span><span class="p">],</span>
-    <span class="n">loc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ax2</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axvspans</span> <span class="o">=</span> <span class="n">spans</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">annotations</span> <span class="o">=</span> <span class="n">annotations</span>
-
-<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">merged_data_recent</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;linewidth&#39;: 2, &#39;color&#39;: &#39;red&#39;, &#39;x&#39;: &#39;timestamp&#39;, &#39;y&#39;: &#39;polarity_ma&#39;, &#39;palette&#39;: None, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
-INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;linewidth&#39;: 2, &#39;color&#39;: &#39;green&#39;, &#39;x&#39;: &#39;timestamp&#39;, &#39;y&#39;: &#39;polarity_diffusion_statement&#39;, &#39;palette&#39;: None, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
-INFO:ekorpkit.visualize.plot:Creating secondary axis to axis[0]
-INFO:ekorpkit.visualize.plot:Plotting scatterplot with {&#39;color&#39;: &#39;blue&#39;, &#39;alpha&#39;: None, &#39;x&#39;: &#39;timestamp&#39;, &#39;y&#39;: &#39;rate&#39;, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;palette&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;ci&#39;: 95, &#39;legend&#39;: False}
-INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/outputs/figs/LinePlot.png
-</pre></div>
-</div>
-<img alt="../../../_images/07_FOMC_sentiments_41_1.png" src="../../../_images/07_FOMC_sentiments_41_1.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot=lineplot&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;timestamp&quot;</span>
-<span class="n">ax2</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
-<span class="n">cfg</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;polarity_minutes_ma&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">rcParams</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;polarity_diffusion_minutes&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rcParams</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Moving average of last </span><span class="si">{</span><span class="n">window</span><span class="si">}</span><span class="s2"> minutes&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">legend</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">labels</span><span class="o">=</span><span class="p">[</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">window</span><span class="si">}</span><span class="s2"> minutes MA&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;Polarity score of individual minutes&quot;</span><span class="p">,</span>
-    <span class="p">],</span>
-    <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">scatter_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;visualize/plot/scatterplot&quot;</span><span class="p">)</span>
-<span class="n">scatter_cfg</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;rate&quot;</span>
-<span class="n">scatter_cfg</span><span class="o">.</span><span class="n">secondary_y</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">scatter_cfg</span><span class="o">.</span><span class="n">rcParams</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scatter_cfg</span><span class="p">)</span>
-
-<span class="n">ax2</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">secondary_y</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">ylim</span> <span class="o">=</span> <span class="s2">&quot;(-4, 10)&quot;</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">legend</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Fed Rate&quot;</span><span class="p">],</span>
-    <span class="n">loc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ax2</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axvspans</span> <span class="o">=</span> <span class="n">spans</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">annotations</span> <span class="o">=</span> <span class="n">annotations</span>
-
-<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">merged_data_recent</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;linewidth&#39;: 2, &#39;color&#39;: &#39;red&#39;, &#39;x&#39;: &#39;timestamp&#39;, &#39;y&#39;: &#39;polarity_minutes_ma&#39;, &#39;palette&#39;: None, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
-INFO:ekorpkit.visualize.plot:Plotting lineplot with {&#39;linewidth&#39;: 2, &#39;color&#39;: &#39;green&#39;, &#39;x&#39;: &#39;timestamp&#39;, &#39;y&#39;: &#39;polarity_diffusion_minutes&#39;, &#39;palette&#39;: None, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;dashes&#39;: True, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;estimator&#39;: &#39;mean&#39;, &#39;ci&#39;: 95, &#39;n_boot&#39;: 1000, &#39;seed&#39;: None, &#39;sort&#39;: True, &#39;err_style&#39;: &#39;band&#39;, &#39;err_kws&#39;: None, &#39;legend&#39;: &#39;auto&#39;, &#39;drawstyle&#39;: None}
-INFO:ekorpkit.visualize.plot:Creating secondary axis to axis[0]
-INFO:ekorpkit.visualize.plot:Plotting scatterplot with {&#39;color&#39;: &#39;blue&#39;, &#39;alpha&#39;: None, &#39;x&#39;: &#39;timestamp&#39;, &#39;y&#39;: &#39;rate&#39;, &#39;hue&#39;: None, &#39;size&#39;: None, &#39;style&#39;: None, &#39;palette&#39;: None, &#39;hue_order&#39;: None, &#39;hue_norm&#39;: None, &#39;sizes&#39;: None, &#39;size_order&#39;: None, &#39;size_norm&#39;: None, &#39;markers&#39;: None, &#39;style_order&#39;: None, &#39;units&#39;: None, &#39;ci&#39;: 95, &#39;legend&#39;: False}
-INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/outputs/figs/LinePlot.png
-</pre></div>
-</div>
-<img alt="../../../_images/07_FOMC_sentiments_42_1.png" src="../../../_images/07_FOMC_sentiments_42_1.png" />
-</div>
-</div>
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>t5_diffusion_minutes</th>
+      <th>t5_diffusion_press_conf</th>
+      <th>t5_diffusion_speech</th>
+      <th>t5_diffusion_statement</th>
+    </tr>
+    <tr>
+      <th>next_meeting</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1990-03-27</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1990-04-11</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1990-07-03</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1990-08-21</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1990-09-07</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2021-07-28</th>
+      <td>0.456747</td>
+      <td>0.194737</td>
+      <td>0.219409</td>
+      <td>0.615385</td>
+    </tr>
+    <tr>
+      <th>2021-09-22</th>
+      <td>0.414474</td>
+      <td>0.197674</td>
+      <td>0.227373</td>
+      <td>0.538462</td>
+    </tr>
+    <tr>
+      <th>2021-11-03</th>
+      <td>0.395349</td>
+      <td>0.143695</td>
+      <td>0.234405</td>
+      <td>0.571429</td>
+    </tr>
+    <tr>
+      <th>2021-12-15</th>
+      <td>0.476596</td>
+      <td>0.172619</td>
+      <td>0.209559</td>
+      <td>0.705882</td>
+    </tr>
+    <tr>
+      <th>2022-01-26</th>
+      <td>0.403571</td>
+      <td>0.216783</td>
+      <td>0.174603</td>
+      <td>0.444444</td>
+    </tr>
+  </tbody>
+</table>
+<p>286 rows × 4 columns</p>
+</div></div></div>
 </div>
 </div>
 </div>
@@ -4372,10 +5506,10 @@ INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/o
             <p class="prev-next-title">Checking Baseline with AutoML</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="../bok/index.html" title="next page">
+    <a class='right-next' id="next-link" href="08_FOMC_EDA_sentiments.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Bank of Korea</p>
+        <p class="prev-next-title">EDA on Sentiment Data</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
