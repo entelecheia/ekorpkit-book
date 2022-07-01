@@ -497,6 +497,11 @@ const thebe_selector_output = ".output, .cell_output"
      EDA on Sentiment Data
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="09_FOMC_AutoML_with_tones.html">
+     Predicting the next decisions with tones
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1">
@@ -820,7 +825,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.33+27.g5c22afc.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.33+28.g90d1dea
 is notebook? True
 is colab? False
 evironment varialbles:
@@ -1021,16 +1026,6 @@ evironment varialbles:
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;model/sentiment=lm&#39;</span><span class="p">)</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">lmsa</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">model_cfg</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.preprocessors.tokenizer:instantiating ekorpkit.preprocessors.stopwords.Stopwords...
-INFO:ekorpkit.base:Calling load_candidates
-INFO:ekorpkit.io.file:Processing [1] files from [&#39;/workspace/projects/ekorpkit/ekorpkit/resources/lexicons/LM.parquet&#39;]
-INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/projects/ekorpkit/ekorpkit/resources/lexicons/LM.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from /workspace/projects/ekorpkit/ekorpkit/resources/lexicons/LM.parquet
-INFO:ekorpkit.models.ngram.ngram:loaded 58142 candidates
 </pre></div>
 </div>
 </div>
@@ -1385,12 +1380,6 @@ INFO:ekorpkit.models.sentiment.lbsa: &gt;&gt; elapsed time to predict: 0:02:51.9
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_sent_sentiments.parquet
-INFO:ekorpkit.io.file:Processing [1] files from [&#39;fomc_sent_sentiments.parquet&#39;]
-INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_sent_sentiments.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sent_sentiments.parquet
-</pre></div>
-</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1707,35 +1696,21 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sent_sentiments.parque
 <h3>Aggregate sentiment scores<a class="headerlink" href="#aggregate-sentiment-scores" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fomc_sentiment_recent</span> <span class="o">=</span> <span class="n">lmsa</span><span class="o">.</span><span class="n">aggregate_scores</span><span class="p">(</span><span class="n">fomc_sent_sentiments</span><span class="p">,</span> <span class="n">groupby</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;content_type&#39;</span><span class="p">,</span> <span class="s1">&#39;recent_meeting&#39;</span><span class="p">])</span>
-<span class="n">fomc_sentiment_recent</span><span class="o">.</span><span class="n">content_type</span> <span class="o">=</span> <span class="n">fomc_sentiment_recent</span><span class="o">.</span><span class="n">content_type</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;fomc_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">fomc_sentiment_recent</span><span class="p">,</span> <span class="s1">&#39;fomc_sentiment_recent.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
-<span class="n">fomc_sentiment_next</span> <span class="o">=</span> <span class="n">lmsa</span><span class="o">.</span><span class="n">aggregate_scores</span><span class="p">(</span><span class="n">fomc_sent_sentiments</span><span class="p">,</span> <span class="n">groupby</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;content_type&#39;</span><span class="p">,</span> <span class="s1">&#39;next_meeting&#39;</span><span class="p">])</span>
-<span class="n">fomc_sentiment_next</span><span class="o">.</span><span class="n">content_type</span> <span class="o">=</span> <span class="n">fomc_sentiment_next</span><span class="o">.</span><span class="n">content_type</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;fomc_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">fomc_sentiment_next</span><span class="p">,</span> <span class="s1">&#39;fomc_sentiment_next.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_sentiment_recent.parquet
-INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_sentiment_next.parquet
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fomc_tones_lm</span> <span class="o">=</span> <span class="n">lmsa</span><span class="o">.</span><span class="n">aggregate_scores</span><span class="p">(</span><span class="n">fomc_sent_sentiments</span><span class="p">,</span> <span class="n">groupby</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;content_type&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">])</span>
+<span class="n">fomc_tones_lm</span><span class="o">.</span><span class="n">content_type</span> <span class="o">=</span> <span class="n">fomc_tones_lm</span><span class="o">.</span><span class="n">content_type</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;fomc_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">fomc_tones_lm</span><span class="p">,</span> <span class="s1">&#39;fomc_tones_lm.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fomc_sentiment_recent</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;fomc_sentiment_recent.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
-<span class="n">fomc_sentiment_recent</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fomc_tones_lm</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;fomc_tones_lm.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+<span class="n">fomc_tones_lm</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;fomc_sentiment_recent.parquet&#39;]
-INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_sentiment_recent.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sentiment_recent.parquet
-</pre></div>
-</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1755,7 +1730,7 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sentiment_recent.parqu
     <tr style="text-align: right;">
       <th></th>
       <th>content_type</th>
-      <th>recent_meeting</th>
+      <th>date</th>
       <th>polarity_mean</th>
       <th>polarity_diffusion</th>
       <th>positive</th>
@@ -1772,7 +1747,7 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sentiment_recent.parqu
     <tr>
       <th>0</th>
       <td>beigebook</td>
-      <td>2020-12-16</td>
+      <td>2021-01-13</td>
       <td>-0.068247</td>
       <td>-0.071053</td>
       <td>3972</td>
@@ -1787,7 +1762,7 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sentiment_recent.parqu
     <tr>
       <th>1</th>
       <td>beigebook</td>
-      <td>2021-01-27</td>
+      <td>2021-03-03</td>
       <td>-0.032683</td>
       <td>-0.037384</td>
       <td>3887</td>
@@ -1802,7 +1777,7 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sentiment_recent.parqu
     <tr>
       <th>2</th>
       <td>beigebook</td>
-      <td>2021-03-17</td>
+      <td>2021-04-14</td>
       <td>-0.030535</td>
       <td>-0.035085</td>
       <td>3568</td>
@@ -1817,7 +1792,7 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sentiment_recent.parqu
     <tr>
       <th>3</th>
       <td>beigebook</td>
-      <td>2021-04-28</td>
+      <td>2021-06-02</td>
       <td>-0.039873</td>
       <td>-0.044760</td>
       <td>3837</td>
@@ -1832,7 +1807,7 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sentiment_recent.parqu
     <tr>
       <th>4</th>
       <td>beigebook</td>
-      <td>2021-06-16</td>
+      <td>2021-07-14</td>
       <td>0.011743</td>
       <td>0.012195</td>
       <td>191</td>
@@ -1860,24 +1835,9 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sentiment_recent.parqu
       <td>...</td>
     </tr>
     <tr>
-      <th>1060</th>
+      <th>2390</th>
       <td>testimony</td>
-      <td>2021-03-17</td>
-      <td>-0.244167</td>
-      <td>-0.275000</td>
-      <td>6</td>
-      <td>28</td>
-      <td>2478</td>
-      <td>30.975000</td>
-      <td>28.5</td>
-      <td>80</td>
-      <td>negative</td>
-      <td>negative</td>
-    </tr>
-    <tr>
-      <th>1061</th>
-      <td>testimony</td>
-      <td>2021-04-28</td>
+      <td>2021-05-19</td>
       <td>-0.171642</td>
       <td>-0.164179</td>
       <td>15</td>
@@ -1890,24 +1850,39 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sentiment_recent.parqu
       <td>negative</td>
     </tr>
     <tr>
-      <th>1062</th>
+      <th>2391</th>
       <td>testimony</td>
-      <td>2021-06-16</td>
-      <td>0.235955</td>
-      <td>0.247191</td>
-      <td>34</td>
-      <td>12</td>
-      <td>2522</td>
-      <td>28.337079</td>
-      <td>26.0</td>
-      <td>89</td>
+      <td>2021-06-22</td>
+      <td>0.220126</td>
+      <td>0.207547</td>
+      <td>20</td>
+      <td>9</td>
+      <td>1456</td>
+      <td>27.471698</td>
+      <td>24.0</td>
+      <td>53</td>
       <td>positive</td>
       <td>positive</td>
     </tr>
     <tr>
-      <th>1063</th>
+      <th>2392</th>
       <td>testimony</td>
-      <td>2021-09-22</td>
+      <td>2021-07-14</td>
+      <td>0.259259</td>
+      <td>0.305556</td>
+      <td>14</td>
+      <td>3</td>
+      <td>1066</td>
+      <td>29.611111</td>
+      <td>27.0</td>
+      <td>36</td>
+      <td>positive</td>
+      <td>positive</td>
+    </tr>
+    <tr>
+      <th>2393</th>
+      <td>testimony</td>
+      <td>2021-09-28</td>
       <td>0.031746</td>
       <td>0.000000</td>
       <td>9</td>
@@ -1920,9 +1895,9 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sentiment_recent.parqu
       <td>neutral</td>
     </tr>
     <tr>
-      <th>1064</th>
+      <th>2394</th>
       <td>testimony</td>
-      <td>2021-11-03</td>
+      <td>2021-11-30</td>
       <td>-0.120000</td>
       <td>-0.200000</td>
       <td>3</td>
@@ -1936,248 +1911,27 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sentiment_recent.parqu
     </tr>
   </tbody>
 </table>
-<p>1065 rows × 12 columns</p>
-</div></div></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fomc_sentiment_next</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;fomc_sentiment_next.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
-<span class="n">fomc_sentiment_next</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;fomc_sentiment_next.parquet&#39;]
-INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_sentiment_next.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sentiment_next.parquet
-</pre></div>
-</div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>content_type</th>
-      <th>next_meeting</th>
-      <th>polarity_mean</th>
-      <th>polarity_diffusion</th>
-      <th>positive</th>
-      <th>negative</th>
-      <th>num_tokens_sum</th>
-      <th>num_tokens_mean</th>
-      <th>num_tokens_median</th>
-      <th>num_examples</th>
-      <th>polarity_mean_label</th>
-      <th>polarity_diffusion_label</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>beigebook</td>
-      <td>2021-01-27</td>
-      <td>-0.068247</td>
-      <td>-0.071053</td>
-      <td>3972</td>
-      <td>5229</td>
-      <td>397855</td>
-      <td>22.489119</td>
-      <td>21.0</td>
-      <td>17691</td>
-      <td>neutral</td>
-      <td>neutral</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>beigebook</td>
-      <td>2021-03-17</td>
-      <td>-0.032683</td>
-      <td>-0.037384</td>
-      <td>3887</td>
-      <td>4518</td>
-      <td>381300</td>
-      <td>22.590201</td>
-      <td>21.0</td>
-      <td>16879</td>
-      <td>neutral</td>
-      <td>neutral</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>beigebook</td>
-      <td>2021-04-28</td>
-      <td>-0.030535</td>
-      <td>-0.035085</td>
-      <td>3568</td>
-      <td>4100</td>
-      <td>340121</td>
-      <td>22.430983</td>
-      <td>21.0</td>
-      <td>15163</td>
-      <td>neutral</td>
-      <td>neutral</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>beigebook</td>
-      <td>2021-06-16</td>
-      <td>-0.039873</td>
-      <td>-0.044760</td>
-      <td>3837</td>
-      <td>4561</td>
-      <td>357745</td>
-      <td>22.117156</td>
-      <td>21.0</td>
-      <td>16175</td>
-      <td>neutral</td>
-      <td>neutral</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>beigebook</td>
-      <td>2021-07-28</td>
-      <td>0.011743</td>
-      <td>0.012195</td>
-      <td>191</td>
-      <td>182</td>
-      <td>15803</td>
-      <td>21.413279</td>
-      <td>21.0</td>
-      <td>738</td>
-      <td>neutral</td>
-      <td>neutral</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>1060</th>
-      <td>testimony</td>
-      <td>2021-04-28</td>
-      <td>-0.244167</td>
-      <td>-0.275000</td>
-      <td>6</td>
-      <td>28</td>
-      <td>2478</td>
-      <td>30.975000</td>
-      <td>28.5</td>
-      <td>80</td>
-      <td>negative</td>
-      <td>negative</td>
-    </tr>
-    <tr>
-      <th>1061</th>
-      <td>testimony</td>
-      <td>2021-06-16</td>
-      <td>-0.171642</td>
-      <td>-0.164179</td>
-      <td>15</td>
-      <td>26</td>
-      <td>2590</td>
-      <td>38.656716</td>
-      <td>29.0</td>
-      <td>67</td>
-      <td>negative</td>
-      <td>negative</td>
-    </tr>
-    <tr>
-      <th>1062</th>
-      <td>testimony</td>
-      <td>2021-07-28</td>
-      <td>0.235955</td>
-      <td>0.247191</td>
-      <td>34</td>
-      <td>12</td>
-      <td>2522</td>
-      <td>28.337079</td>
-      <td>26.0</td>
-      <td>89</td>
-      <td>positive</td>
-      <td>positive</td>
-    </tr>
-    <tr>
-      <th>1063</th>
-      <td>testimony</td>
-      <td>2021-11-03</td>
-      <td>0.031746</td>
-      <td>0.000000</td>
-      <td>9</td>
-      <td>9</td>
-      <td>1026</td>
-      <td>24.428571</td>
-      <td>22.0</td>
-      <td>42</td>
-      <td>neutral</td>
-      <td>neutral</td>
-    </tr>
-    <tr>
-      <th>1064</th>
-      <td>testimony</td>
-      <td>2021-12-15</td>
-      <td>-0.120000</td>
-      <td>-0.200000</td>
-      <td>3</td>
-      <td>7</td>
-      <td>556</td>
-      <td>27.800000</td>
-      <td>26.0</td>
-      <td>20</td>
-      <td>neutral</td>
-      <td>negative</td>
-    </tr>
-  </tbody>
-</table>
-<p>1065 rows × 12 columns</p>
+<p>2395 rows × 12 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;pipeline/pivot&#39;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="s1">&#39;recent_meeting&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="s1">&#39;date&#39;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;content_type&#39;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;polarity_mean&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_diffusion&#39;</span><span class="p">,</span> <span class="s1">&#39;num_examples&#39;</span><span class="p">,</span> <span class="s1">&#39;num_tokens_sum&#39;</span><span class="p">,</span> <span class="s1">&#39;num_tokens_mean&#39;</span><span class="p">]</span>
-<span class="n">data_recent</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">fomc_sentiment_recent</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
-<span class="n">data_recent</span> <span class="o">=</span> <span class="n">data_recent</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;recent_meeting&#39;</span><span class="p">)</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">data_recent</span><span class="p">,</span> <span class="s1">&#39;fomc_sentiment_data_recent.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function pivot at 0x7f0abf86c1f0&gt;)
-INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_sentiment_data_recent.parquet
+<span class="n">tone_data_lm</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">fomc_tones_lm</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+<span class="n">tone_data_lm</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">tone_data_lm</span><span class="p">,</span> <span class="n">_columns</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">)</span>
+<span class="n">tone_data_lm</span> <span class="o">=</span> <span class="n">tone_data_lm</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">tone_data_lm</span><span class="p">,</span> <span class="s1">&#39;fomc_tone_data_lm.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_recent</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;fomc_sentiment_data_recent.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
-<span class="n">data_recent</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tone_data_lm</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;fomc_tone_data_lm.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+<span class="n">tone_data_lm</span>
 </pre></div>
 </div>
 </div>
@@ -2223,7 +1977,7 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_sentiment_data_recen
       <th>num_tokens_mean_testimony</th>
     </tr>
     <tr>
-      <th>recent_meeting</th>
+      <th>date</th>
       <th></th>
       <th></th>
       <th></th>
@@ -2393,100 +2147,76 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_sentiment_data_recen
       <td>...</td>
     </tr>
     <tr>
-      <th>2021-06-16</th>
-      <td>0.011743</td>
+      <th>2021-11-30</th>
       <td>NaN</td>
-      <td>0.041638</td>
-      <td>-0.017544</td>
-      <td>-0.031786</td>
-      <td>0.435897</td>
-      <td>0.235955</td>
-      <td>0.012195</td>
       <td>NaN</td>
-      <td>0.031142</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>-0.167014</td>
+      <td>NaN</td>
+      <td>-0.12</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
       <td>...</td>
-      <td>6894.0</td>
-      <td>384.0</td>
-      <td>2522.0</td>
-      <td>21.413279</td>
+      <td>3066.0</td>
       <td>NaN</td>
-      <td>30.615917</td>
-      <td>27.100000</td>
-      <td>29.088608</td>
-      <td>29.538462</td>
-      <td>28.337079</td>
+      <td>556.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>31.937500</td>
+      <td>NaN</td>
+      <td>27.8</td>
     </tr>
     <tr>
-      <th>2021-07-28</th>
-      <td>-0.120547</td>
-      <td>NaN</td>
-      <td>-0.043969</td>
-      <td>0.021318</td>
-      <td>-0.042941</td>
-      <td>0.461538</td>
-      <td>NaN</td>
-      <td>-0.134921</td>
-      <td>NaN</td>
-      <td>-0.069079</td>
-      <td>...</td>
-      <td>13170.0</td>
-      <td>399.0</td>
-      <td>NaN</td>
-      <td>20.980159</td>
-      <td>NaN</td>
-      <td>32.888158</td>
-      <td>27.261628</td>
-      <td>29.072848</td>
-      <td>30.692308</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2021-09-22</th>
-      <td>-0.074328</td>
-      <td>NaN</td>
-      <td>-0.079199</td>
-      <td>-0.087292</td>
-      <td>-0.133837</td>
-      <td>0.476190</td>
-      <td>0.031746</td>
-      <td>-0.075712</td>
-      <td>NaN</td>
-      <td>-0.112403</td>
-      <td>...</td>
-      <td>31138.0</td>
-      <td>419.0</td>
-      <td>1026.0</td>
-      <td>22.957808</td>
-      <td>NaN</td>
-      <td>31.348837</td>
-      <td>25.809384</td>
-      <td>29.431002</td>
-      <td>29.928571</td>
-      <td>24.428571</td>
-    </tr>
-    <tr>
-      <th>2021-11-03</th>
+      <th>2021-12-01</th>
       <td>-0.046022</td>
       <td>NaN</td>
-      <td>-0.064255</td>
-      <td>-0.089881</td>
-      <td>-0.030345</td>
-      <td>0.215686</td>
-      <td>-0.120000</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
       <td>-0.048109</td>
       <td>NaN</td>
-      <td>-0.080851</td>
+      <td>NaN</td>
       <td>...</td>
-      <td>26096.0</td>
-      <td>538.0</td>
-      <td>556.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
       <td>22.539497</td>
       <td>NaN</td>
-      <td>31.880851</td>
-      <td>27.720238</td>
-      <td>31.980392</td>
-      <td>31.647059</td>
-      <td>27.800000</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2021-12-02</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>-0.077381</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>6514.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>36.188889</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>2021-12-15</th>
@@ -2494,389 +2224,51 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_sentiment_data_recen
       <td>NaN</td>
       <td>-0.043929</td>
       <td>-0.075441</td>
-      <td>-0.356613</td>
+      <td>NaN</td>
       <td>0.166667</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>-0.064286</td>
       <td>...</td>
-      <td>3694.0</td>
+      <td>NaN</td>
       <td>489.0</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>30.521429</td>
       <td>37.587413</td>
-      <td>29.317460</td>
+      <td>NaN</td>
       <td>27.166667</td>
       <td>NaN</td>
     </tr>
-  </tbody>
-</table>
-<p>286 rows × 35 columns</p>
-</div></div></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;pipeline/pivot&#39;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="s1">&#39;next_meeting&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;content_type&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;polarity_mean&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_diffusion&#39;</span><span class="p">,</span> <span class="s1">&#39;num_examples&#39;</span><span class="p">,</span> <span class="s1">&#39;num_tokens_sum&#39;</span><span class="p">,</span> <span class="s1">&#39;num_tokens_mean&#39;</span><span class="p">]</span>
-<span class="n">data_next</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">fomc_sentiment_next</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
-<span class="n">data_next</span> <span class="o">=</span> <span class="n">data_next</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;next_meeting&#39;</span><span class="p">)</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">data_next</span><span class="p">,</span> <span class="s1">&#39;fomc_sentiment_data_next.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function pivot at 0x7f0abf86c1f0&gt;)
-INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_sentiment_data_next.parquet
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_next</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;fomc_sentiment_data_next.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
-<span class="n">data_next</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>polarity_mean_beigebook</th>
-      <th>polarity_mean_meeting_script</th>
-      <th>polarity_mean_minutes</th>
-      <th>polarity_mean_press_conf</th>
-      <th>polarity_mean_speech</th>
-      <th>polarity_mean_statement</th>
-      <th>polarity_mean_testimony</th>
-      <th>polarity_diffusion_beigebook</th>
-      <th>polarity_diffusion_meeting_script</th>
-      <th>polarity_diffusion_minutes</th>
-      <th>...</th>
-      <th>num_tokens_sum_speech</th>
-      <th>num_tokens_sum_statement</th>
-      <th>num_tokens_sum_testimony</th>
-      <th>num_tokens_mean_beigebook</th>
-      <th>num_tokens_mean_meeting_script</th>
-      <th>num_tokens_mean_minutes</th>
-      <th>num_tokens_mean_press_conf</th>
-      <th>num_tokens_mean_speech</th>
-      <th>num_tokens_mean_statement</th>
-      <th>num_tokens_mean_testimony</th>
-    </tr>
     <tr>
-      <th>next_meeting</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1990-03-27</th>
+      <th>2021-12-17</th>
       <td>NaN</td>
-      <td>-0.087583</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>-0.095663</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>30.213010</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1990-04-11</th>
-      <td>NaN</td>
-      <td>-0.171992</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>-0.179702</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>29.846369</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1990-07-03</th>
-      <td>NaN</td>
-      <td>-0.116052</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>-0.125461</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>29.749077</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1990-08-21</th>
-      <td>NaN</td>
-      <td>-0.114829</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>-0.117794</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>29.667920</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1990-09-07</th>
-      <td>NaN</td>
-      <td>-0.209552</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>-0.219403</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>31.032836</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>2021-07-28</th>
-      <td>0.011743</td>
-      <td>NaN</td>
-      <td>0.041638</td>
-      <td>-0.017544</td>
-      <td>-0.031786</td>
-      <td>0.435897</td>
-      <td>0.235955</td>
-      <td>0.012195</td>
-      <td>NaN</td>
-      <td>0.031142</td>
-      <td>...</td>
-      <td>6894.0</td>
-      <td>384.0</td>
-      <td>2522.0</td>
-      <td>21.413279</td>
-      <td>NaN</td>
-      <td>30.615917</td>
-      <td>27.100000</td>
-      <td>29.088608</td>
-      <td>29.538462</td>
-      <td>28.337079</td>
-    </tr>
-    <tr>
-      <th>2021-09-22</th>
-      <td>-0.120547</td>
-      <td>NaN</td>
-      <td>-0.043969</td>
-      <td>0.021318</td>
-      <td>-0.042941</td>
-      <td>0.461538</td>
-      <td>NaN</td>
-      <td>-0.134921</td>
-      <td>NaN</td>
-      <td>-0.069079</td>
-      <td>...</td>
-      <td>13170.0</td>
-      <td>399.0</td>
-      <td>NaN</td>
-      <td>20.980159</td>
-      <td>NaN</td>
-      <td>32.888158</td>
-      <td>27.261628</td>
-      <td>29.072848</td>
-      <td>30.692308</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2021-11-03</th>
-      <td>-0.074328</td>
-      <td>NaN</td>
-      <td>-0.079199</td>
-      <td>-0.087292</td>
-      <td>-0.133837</td>
-      <td>0.476190</td>
-      <td>0.031746</td>
-      <td>-0.075712</td>
-      <td>NaN</td>
-      <td>-0.112403</td>
-      <td>...</td>
-      <td>31138.0</td>
-      <td>419.0</td>
-      <td>1026.0</td>
-      <td>22.957808</td>
-      <td>NaN</td>
-      <td>31.348837</td>
-      <td>25.809384</td>
-      <td>29.431002</td>
-      <td>29.928571</td>
-      <td>24.428571</td>
-    </tr>
-    <tr>
-      <th>2021-12-15</th>
-      <td>-0.046022</td>
-      <td>NaN</td>
-      <td>-0.064255</td>
-      <td>-0.089881</td>
-      <td>-0.030345</td>
-      <td>0.215686</td>
-      <td>-0.120000</td>
-      <td>-0.048109</td>
-      <td>NaN</td>
-      <td>-0.080851</td>
-      <td>...</td>
-      <td>26096.0</td>
-      <td>538.0</td>
-      <td>556.0</td>
-      <td>22.539497</td>
-      <td>NaN</td>
-      <td>31.880851</td>
-      <td>27.720238</td>
-      <td>31.980392</td>
-      <td>31.647059</td>
-      <td>27.800000</td>
-    </tr>
-    <tr>
-      <th>2022-01-26</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>-0.043929</td>
-      <td>-0.075441</td>
       <td>-0.356613</td>
-      <td>0.166667</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>-0.064286</td>
+      <td>NaN</td>
+      <td>NaN</td>
       <td>...</td>
       <td>3694.0</td>
-      <td>489.0</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>30.521429</td>
-      <td>37.587413</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
       <td>29.317460</td>
-      <td>27.166667</td>
+      <td>NaN</td>
       <td>NaN</td>
     </tr>
   </tbody>
 </table>
-<p>286 rows × 35 columns</p>
+<p>1876 rows × 35 columns</p>
 </div></div></div>
 </div>
 </div>
@@ -2895,18 +2287,19 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_sentiment_data_next.
 <span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model_cfg</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">base_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;fomc_sent_sentiments.parquet&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">aggregate_scores</span><span class="o">.</span><span class="n">groupby</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;content_type&#39;</span><span class="p">,</span> <span class="s1">&#39;recent_meeting&#39;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">aggregate_scores</span><span class="o">.</span><span class="n">groupby</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;content_type&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">]</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">apply_to</span> <span class="o">=</span> <span class="s1">&#39;content_type&#39;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">to_replace</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fomc_&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">regex</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">pivot</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="s1">&#39;recent_meeting&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">pivot</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="s1">&#39;date&#39;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">pivot</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;content_type&#39;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">pivot</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;polarity_mean&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_diffusion&#39;</span><span class="p">,</span> <span class="s1">&#39;num_examples&#39;</span><span class="p">,</span> <span class="s1">&#39;num_tokens_sum&#39;</span><span class="p">,</span> <span class="s1">&#39;num_tokens_mean&#39;</span><span class="p">]</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="s1">&#39;fomc_sentiment_data_recent.parquet&#39;</span>
-<span class="n">data_recent</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
-<span class="n">data_recent</span> <span class="o">=</span> <span class="n">data_reecnt</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;recent_meeting&#39;</span><span class="p">)</span>
-<span class="n">data_recent</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="s1">&#39;fomc_tone_data_lm.parquet&#39;</span>
+<span class="n">tone_data_lm</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">tone_data_lm</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">tone_data_lm</span><span class="p">,</span> <span class="n">_columns</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">)</span>
+<span class="n">tone_data_lm</span> <span class="o">=</span> <span class="n">tone_data_lm</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">tone_data_lm</span><span class="p">,</span> <span class="s1">&#39;fomc_tone_data_lm.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -3282,371 +2675,22 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_sentiment_data.parqu
 <span class="n">cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;fomc_sent_sentiments.parquet&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">aggregate_scores</span><span class="o">.</span><span class="n">groupby</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;content_type&#39;</span><span class="p">,</span> <span class="s1">&#39;next_meeting&#39;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">aggregate_scores</span><span class="o">.</span><span class="n">groupby</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;content_type&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">]</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">apply_to</span> <span class="o">=</span> <span class="s1">&#39;content_type&#39;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">to_replace</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fomc_&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">regex</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">pivot</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="s1">&#39;next_meeting&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">pivot</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="s1">&#39;date&#39;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">pivot</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;content_type&#39;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">pivot</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;polarity_mean&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_diffusion&#39;</span><span class="p">,</span> <span class="s1">&#39;num_examples&#39;</span><span class="p">,</span> <span class="s1">&#39;num_tokens_sum&#39;</span><span class="p">,</span> <span class="s1">&#39;num_tokens_mean&#39;</span><span class="p">]</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="s1">&#39;fomc_sentiment_data_next.parquet&#39;</span>
-<span class="n">data_next</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
-<span class="n">data_next</span> <span class="o">=</span> <span class="n">data_next</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;next_meeting&#39;</span><span class="p">)</span>
-<span class="n">data_next</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="s1">&#39;fomc_tone_data_lm.parquet&#39;</span>
+<span class="n">tone_data_lm</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">tone_data_lm</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">tone_data_lm</span><span class="p">,</span> <span class="n">_columns</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">)</span>
+<span class="n">tone_data_lm</span> <span class="o">=</span> <span class="n">tone_data_lm</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">tone_data_lm</span><span class="p">,</span> <span class="s1">&#39;fomc_tone_data_lm.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;fomc_sent_sentiments.parquet&#39;]
-INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_sent_sentiments.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_sent_sentiments.parquet
-INFO:ekorpkit.pipelines.pipe:Applying pipeline: OrderedDict([(&#39;aggregate_scores&#39;, &#39;aggregate_scores&#39;), (&#39;replace&#39;, &#39;replace&#39;), (&#39;pivot&#39;, &#39;pivot&#39;), (&#39;save_dataframe&#39;, &#39;save_dataframe&#39;)])
-INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function aggregate_scores at 0x7f0abf86c8b0&gt;)
-INFO:ekorpkit.base:instantiating ekorpkit.models.sentiment.base.BaseSentimentAnalyser...
-INFO:ekorpkit.pipelines.pipe:filename not specified
-INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function general_function at 0x7f0abf86cc10&gt;)
-INFO:ekorpkit.pipelines.pipe:processing column: content_type
-INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to replace: 0:00:00.003082
-INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function pivot at 0x7f0abf86c1f0&gt;)
-INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function save_dataframe at 0x7f0abf7043a0&gt;)
-INFO:ekorpkit.io.file:Saving dataframe to ../data/fomc/fomc_sentiment_data_next.parquet
-</pre></div>
-</div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>polarity_mean_beigebook</th>
-      <th>polarity_mean_meeting_script</th>
-      <th>polarity_mean_minutes</th>
-      <th>polarity_mean_press_conf</th>
-      <th>polarity_mean_speech</th>
-      <th>polarity_mean_statement</th>
-      <th>polarity_mean_testimony</th>
-      <th>polarity_diffusion_beigebook</th>
-      <th>polarity_diffusion_meeting_script</th>
-      <th>polarity_diffusion_minutes</th>
-      <th>...</th>
-      <th>num_tokens_sum_speech</th>
-      <th>num_tokens_sum_statement</th>
-      <th>num_tokens_sum_testimony</th>
-      <th>num_tokens_mean_beigebook</th>
-      <th>num_tokens_mean_meeting_script</th>
-      <th>num_tokens_mean_minutes</th>
-      <th>num_tokens_mean_press_conf</th>
-      <th>num_tokens_mean_speech</th>
-      <th>num_tokens_mean_statement</th>
-      <th>num_tokens_mean_testimony</th>
-    </tr>
-    <tr>
-      <th>next_meeting</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1990-03-27</th>
-      <td>NaN</td>
-      <td>-0.087583</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>-0.095663</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>30.213010</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1990-04-11</th>
-      <td>NaN</td>
-      <td>-0.171992</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>-0.179702</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>29.846369</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1990-07-03</th>
-      <td>NaN</td>
-      <td>-0.116052</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>-0.125461</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>29.749077</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1990-08-21</th>
-      <td>NaN</td>
-      <td>-0.114829</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>-0.117794</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>29.667920</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1990-09-07</th>
-      <td>NaN</td>
-      <td>-0.209552</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>-0.219403</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>31.032836</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>2021-07-28</th>
-      <td>0.011743</td>
-      <td>NaN</td>
-      <td>0.041638</td>
-      <td>-0.017544</td>
-      <td>-0.031786</td>
-      <td>0.435897</td>
-      <td>0.235955</td>
-      <td>0.012195</td>
-      <td>NaN</td>
-      <td>0.031142</td>
-      <td>...</td>
-      <td>6894.0</td>
-      <td>384.0</td>
-      <td>2522.0</td>
-      <td>21.413279</td>
-      <td>NaN</td>
-      <td>30.615917</td>
-      <td>27.100000</td>
-      <td>29.088608</td>
-      <td>29.538462</td>
-      <td>28.337079</td>
-    </tr>
-    <tr>
-      <th>2021-09-22</th>
-      <td>-0.120547</td>
-      <td>NaN</td>
-      <td>-0.043969</td>
-      <td>0.021318</td>
-      <td>-0.042941</td>
-      <td>0.461538</td>
-      <td>NaN</td>
-      <td>-0.134921</td>
-      <td>NaN</td>
-      <td>-0.069079</td>
-      <td>...</td>
-      <td>13170.0</td>
-      <td>399.0</td>
-      <td>NaN</td>
-      <td>20.980159</td>
-      <td>NaN</td>
-      <td>32.888158</td>
-      <td>27.261628</td>
-      <td>29.072848</td>
-      <td>30.692308</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2021-11-03</th>
-      <td>-0.074328</td>
-      <td>NaN</td>
-      <td>-0.079199</td>
-      <td>-0.087292</td>
-      <td>-0.133837</td>
-      <td>0.476190</td>
-      <td>0.031746</td>
-      <td>-0.075712</td>
-      <td>NaN</td>
-      <td>-0.112403</td>
-      <td>...</td>
-      <td>31138.0</td>
-      <td>419.0</td>
-      <td>1026.0</td>
-      <td>22.957808</td>
-      <td>NaN</td>
-      <td>31.348837</td>
-      <td>25.809384</td>
-      <td>29.431002</td>
-      <td>29.928571</td>
-      <td>24.428571</td>
-    </tr>
-    <tr>
-      <th>2021-12-15</th>
-      <td>-0.046022</td>
-      <td>NaN</td>
-      <td>-0.064255</td>
-      <td>-0.089881</td>
-      <td>-0.030345</td>
-      <td>0.215686</td>
-      <td>-0.120000</td>
-      <td>-0.048109</td>
-      <td>NaN</td>
-      <td>-0.080851</td>
-      <td>...</td>
-      <td>26096.0</td>
-      <td>538.0</td>
-      <td>556.0</td>
-      <td>22.539497</td>
-      <td>NaN</td>
-      <td>31.880851</td>
-      <td>27.720238</td>
-      <td>31.980392</td>
-      <td>31.647059</td>
-      <td>27.800000</td>
-    </tr>
-    <tr>
-      <th>2022-01-26</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>-0.043929</td>
-      <td>-0.075441</td>
-      <td>-0.356613</td>
-      <td>0.166667</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>-0.064286</td>
-      <td>...</td>
-      <td>3694.0</td>
-      <td>489.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>30.521429</td>
-      <td>37.587413</td>
-      <td>29.317460</td>
-      <td>27.166667</td>
-      <td>NaN</td>
-    </tr>
-  </tbody>
-</table>
-<p>286 rows × 35 columns</p>
-</div></div></div>
 </div>
 </div>
 <div class="section" id="predict-sentiments-with-the-finbert">
@@ -3699,7 +2743,7 @@ ___________________________________________________
 weighted avg       0.90      0.90      0.90       452
 </pre></div>
 </div>
-<img alt="../../../_images/07_FOMC_sentiments_23_3.png" src="../../../_images/07_FOMC_sentiments_23_3.png" />
+<img alt="../../../_images/07_FOMC_sentiments_20_3.png" src="../../../_images/07_FOMC_sentiments_20_3.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -4216,371 +3260,36 @@ weighted avg       0.90      0.90      0.90       452
 <span class="n">cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;fomc_sent_sentiments_finbert.parquet&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">aggregate_scores</span><span class="o">.</span><span class="n">groupby</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;content_type&#39;</span><span class="p">,</span> <span class="s1">&#39;next_meeting&#39;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">aggregate_scores</span><span class="o">.</span><span class="n">groupby</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;content_type&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">]</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">aggregate_scores</span><span class="o">.</span><span class="n">_method_</span> <span class="o">=</span> <span class="s1">&#39;classification&#39;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">apply_to</span> <span class="o">=</span> <span class="s1">&#39;content_type&#39;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">to_replace</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fomc_&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">regex</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">pivot</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="s1">&#39;next_meeting&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">pivot</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="s1">&#39;date&#39;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">pivot</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;content_type&#39;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">pivot</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;polarity_mean&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_diffusion&#39;</span><span class="p">,</span> <span class="s1">&#39;num_examples&#39;</span><span class="p">]</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="s1">&#39;fomc_sentiment_finbert_next.parquet&#39;</span>
-<span class="n">finbert_next</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
-<span class="n">finbert_next</span> <span class="o">=</span> <span class="n">finbert_next</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;next_meeting&#39;</span><span class="p">)</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">finbert_next</span><span class="p">,</span> <span class="s1">&#39;fomc_sentiment_finbert_next.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
-<span class="n">finbert_next</span>
+<span class="n">tone_data_finbert</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">tone_data_finbert</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">tone_data_finbert</span><span class="p">,</span> <span class="n">_columns</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">)</span>
+<span class="n">tone_data_finbert</span> <span class="o">=</span> <span class="n">tone_data_finbert</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">tone_data_finbert</span><span class="p">,</span> <span class="s1">&#39;fomc_tone_data_finbert.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>polarity_mean_beigebook</th>
-      <th>polarity_mean_meeting_script</th>
-      <th>polarity_mean_minutes</th>
-      <th>polarity_mean_press_conf</th>
-      <th>polarity_mean_speech</th>
-      <th>polarity_mean_statement</th>
-      <th>polarity_mean_testimony</th>
-      <th>polarity_diffusion_beigebook</th>
-      <th>polarity_diffusion_meeting_script</th>
-      <th>polarity_diffusion_minutes</th>
-      <th>...</th>
-      <th>polarity_diffusion_speech</th>
-      <th>polarity_diffusion_statement</th>
-      <th>polarity_diffusion_testimony</th>
-      <th>num_examples_beigebook</th>
-      <th>num_examples_meeting_script</th>
-      <th>num_examples_minutes</th>
-      <th>num_examples_press_conf</th>
-      <th>num_examples_speech</th>
-      <th>num_examples_statement</th>
-      <th>num_examples_testimony</th>
-    </tr>
-    <tr>
-      <th>next_meeting</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1990-03-27</th>
-      <td>NaN</td>
-      <td>0.335507</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.443878</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>784.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1990-04-11</th>
-      <td>NaN</td>
-      <td>0.264770</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.350093</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>1074.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1990-07-03</th>
-      <td>NaN</td>
-      <td>0.377872</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.501845</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>542.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1990-08-21</th>
-      <td>NaN</td>
-      <td>0.328752</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.434837</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>798.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1990-09-07</th>
-      <td>NaN</td>
-      <td>0.377492</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.507463</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>670.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>2021-07-28</th>
-      <td>0.568735</td>
-      <td>NaN</td>
-      <td>0.484200</td>
-      <td>0.291998</td>
-      <td>0.189272</td>
-      <td>0.376550</td>
-      <td>0.464566</td>
-      <td>0.752033</td>
-      <td>NaN</td>
-      <td>0.640138</td>
-      <td>...</td>
-      <td>0.257384</td>
-      <td>0.461538</td>
-      <td>0.640449</td>
-      <td>738.0</td>
-      <td>NaN</td>
-      <td>289.0</td>
-      <td>380.0</td>
-      <td>237.0</td>
-      <td>13.0</td>
-      <td>89.0</td>
-    </tr>
-    <tr>
-      <th>2021-09-22</th>
-      <td>0.567048</td>
-      <td>NaN</td>
-      <td>0.465281</td>
-      <td>0.278891</td>
-      <td>0.294276</td>
-      <td>0.429236</td>
-      <td>NaN</td>
-      <td>0.743386</td>
-      <td>NaN</td>
-      <td>0.611842</td>
-      <td>...</td>
-      <td>0.392936</td>
-      <td>0.538462</td>
-      <td>NaN</td>
-      <td>756.0</td>
-      <td>NaN</td>
-      <td>304.0</td>
-      <td>344.0</td>
-      <td>453.0</td>
-      <td>13.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2021-11-03</th>
-      <td>0.496663</td>
-      <td>NaN</td>
-      <td>0.499861</td>
-      <td>0.222723</td>
-      <td>0.339912</td>
-      <td>0.448015</td>
-      <td>0.321341</td>
-      <td>0.653669</td>
-      <td>NaN</td>
-      <td>0.651163</td>
-      <td>...</td>
-      <td>0.449905</td>
-      <td>0.571429</td>
-      <td>0.428571</td>
-      <td>16259.0</td>
-      <td>NaN</td>
-      <td>258.0</td>
-      <td>341.0</td>
-      <td>1058.0</td>
-      <td>14.0</td>
-      <td>42.0</td>
-    </tr>
-    <tr>
-      <th>2021-12-15</th>
-      <td>0.503438</td>
-      <td>NaN</td>
-      <td>0.529321</td>
-      <td>0.251157</td>
-      <td>0.283788</td>
-      <td>0.495847</td>
-      <td>0.466916</td>
-      <td>0.662495</td>
-      <td>NaN</td>
-      <td>0.706383</td>
-      <td>...</td>
-      <td>0.378676</td>
-      <td>0.647059</td>
-      <td>0.600000</td>
-      <td>14862.0</td>
-      <td>NaN</td>
-      <td>235.0</td>
-      <td>336.0</td>
-      <td>816.0</td>
-      <td>17.0</td>
-      <td>20.0</td>
-    </tr>
-    <tr>
-      <th>2022-01-26</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.509806</td>
-      <td>0.280516</td>
-      <td>0.408242</td>
-      <td>0.412947</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.675000</td>
-      <td>...</td>
-      <td>0.547619</td>
-      <td>0.555556</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>280.0</td>
-      <td>286.0</td>
-      <td>126.0</td>
-      <td>18.0</td>
-      <td>NaN</td>
-    </tr>
-  </tbody>
-</table>
-<p>286 rows × 21 columns</p>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">finbert_next</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;fomc_sentiment_finbert_next.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tone_data_finbert</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;fomc_tone_data_finbert.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
 
 <span class="n">cols</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;polarity_mean_minutes&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_mean_press_conf&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_mean_speech&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_mean_statement&#39;</span><span class="p">,</span>
     <span class="s1">&#39;polarity_diffusion_minutes&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_diffusion_press_conf&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_diffusion_speech&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_diffusion_statement&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
-<span class="n">finbert_tone_next</span> <span class="o">=</span>  <span class="n">finbert_next</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">finbert_tone_next</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">finbert_tone_next</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;polarity&#39;</span><span class="p">,</span> <span class="s1">&#39;finbert&#39;</span><span class="p">)</span>
-<span class="n">finbert_tone_next</span>
+<span class="n">tone_data_finbert</span> <span class="o">=</span>  <span class="n">tone_data_finbert</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tone_data_finbert</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">tone_data_finbert</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;polarity&#39;</span><span class="p">,</span> <span class="s1">&#39;finbert&#39;</span><span class="p">)</span>
+<span class="n">tone_data_finbert</span>
 </pre></div>
 </div>
 </div>
@@ -4613,7 +3322,7 @@ weighted avg       0.90      0.90      0.90       452
       <th>finbert_diffusion_statement</th>
     </tr>
     <tr>
-      <th>next_meeting</th>
+      <th>date</th>
       <th></th>
       <th></th>
       <th></th>
@@ -4626,6 +3335,17 @@ weighted avg       0.90      0.90      0.90       452
   </thead>
   <tbody>
     <tr>
+      <th>1990-02-07</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
       <th>1990-03-27</th>
       <td>NaN</td>
       <td>NaN</td>
@@ -4637,7 +3357,7 @@ weighted avg       0.90      0.90      0.90       452
       <td>NaN</td>
     </tr>
     <tr>
-      <th>1990-04-11</th>
+      <th>1990-05-15</th>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -4670,17 +3390,6 @@ weighted avg       0.90      0.90      0.90       452
       <td>NaN</td>
     </tr>
     <tr>
-      <th>1990-09-07</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
       <th>...</th>
       <td>...</td>
       <td>...</td>
@@ -4692,63 +3401,63 @@ weighted avg       0.90      0.90      0.90       452
       <td>...</td>
     </tr>
     <tr>
-      <th>2021-07-28</th>
-      <td>0.484200</td>
-      <td>0.291998</td>
-      <td>0.189272</td>
-      <td>0.376550</td>
-      <td>0.640138</td>
-      <td>0.386842</td>
-      <td>0.257384</td>
-      <td>0.461538</td>
+      <th>2021-11-30</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.182338</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.239583</td>
+      <td>NaN</td>
     </tr>
     <tr>
-      <th>2021-09-22</th>
-      <td>0.465281</td>
-      <td>0.278891</td>
-      <td>0.294276</td>
-      <td>0.429236</td>
-      <td>0.611842</td>
-      <td>0.369186</td>
-      <td>0.392936</td>
-      <td>0.538462</td>
+      <th>2021-12-01</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
-      <th>2021-11-03</th>
-      <td>0.499861</td>
-      <td>0.222723</td>
-      <td>0.339912</td>
-      <td>0.448015</td>
-      <td>0.651163</td>
-      <td>0.299120</td>
-      <td>0.449905</td>
-      <td>0.571429</td>
+      <th>2021-12-02</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.262141</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.338889</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>2021-12-15</th>
-      <td>0.529321</td>
-      <td>0.251157</td>
-      <td>0.283788</td>
-      <td>0.495847</td>
-      <td>0.706383</td>
-      <td>0.333333</td>
-      <td>0.378676</td>
-      <td>0.647059</td>
-    </tr>
-    <tr>
-      <th>2022-01-26</th>
       <td>0.509806</td>
       <td>0.280516</td>
-      <td>0.408242</td>
+      <td>NaN</td>
       <td>0.412947</td>
-      <td>0.675000</td>
+      <td>0.675</td>
       <td>0.377622</td>
-      <td>0.547619</td>
+      <td>NaN</td>
       <td>0.555556</td>
+    </tr>
+    <tr>
+      <th>2021-12-17</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.408242</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.547619</td>
+      <td>NaN</td>
     </tr>
   </tbody>
 </table>
-<p>286 rows × 8 columns</p>
+<p>1876 rows × 8 columns</p>
 </div></div></div>
 </div>
 </div>
@@ -4867,7 +3576,7 @@ ___________________________________________________
 weighted avg       0.95      0.95      0.95       452
 </pre></div>
 </div>
-<img alt="../../../_images/07_FOMC_sentiments_29_19.png" src="../../../_images/07_FOMC_sentiments_29_19.png" />
+<img alt="../../../_images/07_FOMC_sentiments_26_19.png" src="../../../_images/07_FOMC_sentiments_26_19.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -5081,278 +3790,35 @@ For a more complete example, see the implementation of `prepare_seq2seq_batch`.
 <span class="n">cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;fomc_sent_sentiments_t5.parquet&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">aggregate_scores</span><span class="o">.</span><span class="n">groupby</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;content_type&#39;</span><span class="p">,</span> <span class="s1">&#39;next_meeting&#39;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">aggregate_scores</span><span class="o">.</span><span class="n">groupby</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;content_type&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">]</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">aggregate_scores</span><span class="o">.</span><span class="n">_method_</span> <span class="o">=</span> <span class="s1">&#39;classification_t5&#39;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">apply_to</span> <span class="o">=</span> <span class="s1">&#39;content_type&#39;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">to_replace</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fomc_&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">regex</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">pivot</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="s1">&#39;next_meeting&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">pivot</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="s1">&#39;date&#39;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">pivot</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;content_type&#39;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">pivot</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;polarity_diffusion&#39;</span><span class="p">,</span> <span class="s1">&#39;num_examples&#39;</span><span class="p">]</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="s1">&#39;fomc_sentiment_t5_next.parquet&#39;</span>
-<span class="n">t5_next</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
-<span class="n">t5_next</span> <span class="o">=</span> <span class="n">t5_next</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;next_meeting&#39;</span><span class="p">)</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">t5_next</span><span class="p">,</span> <span class="s1">&#39;fomc_sentiment_t5_next.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+<span class="n">tone_data_t5</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">tone_data_t5</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">tone_data_t5</span><span class="p">,</span> <span class="n">_columns</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">)</span>
+<span class="n">tone_data_t5</span> <span class="o">=</span> <span class="n">tone_data_t5</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">tone_data_t5</span><span class="p">,</span> <span class="s1">&#39;fomc_tone_data_t5.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>polarity_diffusion_beigebook</th>
-      <th>polarity_diffusion_meeting_script</th>
-      <th>polarity_diffusion_minutes</th>
-      <th>polarity_diffusion_press_conf</th>
-      <th>polarity_diffusion_speech</th>
-      <th>polarity_diffusion_statement</th>
-      <th>polarity_diffusion_testimony</th>
-      <th>num_examples_beigebook</th>
-      <th>num_examples_meeting_script</th>
-      <th>num_examples_minutes</th>
-      <th>num_examples_press_conf</th>
-      <th>num_examples_speech</th>
-      <th>num_examples_statement</th>
-      <th>num_examples_testimony</th>
-    </tr>
-    <tr>
-      <th>next_meeting</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1990-03-27</th>
-      <td>NaN</td>
-      <td>0.187500</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>784.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1990-04-11</th>
-      <td>NaN</td>
-      <td>0.161080</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>1074.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1990-07-03</th>
-      <td>NaN</td>
-      <td>0.221402</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>542.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1990-08-21</th>
-      <td>NaN</td>
-      <td>0.106516</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>798.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1990-09-07</th>
-      <td>NaN</td>
-      <td>0.191045</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>670.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>2021-07-28</th>
-      <td>0.657182</td>
-      <td>NaN</td>
-      <td>0.456747</td>
-      <td>0.194737</td>
-      <td>0.219409</td>
-      <td>0.615385</td>
-      <td>0.52809</td>
-      <td>738.0</td>
-      <td>NaN</td>
-      <td>289.0</td>
-      <td>380.0</td>
-      <td>237.0</td>
-      <td>13.0</td>
-      <td>89.0</td>
-    </tr>
-    <tr>
-      <th>2021-09-22</th>
-      <td>0.558201</td>
-      <td>NaN</td>
-      <td>0.414474</td>
-      <td>0.197674</td>
-      <td>0.227373</td>
-      <td>0.538462</td>
-      <td>NaN</td>
-      <td>756.0</td>
-      <td>NaN</td>
-      <td>304.0</td>
-      <td>344.0</td>
-      <td>453.0</td>
-      <td>13.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2021-11-03</th>
-      <td>0.443508</td>
-      <td>NaN</td>
-      <td>0.395349</td>
-      <td>0.143695</td>
-      <td>0.234405</td>
-      <td>0.571429</td>
-      <td>0.50000</td>
-      <td>16259.0</td>
-      <td>NaN</td>
-      <td>258.0</td>
-      <td>341.0</td>
-      <td>1058.0</td>
-      <td>14.0</td>
-      <td>42.0</td>
-    </tr>
-    <tr>
-      <th>2021-12-15</th>
-      <td>0.454448</td>
-      <td>NaN</td>
-      <td>0.476596</td>
-      <td>0.172619</td>
-      <td>0.209559</td>
-      <td>0.705882</td>
-      <td>0.55000</td>
-      <td>14862.0</td>
-      <td>NaN</td>
-      <td>235.0</td>
-      <td>336.0</td>
-      <td>816.0</td>
-      <td>17.0</td>
-      <td>20.0</td>
-    </tr>
-    <tr>
-      <th>2022-01-26</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.403571</td>
-      <td>0.216783</td>
-      <td>0.174603</td>
-      <td>0.444444</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>280.0</td>
-      <td>286.0</td>
-      <td>126.0</td>
-      <td>18.0</td>
-      <td>NaN</td>
-    </tr>
-  </tbody>
-</table>
-<p>286 rows × 14 columns</p>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t5_next</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;fomc_sentiment_t5_next.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tone_data_t5</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;fomc_tone_data_t5.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
 
 <span class="n">cols</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;polarity_diffusion_minutes&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_diffusion_press_conf&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_diffusion_speech&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_diffusion_statement&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
-<span class="n">t5_tone_next</span> <span class="o">=</span>  <span class="n">t5_next</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">t5_tone_next</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">t5_tone_next</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;polarity&#39;</span><span class="p">,</span> <span class="s1">&#39;t5&#39;</span><span class="p">)</span>
-<span class="n">t5_tone_next</span>
+<span class="n">tone_data_t5</span> <span class="o">=</span>  <span class="n">tone_data_t5</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tone_data_t5</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">tone_data_t5</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;polarity&#39;</span><span class="p">,</span> <span class="s1">&#39;t5&#39;</span><span class="p">)</span>
+<span class="n">tone_data_t5</span>
 </pre></div>
 </div>
 </div>
@@ -5381,7 +3847,7 @@ For a more complete example, see the implementation of `prepare_seq2seq_batch`.
       <th>t5_diffusion_statement</th>
     </tr>
     <tr>
-      <th>next_meeting</th>
+      <th>date</th>
       <th></th>
       <th></th>
       <th></th>
@@ -5390,6 +3856,13 @@ For a more complete example, see the implementation of `prepare_seq2seq_batch`.
   </thead>
   <tbody>
     <tr>
+      <th>1990-02-07</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
       <th>1990-03-27</th>
       <td>NaN</td>
       <td>NaN</td>
@@ -5397,7 +3870,7 @@ For a more complete example, see the implementation of `prepare_seq2seq_batch`.
       <td>NaN</td>
     </tr>
     <tr>
-      <th>1990-04-11</th>
+      <th>1990-05-15</th>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -5418,13 +3891,6 @@ For a more complete example, see the implementation of `prepare_seq2seq_batch`.
       <td>NaN</td>
     </tr>
     <tr>
-      <th>1990-09-07</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
       <th>...</th>
       <td>...</td>
       <td>...</td>
@@ -5432,43 +3898,43 @@ For a more complete example, see the implementation of `prepare_seq2seq_batch`.
       <td>...</td>
     </tr>
     <tr>
-      <th>2021-07-28</th>
-      <td>0.456747</td>
-      <td>0.194737</td>
-      <td>0.219409</td>
-      <td>0.615385</td>
+      <th>2021-11-30</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.239583</td>
+      <td>NaN</td>
     </tr>
     <tr>
-      <th>2021-09-22</th>
-      <td>0.414474</td>
-      <td>0.197674</td>
-      <td>0.227373</td>
-      <td>0.538462</td>
+      <th>2021-12-01</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
-      <th>2021-11-03</th>
-      <td>0.395349</td>
-      <td>0.143695</td>
-      <td>0.234405</td>
-      <td>0.571429</td>
+      <th>2021-12-02</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.250000</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>2021-12-15</th>
-      <td>0.476596</td>
-      <td>0.172619</td>
-      <td>0.209559</td>
-      <td>0.705882</td>
-    </tr>
-    <tr>
-      <th>2022-01-26</th>
       <td>0.403571</td>
       <td>0.216783</td>
-      <td>0.174603</td>
+      <td>NaN</td>
       <td>0.444444</td>
+    </tr>
+    <tr>
+      <th>2021-12-17</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.174603</td>
+      <td>NaN</td>
     </tr>
   </tbody>
 </table>
-<p>286 rows × 4 columns</p>
+<p>1876 rows × 4 columns</p>
 </div></div></div>
 </div>
 </div>
