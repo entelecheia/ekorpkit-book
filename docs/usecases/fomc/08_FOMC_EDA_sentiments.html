@@ -877,16 +877,9 @@ title="Print to PDF"
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#generate-impulse-response-functions">
-     Generate impulse response functions
+    <a class="reference internal nav-link" href="#plot-impulse-response-functions">
+     Plot impulse response functions
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#impulse-responses-due-to-monetary-policy-shock">
-       Impulse responses due to monetary policy shock
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -954,16 +947,9 @@ title="Print to PDF"
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#generate-impulse-response-functions">
-     Generate impulse response functions
+    <a class="reference internal nav-link" href="#plot-impulse-response-functions">
+     Plot impulse response functions
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#impulse-responses-due-to-monetary-policy-shock">
-       Impulse responses due to monetary policy shock
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -985,7 +971,7 @@ title="Print to PDF"
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_format=&#39;retina&#39;
 <span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
 
-<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;WARNING&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;version:&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is notebook?&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_notebook</span><span class="p">())</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is colab?&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">())</span>
@@ -999,15 +985,18 @@ title="Print to PDF"
 INFO:ekorpkit.base:Google Colab not detected.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.34+0.g46cf4bf.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.34+9.gfb7fd19.dirty
 is notebook? True
 is colab? False
 evironment varialbles:
-{&#39;EKORPKIT_CONFIG_DIR&#39;: &#39;/workspace/projects/ekorpkit-book/config&#39;,
+{&#39;CUDA_DEVICE_ORDER&#39;: None,
+ &#39;CUDA_VISIBLE_DEVICES&#39;: None,
+ &#39;EKORPKIT_CONFIG_DIR&#39;: &#39;/workspace/projects/ekorpkit-book/config&#39;,
  &#39;EKORPKIT_DATA_DIR&#39;: None,
- &#39;EKORPKIT_LOG_LEVEL&#39;: None,
+ &#39;EKORPKIT_LOG_LEVEL&#39;: &#39;WARNING&#39;,
  &#39;EKORPKIT_PROJECT&#39;: &#39;ekorpkit-book&#39;,
  &#39;EKORPKIT_WORKSPACE_ROOT&#39;: &#39;/workspace&#39;,
+ &#39;KMP_DUPLICATE_LIB_OK&#39;: &#39;TRUE&#39;,
  &#39;NUM_WORKERS&#39;: 230}
 </pre></div>
 </div>
@@ -1037,11 +1026,6 @@ evironment varialbles:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;fomc_tone_data_lm.parquet&#39;]
-INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/fomc/fomc_tone_data_lm.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_tone_data_lm.parquet
-</pre></div>
-</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1699,6 +1683,11 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_tone_data_lm.parquet
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:IPython version: (6, 9, 0), client: jupyter_client
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2260,21 +2249,31 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_tone_data_lm.parquet
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 415/415 [00:00&lt;00:00, 2155.29it/s]
-100%|██████████| 415/415 [00:00&lt;00:00, 3194.20it/s]
-100%|██████████| 415/415 [00:00&lt;00:00, 2127.60it/s]
-100%|██████████| 415/415 [00:00&lt;00:00, 2215.69it/s]
-100%|██████████| 415/415 [00:00&lt;00:00, 2182.57it/s]
-100%|██████████| 415/415 [00:00&lt;00:00, 3191.42it/s]
-100%|██████████| 415/415 [00:00&lt;00:00, 2096.83it/s]
-100%|██████████| 415/415 [00:00&lt;00:00, 2199.87it/s]
-100%|██████████| 415/415 [00:00&lt;00:00, 2146.15it/s]
-100%|██████████| 415/415 [00:00&lt;00:00, 3106.10it/s]
-100%|██████████| 415/415 [00:00&lt;00:00, 2048.71it/s]
-100%|██████████| 415/415 [00:00&lt;00:00, 2141.26it/s]
-</pre></div>
-</div>
-<div class="output text_html"><div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "a230c416f3d24952a4a6cc4d64bf776f", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "087ffc40b638437aa6e0951ac52dd414", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "4bd7cf34fa3e4fbabd8586fd5f4d419a", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "6b9ed6d8a926466894cdef465f5382b5", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "ad1d20b8ac18455890da041ab0d81f07", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "287f1b7cfe84490da6640f92044d5661", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "7e0d5f22bdff41b596521690d4bef1c1", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "8eae5bdfa66c45efbcba0fca592591c3", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "5f297ddd04634f56acf02b58fca75f5d", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "86ab4a105d884cbfab8565232bf4191e", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "3c371f0b7d13482e9b794309ebafb8e5", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "7f69e4fe9d5648c49fb15bc88a5a7ee3", "version_major": 2, "version_minor": 0}
+</script><div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
@@ -3901,7 +3900,10 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_tone_data_lm.parquet
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:ekorpkit.datasets.base:File fomc_tone_features-dev.parquet not found.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function load_dataframe at 0x7f4a924ba1f0&gt;)
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function reset_index at 0x7f4a921d7ca0&gt;)
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function split_sampling at 0x7f4a921e43a0&gt;)
+WARNING:ekorpkit.datasets.base:File fomc_tone_features-dev.parquet not found.
 </pre></div>
 </div>
 </div>
@@ -4213,44 +4215,51 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_tone_data_lm.parquet
 “Monetary Policy Shocks: What Have We Learned and to What End?”</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ids</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;GDPC1&#39;</span><span class="p">,</span>     <span class="c1"># Real GDP    </span>
-    <span class="s1">&#39;PCECC96&#39;</span><span class="p">,</span>   <span class="c1"># Real Consumption    </span>
-    <span class="s1">&#39;GDPDEF&#39;</span><span class="p">,</span>    <span class="c1"># GDP Deflator</span>
-    <span class="s1">&#39;GPDIC1&#39;</span><span class="p">,</span>    <span class="c1"># Real investment</span>
-    <span class="s1">&#39;COMPRNFB&#39;</span><span class="p">,</span>  <span class="c1"># Real wage</span>
-    <span class="s1">&#39;OPHNFB&#39;</span><span class="p">,</span>    <span class="c1"># Labor productivity</span>
-    <span class="s1">&#39;FEDFUNDS&#39;</span><span class="p">,</span>  <span class="c1"># Federal funds rate</span>
-    <span class="s1">&#39;CP&#39;</span><span class="p">,</span>        <span class="c1"># Real profit</span>
-    <span class="s1">&#39;M2SL&#39;</span><span class="p">,</span>      <span class="c1"># M2</span>
-    <span class="s1">&#39;SP500&#39;</span><span class="p">,</span>     <span class="c1"># SP500</span>
-    <span class="s1">&#39;CPIAUCSL&#39;</span><span class="p">,</span>  <span class="c1"># CPI</span>
-<span class="p">]</span>
-    
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">ids</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;GDPC1&quot;</span><span class="p">:</span> <span class="s2">&quot;Real GDP&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PCECC96&quot;</span><span class="p">:</span> <span class="s2">&quot;Real Consumption&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GDPDEF&quot;</span><span class="p">:</span> <span class="s2">&quot;GDP Deflator&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GPDIC1&quot;</span><span class="p">:</span> <span class="s2">&quot;Real investment&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;COMPRNFB&quot;</span><span class="p">:</span> <span class="s2">&quot;Real wage&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;OPHNFB&quot;</span><span class="p">:</span> <span class="s2">&quot;Labor productivity&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FEDFUNDS&quot;</span><span class="p">:</span> <span class="s2">&quot;Federal funds rate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CP&quot;</span><span class="p">:</span> <span class="s2">&quot;Real profit&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;M2SL&quot;</span><span class="p">:</span> <span class="s2">&quot;M2 Growth&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SP500&quot;</span><span class="p">:</span> <span class="s2">&quot;SP500&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CPIAUCSL&quot;</span><span class="p">:</span> <span class="s2">&quot;CPI&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ids</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
 <span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;io/fetcher=quandl&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">series_name</span> <span class="o">=</span> <span class="s1">&#39;value&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">series_id</span> <span class="o">=</span> <span class="n">ids</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">series_name</span> <span class="o">=</span> <span class="s2">&quot;value&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">series_id</span> <span class="o">=</span> <span class="n">cols</span>
 <span class="c1"># cfg.force_download = True</span>
 <span class="n">quandl</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
 
 <span class="n">econ_data</span> <span class="o">=</span> <span class="n">quandl</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;pipeline/pivot&#39;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="s1">&#39;date&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;series_id&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;pipeline/pivot&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="s2">&quot;date&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="s2">&quot;series_id&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
 <span class="n">econ_data_pivot</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">econ_data</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+
+
+<span class="n">econ_data_pivot</span> <span class="o">=</span> <span class="n">econ_data_pivot</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;Q&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">last</span><span class="p">()</span>
+<span class="n">cols</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;M2SL&quot;</span><span class="p">)</span>
+<span class="n">econ_data_pivot</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">econ_data_pivot</span><span class="p">[</span><span class="n">cols</span><span class="p">])</span>
+<span class="n">econ_data_pivot</span><span class="p">[</span><span class="s2">&quot;M2SL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">econ_data_pivot</span><span class="o">.</span><span class="n">M2SL</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span>
 <span class="n">econ_data_pivot</span>
-<span class="c1"># eKonf.save_data(tone_data_lm, &#39;fomc_tone_data_lm.parquet&#39;, data_dir)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function pivot at 0x7f4a921e4af0&gt;)
+</pre></div>
+</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -4269,7 +4278,6 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_tone_data_lm.parquet
   <thead>
     <tr style="text-align: right;">
       <th>series_id</th>
-      <th>date</th>
       <th>COMPRNFB</th>
       <th>CP</th>
       <th>CPIAUCSL</th>
@@ -4282,234 +4290,6 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_tone_data_lm.parquet
       <th>PCECC96</th>
       <th>SP500</th>
     </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1946-01-01</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>1946-04-01</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>1946-07-01</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>1946-10-01</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>1947-01-01</td>
-      <td>35.824</td>
-      <td>21.97</td>
-      <td>21.48</td>
-      <td>NaN</td>
-      <td>2034.45</td>
-      <td>11.952</td>
-      <td>218.091</td>
-      <td>NaN</td>
-      <td>23.213</td>
-      <td>1277.44</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>3450</th>
-      <td>2022-06-24</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>3911.74</td>
-    </tr>
-    <tr>
-      <th>3451</th>
-      <td>2022-06-27</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>3900.11</td>
-    </tr>
-    <tr>
-      <th>3452</th>
-      <td>2022-06-28</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>3821.55</td>
-    </tr>
-    <tr>
-      <th>3453</th>
-      <td>2022-06-29</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>3818.83</td>
-    </tr>
-    <tr>
-      <th>3454</th>
-      <td>2022-06-30</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>3785.38</td>
-    </tr>
-  </tbody>
-</table>
-<p>3455 rows × 12 columns</p>
-</div></div></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">econ_data_pivot</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;Q&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">last</span><span class="p">()</span>
-<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;COMPRNFB&#39;</span><span class="p">,</span> <span class="s1">&#39;CP&#39;</span><span class="p">,</span> <span class="s1">&#39;CPIAUCSL&#39;</span><span class="p">,</span> <span class="s1">&#39;FEDFUNDS&#39;</span><span class="p">,</span> <span class="s1">&#39;GDPC1&#39;</span><span class="p">,</span> <span class="s1">&#39;GDPDEF&#39;</span><span class="p">,</span> <span class="s1">&#39;GPDIC1&#39;</span><span class="p">,</span> <span class="s1">&#39;OPHNFB&#39;</span><span class="p">,</span> <span class="s1">&#39;PCECC96&#39;</span><span class="p">]</span>
-<span class="n">data</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">cols</span><span class="p">])</span>
-<span class="n">data</span><span class="p">[</span><span class="s1">&#39;M2SL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">M2SL</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span>
-<span class="c1"># data = data[(data.index.year &gt;= 1965) &amp; (data.index.year &lt; 1996)]</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[(</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span> <span class="o">&gt;=</span> <span class="mi">1990</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span> <span class="o">&lt;</span> <span class="mi">2022</span><span class="p">)]</span>
-<span class="c1"># data = data[(data.index.year &gt;= 1999) &amp; (data.index.year &lt; 2020)]</span>
-<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;COMPRNFB&#39;</span><span class="p">,</span> <span class="s1">&#39;CP&#39;</span><span class="p">,</span> <span class="s1">&#39;FEDFUNDS&#39;</span><span class="p">,</span> <span class="s1">&#39;GDPC1&#39;</span><span class="p">,</span> <span class="s1">&#39;GDPDEF&#39;</span><span class="p">,</span> <span class="s1">&#39;GPDIC1&#39;</span><span class="p">,</span> <span class="s1">&#39;M2SL&#39;</span><span class="p">,</span> <span class="s1">&#39;OPHNFB&#39;</span><span class="p">,</span> <span class="s1">&#39;PCECC96&#39;</span><span class="p">]</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
-<span class="n">names</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;wage&#39;</span><span class="p">,</span> <span class="s1">&#39;profit&#39;</span><span class="p">,</span> <span class="s1">&#39;ff&#39;</span><span class="p">,</span> <span class="s1">&#39;gdp&#39;</span><span class="p">,</span> <span class="s1">&#39;gdpdef&#39;</span><span class="p">,</span> <span class="s1">&#39;inv&#39;</span><span class="p">,</span> <span class="s1">&#39;m2_growth&#39;</span><span class="p">,</span> <span class="s1">&#39;prod&#39;</span><span class="p">,</span> <span class="s1">&#39;cons&#39;</span> 
-<span class="p">]</span>
-<span class="n">data</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">names</span>
-
-<span class="n">tone_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;t5_diffusion_minutes&#39;</span><span class="p">]</span>
-<span class="n">f_tone_data</span> <span class="o">=</span> <span class="n">fomc_train_tones</span><span class="p">[</span><span class="n">tone_cols</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
-<span class="n">names</span> <span class="o">=</span> <span class="n">names</span> <span class="o">+</span> <span class="n">tone_cols</span>
-
-<span class="n">tones_q</span> <span class="o">=</span>  <span class="n">f_tone_data</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;Q&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">tones_q</span><span class="p">[</span><span class="n">tone_cols</span><span class="p">]</span><span class="o">.</span><span class="n">ffill</span><span class="p">(),</span> <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">data</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>wage</th>
-      <th>profit</th>
-      <th>ff</th>
-      <th>gdp</th>
-      <th>gdpdef</th>
-      <th>inv</th>
-      <th>m2_growth</th>
-      <th>prod</th>
-      <th>cons</th>
-      <th>t5_diffusion_minutes</th>
-    </tr>
     <tr>
       <th>date</th>
       <th></th>
@@ -4522,73 +4302,79 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_tone_data_lm.parquet
       <th></th>
       <th></th>
       <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>1999-03-31</th>
-      <td>4.490814</td>
-      <td>6.259656</td>
-      <td>1.570697</td>
-      <td>9.426321</td>
-      <td>4.328560</td>
-      <td>7.674761</td>
-      <td>0.013005</td>
-      <td>4.292034</td>
-      <td>8.997270</td>
-      <td>0.413243</td>
+      <th>1946-03-31</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
-      <th>1999-06-30</th>
-      <td>4.487377</td>
-      <td>6.287585</td>
-      <td>1.560248</td>
-      <td>9.434636</td>
-      <td>4.332337</td>
-      <td>7.675385</td>
-      <td>0.016945</td>
-      <td>4.295474</td>
-      <td>9.012469</td>
-      <td>0.494452</td>
+      <th>1946-06-30</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
-      <th>1999-09-30</th>
-      <td>4.488625</td>
-      <td>6.285579</td>
-      <td>1.652497</td>
-      <td>9.447779</td>
-      <td>4.335891</td>
-      <td>7.702454</td>
-      <td>0.013423</td>
-      <td>4.304970</td>
-      <td>9.023648</td>
-      <td>0.583333</td>
+      <th>1946-09-30</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
-      <th>1999-12-31</th>
-      <td>4.500809</td>
-      <td>6.321209</td>
-      <td>1.667707</td>
-      <td>9.464074</td>
-      <td>4.341400</td>
-      <td>7.728898</td>
-      <td>0.015391</td>
-      <td>4.319420</td>
-      <td>9.038169</td>
-      <td>0.575703</td>
+      <th>1946-12-31</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
-      <th>2000-03-31</th>
-      <td>4.525607</td>
-      <td>6.268289</td>
-      <td>1.766442</td>
-      <td>9.467712</td>
-      <td>4.348017</td>
-      <td>7.721840</td>
-      <td>0.015567</td>
-      <td>4.315566</td>
-      <td>9.053176</td>
-      <td>0.478189</td>
+      <th>1947-03-31</th>
+      <td>3.578618</td>
+      <td>3.089678</td>
+      <td>3.091042</td>
+      <td>NaN</td>
+      <td>7.617981</td>
+      <td>2.480899</td>
+      <td>5.384912</td>
+      <td>NaN</td>
+      <td>3.144712</td>
+      <td>7.152613</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>...</th>
@@ -4602,37 +4388,13 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_tone_data_lm.parquet
       <td>...</td>
       <td>...</td>
       <td>...</td>
-    </tr>
-    <tr>
-      <th>2020-12-31</th>
-      <td>4.755063</td>
-      <td>7.679925</td>
-      <td>-2.407946</td>
-      <td>9.839897</td>
-      <td>4.740042</td>
-      <td>8.178047</td>
-      <td>0.029588</td>
-      <td>4.710107</td>
-      <td>9.467144</td>
-      <td>0.335456</td>
-    </tr>
-    <tr>
-      <th>2021-03-31</th>
-      <td>4.743618</td>
-      <td>7.769629</td>
-      <td>-2.659260</td>
-      <td>9.855119</td>
-      <td>4.750586</td>
-      <td>8.172251</td>
-      <td>0.038113</td>
-      <td>4.715539</td>
-      <td>9.494217</td>
-      <td>0.401315</td>
+      <td>...</td>
     </tr>
     <tr>
       <th>2021-06-30</th>
       <td>4.746253</td>
       <td>7.897441</td>
+      <td>5.601953</td>
       <td>-2.525729</td>
       <td>9.871394</td>
       <td>4.765698</td>
@@ -4640,12 +4402,13 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_tone_data_lm.parquet
       <td>0.030493</td>
       <td>4.723513</td>
       <td>9.522638</td>
-      <td>0.457610</td>
+      <td>8.365789</td>
     </tr>
     <tr>
       <th>2021-09-30</th>
       <td>4.745236</td>
       <td>7.908976</td>
+      <td>5.613909</td>
       <td>-2.525729</td>
       <td>9.877087</td>
       <td>4.780089</td>
@@ -4653,12 +4416,13 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_tone_data_lm.parquet
       <td>0.026018</td>
       <td>4.713495</td>
       <td>9.527514</td>
-      <td>0.435611</td>
+      <td>8.368122</td>
     </tr>
     <tr>
       <th>2021-12-31</th>
       <td>4.751225</td>
       <td>7.901128</td>
+      <td>5.635240</td>
       <td>-2.525729</td>
       <td>9.893755</td>
       <td>4.797343</td>
@@ -4666,33 +4430,119 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_tone_data_lm.parquet
       <td>0.023429</td>
       <td>4.728865</td>
       <td>9.533753</td>
-      <td>0.435972</td>
+      <td>8.469300</td>
+    </tr>
+    <tr>
+      <th>2022-03-31</th>
+      <td>4.739937</td>
+      <td>7.910851</td>
+      <td>5.661946</td>
+      <td>-1.609438</td>
+      <td>9.889790</td>
+      <td>4.817172</td>
+      <td>8.281742</td>
+      <td>0.015165</td>
+      <td>4.709791</td>
+      <td>9.538284</td>
+      <td>8.418568</td>
+    </tr>
+    <tr>
+      <th>2022-06-30</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>5.674951</td>
+      <td>-0.261365</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>-0.002513</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>8.238902</td>
     </tr>
   </tbody>
 </table>
-<p>92 rows × 10 columns</p>
+<p>306 rows × 11 columns</p>
 </div></div></div>
 </div>
-<div class="section" id="generate-impulse-response-functions">
-<h3>Generate impulse response functions<a class="headerlink" href="#generate-impulse-response-functions" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">irfs</span> <span class="o">=</span> <span class="n">fomc</span><span class="o">.</span><span class="n">get_irf</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-<span class="n">irfs</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_irfs</span><span class="p">(</span>
+    <span class="n">from_year</span><span class="o">=</span><span class="mi">1990</span><span class="p">,</span>
+    <span class="n">to_year</span><span class="o">=</span><span class="mi">2021</span><span class="p">,</span>
+    <span class="n">shock_name</span><span class="o">=</span><span class="s2">&quot;Federal funds rate&quot;</span><span class="p">,</span>
+    <span class="n">tone_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">econ_cols</span><span class="o">=</span><span class="p">[</span>
+        <span class="s2">&quot;COMPRNFB&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CP&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;FEDFUNDS&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;GDPC1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;GDPDEF&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;GPDIC1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;M2SL&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;OPHNFB&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;PCECC96&quot;</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">):</span>
+    <span class="n">_data</span> <span class="o">=</span> <span class="n">econ_data_pivot</span><span class="p">[(</span><span class="n">econ_data_pivot</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span> <span class="o">&gt;=</span> <span class="n">from_year</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">econ_data_pivot</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span> <span class="o">&lt;=</span> <span class="n">to_year</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="n">_data</span> <span class="o">=</span> <span class="n">_data</span><span class="p">[</span><span class="n">econ_cols</span><span class="p">]</span>
+    <span class="n">_names</span> <span class="o">=</span> <span class="p">{</span><span class="n">col</span><span class="p">:</span> <span class="n">ids</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">econ_cols</span><span class="p">}</span>
+    <span class="n">_data</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">_names</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">tone_col</span> <span class="ow">in</span> <span class="n">fomc_train_tones</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">f_tone_data</span> <span class="o">=</span> <span class="n">fomc_train_tones</span><span class="p">[[</span><span class="n">tone_col</span><span class="p">]]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+        <span class="n">tones_q</span> <span class="o">=</span> <span class="n">f_tone_data</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;Q&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">_data</span> <span class="o">=</span> <span class="n">_data</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+            <span class="n">tones_q</span><span class="p">[[</span><span class="n">tone_col</span><span class="p">]]</span><span class="o">.</span><span class="n">ffill</span><span class="p">(),</span> <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+    <span class="n">irfs</span> <span class="o">=</span> <span class="n">fomc</span><span class="o">.</span><span class="n">get_irf</span><span class="p">(</span><span class="n">_data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">shock_name</span><span class="p">:</span>
+        <span class="n">fomc</span><span class="o">.</span><span class="n">plot_irf</span><span class="p">(</span><span class="n">irfs</span><span class="p">,</span> <span class="n">shock_name</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">tone_col</span> <span class="ow">in</span> <span class="n">_data</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">fomc</span><span class="o">.</span><span class="n">plot_irf</span><span class="p">(</span><span class="n">irfs</span><span class="p">,</span> <span class="n">tone_col</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="plot-impulse-response-functions">
+<h3>Plot impulse response functions<a class="headerlink" href="#plot-impulse-response-functions" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_irfs</span><span class="p">(</span><span class="n">from_year</span><span class="o">=</span><span class="mi">1965</span><span class="p">,</span> <span class="n">to_year</span><span class="o">=</span><span class="mi">1995</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dict_keys([&#39;wage&#39;, &#39;profit&#39;, &#39;ff&#39;, &#39;gdp&#39;, &#39;gdpdef&#39;, &#39;inv&#39;, &#39;m2_growth&#39;, &#39;prod&#39;, &#39;cons&#39;, &#39;t5_diffusion_minutes&#39;])
+<img alt="../../../_images/08_FOMC_EDA_sentiments_48_0.png" src="../../../_images/08_FOMC_EDA_sentiments_48_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_irfs</span><span class="p">(</span><span class="n">tone_col</span><span class="o">=</span><span class="s2">&quot;t5_diffusion_minutes&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/08_FOMC_EDA_sentiments_49_0.png" src="../../../_images/08_FOMC_EDA_sentiments_49_0.png" />
+<img alt="../../../_images/08_FOMC_EDA_sentiments_49_1.png" src="../../../_images/08_FOMC_EDA_sentiments_49_1.png" />
 </div>
-<div class="section" id="impulse-responses-due-to-monetary-policy-shock">
-<h4>Impulse responses due to monetary policy shock<a class="headerlink" href="#impulse-responses-due-to-monetary-policy-shock" title="Permalink to this headline">#</a></h4>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fomc</span><span class="o">.</span><span class="n">plot_irf</span><span class="p">(</span><span class="n">irfs</span><span class="p">,</span> <span class="s1">&#39;ff&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_irfs</span><span class="p">(</span><span class="n">tone_col</span><span class="o">=</span><span class="s2">&quot;polarity_diffusion_minutes&quot;</span><span class="p">,</span> <span class="n">shock_name</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/08_FOMC_EDA_sentiments_50_0.png" src="../../../_images/08_FOMC_EDA_sentiments_50_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_irfs</span><span class="p">(</span><span class="n">tone_col</span><span class="o">=</span><span class="s2">&quot;finbert_diffusion_minutes&quot;</span><span class="p">,</span> <span class="n">shock_name</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -4700,20 +4550,15 @@ INFO:ekorpkit.io.file:Loading data from ../data/fomc/fomc_tone_data_lm.parquet
 <img alt="../../../_images/08_FOMC_EDA_sentiments_51_0.png" src="../../../_images/08_FOMC_EDA_sentiments_51_0.png" />
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fomc</span><span class="o">.</span><span class="n">plot_irf</span><span class="p">(</span><span class="n">irfs</span><span class="p">,</span> <span class="n">tone_cols</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../../_images/08_FOMC_EDA_sentiments_52_0.png" src="../../../_images/08_FOMC_EDA_sentiments_52_0.png" />
 </div>
 </div>
 </div>
-</div>
-</div>
-</div>
+
+
+<script type="application/vnd.jupyter.widget-state+json">
+{"state": {"00e5580d1f95421dac096a5e487b346b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "025c492aa9d044e5b1604bd7020be0fa": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_9f4623063eef4180bc041e355d2d476b", "IPY_MODEL_7424d78b1f374ee4b955512604180206", "IPY_MODEL_6cbe7f3ee5e3477dbc924e7b5576e9d9"], "layout": "IPY_MODEL_339b4b871a8b4362ac94d168de1c0bf6"}}, "0280b4579d5543e98cc6093dfcebc2eb": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "05bbb2995ca345cab86e5e00448f6a68": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "05bff68faf8a4874a37d6b2579f9226f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "0689d0d9942846189e091dfb31ed02bc": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "0821703bd5854da4a4d60bd9a4513adc": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "0d11c2ea08204915a2eb73e4de18c966": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "0d359391475448b38de0301e1e8a274d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_1cf6d74c411745b4bbcb492eec6d71d6", "max": 415, "style": "IPY_MODEL_f24a9b2c0894427fa339a90986f74381", "value": 415}}, "0d75715ee6204d70b81925057983b04f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_ca3796c0a8f048749efa8c604bf40185", "style": "IPY_MODEL_868beff75803458db8270a13da21f7d3", "value": "100%"}}, "0de003a060864f9081696e5dcd756e5f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "0e2dca5122c5464ead3480a3f5380721": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "0e43e824dad846599c6a06f90dcdc5b8": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_189966527ac14ab49486b97c53f64809", "style": "IPY_MODEL_c6bde98e2dc74fc7b527f2c5dae00d4b", "value": "100%"}}, "0ec10aaa5113420e9ad2fca218979336": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "0ec87e2c20194f6cad587c12a73c557c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "1067a7067eab498180f02409b6d0ef5d": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "10da98b2aa854b249e1269481369990a": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "10eac0b30e6c470ab94d7f9450ad4546": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "11208cba387e4a358fa5a5ad88d9643f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_1067a7067eab498180f02409b6d0ef5d", "style": "IPY_MODEL_50746f0549824a4eada3329bef885520", "value": "100%"}}, "11a2da3569954199938666c5e998829a": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "11c093c219bf4be89f9a2ba4ce4c5e46": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "11f7ac5a7da14685b93974dafc7c6d5a": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_11a2da3569954199938666c5e998829a", "max": 415, "style": "IPY_MODEL_b9a06f821f484af1b831029829152202", "value": 415}}, "11ff81b2268f492e963716611024fae7": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "1352da17e9824f539dbf421eec23a5ea": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_e860943a3c93440fa0636f87bf2b6ddb", "style": "IPY_MODEL_c3a5b068a736431f9e7d980ba6272ebb", "value": "100%"}}, "14493d2e411c498cb40dbd49cc417ca3": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "14f25dbd7018478594b4a648bb92bf27": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_9860a00f65bd4067a26b9dbe4f4d389f", "style": "IPY_MODEL_d29b669e21374ab4bfecdff40f3cac5e", "value": "100%"}}, "15bacd6ec1cf4f529b52cb6c87bd6b64": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_84496e73ccb24cb6bd81fb8b52b43189", "IPY_MODEL_421c28a1491249f2b5d05199ae5944b1", "IPY_MODEL_b53960c28f1941e189eb2a665b151744"], "layout": "IPY_MODEL_b22984fcd1e34a9597eb867fb86e3610"}}, "15d30e83d7b14b009f99db22b8aa4af2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_affd81085de94d309dee8bb8a5b3f065", "max": 415, "style": "IPY_MODEL_6015265a89ed40dab89691d4cf5fd186", "value": 415}}, "15d68eac8098440e8e8e4620786c9605": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_0d75715ee6204d70b81925057983b04f", "IPY_MODEL_88a24cd06d184c07a3550eefe3b269fe", "IPY_MODEL_2b264a06adf94277b4272d6732f67783"], "layout": "IPY_MODEL_61747756fdf74dbcb8bdc83196833fee"}}, "16383d09d00842109de83d03ca5d75c8": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "189966527ac14ab49486b97c53f64809": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "18efd44725ca4ef8a24c89119f6c8302": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "19edc7d6b9154dfea5c3889e3f1e3eaa": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_3cffe3cd97c948d88e53d5d86aa54fcf", "style": "IPY_MODEL_e0d3e479b84a418e807c2b50b271cc6c", "value": "100%"}}, "19ee7cd2b0f0426e9885987015b3ceef": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "1a884e4dc3544319ba5e49d5811d199c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "1ab9fe12d4244d649e17c2e2b5968e64": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "1b5ee0de5efb44e196eceba5736959bf": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_cbbfa03350ad41fb8c37521084c1fc32", "IPY_MODEL_5003e233a11f48d3b993815c58358196", "IPY_MODEL_9153caa9ceba44b7b4fbba305ddee861"], "layout": "IPY_MODEL_5a8348fd69594f8c8238469df775e13d"}}, "1bdfd4aedd9a49e5beb2e9b4f02bfe19": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "1c441d2f78d14b568fbec51a6dff9315": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_a4d4dcbea6d2448ba674a768caa331bf", "IPY_MODEL_0d359391475448b38de0301e1e8a274d", "IPY_MODEL_e05982172b344bc3aa6ddd73506f98ae"], "layout": "IPY_MODEL_1ab9fe12d4244d649e17c2e2b5968e64"}}, "1c504451a23b41afa2199edb34fbdb3e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_19edc7d6b9154dfea5c3889e3f1e3eaa", "IPY_MODEL_acbba215c72c482c87e45b211a0b1127", "IPY_MODEL_60645d90b6394d9ea335da4d29b37a2f"], "layout": "IPY_MODEL_11c093c219bf4be89f9a2ba4ce4c5e46"}}, "1c54ca211c1c42618cd336cbb77fc730": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "1c8e0d6a60af4a128b0915e82f39f9cb": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "1c96351d986c44f088f314be65f4f295": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "1cf6d74c411745b4bbcb492eec6d71d6": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "1db7aa4b94b8439aa22bbea2f5d1663b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "1ed011e2cabe4a2792a240c206d4d651": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "1ef5fa216e3c450da58fefe46a3d0220": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_11ff81b2268f492e963716611024fae7", "style": "IPY_MODEL_f33e45da32ff47f184cd70af8f15136b", "value": "100%"}}, "1fd0802079f94a5480dfbade4f074c0a": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "20bc1ea789eb465fafd8102b3e3ed09e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "210bf8452cfd4e779cebeef7c73617f8": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "244fcc25eefc4acf87eb494c1ca2fc91": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "25252b889d0c41e7a8e91f4ac7a88d3b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "25859f6c7da24c2482956719164bfcca": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "269b108dccf948f3b34f573a602300b1": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_1db7aa4b94b8439aa22bbea2f5d1663b", "style": "IPY_MODEL_10eac0b30e6c470ab94d7f9450ad4546", "value": " 415/415 [00:00&lt;00:00, 2481.06it/s]"}}, "2837ac295a8048b4894a642aa49e709e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "2a63deacc5fe4047a3360ced3ac9d5c9": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "2b264a06adf94277b4272d6732f67783": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_85e70d76b3fd412485cdd3f64dc0c088", "style": "IPY_MODEL_1c54ca211c1c42618cd336cbb77fc730", "value": " 415/415 [00:00&lt;00:00, 2469.77it/s]"}}, "2ee694100b5e4b36af05bb4dc407c0d6": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "2f0271c24f5247b88d5f5da9bfac5f9d": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "2f0c8b283b4f42d6a8223524fd4ed86d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_9bd4c909f94f46dca820dc05aa9506d6", "style": "IPY_MODEL_406763e44d8a467bb9d1ef7f572d2e7e", "value": " 415/415 [00:00&lt;00:00, 2509.51it/s]"}}, "3042efa026be4d659dcb10281dcd6479": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "3127ab2300514aba80157f06ff1bf5a8": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "314ed4a38c5b4e8db9d4f6960ea99093": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "324cf8e9cfa6421dafb852142a02c36c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "339b4b871a8b4362ac94d168de1c0bf6": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "35c37f6ec8544406859819f623154e74": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "36869ce396ce451e9545074a466ff950": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "36f0e783fb014d22a6f1065da93927ec": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_cef9bda623464074846301f5346d2f8f", "max": 415, "style": "IPY_MODEL_761813c714aa4cdcb9fe2500c4fc83e2", "value": 415}}, "3901e1d313454866bb2f910626c67509": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "3b15b21c77b54cf2aa6840641bccfe15": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_c02f6626a02848bd85b5645cd5d1d829", "IPY_MODEL_8507dbcfc4f14340bafa6b0baab5e782", "IPY_MODEL_d0d954e6cd4742f8a7a4a12c53a71482"], "layout": "IPY_MODEL_7c5574eeff6b42f19b0adf2660d0a0c8"}}, "3cce5dc9f4b04a3faa309f122ecff34f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "3cffe3cd97c948d88e53d5d86aa54fcf": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "3d86ace29f9641ba8993cf5ebdd54eaf": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_1a884e4dc3544319ba5e49d5811d199c", "style": "IPY_MODEL_00e5580d1f95421dac096a5e487b346b", "value": " 415/415 [00:00&lt;00:00, 2508.26it/s]"}}, "3dbbfb7a6a6c4d4ea0eb0c0ff1470060": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "404801b3f7fd40128bf6a83a7b7b2bec": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_9f58132fe52e42e091a52afda7efcc58", "max": 415, "style": "IPY_MODEL_914d6588abed4a378a94a3e72899bb42", "value": 415}}, "406763e44d8a467bb9d1ef7f572d2e7e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "41caf86cd7594c92865b245a1d7b0c98": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "421c28a1491249f2b5d05199ae5944b1": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_8b39d001c47e414cadb5f30bbeb79f15", "max": 415, "style": "IPY_MODEL_0e2dca5122c5464ead3480a3f5380721", "value": 415}}, "45e84950970e4f4fa0caa89055a137ce": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_1c96351d986c44f088f314be65f4f295", "style": "IPY_MODEL_3cce5dc9f4b04a3faa309f122ecff34f", "value": " 415/415 [00:00&lt;00:00, 2504.85it/s]"}}, "4725a4fb844648bf9082cf3386dd951d": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "49fd92fa79ce4f30bb3d09320ffdd87c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_1352da17e9824f539dbf421eec23a5ea", "IPY_MODEL_404801b3f7fd40128bf6a83a7b7b2bec", "IPY_MODEL_a3af1dd0007f42cba83a6588142bc29f"], "layout": "IPY_MODEL_a9f1991c05c94d81849f9b2b9a964c4b"}}, "4b4d1cc03bfd4148b219b859ccbc227b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "4b9ec353d5534d88bfe0120f0e50e356": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_25252b889d0c41e7a8e91f4ac7a88d3b", "style": "IPY_MODEL_ebb5f5dcad004647a19bef46d7d463b1", "value": " 415/415 [00:00&lt;00:00, 2492.60it/s]"}}, "4ba01d1fe3c1477385d11974ec8409bc": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_be64b1a46a394f6bb6d0e021c085ea88", "IPY_MODEL_968c943b69fe468d8728a933a2cc7879", "IPY_MODEL_f6a6c96fffba48178bcc30b8198d1bda"], "layout": "IPY_MODEL_05bff68faf8a4874a37d6b2579f9226f"}}, "4bd0de706b0b4d1dae2f9f7469e23607": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "4e1f04b48ec44054acb08c09b8cfe2a9": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_10da98b2aa854b249e1269481369990a", "style": "IPY_MODEL_6ad299a6efae4cf3830d67d2e8bb43eb", "value": " 415/415 [00:00&lt;00:00, 2487.72it/s]"}}, "4e8d6d002d94410f92b0e67a37aa841a": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "5003e233a11f48d3b993815c58358196": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_3042efa026be4d659dcb10281dcd6479", "max": 415, "style": "IPY_MODEL_95190046cb404155b9a212602a9dce23", "value": 415}}, "50746f0549824a4eada3329bef885520": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "50a80b387c2348ea91d54f90521e6681": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "53136e80f229410dacf676264947cfda": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "53f718eff3524d5eb9259a33db8855c7": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "5597c051a3a8403ea554c30529145664": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "55eb3a1013d54311b62583b9c0cc761f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_69425e7b4500442688bbff8c9e991b85", "IPY_MODEL_36f0e783fb014d22a6f1065da93927ec", "IPY_MODEL_2f0c8b283b4f42d6a8223524fd4ed86d"], "layout": "IPY_MODEL_8d84b7ab75714f32822d5f7316af185f"}}, "56fefddb83ef4ccc987984d9a428eb50": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_b39693c9fdd14353bd75ed3e473cea4a", "IPY_MODEL_e9be57792e944bf5952014441cb9949d", "IPY_MODEL_912bf633513d4cb19cf1affe201522b4"], "layout": "IPY_MODEL_b7f2240c5fe0498aa509cdfa3a2f3fee"}}, "577a859e7dca4cf9945cfbc603c20563": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "5871c954432842f28fb84c40f8779231": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "5a8348fd69594f8c8238469df775e13d": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "5baf789b87724162bbae49f48a479d3c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "5d3fd7e4389943e89c017be6ff2d4748": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "5db6c3b9c4da49ee8e49901ae4b7165e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "5dd1d8468d2b4608bf329c64464220a8": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_8ca9286e54d74ebdac0ea8004ab67d8d", "style": "IPY_MODEL_314ed4a38c5b4e8db9d4f6960ea99093", "value": " 415/415 [00:00&lt;00:00, 3379.41it/s]"}}, "5f147e5590174515b94b5cb455ede966": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "6015265a89ed40dab89691d4cf5fd186": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "60645d90b6394d9ea335da4d29b37a2f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_0280b4579d5543e98cc6093dfcebc2eb", "style": "IPY_MODEL_5f147e5590174515b94b5cb455ede966", "value": " 415/415 [00:00&lt;00:00, 3448.92it/s]"}}, "61747756fdf74dbcb8bdc83196833fee": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "64cfdc6306a545c9af6bd5c46eb8347c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_ff089740dff94d8ca4326417fdaecfa7", "max": 415, "style": "IPY_MODEL_18efd44725ca4ef8a24c89119f6c8302", "value": 415}}, "6562ced6575e4c50aec8b4113ac297af": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_14f25dbd7018478594b4a648bb92bf27", "IPY_MODEL_82540051af054e2292c90fe445558da1", "IPY_MODEL_8aa52763334d41df9f311c9f7536790b"], "layout": "IPY_MODEL_8cb03a0cde534ad98c90389ca9676838"}}, "65b9fe59cdbf43649b08510d0e830bdb": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "6642796583074dc282e2375212981157": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "66b0391f23824740b2d6d086fed7c6ea": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "678c0f1e769544b485df32790e32499c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "679ef9964b0042e7a2410102625c7006": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "67e5b2a3cd7b401cbb900e5d4f3f4677": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "686224b07a694d4c800b26d711f36aeb": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_5d3fd7e4389943e89c017be6ff2d4748", "max": 415, "style": "IPY_MODEL_20bc1ea789eb465fafd8102b3e3ed09e", "value": 415}}, "69425e7b4500442688bbff8c9e991b85": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_a893f261e4b54978a5b4e95c6cdd2a4f", "style": "IPY_MODEL_1bdfd4aedd9a49e5beb2e9b4f02bfe19", "value": "100%"}}, "6ad299a6efae4cf3830d67d2e8bb43eb": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "6cbe7f3ee5e3477dbc924e7b5576e9d9": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_9443d69e856342d8877433ad616a9b94", "style": "IPY_MODEL_ff26a67c8db3467e813fde1c656d6814", "value": " 415/415 [00:00&lt;00:00, 3465.46it/s]"}}, "6cf9e1071a4148e782c536da1cc80fd8": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_11208cba387e4a358fa5a5ad88d9643f", "IPY_MODEL_778dc967d8fa4360854b3a36ede3dece", "IPY_MODEL_9af49441b679493aa4e1bb06a9496314"], "layout": "IPY_MODEL_898a3c395a2147869ad5ffe448053081"}}, "6d078871c5644f968cf2b14af1ed7045": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_8f535b720f58434a93c4d2187829f26e", "IPY_MODEL_78e17600a20547629f18fa1f92647751", "IPY_MODEL_5dd1d8468d2b4608bf329c64464220a8"], "layout": "IPY_MODEL_6df959642b5b4920a3183090c6f23ce6"}}, "6df959642b5b4920a3183090c6f23ce6": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "7075d8ba1da04c82afddfbd33cb11ab9": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_a579a557a1e047a8bb1151240eb0512c", "style": "IPY_MODEL_ba0c8b1d7ed64ecaa12371c6c355a0f2", "value": " 415/415 [00:00&lt;00:00, 3408.97it/s]"}}, "7347e2c4da004b15982e3b570d9eb933": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "73b0b1898c40449abb85a7a1ed1e910c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "7424d78b1f374ee4b955512604180206": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_66b0391f23824740b2d6d086fed7c6ea", "max": 415, "style": "IPY_MODEL_ae5ee1dbbf084825b0bb390fb5fd4055", "value": 415}}, "74cc53201ba74a41b3e4ac1885dafd7a": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "75fbd4c5d6774ffdad12b15ec53706fe": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "761813c714aa4cdcb9fe2500c4fc83e2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "7780ae32bb9d41a99177187ba7c35eb5": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_5871c954432842f28fb84c40f8779231", "style": "IPY_MODEL_bd1b3d8752044f2ba180a649d1e2cf5d", "value": "100%"}}, "778dc967d8fa4360854b3a36ede3dece": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_577a859e7dca4cf9945cfbc603c20563", "max": 415, "style": "IPY_MODEL_ac2280f5fb8b45ee83671a0f62166397", "value": 415}}, "77d8806de47b413fb796428278d848ff": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "78e17600a20547629f18fa1f92647751": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_f5ca233d81e9477d8a106bacb1ecb1ac", "max": 415, "style": "IPY_MODEL_99a3e30788854c88b6c4f891b3db03eb", "value": 415}}, "79a91d4f3ea64c7e95e48d63c33b0f33": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_cbe0ae05df89404f8f8189e1eff34ed0", "style": "IPY_MODEL_5baf789b87724162bbae49f48a479d3c", "value": " 415/415 [00:00&lt;00:00, 2535.60it/s]"}}, "7b622ead6a814b4da0af303da3da7f4f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "7c3ab66e1af24507b03d816f18f2fc7a": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "7c428b89cbc0453c8c01269a20b2d92a": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "7c5574eeff6b42f19b0adf2660d0a0c8": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "7e5e09d82af64f208b43bc4ef79bb79c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "7f2fdfffea1c4214a87fa8930677692d": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "80d928ab5e2e4f57a152b5302a49f495": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "811b64b311f24a41a6ab6443ab773ed2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "82540051af054e2292c90fe445558da1": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_98d4f3e9f89c48e9a6590e6f4a5ba50b", "max": 415, "style": "IPY_MODEL_80d928ab5e2e4f57a152b5302a49f495", "value": 415}}, "83a9390327de4f4182f021f74b356a85": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "84496e73ccb24cb6bd81fb8b52b43189": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_96d6eae873e3479fb89271e2dd1819f1", "style": "IPY_MODEL_324cf8e9cfa6421dafb852142a02c36c", "value": "100%"}}, "8507dbcfc4f14340bafa6b0baab5e782": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_65b9fe59cdbf43649b08510d0e830bdb", "max": 415, "style": "IPY_MODEL_67e5b2a3cd7b401cbb900e5d4f3f4677", "value": 415}}, "85da05c30bc94b32b3105a205cf3bbed": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_7c428b89cbc0453c8c01269a20b2d92a", "style": "IPY_MODEL_a20d186e9c734cc4880a803017f5a561", "value": "100%"}}, "85e70d76b3fd412485cdd3f64dc0c088": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "868beff75803458db8270a13da21f7d3": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "88a24cd06d184c07a3550eefe3b269fe": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_2a63deacc5fe4047a3360ced3ac9d5c9", "max": 415, "style": "IPY_MODEL_5db6c3b9c4da49ee8e49901ae4b7165e", "value": 415}}, "88a82e0d954f4e31957561838e02be0e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_c12ea9531d4045bfafb9d6c38e9673e4", "style": "IPY_MODEL_3127ab2300514aba80157f06ff1bf5a8", "value": "100%"}}, "898a3c395a2147869ad5ffe448053081": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "8a40e8fc6d6543d3ac158e5b3c23fe50": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_73b0b1898c40449abb85a7a1ed1e910c", "style": "IPY_MODEL_3dbbfb7a6a6c4d4ea0eb0c0ff1470060", "value": "100%"}}, "8aa52763334d41df9f311c9f7536790b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_0689d0d9942846189e091dfb31ed02bc", "style": "IPY_MODEL_7347e2c4da004b15982e3b570d9eb933", "value": " 415/415 [00:00&lt;00:00, 2518.59it/s]"}}, "8ac0c767e6c6446d8d13419e433402ea": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "8b39d001c47e414cadb5f30bbeb79f15": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "8ca9286e54d74ebdac0ea8004ab67d8d": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "8cb03a0cde534ad98c90389ca9676838": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "8d84b7ab75714f32822d5f7316af185f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "8db4ff61e92e4a3797718af0d07a3ead": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_a1e0e39be18a4ec5bc2d6df06db8adbf", "IPY_MODEL_90190f2b6df24281a1b70aab51243c39", "IPY_MODEL_bd6ee97a583d43258d07dd4fb6e76d28"], "layout": "IPY_MODEL_5597c051a3a8403ea554c30529145664"}}, "8dece75b25f14f419d228e3c82fa4e81": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_0ec10aaa5113420e9ad2fca218979336", "max": 415, "style": "IPY_MODEL_244fcc25eefc4acf87eb494c1ca2fc91", "value": 415}}, "8f250410844649909390e6bf86039464": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "8f535b720f58434a93c4d2187829f26e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_0821703bd5854da4a4d60bd9a4513adc", "style": "IPY_MODEL_c68b3de14269408e94b0415294d2e958", "value": "100%"}}, "90190f2b6df24281a1b70aab51243c39": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_1fd0802079f94a5480dfbade4f074c0a", "max": 415, "style": "IPY_MODEL_4e8d6d002d94410f92b0e67a37aa841a", "value": 415}}, "912bf633513d4cb19cf1affe201522b4": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_83a9390327de4f4182f021f74b356a85", "style": "IPY_MODEL_25859f6c7da24c2482956719164bfcca", "value": " 415/415 [00:00&lt;00:00, 2470.11it/s]"}}, "914d6588abed4a378a94a3e72899bb42": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "9153caa9ceba44b7b4fbba305ddee861": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_a1b14019e5d44f3596d1dcf5d6b68ec2", "style": "IPY_MODEL_6642796583074dc282e2375212981157", "value": " 415/415 [00:00&lt;00:00, 2503.66it/s]"}}, "919cb6d185934bd6834b59b34147a7b4": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "92427f03672546f3a8ff8547537d6ea1": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "9443d69e856342d8877433ad616a9b94": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "95190046cb404155b9a212602a9dce23": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "9599be09ed96495999048779a2673b5d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "95e5890e34b1458ca8f5d08c54a117f6": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "968c943b69fe468d8728a933a2cc7879": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_ef0a1fa47a9a4cd0b659527b2ec4241a", "max": 415, "style": "IPY_MODEL_0ec87e2c20194f6cad587c12a73c557c", "value": 415}}, "96d1ca6d979c49d0b6afe38f6a8e87ff": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "96d6eae873e3479fb89271e2dd1819f1": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "9815f4ba3c2949848fbf7d1c04929c27": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "9860a00f65bd4067a26b9dbe4f4d389f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "98d4f3e9f89c48e9a6590e6f4a5ba50b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "99a3e30788854c88b6c4f891b3db03eb": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "9a00aa07e8bb470881f1dd288fb946b9": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_14493d2e411c498cb40dbd49cc417ca3", "style": "IPY_MODEL_9599be09ed96495999048779a2673b5d", "value": " 415/415 [00:00&lt;00:00, 2507.05it/s]"}}, "9af49441b679493aa4e1bb06a9496314": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_77d8806de47b413fb796428278d848ff", "style": "IPY_MODEL_92427f03672546f3a8ff8547537d6ea1", "value": " 415/415 [00:00&lt;00:00, 3396.79it/s]"}}, "9bd4c909f94f46dca820dc05aa9506d6": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "9f4623063eef4180bc041e355d2d476b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_7f2fdfffea1c4214a87fa8930677692d", "style": "IPY_MODEL_bf9dd25478c741fd9da6a59279840b50", "value": "100%"}}, "9f58132fe52e42e091a52afda7efcc58": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "a1b14019e5d44f3596d1dcf5d6b68ec2": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "a1e0e39be18a4ec5bc2d6df06db8adbf": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_f05b0ea0a720490f9026feae587ef6e6", "style": "IPY_MODEL_53136e80f229410dacf676264947cfda", "value": "100%"}}, "a20d186e9c734cc4880a803017f5a561": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "a3af1dd0007f42cba83a6588142bc29f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_0d11c2ea08204915a2eb73e4de18c966", "style": "IPY_MODEL_2837ac295a8048b4894a642aa49e709e", "value": " 415/415 [00:00&lt;00:00, 3453.24it/s]"}}, "a4d4dcbea6d2448ba674a768caa331bf": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_7b622ead6a814b4da0af303da3da7f4f", "style": "IPY_MODEL_8ac0c767e6c6446d8d13419e433402ea", "value": "100%"}}, "a4dfd3effdfd4dfb91405ec426df2198": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_4b4d1cc03bfd4148b219b859ccbc227b", "style": "IPY_MODEL_ee1b4aa6debd44a4be4e1c0cf6ede248", "value": "100%"}}, "a579a557a1e047a8bb1151240eb0512c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "a625bae85eb54660a4b844deeb0f9e1e": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "a6f51dd3de6f4ccebc6ce136dfd194ae": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_50a80b387c2348ea91d54f90521e6681", "max": 415, "style": "IPY_MODEL_210bf8452cfd4e779cebeef7c73617f8", "value": 415}}, "a7e3062189a4434c9dd2f6214a8f78ca": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_b407572502c3414cbbd3de54edfc0c85", "IPY_MODEL_686224b07a694d4c800b26d711f36aeb", "IPY_MODEL_ed55a4835b4e459a94ab54399d4eaafc"], "layout": "IPY_MODEL_a625bae85eb54660a4b844deeb0f9e1e"}}, "a893f261e4b54978a5b4e95c6cdd2a4f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "a8a8cb0014f7494cb3f8da55845e8e93": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "a9f1991c05c94d81849f9b2b9a964c4b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "ac2280f5fb8b45ee83671a0f62166397": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "acbba215c72c482c87e45b211a0b1127": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_36869ce396ce451e9545074a466ff950", "max": 415, "style": "IPY_MODEL_96d1ca6d979c49d0b6afe38f6a8e87ff", "value": 415}}, "ad0c756dd2e346049c2e04ae94e2a7fa": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "ae5ee1dbbf084825b0bb390fb5fd4055": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "affd81085de94d309dee8bb8a5b3f065": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "b22984fcd1e34a9597eb867fb86e3610": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "b39693c9fdd14353bd75ed3e473cea4a": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_e42130cf9ad04db8a33d9f07a053b509", "style": "IPY_MODEL_74cc53201ba74a41b3e4ac1885dafd7a", "value": "100%"}}, "b407572502c3414cbbd3de54edfc0c85": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_3901e1d313454866bb2f910626c67509", "style": "IPY_MODEL_75fbd4c5d6774ffdad12b15ec53706fe", "value": "100%"}}, "b4c59b0afc214705a000519c49e0af5e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_88a82e0d954f4e31957561838e02be0e", "IPY_MODEL_ba9bf237e99b41888be7cf1350355724", "IPY_MODEL_45e84950970e4f4fa0caa89055a137ce"], "layout": "IPY_MODEL_ad0c756dd2e346049c2e04ae94e2a7fa"}}, "b53960c28f1941e189eb2a665b151744": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_678c0f1e769544b485df32790e32499c", "style": "IPY_MODEL_f6cb60a74bb442b8974cd27c7550da5b", "value": " 415/415 [00:00&lt;00:00, 2452.67it/s]"}}, "b6e5e511bd494f39ba5b9fc925b3257f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_7780ae32bb9d41a99177187ba7c35eb5", "IPY_MODEL_64cfdc6306a545c9af6bd5c46eb8347c", "IPY_MODEL_4b9ec353d5534d88bfe0120f0e50e356"], "layout": "IPY_MODEL_0de003a060864f9081696e5dcd756e5f"}}, "b7f2240c5fe0498aa509cdfa3a2f3fee": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "b8976f94950841ffae916a43f8ca953a": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "b94a32b129d949e98a85f9482309c05d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_a4dfd3effdfd4dfb91405ec426df2198", "IPY_MODEL_8dece75b25f14f419d228e3c82fa4e81", "IPY_MODEL_9a00aa07e8bb470881f1dd288fb946b9"], "layout": "IPY_MODEL_ff09bcda881042f28cf9ec300a337cc8"}}, "b9a06f821f484af1b831029829152202": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "b9a543e4cf154068b69d4037f8021f0c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "ba0c8b1d7ed64ecaa12371c6c355a0f2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "ba9bf237e99b41888be7cf1350355724": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_2f0271c24f5247b88d5f5da9bfac5f9d", "max": 415, "style": "IPY_MODEL_919cb6d185934bd6834b59b34147a7b4", "value": 415}}, "bd1b3d8752044f2ba180a649d1e2cf5d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "bd6ee97a583d43258d07dd4fb6e76d28": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_f3bead3f0bc84445a499133cbff144d4", "style": "IPY_MODEL_35c37f6ec8544406859819f623154e74", "value": " 415/415 [00:00&lt;00:00, 2429.16it/s]"}}, "be64b1a46a394f6bb6d0e021c085ea88": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_16383d09d00842109de83d03ca5d75c8", "style": "IPY_MODEL_b8976f94950841ffae916a43f8ca953a", "value": "100%"}}, "bf9dd25478c741fd9da6a59279840b50": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "c01d01fb815a46bc8824cf352b2a29d2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_d32633623c5d4d97bfb7eef81060f243", "style": "IPY_MODEL_19ee7cd2b0f0426e9885987015b3ceef", "value": "100%"}}, "c02f6626a02848bd85b5645cd5d1d829": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_f8e16fe212984e68b42ca90ed3523d4d", "style": "IPY_MODEL_c81c4061547f441f9b2f8ef4e7f09845", "value": "100%"}}, "c12ea9531d4045bfafb9d6c38e9673e4": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "c3a5b068a736431f9e7d980ba6272ebb": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "c68b3de14269408e94b0415294d2e958": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "c6bde98e2dc74fc7b527f2c5dae00d4b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "c81c4061547f441f9b2f8ef4e7f09845": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "c96198b41fc5481f9772134cc4e1213c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_1ef5fa216e3c450da58fefe46a3d0220", "IPY_MODEL_a6f51dd3de6f4ccebc6ce136dfd194ae", "IPY_MODEL_79a91d4f3ea64c7e95e48d63c33b0f33"], "layout": "IPY_MODEL_95e5890e34b1458ca8f5d08c54a117f6"}}, "ca3796c0a8f048749efa8c604bf40185": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "cbbfa03350ad41fb8c37521084c1fc32": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_05bbb2995ca345cab86e5e00448f6a68", "style": "IPY_MODEL_fcbbc341ab7d4ccba29360dbe3e0568e", "value": "100%"}}, "cbe0ae05df89404f8f8189e1eff34ed0": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "cc3c8b5bfe604c53adc8812f5d072785": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "cc9d55270164496bb67fac288c9fe016": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "cef9bda623464074846301f5346d2f8f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "d0d954e6cd4742f8a7a4a12c53a71482": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_1ed011e2cabe4a2792a240c206d4d651", "style": "IPY_MODEL_1c8e0d6a60af4a128b0915e82f39f9cb", "value": " 415/415 [00:00&lt;00:00, 2406.04it/s]"}}, "d29b669e21374ab4bfecdff40f3cac5e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "d32633623c5d4d97bfb7eef81060f243": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "d4b1e22aabf445989cf31c6448d39d1d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_4725a4fb844648bf9082cf3386dd951d", "max": 415, "style": "IPY_MODEL_4bd0de706b0b4d1dae2f9f7469e23607", "value": 415}}, "d7ff9387113047a096dd8ea52edea373": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_c01d01fb815a46bc8824cf352b2a29d2", "IPY_MODEL_d4b1e22aabf445989cf31c6448d39d1d", "IPY_MODEL_269b108dccf948f3b34f573a602300b1"], "layout": "IPY_MODEL_cc3c8b5bfe604c53adc8812f5d072785"}}, "df46571ce8b14cc0bbaf750bd9e06988": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "e05982172b344bc3aa6ddd73506f98ae": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_7c3ab66e1af24507b03d816f18f2fc7a", "style": "IPY_MODEL_b9a543e4cf154068b69d4037f8021f0c", "value": " 415/415 [00:00&lt;00:00, 2506.70it/s]"}}, "e0d3e479b84a418e807c2b50b271cc6c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "e42130cf9ad04db8a33d9f07a053b509": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "e860943a3c93440fa0636f87bf2b6ddb": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "e9be57792e944bf5952014441cb9949d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_41caf86cd7594c92865b245a1d7b0c98", "max": 415, "style": "IPY_MODEL_811b64b311f24a41a6ab6443ab773ed2", "value": 415}}, "eb20be0fc3fa4894b337a7e86b199f87": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_8a40e8fc6d6543d3ac158e5b3c23fe50", "IPY_MODEL_11f7ac5a7da14685b93974dafc7c6d5a", "IPY_MODEL_4e1f04b48ec44054acb08c09b8cfe2a9"], "layout": "IPY_MODEL_cc9d55270164496bb67fac288c9fe016"}}, "ebb5f5dcad004647a19bef46d7d463b1": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "ec3dde848db346e6acc64470016d3900": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_85da05c30bc94b32b3105a205cf3bbed", "IPY_MODEL_15d30e83d7b14b009f99db22b8aa4af2", "IPY_MODEL_3d86ace29f9641ba8993cf5ebdd54eaf"], "layout": "IPY_MODEL_53f718eff3524d5eb9259a33db8855c7"}}, "ed55a4835b4e459a94ab54399d4eaafc": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_2ee694100b5e4b36af05bb4dc407c0d6", "style": "IPY_MODEL_8f250410844649909390e6bf86039464", "value": " 415/415 [00:00&lt;00:00, 2547.24it/s]"}}, "ee1b4aa6debd44a4be4e1c0cf6ede248": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "ef0a1fa47a9a4cd0b659527b2ec4241a": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "f05b0ea0a720490f9026feae587ef6e6": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "f24a9b2c0894427fa339a90986f74381": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "f33e45da32ff47f184cd70af8f15136b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "f3bead3f0bc84445a499133cbff144d4": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "f5ca233d81e9477d8a106bacb1ecb1ac": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "f601e24652f141088f682768c2d3585c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_0e43e824dad846599c6a06f90dcdc5b8", "IPY_MODEL_f662449d6231425d9bb1c2371168e4a2", "IPY_MODEL_7075d8ba1da04c82afddfbd33cb11ab9"], "layout": "IPY_MODEL_7e5e09d82af64f208b43bc4ef79bb79c"}}, "f662449d6231425d9bb1c2371168e4a2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_a8a8cb0014f7494cb3f8da55845e8e93", "max": 415, "style": "IPY_MODEL_df46571ce8b14cc0bbaf750bd9e06988", "value": 415}}, "f6a6c96fffba48178bcc30b8198d1bda": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_9815f4ba3c2949848fbf7d1c04929c27", "style": "IPY_MODEL_679ef9964b0042e7a2410102625c7006", "value": " 415/415 [00:00&lt;00:00, 2460.10it/s]"}}, "f6cb60a74bb442b8974cd27c7550da5b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "f8e16fe212984e68b42ca90ed3523d4d": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "fcbbc341ab7d4ccba29360dbe3e0568e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "ff089740dff94d8ca4326417fdaecfa7": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "ff09bcda881042f28cf9ec300a337cc8": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "ff26a67c8db3467e813fde1c656d6814": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}}, "version_major": 2, "version_minor": 0}
+</script>
+
 
     <script type="text/x-thebe-config">
     {
