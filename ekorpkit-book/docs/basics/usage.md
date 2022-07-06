@@ -21,7 +21,7 @@ kernelspec:
 ### CLI example to build a corpus
 
 ```{code-cell} ipython3
-!ekorpkit --config-dir /workspace/projects/ekorpkit-config/config  \
+!ekorpkit --config-dir /workspace/projects/ekorpkit-book/config  \
     project=esgml \
     dir.workspace=/workspace \
     verbose=false \
