@@ -972,17 +972,35 @@ title="Print to PDF"
 <h1>Prediciting Sentiments<a class="headerlink" href="#prediciting-sentiments" title="Permalink to this headline">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_format=&#39;retina&#39;
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
 
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;WARNING&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;version:&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is notebook?&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_notebook</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is colab?&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;evironment varialbles:&quot;</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">env</span><span class="p">()</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+16.g2b3b245.dirty
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:IPython version: (6, 9, 0), client: jupyter_client
+INFO:ekorpkit.base:Google Colab not detected.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.35+2.g81d5295
+is notebook? True
+is colab? False
+evironment varialbles:
+{&#39;CUDA_DEVICE_ORDER&#39;: None,
+ &#39;CUDA_VISIBLE_DEVICES&#39;: None,
+ &#39;EKORPKIT_CONFIG_DIR&#39;: &#39;/workspace/projects/ekorpkit-book/config&#39;,
+ &#39;EKORPKIT_DATA_DIR&#39;: None,
+ &#39;EKORPKIT_LOG_LEVEL&#39;: &#39;WARNING&#39;,
+ &#39;EKORPKIT_PROJECT&#39;: &#39;ekorpkit-book&#39;,
+ &#39;EKORPKIT_WORKSPACE_ROOT&#39;: &#39;/workspace&#39;,
+ &#39;KMP_DUPLICATE_LIB_OK&#39;: &#39;TRUE&#39;,
+ &#39;NUM_WORKERS&#39;: 230}
 </pre></div>
 </div>
 </div>
@@ -991,20 +1009,21 @@ title="Print to PDF"
 <h2>Prepare <code class="docutils literal notranslate"><span class="pre">edgar</span></code> sampel dataframe<a class="headerlink" href="#prepare-edgar-sampel-dataframe" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;pipeline=blank&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;pipeline=blank&#39;</span><span class="p">)</span>
 <span class="n">df_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;edgar_sample&#39;</span>
-<span class="n">df_cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/entelecheia/ekorpkit-book/raw/main/data/edgar.zip&#39;</span>
-<span class="n">df_cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">df_cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">path</span>
+<span class="n">df_cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/entelecheia/ekorpkit-book/raw/main/data/edgar.zip&#39;</span>
+<span class="n">df_cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">df_cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cached_path</span>
 <span class="n">df_cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">+=</span> <span class="s2">&quot;/edgar&quot;</span>
 <span class="n">df_cfg</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s1">&#39;edgar.parquet&#39;</span>
-<span class="n">df_cfg</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="s1">&#39;item&#39;</span><span class="p">,</span> <span class="s1">&#39;cik&#39;</span><span class="p">,</span> <span class="s1">&#39;company&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">]</span>
+<span class="n">df_cfg</span><span class="o">.</span><span class="n">data_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="s1">&#39;item&#39;</span><span class="p">,</span> <span class="s1">&#39;cik&#39;</span><span class="p">,</span> <span class="s1">&#39;company&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">]</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">df_cfg</span><span class="p">)</span>
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:ekorpkit.pipelines.pipe:No pipeline specified
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:IPython version: (6, 9, 0), client: jupyter_client
+WARNING:ekorpkit.pipelines.pipe:No pipeline specified
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1028,9 +1047,19 @@ title="Print to PDF"
       <th>id</th>
       <th>filename</th>
       <th>item</th>
+      <th>text</th>
       <th>cik</th>
       <th>company</th>
-      <th>text</th>
+      <th>filing_type</th>
+      <th>filing_date</th>
+      <th>period_of_report</th>
+      <th>sic</th>
+      <th>state_of_inc</th>
+      <th>state_location</th>
+      <th>fiscal_year_end</th>
+      <th>filing_html_index</th>
+      <th>htm_filing_link</th>
+      <th>complete_text_filing_link</th>
     </tr>
   </thead>
   <tbody>
@@ -1039,45 +1068,95 @@ title="Print to PDF"
       <td>1534</td>
       <td>1999/320193_10K_1999_0000912057-99-010244.json</td>
       <td>item_1</td>
+      <td>ITEM 1. \nBUSINESS GENERAL Apple Computer, Inc...</td>
       <td>320193</td>
       <td>APPLE COMPUTER INC</td>
-      <td>ITEM 1. \nBUSINESS GENERAL Apple Computer, Inc...</td>
+      <td>10-K</td>
+      <td>1999-12-22</td>
+      <td>1999-09-25</td>
+      <td>3571</td>
+      <td>CA</td>
+      <td>CA</td>
+      <td>0930</td>
+      <td>https://www.sec.gov/Archives/edgar/data/320193...</td>
+      <td>None</td>
+      <td>https://www.sec.gov/Archives/edgar/data/320193...</td>
     </tr>
     <tr>
       <th>1560</th>
       <td>1697</td>
       <td>1999/21344_10K_1999_0000021344-00-000009.json</td>
       <td>item_1</td>
+      <td>ITEM 1. \nBUSINESS The Coca-Cola Company (toge...</td>
       <td>21344</td>
       <td>COCA COLA CO</td>
-      <td>ITEM 1. \nBUSINESS The Coca-Cola Company (toge...</td>
+      <td>10-K</td>
+      <td>2000-03-09</td>
+      <td>1999-12-31</td>
+      <td>2080</td>
+      <td>DE</td>
+      <td>GA</td>
+      <td>1231</td>
+      <td>https://www.sec.gov/Archives/edgar/data/21344/...</td>
+      <td>None</td>
+      <td>https://www.sec.gov/Archives/edgar/data/21344/...</td>
     </tr>
     <tr>
       <th>2746</th>
       <td>2977</td>
       <td>1999/70858_10K_1999_0000950168-00-000621.json</td>
       <td>item_1</td>
+      <td>Item 1. \nBUSINESS General Bank of America Cor...</td>
       <td>70858</td>
       <td>BANK OF AMERICA CORP /DE/</td>
-      <td>Item 1. \nBUSINESS General Bank of America Cor...</td>
+      <td>10-K</td>
+      <td>2000-03-20</td>
+      <td>1999-12-31</td>
+      <td>6021</td>
+      <td>DE</td>
+      <td>NC</td>
+      <td>1231</td>
+      <td>https://www.sec.gov/Archives/edgar/data/70858/...</td>
+      <td>None</td>
+      <td>https://www.sec.gov/Archives/edgar/data/70858/...</td>
     </tr>
     <tr>
       <th>3762</th>
       <td>4088</td>
       <td>1999/80424_10K_1999_0000080424-99-000027.json</td>
       <td>item_1</td>
+      <td>Item 1. \nBusiness. \n--------- General Develo...</td>
       <td>80424</td>
       <td>PROCTER &amp; GAMBLE CO</td>
-      <td>Item 1. \nBusiness. \n--------- General Develo...</td>
+      <td>10-K</td>
+      <td>1999-09-15</td>
+      <td>1999-06-30</td>
+      <td>2840</td>
+      <td>OH</td>
+      <td>OH</td>
+      <td>0630</td>
+      <td>https://www.sec.gov/Archives/edgar/data/80424/...</td>
+      <td>None</td>
+      <td>https://www.sec.gov/Archives/edgar/data/80424/...</td>
     </tr>
     <tr>
       <th>4806</th>
       <td>5211</td>
       <td>1999/1018724_10K_1999_0000891020-00-000622.json</td>
       <td>item_1</td>
+      <td>ITEM 1. \nBUSINESS This Annual Report on Form ...</td>
       <td>1018724</td>
       <td>AMAZON COM INC</td>
-      <td>ITEM 1. \nBUSINESS This Annual Report on Form ...</td>
+      <td>10-K</td>
+      <td>2000-03-29</td>
+      <td>1999-12-31</td>
+      <td>5961</td>
+      <td>DE</td>
+      <td>WA</td>
+      <td>1231</td>
+      <td>https://www.sec.gov/Archives/edgar/data/101872...</td>
+      <td>None</td>
+      <td>https://www.sec.gov/Archives/edgar/data/101872...</td>
     </tr>
   </tbody>
 </table>
@@ -1088,11 +1167,17 @@ title="Print to PDF"
 <h2>Prepare <code class="docutils literal notranslate"><span class="pre">financial_phrasebank</span></code> dataset<a class="headerlink" href="#prepare-financial-phrasebank-dataset" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;dataset&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;dataset&#39;</span><span class="p">)</span>
 <span class="n">ds_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;financial_phrasebank&#39;</span>
-<span class="n">ds_cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/entelecheia/ekorpkit-book/raw/main/data/financial_phrasebank.zip&#39;</span>
-<span class="n">ds_cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">ds_cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">path</span>
+<span class="n">ds_cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/entelecheia/ekorpkit-book/raw/main/data/financial_phrasebank.zip&#39;</span>
+<span class="n">ds_cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">ds_cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cached_path</span>
 <span class="n">ds</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">ds_cfg</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset : financial_phrasebank
 </pre></div>
 </div>
 </div>
@@ -1102,9 +1187,7 @@ title="Print to PDF"
 <h2>Compose a config for the LM sentiment analyser class<a class="headerlink" href="#compose-a-config-for-the-lm-sentiment-analyser-class" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;model/sentiment=lm&#39;</span>
-<span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="n">config_group</span><span class="p">)</span>
-<span class="n">model_cfg</span><span class="o">.</span><span class="n">preprocessor</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">nltk</span><span class="o">.</span><span class="n">lemmatize</span> <span class="o">=</span> <span class="kc">True</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;model/sentiment=lm&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1117,11 +1200,11 @@ title="Print to PDF"
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;pipeline&#39;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;edgar_sentiments&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/entelecheia/ekorpkit-book/raw/main/data/edgar.zip&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">path</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/entelecheia/ekorpkit-book/raw/main/data/edgar.zip&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cached_path</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">+=</span> <span class="s2">&quot;/edgar&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s1">&#39;edgar.parquet&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="s1">&#39;item&#39;</span><span class="p">,</span> <span class="s1">&#39;cik&#39;</span><span class="p">,</span> <span class="s1">&#39;company&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="s1">&#39;item&#39;</span><span class="p">,</span> <span class="s1">&#39;cik&#39;</span><span class="p">,</span> <span class="s1">&#39;company&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">]</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">_pipeline_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;predict&#39;</span><span class="p">]</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model_cfg</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/predict&quot;</span>
@@ -1133,262 +1216,17 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Predicting [text]: 100%|██████████| 100/100 [00:18&lt;00:00,  5.30it/s]
-</pre></div>
-</div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">_RemoteTraceback</span><span class="g g-Whitespace">                          </span>Traceback (most recent call last)
-<span class="ne">_Remote</span>Traceback: 
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Traceback (most recent call last):</span>
-<span class="sd">  File &quot;/opt/conda/lib/python3.8/site-packages/joblib/externals/loky/process_executor.py&quot;, line 431, in _process_worker</span>
-<span class="sd">    r = call_item()</span>
-<span class="sd">  File &quot;/opt/conda/lib/python3.8/site-packages/joblib/externals/loky/process_executor.py&quot;, line 285, in __call__</span>
-<span class="sd">    return self.fn(*self.args, **self.kwargs)</span>
-<span class="sd">  File &quot;/opt/conda/lib/python3.8/site-packages/joblib/_parallel_backends.py&quot;, line 595, in __call__</span>
-<span class="sd">    return self.func(*args, **kwargs)</span>
-<span class="sd">  File &quot;/opt/conda/lib/python3.8/site-packages/joblib/parallel.py&quot;, line 262, in __call__</span>
-<span class="sd">    return [func(*args, **kwargs)</span>
-<span class="sd">  File &quot;/opt/conda/lib/python3.8/site-packages/joblib/parallel.py&quot;, line 262, in &lt;listcomp&gt;</span>
-<span class="sd">    return [func(*args, **kwargs)</span>
-<span class="sd">  File &quot;/workspace/projects/ekorpkit/ekorpkit/utils/batch/apply.py&quot;, line 45, in batch_transform</span>
-<span class="sd">    return args[0].apply(lambda x: f(x, *f_args, **f_kwargs))</span>
-<span class="sd">  File &quot;/opt/conda/lib/python3.8/site-packages/pandas/core/series.py&quot;, line 4433, in apply</span>
-<span class="sd">    return SeriesApply(self, func, convert_dtype, args, kwargs).apply()</span>
-<span class="sd">  File &quot;/opt/conda/lib/python3.8/site-packages/pandas/core/apply.py&quot;, line 1082, in apply</span>
-<span class="sd">    return self.apply_standard()</span>
-<span class="sd">  File &quot;/opt/conda/lib/python3.8/site-packages/pandas/core/apply.py&quot;, line 1137, in apply_standard</span>
-<span class="sd">    mapped = lib.map_infer(</span>
-<span class="sd">  File &quot;pandas/_libs/lib.pyx&quot;, line 2870, in pandas._libs.lib.map_infer</span>
-<span class="sd">  File &quot;/workspace/projects/ekorpkit/ekorpkit/utils/batch/apply.py&quot;, line 45, in &lt;lambda&gt;</span>
-<span class="sd">    return args[0].apply(lambda x: f(x, *f_args, **f_kwargs))</span>
-<span class="sd">  File &quot;/workspace/projects/ekorpkit/ekorpkit/models/sentiment/base.py&quot;, line 79, in predict</span>
-<span class="sd">    score = self._get_score(tokens, lexicon_features, feature=feather)</span>
-<span class="sd">  File &quot;/workspace/projects/ekorpkit/ekorpkit/models/sentiment/analyser.py&quot;, line 89, in _get_score</span>
-<span class="sd">    lxfeat_agg = lxfeat.agg({&quot;pos&quot;: &quot;sum&quot;, &quot;neg&quot;: &quot;sum&quot;})</span>
-<span class="sd">  File &quot;/opt/conda/lib/python3.8/site-packages/pandas/core/frame.py&quot;, line 8649, in aggregate</span>
-<span class="sd">    result = op.agg()</span>
-<span class="sd">  File &quot;/opt/conda/lib/python3.8/site-packages/pandas/core/apply.py&quot;, line 739, in agg</span>
-<span class="sd">    result = super().agg()</span>
-<span class="sd">  File &quot;/opt/conda/lib/python3.8/site-packages/pandas/core/apply.py&quot;, line 168, in agg</span>
-<span class="sd">    return self.agg_dict_like()</span>
-<span class="sd">  File &quot;/opt/conda/lib/python3.8/site-packages/pandas/core/apply.py&quot;, line 475, in agg_dict_like</span>
-<span class="sd">    results = {</span>
-<span class="sd">  File &quot;/opt/conda/lib/python3.8/site-packages/pandas/core/apply.py&quot;, line 476, in &lt;dictcomp&gt;</span>
-<span class="nn">    key: obj._gotitem(key, ndim=1).agg(how) for key, how</span> in <span class="ni">arg.items</span><span class="nt">()</span>
-<span class="sd">  File &quot;/opt/conda/lib/python3.8/site-packages/pandas/core/frame.py&quot;, line 8563, in _gotitem</span>
-<span class="sd">    return subset[key]</span>
-<span class="sd">  File &quot;/opt/conda/lib/python3.8/site-packages/pandas/core/frame.py&quot;, line 3474, in __getitem__</span>
-<span class="sd">    return self._get_item_cache(key)</span>
-<span class="sd">  File &quot;/opt/conda/lib/python3.8/site-packages/pandas/core/frame.py&quot;, line 3932, in _get_item_cache</span>
-<span class="sd">    res = self._ixs(loc, axis=1)</span>
-<span class="sd">  File &quot;/opt/conda/lib/python3.8/site-packages/pandas/core/frame.py&quot;, line 3441, in _ixs</span>
-<span class="sd">    col_mgr = self._mgr.iget(i)</span>
-<span class="sd">  File &quot;/opt/conda/lib/python3.8/site-packages/pandas/core/internals/managers.py&quot;, line 1021, in iget</span>
-<span class="sd">    values = block.iget(self.blklocs[i])</span>
-<span class="sd">  File &quot;/opt/conda/lib/python3.8/site-packages/pandas/core/internals/blocks.py&quot;, line 365, in iget</span>
-<span class="sd">    return self.values[i]  # type: ignore[index]</span>
-<span class="ne">IndexError</span>: index 0 is out of bounds for axis 0 with size 0
-<span class="sd">&quot;&quot;&quot;</span>
-
-<span class="n">The</span> <span class="n">above</span> <span class="n">exception</span> <span class="n">was</span> <span class="n">the</span> <span class="n">direct</span> <span class="n">cause</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">exception</span><span class="p">:</span>
-
-<span class="ne">IndexError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="nn">/opt/conda/lib/python3.8/site-packages/hydra/_internal/instantiate/_instantiate2.py</span> in <span class="ni">_call_target</span><span class="nt">(_target_, _partial_, args, kwargs, full_key)</span>
-<span class="g g-Whitespace">     </span><span class="mi">91</span>         <span class="k">try</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">92</span>             <span class="k">return</span> <span class="n">_target_</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">93</span>         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-
-<span class="nn">/workspace/projects/ekorpkit/ekorpkit/pipelines/pipe.py</span> in <span class="ni">pipeline</span><span class="nt">(data, **cfg)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1397</span>     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">process_pipeline</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">1398</span>         <span class="n">df</span> <span class="o">=</span> <span class="n">apply_pipeline</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">process_pipeline</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1399</span>     <span class="k">else</span><span class="p">:</span>
-
-<span class="nn">/workspace/projects/ekorpkit/ekorpkit/pipelines/pipe.py</span> in <span class="ni">apply_pipeline</span><span class="nt">(df, pipeline, pipeline_args, update_args, verbose)</span>
-<span class="g g-Whitespace">     </span><span class="mi">88</span> 
-<span class="ne">---&gt; </span><span class="mi">89</span>     <span class="k">return</span> <span class="n">reduce</span><span class="p">(</span><span class="n">apply_pipe</span><span class="p">,</span> <span class="n">pipeline_targets</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">90</span> 
-
-<span class="nn">/workspace/projects/ekorpkit/ekorpkit/ekonf.py</span> in <span class="ni">apply_pipe</span><span class="nt">(df, pipe)</span>
-<span class="g g-Whitespace">    </span><span class="mi">610</span>     <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">611</span>         <span class="k">return</span> <span class="n">fn</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pipe</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">612</span> 
-
-<span class="nn">/workspace/projects/ekorpkit/ekorpkit/pipelines/pipe.py</span> in <span class="ni">predict</span><span class="nt">(df, args)</span>
-<span class="g g-Whitespace">    </span><span class="mi">703</span>         <span class="k">with</span> <span class="n">elapsed_timer</span><span class="p">(</span><span class="n">format_time</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">elapsed</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">704</span>             <span class="n">predictions</span> <span class="o">=</span> <span class="n">apply</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">705</span>                 <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">,</span>
-
-<span class="nn">/workspace/projects/ekorpkit/ekorpkit/pipelines/pipe.py</span> in <span class="ni">apply</span><span class="nt">(func, series, description, verbose, use_batcher, minibatch_size, num_workers, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">47</span>             <span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">48</span>             <span class="n">results</span> <span class="o">=</span> <span class="n">decorator_apply</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">batcher_instance</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">)(</span>
-<span class="g g-Whitespace">     </span><span class="mi">49</span>                 <span class="n">series</span>
-
-<span class="nn">/workspace/projects/ekorpkit/ekorpkit/utils/batch/apply.py</span> in <span class="ni">wrapper_func</span><span class="nt">(*args, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">15</span>     <span class="k">def</span> <span class="nf">wrapper_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="ne">---&gt; </span><span class="mi">16</span>         <span class="k">return</span> <span class="n">Apply</span><span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">17</span>             <span class="n">func</span><span class="p">,</span>
-
-<span class="nn">/workspace/projects/ekorpkit/ekorpkit/utils/batch/apply.py</span> in <span class="ni">transform</span><span class="nt">(self, data, input_split, merge_output, minibatch_size, batcher)</span>
-<span class="g g-Whitespace">     </span><span class="mi">94</span>             <span class="n">batcher</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batcher</span>
-<span class="ne">---&gt; </span><span class="mi">95</span>         <span class="k">return</span> <span class="n">batcher</span><span class="o">.</span><span class="n">process_batches</span><span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">96</span>             <span class="n">batch_transform</span><span class="p">,</span>
-
-<span class="nn">/workspace/projects/ekorpkit/ekorpkit/utils/batch/batcher.py</span> in <span class="ni">process_batches</span><span class="nt">(self, task, data, args, backend, backend_handle, input_split, merge_output, minibatch_size, procs, task_num_cpus, task_num_gpus, verbose, description)</span>
-<span class="g g-Whitespace">    </span><span class="mi">350</span>                 <span class="p">)</span> <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">351</span>                     <span class="n">results</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">procs</span><span class="p">)(</span>
-<span class="g g-Whitespace">    </span><span class="mi">352</span>                         <span class="n">delayed</span><span class="p">(</span><span class="n">task</span><span class="p">)(</span><span class="n">params</span><span class="p">)</span> <span class="k">for</span> <span class="n">params</span> <span class="ow">in</span> <span class="n">paral_params</span>
-
-<span class="nn">/opt/conda/lib/python3.8/site-packages/joblib/parallel.py</span> in <span class="ni">__call__</span><span class="nt">(self, iterable)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1053</span>             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">retrieval_context</span><span class="p">():</span>
-<span class="ne">-&gt; </span><span class="mi">1054</span>                 <span class="bp">self</span><span class="o">.</span><span class="n">retrieve</span><span class="p">()</span>
-<span class="g g-Whitespace">   </span><span class="mi">1055</span>             <span class="c1"># Make sure that we get a last message telling us we are done</span>
-
-<span class="nn">/opt/conda/lib/python3.8/site-packages/joblib/parallel.py</span> in <span class="ni">retrieve</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">932</span>                 <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="p">,</span> <span class="s1">&#39;supports_timeout&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">933</span>                     <span class="bp">self</span><span class="o">.</span><span class="n">_output</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">))</span>
-<span class="g g-Whitespace">    </span><span class="mi">934</span>                 <span class="k">else</span><span class="p">:</span>
-
-<span class="nn">/opt/conda/lib/python3.8/site-packages/joblib/_parallel_backends.py</span> in <span class="ni">wrap_future_result</span><span class="nt">(future, timeout)</span>
-<span class="g g-Whitespace">    </span><span class="mi">541</span>         <span class="k">try</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">542</span>             <span class="k">return</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">543</span>         <span class="k">except</span> <span class="n">CfTimeoutError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-
-<span class="nn">/opt/conda/lib/python3.8/concurrent/futures/_base.py</span> in <span class="ni">result</span><span class="nt">(self, timeout)</span>
-<span class="g g-Whitespace">    </span><span class="mi">438</span>             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">==</span> <span class="n">FINISHED</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">439</span>                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_result</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">440</span>             <span class="k">else</span><span class="p">:</span>
-
-<span class="nn">/opt/conda/lib/python3.8/concurrent/futures/_base.py</span> in <span class="ni">__get_result</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">387</span>         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exception</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">388</span>             <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exception</span>
-<span class="g g-Whitespace">    </span><span class="mi">389</span>         <span class="k">else</span><span class="p">:</span>
-
-<span class="ne">IndexError</span>: index 0 is out of bounds for axis 0 with size 0
-
-<span class="n">The</span> <span class="n">above</span> <span class="n">exception</span> <span class="n">was</span> <span class="n">the</span> <span class="n">direct</span> <span class="n">cause</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">exception</span><span class="p">:</span>
-
-<span class="ne">InstantiationException</span><span class="g g-Whitespace">                    </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">9</span><span class="n">d66df7c2a12</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">-lm.parquet&#39;</span>
-<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="n">cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="ne">---&gt; </span><span class="mi">14</span> <span class="n">df</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">15</span> <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-
-<span class="nn">/workspace/projects/ekorpkit/ekorpkit/ekonf.py</span> in <span class="ni">instantiate</span><span class="nt">(config, *args, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">748</span>     <span class="nd">@staticmethod</span>
-<span class="g g-Whitespace">    </span><span class="mi">749</span>     <span class="k">def</span> <span class="nf">instantiate</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">750</span>         <span class="k">return</span> <span class="n">_instantiate</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">751</span> 
-<span class="g g-Whitespace">    </span><span class="mi">752</span>     <span class="nd">@staticmethod</span>
-
-<span class="nn">/workspace/projects/ekorpkit/ekorpkit/ekonf.py</span> in <span class="ni">_instantiate</span><span class="nt">(config, *args, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">512</span>     <span class="k">if</span> <span class="n">_Keys</span><span class="o">.</span><span class="n">RECURSIVE</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">513</span>         <span class="n">kwargs</span><span class="p">[</span><span class="n">_Keys</span><span class="o">.</span><span class="n">RECURSIVE</span><span class="p">]</span> <span class="o">=</span> <span class="n">_recursive_</span>
-<span class="ne">--&gt; </span><span class="mi">514</span>     <span class="k">return</span> <span class="n">hydra</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">515</span> 
-<span class="g g-Whitespace">    </span><span class="mi">516</span> 
-
-<span class="nn">/opt/conda/lib/python3.8/site-packages/hydra/_internal/instantiate/_instantiate2.py</span> in <span class="ni">instantiate</span><span class="nt">(config, *args, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">220</span>         <span class="n">_partial_</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">_Keys</span><span class="o">.</span><span class="n">PARTIAL</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">221</span> 
-<span class="ne">--&gt; </span><span class="mi">222</span>         <span class="k">return</span> <span class="n">instantiate_node</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">223</span>             <span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="n">_recursive_</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="n">_convert_</span><span class="p">,</span> <span class="n">partial</span><span class="o">=</span><span class="n">_partial_</span>
-<span class="g g-Whitespace">    </span><span class="mi">224</span>         <span class="p">)</span>
-
-<span class="nn">/opt/conda/lib/python3.8/site-packages/hydra/_internal/instantiate/_instantiate2.py</span> in <span class="ni">instantiate_node</span><span class="nt">(node, convert, recursive, partial, *args)</span>
-<span class="g g-Whitespace">    </span><span class="mi">337</span>                     <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">_convert_node</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">convert</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">338</span> 
-<span class="ne">--&gt; </span><span class="mi">339</span>             <span class="k">return</span> <span class="n">_call_target</span><span class="p">(</span><span class="n">_target_</span><span class="p">,</span> <span class="n">partial</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">full_key</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">340</span>         <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">341</span>             <span class="c1"># If ALL or PARTIAL non structured, instantiate in dict and resolve interpolations eagerly.</span>
-
-<span class="nn">/opt/conda/lib/python3.8/site-packages/hydra/_internal/instantiate/_instantiate2.py</span> in <span class="ni">_call_target</span><span class="nt">(_target_, _partial_, args, kwargs, full_key)</span>
-<span class="g g-Whitespace">     </span><span class="mi">95</span>             <span class="k">if</span> <span class="n">full_key</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">96</span>                 <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">full_key: </span><span class="si">{</span><span class="n">full_key</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="ne">---&gt; </span><span class="mi">97</span>             <span class="k">raise</span> <span class="n">InstantiationException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
-<span class="g g-Whitespace">     </span><span class="mi">98</span> 
-<span class="g g-Whitespace">     </span><span class="mi">99</span> 
-
-<span class="ne">InstantiationException</span>: Error in call to target &#39;ekorpkit.pipelines.pipe.pipeline&#39;:
-<span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;index 0 is out of bounds for axis 0 with size 0&#39;</span><span class="p">)</span>
-<span class="ne">full_key</span>: pipeline
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">output_dir</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">output_file</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="instantiating-a-transformer-classficiation-model-with-financial-phrasebank-dataset">
-<h2>Instantiating a transformer classficiation model with <code class="docutils literal notranslate"><span class="pre">financial_phrasebank</span></code> dataset<a class="headerlink" href="#instantiating-a-transformer-classficiation-model-with-financial-phrasebank-dataset" title="Permalink to this headline">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
-
-<span class="n">overrides</span><span class="o">=</span><span class="p">[</span>
-    <span class="s1">&#39;+model/transformer=simple_classification&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;+model/transformer/pretrained=finbert&#39;</span><span class="p">,</span>
-<span class="p">]</span>
-<span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">overrides</span><span class="o">=</span><span class="n">overrides</span><span class="p">,</span> <span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;model/transformer=simple_classification&#39;</span><span class="p">)</span>
-<span class="n">model_cfg</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">ds_cfg</span>
-<span class="n">model_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">num_train_epochs</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_seq_length</span> <span class="o">=</span> <span class="mi">256</span>
-<span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">train_batch_size</span> <span class="o">=</span> <span class="mi">32</span>
-<span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">eval_batch_size</span> <span class="o">=</span> <span class="mi">32</span>
-<span class="n">model_cfg</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;positive&#39;</span><span class="p">,</span><span class="s1">&#39;neutral&#39;</span><span class="p">,</span><span class="s1">&#39;negative&#39;</span><span class="p">]</span>
-<span class="n">model_cfg</span><span class="o">.</span><span class="n">_call_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">]</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">model_cfg</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ekorpkit.models.transformer.simple.SimpleClassification at 0x7fd897d35250&gt;
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;pipeline&#39;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;edgar_sentiments&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;${cached_path:&#39;https://github.com/entelecheia/ekorpkit-config/raw/main/data/edgar.zip&#39;,true,false}&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">+=</span> <span class="s2">&quot;/edgar&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s1">&#39;edgar.parquet&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">columns_to_keep</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="s1">&#39;item&#39;</span><span class="p">,</span> <span class="s1">&#39;cik&#39;</span><span class="p">,</span> <span class="s1">&#39;company&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">]</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">_pipeline_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;predict&#39;</span><span class="p">]</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model_cfg</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="s2">&quot;./data/predict&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">-finbert.parquet&#39;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
-<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading 1 dataframes from [&#39;/root/.ekorpkit/.cache/cached_path/bba50371f814f64ee7290d4bfcc1af428ca7105a08f463fcb32d5b8ba35abec9.e471900481c811e176bb6ea493388979a9def601f2f456f660131000c602f18b-extracted/edgar/edgar.parquet&#39;]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:instantiating ekorpkit.pipelines.pipe.pipeline...
+INFO:ekorpkit.base:instantiating ekorpkit.pipelines.data.Data...
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function predict at 0x7f4c5c602820&gt;)
+INFO:ekorpkit.base:instantiating ekorpkit.models.sentiment.lbsa.SentimentAnalyser...
+INFO:ekorpkit.base:Calling load_candidates
+INFO:ekorpkit.base:Using batcher with minibatch size: 16
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "f86182a4cd1446c4853a286ec625fc32", "version_major": 2, "version_minor": 0}
-</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Token indices sequence length is longer than the specified maximum sequence length for this model (4252 &gt; 512). Running this sequence through the model will result in indexing errors
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "d580432e8def41e4a74fdc4335542d3b", "version_major": 2, "version_minor": 0}
-</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> &gt;&gt; saved dataframe to ./data/predict/edgar_sentiments-finbert.parquet
-</pre></div>
-</div>
-<div class="output text_html"><div>
+{"model_id": "0f1d24fc37984047904564994cadde60", "version_major": 2, "version_minor": 0}
+</script><div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
@@ -1409,10 +1247,23 @@ title="Print to PDF"
       <th>id</th>
       <th>filename</th>
       <th>item</th>
+      <th>text</th>
       <th>cik</th>
       <th>company</th>
-      <th>text</th>
-      <th>pred_labels</th>
+      <th>filing_type</th>
+      <th>filing_date</th>
+      <th>period_of_report</th>
+      <th>sic</th>
+      <th>state_of_inc</th>
+      <th>state_location</th>
+      <th>fiscal_year_end</th>
+      <th>filing_html_index</th>
+      <th>htm_filing_link</th>
+      <th>complete_text_filing_link</th>
+      <th>num_tokens</th>
+      <th>polarity</th>
+      <th>polarity_label</th>
+      <th>uncertainty</th>
     </tr>
   </thead>
   <tbody>
@@ -1421,50 +1272,395 @@ title="Print to PDF"
       <td>1534</td>
       <td>1999/320193_10K_1999_0000912057-99-010244.json</td>
       <td>item_1</td>
+      <td>ITEM 1. \nBUSINESS GENERAL Apple Computer, Inc...</td>
       <td>320193</td>
       <td>APPLE COMPUTER INC</td>
-      <td>ITEM 1. \nBUSINESS GENERAL Apple Computer, Inc...</td>
-      <td>positive</td>
+      <td>10-K</td>
+      <td>1999-12-22</td>
+      <td>1999-09-25</td>
+      <td>3571</td>
+      <td>CA</td>
+      <td>CA</td>
+      <td>0930</td>
+      <td>https://www.sec.gov/Archives/edgar/data/320193...</td>
+      <td>None</td>
+      <td>https://www.sec.gov/Archives/edgar/data/320193...</td>
+      <td>3901</td>
+      <td>-0.117647</td>
+      <td>neutral</td>
+      <td>0.011280</td>
     </tr>
     <tr>
       <th>1560</th>
       <td>1697</td>
       <td>1999/21344_10K_1999_0000021344-00-000009.json</td>
       <td>item_1</td>
+      <td>ITEM 1. \nBUSINESS The Coca-Cola Company (toge...</td>
       <td>21344</td>
       <td>COCA COLA CO</td>
-      <td>ITEM 1. \nBUSINESS The Coca-Cola Company (toge...</td>
+      <td>10-K</td>
+      <td>2000-03-09</td>
+      <td>1999-12-31</td>
+      <td>2080</td>
+      <td>DE</td>
+      <td>GA</td>
+      <td>1231</td>
+      <td>https://www.sec.gov/Archives/edgar/data/21344/...</td>
+      <td>None</td>
+      <td>https://www.sec.gov/Archives/edgar/data/21344/...</td>
+      <td>6755</td>
+      <td>0.066667</td>
       <td>neutral</td>
+      <td>0.014805</td>
     </tr>
     <tr>
       <th>2746</th>
       <td>2977</td>
       <td>1999/70858_10K_1999_0000950168-00-000621.json</td>
       <td>item_1</td>
+      <td>Item 1. \nBUSINESS General Bank of America Cor...</td>
       <td>70858</td>
       <td>BANK OF AMERICA CORP /DE/</td>
-      <td>Item 1. \nBUSINESS General Bank of America Cor...</td>
-      <td>neutral</td>
+      <td>10-K</td>
+      <td>2000-03-20</td>
+      <td>1999-12-31</td>
+      <td>6021</td>
+      <td>DE</td>
+      <td>NC</td>
+      <td>1231</td>
+      <td>https://www.sec.gov/Archives/edgar/data/70858/...</td>
+      <td>None</td>
+      <td>https://www.sec.gov/Archives/edgar/data/70858/...</td>
+      <td>3491</td>
+      <td>-0.219512</td>
+      <td>negative</td>
+      <td>0.008595</td>
     </tr>
     <tr>
       <th>3762</th>
       <td>4088</td>
       <td>1999/80424_10K_1999_0000080424-99-000027.json</td>
       <td>item_1</td>
+      <td>Item 1. \nBusiness. \n--------- General Develo...</td>
       <td>80424</td>
       <td>PROCTER &amp; GAMBLE CO</td>
-      <td>Item 1. \nBusiness. \n--------- General Develo...</td>
+      <td>10-K</td>
+      <td>1999-09-15</td>
+      <td>1999-06-30</td>
+      <td>2840</td>
+      <td>OH</td>
+      <td>OH</td>
+      <td>0630</td>
+      <td>https://www.sec.gov/Archives/edgar/data/80424/...</td>
+      <td>None</td>
+      <td>https://www.sec.gov/Archives/edgar/data/80424/...</td>
+      <td>1259</td>
+      <td>0.166667</td>
       <td>neutral</td>
+      <td>0.011915</td>
     </tr>
     <tr>
       <th>4806</th>
       <td>5211</td>
       <td>1999/1018724_10K_1999_0000891020-00-000622.json</td>
       <td>item_1</td>
+      <td>ITEM 1. \nBUSINESS This Annual Report on Form ...</td>
       <td>1018724</td>
       <td>AMAZON COM INC</td>
-      <td>ITEM 1. \nBUSINESS This Annual Report on Form ...</td>
+      <td>10-K</td>
+      <td>2000-03-29</td>
+      <td>1999-12-31</td>
+      <td>5961</td>
+      <td>DE</td>
+      <td>WA</td>
+      <td>1231</td>
+      <td>https://www.sec.gov/Archives/edgar/data/101872...</td>
+      <td>None</td>
+      <td>https://www.sec.gov/Archives/edgar/data/101872...</td>
+      <td>12335</td>
+      <td>-0.104167</td>
+      <td>neutral</td>
+      <td>0.020025</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">output_dir</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">output_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>../data/predict
+edgar_sentiments-lm.parquet
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="instantiating-a-transformer-classficiation-model-with-financial-phrasebank-dataset">
+<h2>Instantiating a transformer classficiation model with <code class="docutils literal notranslate"><span class="pre">financial_phrasebank</span></code> dataset<a class="headerlink" href="#instantiating-a-transformer-classficiation-model-with-financial-phrasebank-dataset" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">overrides</span><span class="o">=</span><span class="p">[</span>
+    <span class="s1">&#39;+model/transformer=classification&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;+model/transformer/pretrained=finbert&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;model/transformer=classification&#39;</span><span class="p">,</span> <span class="n">overrides</span><span class="p">)</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">ds_cfg</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">num_train_epochs</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_seq_length</span> <span class="o">=</span> <span class="mi">256</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">train_batch_size</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">eval_batch_size</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;positive&#39;</span><span class="p">,</span><span class="s1">&#39;neutral&#39;</span><span class="p">,</span><span class="s1">&#39;negative&#39;</span><span class="p">]</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">_method_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">]</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">model_cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Calling train
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "3fafad29bc8c4fb7bc79e38850c02444", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/lib/python3.8/site-packages/transformers/optimization.py:306: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "3df24f7cbc79439aa25ef2f442f812b2", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Blue">wandb</span>: Currently logged in as: <span class=" -Color -Color-Yellow">entelecheia</span>. Use <span class=" -Color -Color-Bold">`wandb login --relogin`</span> to force relogin
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+</pre></div>
+</div>
+<div class="output text_html">wandb version 0.12.21 is available!  To upgrade, please run:
+ $ pip install wandb --upgrade</div><div class="output text_html">Tracking run with wandb version 0.12.19</div><div class="output text_html">Run data is saved locally in <code>/workspace/projects/ekorpkit-book/outputs/ekorpkit-book/finbert/wandb/run-20220708_000030-2krugt98</code></div><div class="output text_html">Syncing run <strong><a href="https://wandb.ai/entelecheia/ekorpkit-book-ekorpkit-book/runs/2krugt98" target="_blank">stellar-darkness-7</a></strong> to <a href="https://wandb.ai/entelecheia/ekorpkit-book-ekorpkit-book" target="_blank">Weights & Biases</a> (<a href="https://wandb.me/run" target="_blank">docs</a>)<br/></div><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "f8d9180da26f4f7b80da75499720fe1d", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "664f885cc2a2485a8a8088b760937898", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "c511c063fc3a469fa820c3cabac6b448", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "4f5744b3b2ff4c1b8a3fa97150a0b033", "version_major": 2, "version_minor": 0}
+</script><div class="output text_html">Finishing last run (ID:2krugt98) before initializing another...</div><div class="output text_html">Waiting for W&B process to finish... <strong style="color:green">(success).</strong></div><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "", "version_major": 2, "version_minor": 0}
+</script><div class="output text_html"><style>
+    table.wandb td:nth-child(1) { padding: 0 10px; text-align: left ; width: auto;} td:nth-child(2) {text-align: left ; width: 100%}
+    .wandb-row { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; width: 100% }
+    .wandb-col { display: flex; flex-direction: column; flex-basis: 100%; flex: 1; padding: 10px; }
+    </style>
+<div class="wandb-row"><div class="wandb-col"><h3>Run history:</h3><br/><table class="wandb"><tr><td>Training loss</td><td>▁</td></tr><tr><td>acc</td><td>▁█</td></tr><tr><td>eval_loss</td><td>█▁</td></tr><tr><td>global_step</td><td>▁▂█</td></tr><tr><td>lr</td><td>▁</td></tr><tr><td>mcc</td><td>▁█</td></tr><tr><td>train_loss</td><td>▁█</td></tr></table><br/></div><div class="wandb-col"><h3>Run summary:</h3><br/><table class="wandb"><tr><td>Training loss</td><td>0.45026</td></tr><tr><td>acc</td><td>0.85912</td></tr><tr><td>eval_loss</td><td>0.41092</td></tr><tr><td>global_step</td><td>92</td></tr><tr><td>lr</td><td>2e-05</td></tr><tr><td>mcc</td><td>0.73629</td></tr><tr><td>train_loss</td><td>0.24922</td></tr></table><br/></div></div></div><div class="output text_html">Synced <strong style="color:#cdcd00">stellar-darkness-7</strong>: <a href="https://wandb.ai/entelecheia/ekorpkit-book-ekorpkit-book/runs/2krugt98" target="_blank">https://wandb.ai/entelecheia/ekorpkit-book-ekorpkit-book/runs/2krugt98</a><br/>Synced 4 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)</div><div class="output text_html">Find logs at: <code>/workspace/projects/ekorpkit-book/outputs/ekorpkit-book/finbert/wandb/run-20220708_000030-2krugt98/logs</code></div><div class="output text_html">Successfully finished last run (ID:2krugt98). Initializing new run:<br/></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+</pre></div>
+</div>
+<div class="output text_html">wandb version 0.12.21 is available!  To upgrade, please run:
+ $ pip install wandb --upgrade</div><div class="output text_html">Tracking run with wandb version 0.12.19</div><div class="output text_html">Run data is saved locally in <code>/workspace/projects/ekorpkit-book/outputs/ekorpkit-book/finbert/wandb/run-20220708_000053-n5z5mrt4</code></div><div class="output text_html">Syncing run <strong><a href="https://wandb.ai/entelecheia/ekorpkit-book-ekorpkit-book/runs/n5z5mrt4" target="_blank">prime-snowflake-8</a></strong> to <a href="https://wandb.ai/entelecheia/ekorpkit-book-ekorpkit-book" target="_blank">Weights & Biases</a> (<a href="https://wandb.me/run" target="_blank">docs</a>)<br/></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ekorpkit.models.transformer.simple.SimpleClassification at 0x7f4c2026ba00&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_cfg</span><span class="o">.</span><span class="n">_method_</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;pipeline&#39;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;edgar_sentiments&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/entelecheia/ekorpkit-config/raw/main/data/edgar.zip&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cached_path</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">+=</span> <span class="s2">&quot;/edgar&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s1">&#39;edgar.parquet&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="s1">&#39;item&#39;</span><span class="p">,</span> <span class="s1">&#39;cik&#39;</span><span class="p">,</span> <span class="s1">&#39;company&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">_pipeline_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;predict&#39;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model_cfg</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="s2">&quot;./data/predict&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">-finbert.parquet&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function predict at 0x7f4c5c602820&gt;)
+INFO:ekorpkit.base:No method defined to call
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "891d3f0cbfae462da7e90658a63591eb", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Token indices sequence length is longer than the specified maximum sequence length for this model (4252 &gt; 512). Running this sequence through the model will result in indexing errors
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "b31a01d393dd4503b56d5fca381354da", "version_major": 2, "version_minor": 0}
+</script><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>filename</th>
+      <th>item</th>
+      <th>text</th>
+      <th>cik</th>
+      <th>company</th>
+      <th>filing_type</th>
+      <th>filing_date</th>
+      <th>period_of_report</th>
+      <th>sic</th>
+      <th>state_of_inc</th>
+      <th>state_location</th>
+      <th>fiscal_year_end</th>
+      <th>filing_html_index</th>
+      <th>htm_filing_link</th>
+      <th>complete_text_filing_link</th>
+      <th>pred_labels</th>
+      <th>raw_preds</th>
+      <th>pred_probs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1410</th>
+      <td>1534</td>
+      <td>1999/320193_10K_1999_0000912057-99-010244.json</td>
+      <td>item_1</td>
+      <td>ITEM 1. \nBUSINESS GENERAL Apple Computer, Inc...</td>
+      <td>320193</td>
+      <td>APPLE COMPUTER INC</td>
+      <td>10-K</td>
+      <td>1999-12-22</td>
+      <td>1999-09-25</td>
+      <td>3571</td>
+      <td>CA</td>
+      <td>CA</td>
+      <td>0930</td>
+      <td>https://www.sec.gov/Archives/edgar/data/320193...</td>
+      <td>None</td>
+      <td>https://www.sec.gov/Archives/edgar/data/320193...</td>
       <td>positive</td>
+      <td>[2.291260004043579, -0.967369019985199, -2.501...</td>
+      <td>0.055811</td>
+    </tr>
+    <tr>
+      <th>1560</th>
+      <td>1697</td>
+      <td>1999/21344_10K_1999_0000021344-00-000009.json</td>
+      <td>item_1</td>
+      <td>ITEM 1. \nBUSINESS The Coca-Cola Company (toge...</td>
+      <td>21344</td>
+      <td>COCA COLA CO</td>
+      <td>10-K</td>
+      <td>2000-03-09</td>
+      <td>1999-12-31</td>
+      <td>2080</td>
+      <td>DE</td>
+      <td>GA</td>
+      <td>1231</td>
+      <td>https://www.sec.gov/Archives/edgar/data/21344/...</td>
+      <td>None</td>
+      <td>https://www.sec.gov/Archives/edgar/data/21344/...</td>
+      <td>neutral</td>
+      <td>[2.1693193912506104, -0.7590945959091187, -2.5...</td>
+      <td>0.030452</td>
+    </tr>
+    <tr>
+      <th>2746</th>
+      <td>2977</td>
+      <td>1999/70858_10K_1999_0000950168-00-000621.json</td>
+      <td>item_1</td>
+      <td>Item 1. \nBUSINESS General Bank of America Cor...</td>
+      <td>70858</td>
+      <td>BANK OF AMERICA CORP /DE/</td>
+      <td>10-K</td>
+      <td>2000-03-20</td>
+      <td>1999-12-31</td>
+      <td>6021</td>
+      <td>DE</td>
+      <td>NC</td>
+      <td>1231</td>
+      <td>https://www.sec.gov/Archives/edgar/data/70858/...</td>
+      <td>None</td>
+      <td>https://www.sec.gov/Archives/edgar/data/70858/...</td>
+      <td>neutral</td>
+      <td>[2.2866339683532715, -0.997267484664917, -2.47...</td>
+      <td>0.066551</td>
+    </tr>
+    <tr>
+      <th>3762</th>
+      <td>4088</td>
+      <td>1999/80424_10K_1999_0000080424-99-000027.json</td>
+      <td>item_1</td>
+      <td>Item 1. \nBusiness. \n--------- General Develo...</td>
+      <td>80424</td>
+      <td>PROCTER &amp; GAMBLE CO</td>
+      <td>10-K</td>
+      <td>1999-09-15</td>
+      <td>1999-06-30</td>
+      <td>2840</td>
+      <td>OH</td>
+      <td>OH</td>
+      <td>0630</td>
+      <td>https://www.sec.gov/Archives/edgar/data/80424/...</td>
+      <td>None</td>
+      <td>https://www.sec.gov/Archives/edgar/data/80424/...</td>
+      <td>neutral</td>
+      <td>[2.303800106048584, -1.0463552474975586, -2.49...</td>
+      <td>0.183069</td>
+    </tr>
+    <tr>
+      <th>4806</th>
+      <td>5211</td>
+      <td>1999/1018724_10K_1999_0000891020-00-000622.json</td>
+      <td>item_1</td>
+      <td>ITEM 1. \nBUSINESS This Annual Report on Form ...</td>
+      <td>1018724</td>
+      <td>AMAZON COM INC</td>
+      <td>10-K</td>
+      <td>2000-03-29</td>
+      <td>1999-12-31</td>
+      <td>5961</td>
+      <td>DE</td>
+      <td>WA</td>
+      <td>1231</td>
+      <td>https://www.sec.gov/Archives/edgar/data/101872...</td>
+      <td>None</td>
+      <td>https://www.sec.gov/Archives/edgar/data/101872...</td>
+      <td>positive</td>
+      <td>[-1.7280608415603638, 2.051792621612549, 0.995...</td>
+      <td>0.017812</td>
     </tr>
   </tbody>
 </table>
@@ -1479,18 +1675,30 @@ title="Print to PDF"
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
 Int64Index: 1585 entries, 1410 to 1291201
-Data columns (total 7 columns):
- #   Column       Non-Null Count  Dtype 
----  ------       --------------  ----- 
- 0   id           1585 non-null   int64 
- 1   filename     1585 non-null   object
- 2   item         1585 non-null   object
- 3   cik          1585 non-null   object
- 4   company      1585 non-null   object
- 5   text         1585 non-null   object
- 6   pred_labels  1585 non-null   object
-dtypes: int64(1), object(6)
-memory usage: 99.1+ KB
+Data columns (total 19 columns):
+ #   Column                     Non-Null Count  Dtype  
+---  ------                     --------------  -----  
+ 0   id                         1585 non-null   int64  
+ 1   filename                   1585 non-null   object 
+ 2   item                       1585 non-null   object 
+ 3   text                       1585 non-null   object 
+ 4   cik                        1585 non-null   object 
+ 5   company                    1585 non-null   object 
+ 6   filing_type                1585 non-null   object 
+ 7   filing_date                1585 non-null   object 
+ 8   period_of_report           1585 non-null   object 
+ 9   sic                        1585 non-null   object 
+ 10  state_of_inc               1585 non-null   object 
+ 11  state_location             1585 non-null   object 
+ 12  fiscal_year_end            1585 non-null   object 
+ 13  filing_html_index          1585 non-null   object 
+ 14  htm_filing_link            1228 non-null   object 
+ 15  complete_text_filing_link  1585 non-null   object 
+ 16  pred_labels                1585 non-null   object 
+ 17  raw_preds                  1585 non-null   object 
+ 18  pred_probs                 1585 non-null   float64
+dtypes: float64(1), int64(1), object(17)
+memory usage: 247.7+ KB
 </pre></div>
 </div>
 </div>
@@ -1500,7 +1708,7 @@ memory usage: 99.1+ KB
 
 
 <script type="application/vnd.jupyter.widget-state+json">
-{"state": {"01cbf995388e404ca735f9401cf94f32": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "01e94069d5304fc087c0cffaf6b2f17f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "028d645ab929408495c5676b3a368b02": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "03bd79766c664d5289aec8eacf516eed": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "04818df2041546ec8c4efce446ee057a": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "05d4a123dbd846a68b351af192a8a322": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "05da25b4619c4e2890a5c1e647f08ea8": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "08662858897444949ff5b5fec5902b02": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "086e9344a75b4b009960a0c6598d1435": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_a2049a08a6ee49fd9d585d6662c3870b", "style": "IPY_MODEL_4c3e73b27a4d45a49bafdf3b5fb7ee16", "value": "100%"}}, "08e9d156799f443989b8850e34006cde": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "0a0b10fcf85345dbbf07764f6cc4e7ff": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_f6c4bad2654646acabda8c90c089c05e", "max": 452, "style": "IPY_MODEL_deadc3cef7654f99b3b60ac337abbba0", "value": 452}}, "0b8451da3b0e419bb1c8f1974628b53a": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "0d5ffadaeb17447cbaae767ad72111cb": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_56cf2e85ee4c40fda9a396cd00836421", "style": "IPY_MODEL_e147ad2ba03c44d8a985a5894e2fe3de", "value": "Running Evaluation: 100%"}}, "0d6a586235b3437cac524071d2b3d60d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_0d5ffadaeb17447cbaae767ad72111cb", "IPY_MODEL_b9bdcfd5e89743659f3cbc78ed94c716", "IPY_MODEL_4c6fba722b11406191ebfc65745bf755"], "layout": "IPY_MODEL_80360eb9fbe34f02976551336a957958"}}, "0f58c3b39ff34b6c8a3c2e09257dbfe3": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "LabelModel", "state": {"layout": "IPY_MODEL_4b3e6dd031c04bdb9051a45025971f29", "style": "IPY_MODEL_858d5777d08e47fb885e82a98a9d107c"}}, "0f989e4df5ce437689ce35979bc7000f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "0fd52ffbf4634cc7b62712260d93d18a": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_9d4de84602804cfd851fc6a60395c0c8", "style": "IPY_MODEL_65edb71641b24523aad3d997fc3ec7e6", "value": "downloading: 100%"}}, "10790726f4aa47cf8c6a1f95eb4d3517": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "144e4d49f8d141c9909616faee9d1616": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "1471f23fa18a486d8c22cd7118711e69": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "151c196d75e0403a8c4fe6353869160a": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "VBoxModel", "state": {"children": ["IPY_MODEL_a6740419f8f54afbbb38f2a09af5549e", "IPY_MODEL_bf9b535bbbd94d2596c9f4bad2f0f8d9"], "layout": "IPY_MODEL_d4abcfe706f64cd0afd40384b2b1c0a5"}}, "1606798eaa864f128d0f1d1eddae6817": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "VBoxModel", "state": {"children": ["IPY_MODEL_706faf4fd91d4d91a0438d0f40a57411", "IPY_MODEL_c502f3a77651405fabc2aeed11d739d7"], "layout": "IPY_MODEL_a8612a65c9d045619a9de50c56b4c938"}}, "1823b198b4004220ac52cb1868eeb214": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_4b98c61eee04451796fb649982808d6b", "max": 15, "style": "IPY_MODEL_a6806f029f974746a0a2af902922cdb7", "value": 15}}, "1958d5717b3440c8af57fee6ccb99df3": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "1a52655c9c7445be85b7fa0b08f3bdd2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "1a95bdeb4f454e28b3b48d4ec6f1f9cd": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "1b60d4aed4ce4e15b3e5662b8b7fc7f7": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "1ba29ce8590440c28c63dd5a0d7f0503": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "1c132ecd397e4870a94558356b7a28f7": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "1c97387068084eef854f7a17c2cee6af": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "1f20644958394dbdb94ee3597370498a": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_0fd52ffbf4634cc7b62712260d93d18a", "IPY_MODEL_9620d59c031b413a85e83fe5eabcf519", "IPY_MODEL_a1627a00737e4c59aedb0f70cd19a176"], "layout": "IPY_MODEL_7ba4b4a122e741ee943f9e8f3082e91b"}}, "1f5e4447add54d85b71c0543bb940abc": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "201fac687291404c9a57fb5a018f20c8": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_574bf96fb51a4a11b2821f077453098c", "max": 1445, "style": "IPY_MODEL_0b8451da3b0e419bb1c8f1974628b53a", "value": 1445}}, "205121577b204eea9c8229623440364f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "2084cd42ab2048eb9e03a04ad8341618": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_e28d3f50a84b43c6b9b772fa788ff511", "max": 2, "style": "IPY_MODEL_32b2f1ab25b949f8a547755bde2ba202", "value": 2}}, "20f04081e6874a609112700ea3171718": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_fd50f847dad4438ab5a62c7e60a5798f", "IPY_MODEL_ca823c7b515c496d9b3294ee373071d5", "IPY_MODEL_6b7c55d6bb604cf99c4565f5543dc22a"], "layout": "IPY_MODEL_836a3838f85a4feea7e392fd22521d07"}}, "24299c38b80746b0b5ce472a23bafe28": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "24942903fb8449d497cc5e493f3a41fa": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "2651730a18dd4b4fb80d5de3a01cf02d": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "292e6382f58c4d4ea9789a8dc9908fb4": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_5d07301070574dc68f06aea1170d9454", "max": 945, "style": "IPY_MODEL_30a0b192d3a341a48750558690dc54f4", "value": 945}}, "2adcfc73a23a4fbba7ef713b8d84a888": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "2b45f673a21245cdb1b9ebdb668f5211": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "2fcb06c877ef4e7caebc10b00d8836c7": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "30a0b192d3a341a48750558690dc54f4": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "31537f27a1bc4b3697535ddd50f26761": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_41ab5e551bec4c9e864317c33246f1ad", "style": "IPY_MODEL_2adcfc73a23a4fbba7ef713b8d84a888", "value": " 452/452 [00:00&lt;00:00, 5963.05it/s]"}}, "329a33ff0ca64c919d0e52320ebb6f31": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_fc96aaca084441e5a6ef191a0f11febf", "IPY_MODEL_4c00ad02934440569c0c5f67efa1fea8", "IPY_MODEL_873c42db46d54483a6301559abf0b602"], "layout": "IPY_MODEL_9833c754084646a68cefdb674463c787"}}, "32a5002f5c024ace89ec8f09ccd8ca30": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "32b2f1ab25b949f8a547755bde2ba202": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "32f01b16601b4142aa970e8f285e265b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "337c8a99790f407db669e47cc75ec2a6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_5470f6201cbd43f4b325a25da98aea89", "max": 46, "style": "IPY_MODEL_e8b4c9b44ab74e3cb50a8d2ae0a63fa0", "value": 46}}, "33bf558163f547e38e3975e8dbef8489": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_ad597140b5724cb99838b04b143441bc", "IPY_MODEL_70914642e3794d939460715d79169277", "IPY_MODEL_8b355007cc694608bb72af2c590041e0"], "layout": "IPY_MODEL_b6d18718763448d8aa447c60941a5432"}}, "3621fe42c1eb4ba38560e1f7e8ccf169": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_7f5df650ba9c4c069ee97cbd979c9acf", "style": "IPY_MODEL_ce8ed345ce9f4a38b9a3735ade62d2d6", "value": " 945/945 [00:33&lt;00:00, 29.27it/s]"}}, "3cac4b9b91224468a295530effff0fc3": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "LabelModel", "state": {"layout": "IPY_MODEL_6629b32e84e04c0bb3b634ed6ee17e15", "style": "IPY_MODEL_65ad27a209294d9297a2aa5202c90189", "value": "0.015 MB of 0.015 MB uploaded (0.000 MB deduped)\r"}}, "3fbbe8419c724268939b92561514bf7f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "401117ae25b64e42ad0dbc2eddac904a": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "40250f3bab3243c6b8f7bf4504a87fa3": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "41894c7a290440c6963229320a0e0290": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_8b67029d5013452da04355c20085c304", "max": 46, "style": "IPY_MODEL_8fef0f0b34e2464e8611086533de8432", "value": 46}}, "41ab5e551bec4c9e864317c33246f1ad": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "4619933d7bbf404395e851b8d982e8e7": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_7c591ac86d5c47848769df8dded9400f", "style": "IPY_MODEL_57c11a83b2f04cd68325e0e89ec4beab", "value": "Running Evaluation: 100%"}}, "486d43ff1bb3420891d12de5919aba92": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "4af4d4a0fc164b24b3387035f2948fee": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "4b3e6dd031c04bdb9051a45025971f29": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "4b98c61eee04451796fb649982808d6b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "4c00ad02934440569c0c5f67efa1fea8": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_205121577b204eea9c8229623440364f", "max": 2, "style": "IPY_MODEL_7e6e22c5c9c549c18c7f62ef07292eaf", "value": 2}}, "4c2ddde21fbe43ccb1c8c02a58298df1": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_67f58523230b4c8fadd3bf46b69743a4", "style": "IPY_MODEL_bf604caa47bb4c8b99188e1a1e988a9a", "value": "Epochs 1/2. Running Loss:    0.2298: 100%"}}, "4c3e73b27a4d45a49bafdf3b5fb7ee16": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "4c6fba722b11406191ebfc65745bf755": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_1ba29ce8590440c28c63dd5a0d7f0503", "style": "IPY_MODEL_77193d52210f40b68daaf18e55af5868", "value": " 15/15 [00:00&lt;00:00, 28.03it/s]"}}, "4d7b8b72a92d4a7b8f175d425929c0eb": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "4de325a8c85d45699b4e75eda769c140": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "4f22256c9a1f40cd9fd073ff71dbc6d7": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_cf2326c38136428a81b96b657fa64f07", "style": "IPY_MODEL_e678af0319364bb49885c9e835328f03", "value": " 2/2 [00:25&lt;00:00, 11.86s/it]"}}, "4f7ddc6041eb41f396158dac3286ed90": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "53453c20abad4daa9fb4d088cd259927": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "5470f6201cbd43f4b325a25da98aea89": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "56cf2e85ee4c40fda9a396cd00836421": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "574bf96fb51a4a11b2821f077453098c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "5757d68782ec4db5abd9eb0aed13c237": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "57be6d107cc74deea806d1cb342c71ae": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "57c11a83b2f04cd68325e0e89ec4beab": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "5912833262a541cf82bf0454afa8566f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "5a1e2ea8c0834d80a17d4804137b4873": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_bded73b8499b4380aba3f58e9a34cde8", "IPY_MODEL_41894c7a290440c6963229320a0e0290", "IPY_MODEL_ebbb942bf40e4424a0cea09ab1806200"], "layout": "IPY_MODEL_d053be3b81f147339fe32edf8d741d81"}}, "5b9a8052ff3644dba74615939838b473": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_9e91f0540e614689bc200b0028ce1e3f", "IPY_MODEL_201fac687291404c9a57fb5a018f20c8", "IPY_MODEL_f53b9986eae24355ad8ace80c640951b"], "layout": "IPY_MODEL_04818df2041546ec8c4efce446ee057a"}}, "5be3d29ba75f4c5a896eb05fd872179b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "5d07301070574dc68f06aea1170d9454": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "6045dbf805a646a59595c356bd6d7879": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "LabelModel", "state": {"layout": "IPY_MODEL_1c132ecd397e4870a94558356b7a28f7", "style": "IPY_MODEL_6477dcd4745447a989600db143aa0508", "value": "0.015 MB of 0.015 MB uploaded (0.000 MB deduped)\r"}}, "618372aa012d46fba0e911fe87c382a1": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_cc614bcec8d14e429f3667405d69af4e", "style": "IPY_MODEL_e273435c3eb44919b184763a16e1dad6", "value": "Epoch 2 of 2: 100%"}}, "61aed286729b462ba83d4db8eb918c5b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "6468062124284f35814c2d838e5e23b6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_05da25b4619c4e2890a5c1e647f08ea8", "max": 1, "style": "IPY_MODEL_3fbbe8419c724268939b92561514bf7f", "value": 1}}, "6477dcd4745447a989600db143aa0508": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "65ad27a209294d9297a2aa5202c90189": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "65debf72b9d74b9ca0f17a806b8bf8d3": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "65edb71641b24523aad3d997fc3ec7e6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "6629b32e84e04c0bb3b634ed6ee17e15": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "668c12b84f0c4f72814d3f8d5772ae67": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_f172c78a11304f0fae6531b08264dec9", "max": 1445, "style": "IPY_MODEL_7c52b4b61dd34083b4970efc1fb14d8d", "value": 1445}}, "67f58523230b4c8fadd3bf46b69743a4": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "6abae9fd765342068792224b6b7287d3": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "6b38926392a64de7b4ab0b0baa32bd85": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "6b7c55d6bb604cf99c4565f5543dc22a": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_ab267c9292a64116b1820d2fa23d6299", "style": "IPY_MODEL_ce18e829cb55496885759da79f3734b3", "value": " 46/46 [00:05&lt;00:00, 10.06it/s]"}}, "706faf4fd91d4d91a0438d0f40a57411": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "LabelModel", "state": {"layout": "IPY_MODEL_2b45f673a21245cdb1b9ebdb668f5211", "style": "IPY_MODEL_e865495498354d64ab96530bee93ac59"}}, "70914642e3794d939460715d79169277": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_1958d5717b3440c8af57fee6ccb99df3", "max": 452, "style": "IPY_MODEL_24942903fb8449d497cc5e493f3a41fa", "value": 452}}, "739ba679c04541648e5e234d9b2c0c6c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "VBoxModel", "state": {"children": ["IPY_MODEL_d6c678008a5f493ca614ea472ef6d233", "IPY_MODEL_e6da4fae590e4e178f3333fa24a7fbe3"], "layout": "IPY_MODEL_32a5002f5c024ace89ec8f09ccd8ca30"}}, "73bc80df92b34714a83d37067672d7d0": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "7556a856754146f8b56c44bc964f262d": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "76cce14241e743959b9b8d426eb6a28e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_4c2ddde21fbe43ccb1c8c02a58298df1", "IPY_MODEL_d3b3c675b01e427f85d5f8fab8696fa4", "IPY_MODEL_7ba415250e244200bd05d038eb1b6854"], "layout": "IPY_MODEL_61aed286729b462ba83d4db8eb918c5b"}}, "77193d52210f40b68daaf18e55af5868": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "7a95e3cc77854f238beaf9fa59b7153f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "7ba415250e244200bd05d038eb1b6854": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_08662858897444949ff5b5fec5902b02", "style": "IPY_MODEL_85c58751373d466fb6a564c00dfccc58", "value": " 46/46 [00:05&lt;00:00, 10.08it/s]"}}, "7ba4b4a122e741ee943f9e8f3082e91b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "7ba66d1aef6443079afa2a83584bfd4d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_d92fea6bd003406593456066d875d9a9", "IPY_MODEL_337c8a99790f407db669e47cc75ec2a6", "IPY_MODEL_7beb963f2f4341e39b0e7f36a2d9ca1b"], "layout": "IPY_MODEL_e9d0182d252c4b7e97d6cccf7198ff8a"}}, "7beb963f2f4341e39b0e7f36a2d9ca1b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_6abae9fd765342068792224b6b7287d3", "style": "IPY_MODEL_08e9d156799f443989b8850e34006cde", "value": " 46/46 [00:06&lt;00:00,  9.91it/s]"}}, "7c52b4b61dd34083b4970efc1fb14d8d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "7c591ac86d5c47848769df8dded9400f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "7e6e22c5c9c549c18c7f62ef07292eaf": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "7f5df650ba9c4c069ee97cbd979c9acf": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "80360eb9fbe34f02976551336a957958": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "8124d0d1cb574a04827f5e222559e9cc": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "836a3838f85a4feea7e392fd22521d07": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "84914667930f4411b1d3201ff4105d64": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_9f80dc3cf89845b0a2f3cd3ec6067651", "max": 1, "style": "IPY_MODEL_a31f6e185df64158bb0d16a4d9398d76", "value": 1}}, "858d5777d08e47fb885e82a98a9d107c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "85c58751373d466fb6a564c00dfccc58": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "873c42db46d54483a6301559abf0b602": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_486d43ff1bb3420891d12de5919aba92", "style": "IPY_MODEL_a0d26a1ebcd54327b38d8bc7c1965958", "value": " 2/2 [00:22&lt;00:00, 10.71s/it]"}}, "87e41ca996c04965aef57a2e63ccb221": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "8845490561024e3b971df3ece0a9a61e": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "892f8f4c0fd5468f9f62d101899af880": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "8acb281df0aa49c0a64b24d2094bf8b9": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_b9a8ce430baa419e8c7cce8228b842c1", "IPY_MODEL_0a0b10fcf85345dbbf07764f6cc4e7ff", "IPY_MODEL_31537f27a1bc4b3697535ddd50f26761"], "layout": "IPY_MODEL_8845490561024e3b971df3ece0a9a61e"}}, "8b355007cc694608bb72af2c590041e0": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_fc6acff3486740deb0cc0b33c0782371", "style": "IPY_MODEL_6b38926392a64de7b4ab0b0baa32bd85", "value": " 452/452 [00:00&lt;00:00, 6073.35it/s]"}}, "8b67029d5013452da04355c20085c304": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "8fef0f0b34e2464e8611086533de8432": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "9620d59c031b413a85e83fe5eabcf519": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_f2c61d75c5004522b3dcf81f22347cb5", "max": 8111579, "style": "IPY_MODEL_e77bca1b6bd945ba8cd3e4bbfee2fddf", "value": 8111579}}, "9668fd7d0bd54b81958f35465d55005f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "9833c754084646a68cefdb674463c787": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "999d6b90c124446da7017285a1d633f8": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "9c27157bebe9497ba3222411157a6b7c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "9d4de84602804cfd851fc6a60395c0c8": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "9e91f0540e614689bc200b0028ce1e3f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_65debf72b9d74b9ca0f17a806b8bf8d3", "style": "IPY_MODEL_a239d1003360473683db3c5c05b19944", "value": "100%"}}, "9f80dc3cf89845b0a2f3cd3ec6067651": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "a06363388b25426098ea1de6736dcd7b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_40250f3bab3243c6b8f7bf4504a87fa3", "style": "IPY_MODEL_73bc80df92b34714a83d37067672d7d0", "value": "100%"}}, "a0d26a1ebcd54327b38d8bc7c1965958": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "a0db4957c44f4ee48602322434b4e823": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_cf20675bfbd841f78ccfab07e2f39f4b", "style": "IPY_MODEL_4f7ddc6041eb41f396158dac3286ed90", "value": " 1585/1585 [00:20&lt;00:00, 670.19it/s]"}}, "a1627a00737e4c59aedb0f70cd19a176": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_4d7b8b72a92d4a7b8f175d425929c0eb", "style": "IPY_MODEL_4af4d4a0fc164b24b3387035f2948fee", "value": " 7.74M/7.74M [00:00&lt;00:00, 38.9MiB/s]"}}, "a2049a08a6ee49fd9d585d6662c3870b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "a239d1003360473683db3c5c05b19944": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "a2fadbc7920f4cbdb3b219ec444eddc6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "a31f6e185df64158bb0d16a4d9398d76": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "a6740419f8f54afbbb38f2a09af5549e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "LabelModel", "state": {"layout": "IPY_MODEL_01cbf995388e404ca735f9401cf94f32", "style": "IPY_MODEL_5912833262a541cf82bf0454afa8566f"}}, "a6806cf07a4e402a86ec1b41f5e9840d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_ef3e5e79f7a94ed18bd04aea0d16721f", "style": "IPY_MODEL_9668fd7d0bd54b81958f35465d55005f", "value": " 1445/1445 [00:00&lt;00:00, 6876.97it/s]"}}, "a6806f029f974746a0a2af902922cdb7": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "a6c7b6b5dc2f4b5b9157b2e561237578": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "VBoxModel", "state": {"children": ["IPY_MODEL_0f58c3b39ff34b6c8a3c2e09257dbfe3", "IPY_MODEL_b7a6f0eb67dd431db0e16f34d5141295"], "layout": "IPY_MODEL_b1d7483d67d44be587a43505ce686ff3"}}, "a8612a65c9d045619a9de50c56b4c938": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "ab267c9292a64116b1820d2fa23d6299": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "ab5dcce08094472e98776932d995f32f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "ad597140b5724cb99838b04b143441bc": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_e79076264c6a4632a44e6fc2c7884293", "style": "IPY_MODEL_1a52655c9c7445be85b7fa0b08f3bdd2", "value": "100%"}}, "af2412b8d1774230b73ed1de5286983c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_618372aa012d46fba0e911fe87c382a1", "IPY_MODEL_2084cd42ab2048eb9e03a04ad8341618", "IPY_MODEL_4f22256c9a1f40cd9fd073ff71dbc6d7"], "layout": "IPY_MODEL_f0336d24811448cb9a2def6455e8be87"}}, "afad7ab6ea5f4c1f8145f9f759e89502": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "b105ddce3f3641d08c1c39b99870ce7d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "b1d7483d67d44be587a43505ce686ff3": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "b564b693644145f2ab97005d04b8ef4b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "VBoxModel", "state": {"children": ["IPY_MODEL_6045dbf805a646a59595c356bd6d7879", "IPY_MODEL_c70966e997044829be6e02842fb8ddb2"], "layout": "IPY_MODEL_de2c16fe2f6b46d6b42178d9b66e946c"}}, "b6d18718763448d8aa447c60941a5432": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "b7a6f0eb67dd431db0e16f34d5141295": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_c1a2fda2f17c48fe9446bce88642fc47", "max": 1, "style": "IPY_MODEL_f2488adb49ac457484a6e8ef0fcb1b1c"}}, "b90aabb0d1db4679851ce00984beebf5": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "b9a8ce430baa419e8c7cce8228b842c1": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_afad7ab6ea5f4c1f8145f9f759e89502", "style": "IPY_MODEL_5757d68782ec4db5abd9eb0aed13c237", "value": "100%"}}, "b9bdcfd5e89743659f3cbc78ed94c716": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_2fcb06c877ef4e7caebc10b00d8836c7", "max": 15, "style": "IPY_MODEL_1471f23fa18a486d8c22cd7118711e69", "value": 15}}, "ba0e6e3aa2a9421ebb05aed0c129133a": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_4619933d7bbf404395e851b8d982e8e7", "IPY_MODEL_1823b198b4004220ac52cb1868eeb214", "IPY_MODEL_c73b61d31f6e42ce8ae4c642f78f82b7"], "layout": "IPY_MODEL_144e4d49f8d141c9909616faee9d1616"}}, "bded73b8499b4380aba3f58e9a34cde8": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_e405f506a50942a78b012726bcc13d51", "style": "IPY_MODEL_03bd79766c664d5289aec8eacf516eed", "value": "Epochs 1/2. Running Loss:    0.4678: 100%"}}, "bf604caa47bb4c8b99188e1a1e988a9a": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "bf69220f11aa4ea5ac9de7f775054cd8": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "bf9b535bbbd94d2596c9f4bad2f0f8d9": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_ab5dcce08094472e98776932d995f32f", "max": 1, "style": "IPY_MODEL_0f989e4df5ce437689ce35979bc7000f"}}, "c1a2fda2f17c48fe9446bce88642fc47": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "c502f3a77651405fabc2aeed11d739d7": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_dc3ce3ecd5cc44508190f4c331994e34", "max": 1, "style": "IPY_MODEL_87e41ca996c04965aef57a2e63ccb221"}}, "c70966e997044829be6e02842fb8ddb2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_1f5e4447add54d85b71c0543bb940abc", "max": 1, "style": "IPY_MODEL_9c27157bebe9497ba3222411157a6b7c", "value": 1}}, "c73b61d31f6e42ce8ae4c642f78f82b7": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_05d4a123dbd846a68b351af192a8a322", "style": "IPY_MODEL_57be6d107cc74deea806d1cb342c71ae", "value": " 15/15 [00:00&lt;00:00, 27.20it/s]"}}, "c7569c3bfdc74af1a70356d7102627f7": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_999d6b90c124446da7017285a1d633f8", "style": "IPY_MODEL_1c97387068084eef854f7a17c2cee6af", "value": "100%"}}, "c803209b57bf431fa0273d580d364a25": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "ca823c7b515c496d9b3294ee373071d5": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_f8889a99114d45cfaafbd811cd02093c", "max": 46, "style": "IPY_MODEL_a2fadbc7920f4cbdb3b219ec444eddc6", "value": 46}}, "cc614bcec8d14e429f3667405d69af4e": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "cdfd47de23cd4ef398039f6a158beea6": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "ce18e829cb55496885759da79f3734b3": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "ce76689262024b5ea49933d567e27b02": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "LabelModel", "state": {"layout": "IPY_MODEL_bf69220f11aa4ea5ac9de7f775054cd8", "style": "IPY_MODEL_f72e4d16ba214181bc04abcb0165f9d2", "value": "0.013 MB of 0.013 MB uploaded (0.000 MB deduped)\r"}}, "ce8ed345ce9f4a38b9a3735ade62d2d6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "cf20675bfbd841f78ccfab07e2f39f4b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "cf2326c38136428a81b96b657fa64f07": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "d053be3b81f147339fe32edf8d741d81": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "d08b17a818984fc28241cbfa8fb57216": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_e2ad0733229343ed852248d13a9467e7", "max": 1585, "style": "IPY_MODEL_4de325a8c85d45699b4e75eda769c140", "value": 1585}}, "d3b3c675b01e427f85d5f8fab8696fa4": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_ed85e6d878924c8c97c82d9b8df0a3f0", "max": 46, "style": "IPY_MODEL_b90aabb0d1db4679851ce00984beebf5", "value": 46}}, "d4abcfe706f64cd0afd40384b2b1c0a5": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "d580432e8def41e4a74fdc4335542d3b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_086e9344a75b4b009960a0c6598d1435", "IPY_MODEL_292e6382f58c4d4ea9789a8dc9908fb4", "IPY_MODEL_3621fe42c1eb4ba38560e1f7e8ccf169"], "layout": "IPY_MODEL_10790726f4aa47cf8c6a1f95eb4d3517"}}, "d6c678008a5f493ca614ea472ef6d233": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "LabelModel", "state": {"layout": "IPY_MODEL_7a95e3cc77854f238beaf9fa59b7153f", "style": "IPY_MODEL_c803209b57bf431fa0273d580d364a25"}}, "d92fea6bd003406593456066d875d9a9": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_892f8f4c0fd5468f9f62d101899af880", "style": "IPY_MODEL_f2c193c199e941f8b3a0f247e65ed1cb", "value": "Epochs 0/2. Running Loss:    0.2772: 100%"}}, "d9e8498c793d4eed8beef99e6848c1fd": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "dc3ce3ecd5cc44508190f4c331994e34": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "de2c16fe2f6b46d6b42178d9b66e946c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "deadc3cef7654f99b3b60ac337abbba0": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "e147ad2ba03c44d8a985a5894e2fe3de": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "e20f85b22125454facc405ab7ddec187": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "LabelModel", "state": {"layout": "IPY_MODEL_1b60d4aed4ce4e15b3e5662b8b7fc7f7", "style": "IPY_MODEL_5be3d29ba75f4c5a896eb05fd872179b", "value": "0.013 MB of 0.013 MB uploaded (0.000 MB deduped)\r"}}, "e273435c3eb44919b184763a16e1dad6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "e28d3f50a84b43c6b9b772fa788ff511": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "e2ad0733229343ed852248d13a9467e7": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "e405f506a50942a78b012726bcc13d51": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "e5bb7091a5434f3b98e93bf02320c342": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "e678af0319364bb49885c9e835328f03": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "e6abb867e96a444688a5df535e335afe": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_c7569c3bfdc74af1a70356d7102627f7", "IPY_MODEL_668c12b84f0c4f72814d3f8d5772ae67", "IPY_MODEL_a6806cf07a4e402a86ec1b41f5e9840d"], "layout": "IPY_MODEL_028d645ab929408495c5676b3a368b02"}}, "e6da4fae590e4e178f3333fa24a7fbe3": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_e5bb7091a5434f3b98e93bf02320c342", "max": 1, "style": "IPY_MODEL_01e94069d5304fc087c0cffaf6b2f17f"}}, "e77bca1b6bd945ba8cd3e4bbfee2fddf": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "e79076264c6a4632a44e6fc2c7884293": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "e865495498354d64ab96530bee93ac59": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "e8b4c9b44ab74e3cb50a8d2ae0a63fa0": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "e95a623933a44ff6bb472969d050b688": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_32f01b16601b4142aa970e8f285e265b", "max": 1, "style": "IPY_MODEL_401117ae25b64e42ad0dbc2eddac904a", "value": 1}}, "e9d0182d252c4b7e97d6cccf7198ff8a": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "ebbb942bf40e4424a0cea09ab1806200": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_ed297eaf3a4a4e56be3bf5314f67e1e1", "style": "IPY_MODEL_f7eccba7992240c095183904336b69bb", "value": " 46/46 [00:05&lt;00:00, 10.02it/s]"}}, "ed297eaf3a4a4e56be3bf5314f67e1e1": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "ed85e6d878924c8c97c82d9b8df0a3f0": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "eda5322f92d54e85905086a0e48b11be": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "ef3e5e79f7a94ed18bd04aea0d16721f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "f0336d24811448cb9a2def6455e8be87": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "f172c78a11304f0fae6531b08264dec9": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "f2488adb49ac457484a6e8ef0fcb1b1c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "f2c193c199e941f8b3a0f247e65ed1cb": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "f2c61d75c5004522b3dcf81f22347cb5": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "f53b9986eae24355ad8ace80c640951b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_7556a856754146f8b56c44bc964f262d", "style": "IPY_MODEL_d9e8498c793d4eed8beef99e6848c1fd", "value": " 1445/1445 [00:00&lt;00:00, 6394.09it/s]"}}, "f6c4bad2654646acabda8c90c089c05e": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "f72e4d16ba214181bc04abcb0165f9d2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "f7eccba7992240c095183904336b69bb": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "f86182a4cd1446c4853a286ec625fc32": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_a06363388b25426098ea1de6736dcd7b", "IPY_MODEL_d08b17a818984fc28241cbfa8fb57216", "IPY_MODEL_a0db4957c44f4ee48602322434b4e823"], "layout": "IPY_MODEL_2651730a18dd4b4fb80d5de3a01cf02d"}}, "f8889a99114d45cfaafbd811cd02093c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "fc6acff3486740deb0cc0b33c0782371": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "fc96aaca084441e5a6ef191a0f11febf": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_eda5322f92d54e85905086a0e48b11be", "style": "IPY_MODEL_1a95bdeb4f454e28b3b48d4ec6f1f9cd", "value": "Epoch 2 of 2: 100%"}}, "fd50f847dad4438ab5a62c7e60a5798f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_cdfd47de23cd4ef398039f6a158beea6", "style": "IPY_MODEL_b105ddce3f3641d08c1c39b99870ce7d", "value": "Epochs 0/2. Running Loss:    0.0796: 100%"}}}, "version_major": 2, "version_minor": 0}
+{"state": {"000b4074ae6b45ccb0ed79375f2939af": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_64ebc01ae54e4e61a5caef5f27f7d442", "max": 1, "style": "IPY_MODEL_b3b29c8ed1594cae9946b4d523879337"}}, "01b613f1826e480786dc2b01a88e4be7": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_83c986bb2f034d8698c38fe2b40e455b", "style": "IPY_MODEL_9fcb7b31a45e4e8c9113fd0119271f75", "value": 100}}, "01cbf995388e404ca735f9401cf94f32": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "01e94069d5304fc087c0cffaf6b2f17f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "028d645ab929408495c5676b3a368b02": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "03bd79766c664d5289aec8eacf516eed": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "0425e9079fd04a55a84082dd7bacad28": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "04818df2041546ec8c4efce446ee057a": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "05d4a123dbd846a68b351af192a8a322": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "05da25b4619c4e2890a5c1e647f08ea8": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "0850593712fb4eb896ac386a016338f1": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "08662858897444949ff5b5fec5902b02": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "086e9344a75b4b009960a0c6598d1435": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_a2049a08a6ee49fd9d585d6662c3870b", "style": "IPY_MODEL_4c3e73b27a4d45a49bafdf3b5fb7ee16", "value": "100%"}}, "08e9d156799f443989b8850e34006cde": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "0a0b10fcf85345dbbf07764f6cc4e7ff": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_f6c4bad2654646acabda8c90c089c05e", "max": 452, "style": "IPY_MODEL_deadc3cef7654f99b3b60ac337abbba0", "value": 452}}, "0ab624cb828540118e6acbc1419c9649": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_ae50ae83403844eb88eed481627b0628", "style": "IPY_MODEL_0f6aeb1f166842fda59c121373cf4915", "value": " 28/46 [00:05&lt;00:02,  8.72it/s]"}}, "0b8451da3b0e419bb1c8f1974628b53a": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "0d5ffadaeb17447cbaae767ad72111cb": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_56cf2e85ee4c40fda9a396cd00836421", "style": "IPY_MODEL_e147ad2ba03c44d8a985a5894e2fe3de", "value": "Running Evaluation: 100%"}}, "0d6a586235b3437cac524071d2b3d60d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_0d5ffadaeb17447cbaae767ad72111cb", "IPY_MODEL_b9bdcfd5e89743659f3cbc78ed94c716", "IPY_MODEL_4c6fba722b11406191ebfc65745bf755"], "layout": "IPY_MODEL_80360eb9fbe34f02976551336a957958"}}, "0f1d24fc37984047904564994cadde60": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_3a00a6622bc149c5a76e8aba14b14efc", "IPY_MODEL_01b613f1826e480786dc2b01a88e4be7", "IPY_MODEL_9bc6989922ae4c71a026809a242943da"], "layout": "IPY_MODEL_e3ede884152a44bf8da333e3b0ea9c88"}}, "0f41d627c65c499498d570a24c8bf859": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_279c346c3f274a3693224aacd1144221", "max": 2, "style": "IPY_MODEL_196a67d6fa6841e9b4ecb18320dbe1b5"}}, "0f58c3b39ff34b6c8a3c2e09257dbfe3": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "LabelModel", "state": {"layout": "IPY_MODEL_4b3e6dd031c04bdb9051a45025971f29", "style": "IPY_MODEL_858d5777d08e47fb885e82a98a9d107c"}}, "0f6aeb1f166842fda59c121373cf4915": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "0f989e4df5ce437689ce35979bc7000f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "0fd52ffbf4634cc7b62712260d93d18a": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_9d4de84602804cfd851fc6a60395c0c8", "style": "IPY_MODEL_65edb71641b24523aad3d997fc3ec7e6", "value": "downloading: 100%"}}, "10790726f4aa47cf8c6a1f95eb4d3517": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "11c35ed00c7d4e7c970c22a1a0c93047": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "1398b883f9804659ae03bb598215a427": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "144e4d49f8d141c9909616faee9d1616": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "1471f23fa18a486d8c22cd7118711e69": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "151c196d75e0403a8c4fe6353869160a": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "VBoxModel", "state": {"children": ["IPY_MODEL_a6740419f8f54afbbb38f2a09af5549e", "IPY_MODEL_bf9b535bbbd94d2596c9f4bad2f0f8d9"], "layout": "IPY_MODEL_d4abcfe706f64cd0afd40384b2b1c0a5"}}, "1606798eaa864f128d0f1d1eddae6817": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "VBoxModel", "state": {"children": ["IPY_MODEL_706faf4fd91d4d91a0438d0f40a57411", "IPY_MODEL_c502f3a77651405fabc2aeed11d739d7"], "layout": "IPY_MODEL_a8612a65c9d045619a9de50c56b4c938"}}, "1823b198b4004220ac52cb1868eeb214": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_4b98c61eee04451796fb649982808d6b", "max": 15, "style": "IPY_MODEL_a6806f029f974746a0a2af902922cdb7", "value": 15}}, "1958d5717b3440c8af57fee6ccb99df3": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "196a67d6fa6841e9b4ecb18320dbe1b5": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "1a52655c9c7445be85b7fa0b08f3bdd2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "1a95bdeb4f454e28b3b48d4ec6f1f9cd": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "1b60d4aed4ce4e15b3e5662b8b7fc7f7": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "1ba29ce8590440c28c63dd5a0d7f0503": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "1bd3b5c8bcb14232b3d4a6a5e830059d": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "1c132ecd397e4870a94558356b7a28f7": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "1c97387068084eef854f7a17c2cee6af": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "1d554f337db74b60a3a0b1d8f6dd1597": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "1f20644958394dbdb94ee3597370498a": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_0fd52ffbf4634cc7b62712260d93d18a", "IPY_MODEL_9620d59c031b413a85e83fe5eabcf519", "IPY_MODEL_a1627a00737e4c59aedb0f70cd19a176"], "layout": "IPY_MODEL_7ba4b4a122e741ee943f9e8f3082e91b"}}, "1f5e4447add54d85b71c0543bb940abc": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "201fac687291404c9a57fb5a018f20c8": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_574bf96fb51a4a11b2821f077453098c", "max": 1445, "style": "IPY_MODEL_0b8451da3b0e419bb1c8f1974628b53a", "value": 1445}}, "205121577b204eea9c8229623440364f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "2084cd42ab2048eb9e03a04ad8341618": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_e28d3f50a84b43c6b9b772fa788ff511", "max": 2, "style": "IPY_MODEL_32b2f1ab25b949f8a547755bde2ba202", "value": 2}}, "20f04081e6874a609112700ea3171718": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_fd50f847dad4438ab5a62c7e60a5798f", "IPY_MODEL_ca823c7b515c496d9b3294ee373071d5", "IPY_MODEL_6b7c55d6bb604cf99c4565f5543dc22a"], "layout": "IPY_MODEL_836a3838f85a4feea7e392fd22521d07"}}, "21e3e7a10da847a8a12e5c160405f425": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_273cc9f5955b45169363f3f0acb95c90", "style": "IPY_MODEL_9587c57199834dfd849fcd4d818650d6", "value": "Epoch 1 of 2:   0%"}}, "24299c38b80746b0b5ce472a23bafe28": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "24942903fb8449d497cc5e493f3a41fa": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "2651730a18dd4b4fb80d5de3a01cf02d": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "273cc9f5955b45169363f3f0acb95c90": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "279c346c3f274a3693224aacd1144221": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "292e6382f58c4d4ea9789a8dc9908fb4": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_5d07301070574dc68f06aea1170d9454", "max": 945, "style": "IPY_MODEL_30a0b192d3a341a48750558690dc54f4", "value": 945}}, "29d19ce37e1841b5bb7f66c0b9aa1837": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "2adcfc73a23a4fbba7ef713b8d84a888": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "2b45f673a21245cdb1b9ebdb668f5211": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "2fcb06c877ef4e7caebc10b00d8836c7": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "30a0b192d3a341a48750558690dc54f4": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "31537f27a1bc4b3697535ddd50f26761": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_41ab5e551bec4c9e864317c33246f1ad", "style": "IPY_MODEL_2adcfc73a23a4fbba7ef713b8d84a888", "value": " 452/452 [00:00&lt;00:00, 5963.05it/s]"}}, "321e56b9ffec4fa0817b2905a7bd3333": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "329a33ff0ca64c919d0e52320ebb6f31": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_fc96aaca084441e5a6ef191a0f11febf", "IPY_MODEL_4c00ad02934440569c0c5f67efa1fea8", "IPY_MODEL_873c42db46d54483a6301559abf0b602"], "layout": "IPY_MODEL_9833c754084646a68cefdb674463c787"}}, "32a5002f5c024ace89ec8f09ccd8ca30": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "32b2f1ab25b949f8a547755bde2ba202": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "32f01b16601b4142aa970e8f285e265b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "337c8a99790f407db669e47cc75ec2a6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_5470f6201cbd43f4b325a25da98aea89", "max": 46, "style": "IPY_MODEL_e8b4c9b44ab74e3cb50a8d2ae0a63fa0", "value": 46}}, "33bf558163f547e38e3975e8dbef8489": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_ad597140b5724cb99838b04b143441bc", "IPY_MODEL_70914642e3794d939460715d79169277", "IPY_MODEL_8b355007cc694608bb72af2c590041e0"], "layout": "IPY_MODEL_b6d18718763448d8aa447c60941a5432"}}, "3621fe42c1eb4ba38560e1f7e8ccf169": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_7f5df650ba9c4c069ee97cbd979c9acf", "style": "IPY_MODEL_ce8ed345ce9f4a38b9a3735ade62d2d6", "value": " 945/945 [00:33&lt;00:00, 29.27it/s]"}}, "3a00a6622bc149c5a76e8aba14b14efc": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_11c35ed00c7d4e7c970c22a1a0c93047", "style": "IPY_MODEL_deddbd3bd6884657b1eecfab966de9c5", "value": "Predicting [text]: 100%"}}, "3cac4b9b91224468a295530effff0fc3": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "LabelModel", "state": {"layout": "IPY_MODEL_6629b32e84e04c0bb3b634ed6ee17e15", "style": "IPY_MODEL_65ad27a209294d9297a2aa5202c90189", "value": "0.015 MB of 0.015 MB uploaded (0.000 MB deduped)\r"}}, "3d9f14afdf174796a18db3477f95b0aa": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "LabelModel", "state": {"layout": "IPY_MODEL_557177d1d50e4d7696ad4e753f4ecafb", "style": "IPY_MODEL_8b0c80214a13494dab7db863ed77f821"}}, "3df24f7cbc79439aa25ef2f442f812b2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_21e3e7a10da847a8a12e5c160405f425", "IPY_MODEL_0f41d627c65c499498d570a24c8bf859", "IPY_MODEL_d48ff126eafd48969ec7ae098a1c23bd"], "layout": "IPY_MODEL_e85a7ddc4e4e4ac2aa3dbff745b5bee4"}}, "3e31087e3031489ab51587352aed0822": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "3e929f2dd5f34b28a2e172a9cd3b0395": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "VBoxModel", "state": {"children": ["IPY_MODEL_3d9f14afdf174796a18db3477f95b0aa", "IPY_MODEL_9f68874213374343b54e2d829c48ce6b"], "layout": "IPY_MODEL_5dcb3ea7600547de9a514e0416d99d6d"}}, "3fafad29bc8c4fb7bc79e38850c02444": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_7c25b707f413410b8cd4753e203a2ab5", "IPY_MODEL_70a92c3265c04c9e9d8600a3c0dc11ee", "IPY_MODEL_4de5d1540e994e4cab70068490613b01"], "layout": "IPY_MODEL_a3a81b48724c49ee989cc0c349d19254"}}, "3fbbe8419c724268939b92561514bf7f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "401117ae25b64e42ad0dbc2eddac904a": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "40250f3bab3243c6b8f7bf4504a87fa3": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "41894c7a290440c6963229320a0e0290": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_8b67029d5013452da04355c20085c304", "max": 46, "style": "IPY_MODEL_8fef0f0b34e2464e8611086533de8432", "value": 46}}, "41ab5e551bec4c9e864317c33246f1ad": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "4619933d7bbf404395e851b8d982e8e7": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_7c591ac86d5c47848769df8dded9400f", "style": "IPY_MODEL_57c11a83b2f04cd68325e0e89ec4beab", "value": "Running Evaluation: 100%"}}, "486d43ff1bb3420891d12de5919aba92": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "4af4d4a0fc164b24b3387035f2948fee": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "4b3e6dd031c04bdb9051a45025971f29": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "4b98c61eee04451796fb649982808d6b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "4c00ad02934440569c0c5f67efa1fea8": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_205121577b204eea9c8229623440364f", "max": 2, "style": "IPY_MODEL_7e6e22c5c9c549c18c7f62ef07292eaf", "value": 2}}, "4c2ddde21fbe43ccb1c8c02a58298df1": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_67f58523230b4c8fadd3bf46b69743a4", "style": "IPY_MODEL_bf604caa47bb4c8b99188e1a1e988a9a", "value": "Epochs 1/2. Running Loss:    0.2298: 100%"}}, "4c3e73b27a4d45a49bafdf3b5fb7ee16": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "4c6fba722b11406191ebfc65745bf755": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_1ba29ce8590440c28c63dd5a0d7f0503", "style": "IPY_MODEL_77193d52210f40b68daaf18e55af5868", "value": " 15/15 [00:00&lt;00:00, 28.03it/s]"}}, "4d7b8b72a92d4a7b8f175d425929c0eb": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "4de325a8c85d45699b4e75eda769c140": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "4de5d1540e994e4cab70068490613b01": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_b95e9f4b740e48d1a6961c38582e58a7", "style": "IPY_MODEL_0850593712fb4eb896ac386a016338f1", "value": " 1445/1445 [00:00&lt;00:00, 6685.09it/s]"}}, "4f22256c9a1f40cd9fd073ff71dbc6d7": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_cf2326c38136428a81b96b657fa64f07", "style": "IPY_MODEL_e678af0319364bb49885c9e835328f03", "value": " 2/2 [00:25&lt;00:00, 11.86s/it]"}}, "4f7ddc6041eb41f396158dac3286ed90": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "53453c20abad4daa9fb4d088cd259927": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "5470f6201cbd43f4b325a25da98aea89": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "557177d1d50e4d7696ad4e753f4ecafb": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "56cf2e85ee4c40fda9a396cd00836421": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "574bf96fb51a4a11b2821f077453098c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "5757d68782ec4db5abd9eb0aed13c237": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "57be6d107cc74deea806d1cb342c71ae": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "57c11a83b2f04cd68325e0e89ec4beab": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "5912833262a541cf82bf0454afa8566f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "5a1e2ea8c0834d80a17d4804137b4873": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_bded73b8499b4380aba3f58e9a34cde8", "IPY_MODEL_41894c7a290440c6963229320a0e0290", "IPY_MODEL_ebbb942bf40e4424a0cea09ab1806200"], "layout": "IPY_MODEL_d053be3b81f147339fe32edf8d741d81"}}, "5b9a8052ff3644dba74615939838b473": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_9e91f0540e614689bc200b0028ce1e3f", "IPY_MODEL_201fac687291404c9a57fb5a018f20c8", "IPY_MODEL_f53b9986eae24355ad8ace80c640951b"], "layout": "IPY_MODEL_04818df2041546ec8c4efce446ee057a"}}, "5be3d29ba75f4c5a896eb05fd872179b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "5be8d10a87ed40259a2919764fedb87d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "5d07301070574dc68f06aea1170d9454": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "5dcb3ea7600547de9a514e0416d99d6d": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "6045dbf805a646a59595c356bd6d7879": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "LabelModel", "state": {"layout": "IPY_MODEL_1c132ecd397e4870a94558356b7a28f7", "style": "IPY_MODEL_6477dcd4745447a989600db143aa0508", "value": "0.015 MB of 0.015 MB uploaded (0.000 MB deduped)\r"}}, "618372aa012d46fba0e911fe87c382a1": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_cc614bcec8d14e429f3667405d69af4e", "style": "IPY_MODEL_e273435c3eb44919b184763a16e1dad6", "value": "Epoch 2 of 2: 100%"}}, "61aed286729b462ba83d4db8eb918c5b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "6468062124284f35814c2d838e5e23b6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_05da25b4619c4e2890a5c1e647f08ea8", "max": 1, "style": "IPY_MODEL_3fbbe8419c724268939b92561514bf7f", "value": 1}}, "6477dcd4745447a989600db143aa0508": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "64ebc01ae54e4e61a5caef5f27f7d442": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "65ad27a209294d9297a2aa5202c90189": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "65debf72b9d74b9ca0f17a806b8bf8d3": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "65edb71641b24523aad3d997fc3ec7e6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "6629b32e84e04c0bb3b634ed6ee17e15": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "668c12b84f0c4f72814d3f8d5772ae67": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_f172c78a11304f0fae6531b08264dec9", "max": 1445, "style": "IPY_MODEL_7c52b4b61dd34083b4970efc1fb14d8d", "value": 1445}}, "6717b8df7a9e44399d33cf5de738c799": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "VBoxModel", "state": {"children": ["IPY_MODEL_856f6d6c3fd94bf3ba3f853efa7b35b7", "IPY_MODEL_000b4074ae6b45ccb0ed79375f2939af"], "layout": "IPY_MODEL_1d554f337db74b60a3a0b1d8f6dd1597"}}, "67f58523230b4c8fadd3bf46b69743a4": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "6abae9fd765342068792224b6b7287d3": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "6b38926392a64de7b4ab0b0baa32bd85": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "6b7c55d6bb604cf99c4565f5543dc22a": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_ab267c9292a64116b1820d2fa23d6299", "style": "IPY_MODEL_ce18e829cb55496885759da79f3734b3", "value": " 46/46 [00:05&lt;00:00, 10.06it/s]"}}, "6d22b37e0a3d40f59d51afe033b0e544": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_e5c38284183a42a392bb5f214edc70de", "max": 46, "style": "IPY_MODEL_99f3a65f06934a56941dc829212c7e27", "value": 28}}, "706faf4fd91d4d91a0438d0f40a57411": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "LabelModel", "state": {"layout": "IPY_MODEL_2b45f673a21245cdb1b9ebdb668f5211", "style": "IPY_MODEL_e865495498354d64ab96530bee93ac59"}}, "70914642e3794d939460715d79169277": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_1958d5717b3440c8af57fee6ccb99df3", "max": 452, "style": "IPY_MODEL_24942903fb8449d497cc5e493f3a41fa", "value": 452}}, "70a92c3265c04c9e9d8600a3c0dc11ee": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_b3736645d86a4b8d968ef34294b46c02", "max": 1445, "style": "IPY_MODEL_321e56b9ffec4fa0817b2905a7bd3333", "value": 1445}}, "70ae60e41dbe4803ae361cabab9069e8": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "739ba679c04541648e5e234d9b2c0c6c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "VBoxModel", "state": {"children": ["IPY_MODEL_d6c678008a5f493ca614ea472ef6d233", "IPY_MODEL_e6da4fae590e4e178f3333fa24a7fbe3"], "layout": "IPY_MODEL_32a5002f5c024ace89ec8f09ccd8ca30"}}, "73bc80df92b34714a83d37067672d7d0": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "7556a856754146f8b56c44bc964f262d": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "76cce14241e743959b9b8d426eb6a28e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_4c2ddde21fbe43ccb1c8c02a58298df1", "IPY_MODEL_d3b3c675b01e427f85d5f8fab8696fa4", "IPY_MODEL_7ba415250e244200bd05d038eb1b6854"], "layout": "IPY_MODEL_61aed286729b462ba83d4db8eb918c5b"}}, "77193d52210f40b68daaf18e55af5868": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "7a95e3cc77854f238beaf9fa59b7153f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "7ba415250e244200bd05d038eb1b6854": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_08662858897444949ff5b5fec5902b02", "style": "IPY_MODEL_85c58751373d466fb6a564c00dfccc58", "value": " 46/46 [00:05&lt;00:00, 10.08it/s]"}}, "7ba4b4a122e741ee943f9e8f3082e91b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "7ba66d1aef6443079afa2a83584bfd4d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_d92fea6bd003406593456066d875d9a9", "IPY_MODEL_337c8a99790f407db669e47cc75ec2a6", "IPY_MODEL_7beb963f2f4341e39b0e7f36a2d9ca1b"], "layout": "IPY_MODEL_e9d0182d252c4b7e97d6cccf7198ff8a"}}, "7beb963f2f4341e39b0e7f36a2d9ca1b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_6abae9fd765342068792224b6b7287d3", "style": "IPY_MODEL_08e9d156799f443989b8850e34006cde", "value": " 46/46 [00:06&lt;00:00,  9.91it/s]"}}, "7c25b707f413410b8cd4753e203a2ab5": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_f234ebd3c591443abc730ba1b97bdf67", "style": "IPY_MODEL_e2f209796b05446d96248c4e8f61643e", "value": "100%"}}, "7c52b4b61dd34083b4970efc1fb14d8d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "7c591ac86d5c47848769df8dded9400f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "7e6e22c5c9c549c18c7f62ef07292eaf": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "7ec1a58b321546ada37b8029b4c39470": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "7f5df650ba9c4c069ee97cbd979c9acf": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "80360eb9fbe34f02976551336a957958": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "8124d0d1cb574a04827f5e222559e9cc": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "836a3838f85a4feea7e392fd22521d07": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "83c986bb2f034d8698c38fe2b40e455b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "84914667930f4411b1d3201ff4105d64": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_9f80dc3cf89845b0a2f3cd3ec6067651", "max": 1, "style": "IPY_MODEL_a31f6e185df64158bb0d16a4d9398d76", "value": 1}}, "856f6d6c3fd94bf3ba3f853efa7b35b7": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "LabelModel", "state": {"layout": "IPY_MODEL_1bd3b5c8bcb14232b3d4a6a5e830059d", "style": "IPY_MODEL_3e31087e3031489ab51587352aed0822"}}, "858d5777d08e47fb885e82a98a9d107c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "85c58751373d466fb6a564c00dfccc58": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "873c42db46d54483a6301559abf0b602": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_486d43ff1bb3420891d12de5919aba92", "style": "IPY_MODEL_a0d26a1ebcd54327b38d8bc7c1965958", "value": " 2/2 [00:22&lt;00:00, 10.71s/it]"}}, "87e41ca996c04965aef57a2e63ccb221": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "8845490561024e3b971df3ece0a9a61e": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "892f8f4c0fd5468f9f62d101899af880": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "8acb281df0aa49c0a64b24d2094bf8b9": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_b9a8ce430baa419e8c7cce8228b842c1", "IPY_MODEL_0a0b10fcf85345dbbf07764f6cc4e7ff", "IPY_MODEL_31537f27a1bc4b3697535ddd50f26761"], "layout": "IPY_MODEL_8845490561024e3b971df3ece0a9a61e"}}, "8b0c80214a13494dab7db863ed77f821": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "8b355007cc694608bb72af2c590041e0": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_fc6acff3486740deb0cc0b33c0782371", "style": "IPY_MODEL_6b38926392a64de7b4ab0b0baa32bd85", "value": " 452/452 [00:00&lt;00:00, 6073.35it/s]"}}, "8b67029d5013452da04355c20085c304": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "8fef0f0b34e2464e8611086533de8432": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "9587c57199834dfd849fcd4d818650d6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "9620d59c031b413a85e83fe5eabcf519": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_f2c61d75c5004522b3dcf81f22347cb5", "max": 8111579, "style": "IPY_MODEL_e77bca1b6bd945ba8cd3e4bbfee2fddf", "value": 8111579}}, "9668fd7d0bd54b81958f35465d55005f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "9833c754084646a68cefdb674463c787": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "98beeda15e3545baa4235e3d8916e318": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "999d6b90c124446da7017285a1d633f8": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "99f3a65f06934a56941dc829212c7e27": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "9bc6989922ae4c71a026809a242943da": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_98beeda15e3545baa4235e3d8916e318", "style": "IPY_MODEL_1398b883f9804659ae03bb598215a427", "value": " 100/100 [00:44&lt;00:00,  3.11s/it]"}}, "9c27157bebe9497ba3222411157a6b7c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "9d4de84602804cfd851fc6a60395c0c8": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "9e91f0540e614689bc200b0028ce1e3f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_65debf72b9d74b9ca0f17a806b8bf8d3", "style": "IPY_MODEL_a239d1003360473683db3c5c05b19944", "value": "100%"}}, "9f68874213374343b54e2d829c48ce6b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_0425e9079fd04a55a84082dd7bacad28", "max": 1, "style": "IPY_MODEL_5be8d10a87ed40259a2919764fedb87d"}}, "9f80dc3cf89845b0a2f3cd3ec6067651": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "9fcb7b31a45e4e8c9113fd0119271f75": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "a06363388b25426098ea1de6736dcd7b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_40250f3bab3243c6b8f7bf4504a87fa3", "style": "IPY_MODEL_73bc80df92b34714a83d37067672d7d0", "value": "100%"}}, "a0d26a1ebcd54327b38d8bc7c1965958": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "a0db4957c44f4ee48602322434b4e823": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_cf20675bfbd841f78ccfab07e2f39f4b", "style": "IPY_MODEL_4f7ddc6041eb41f396158dac3286ed90", "value": " 1585/1585 [00:20&lt;00:00, 670.19it/s]"}}, "a1627a00737e4c59aedb0f70cd19a176": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_4d7b8b72a92d4a7b8f175d425929c0eb", "style": "IPY_MODEL_4af4d4a0fc164b24b3387035f2948fee", "value": " 7.74M/7.74M [00:00&lt;00:00, 38.9MiB/s]"}}, "a2049a08a6ee49fd9d585d6662c3870b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "a239d1003360473683db3c5c05b19944": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "a2fadbc7920f4cbdb3b219ec444eddc6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "a31f6e185df64158bb0d16a4d9398d76": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "a3a81b48724c49ee989cc0c349d19254": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "a6740419f8f54afbbb38f2a09af5549e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "LabelModel", "state": {"layout": "IPY_MODEL_01cbf995388e404ca735f9401cf94f32", "style": "IPY_MODEL_5912833262a541cf82bf0454afa8566f"}}, "a6806cf07a4e402a86ec1b41f5e9840d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_ef3e5e79f7a94ed18bd04aea0d16721f", "style": "IPY_MODEL_9668fd7d0bd54b81958f35465d55005f", "value": " 1445/1445 [00:00&lt;00:00, 6876.97it/s]"}}, "a6806f029f974746a0a2af902922cdb7": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "a6c7b6b5dc2f4b5b9157b2e561237578": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "VBoxModel", "state": {"children": ["IPY_MODEL_0f58c3b39ff34b6c8a3c2e09257dbfe3", "IPY_MODEL_b7a6f0eb67dd431db0e16f34d5141295"], "layout": "IPY_MODEL_b1d7483d67d44be587a43505ce686ff3"}}, "a8612a65c9d045619a9de50c56b4c938": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "ab267c9292a64116b1820d2fa23d6299": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "ab5dcce08094472e98776932d995f32f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "ad597140b5724cb99838b04b143441bc": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_e79076264c6a4632a44e6fc2c7884293", "style": "IPY_MODEL_1a52655c9c7445be85b7fa0b08f3bdd2", "value": "100%"}}, "ae50ae83403844eb88eed481627b0628": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "af2412b8d1774230b73ed1de5286983c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_618372aa012d46fba0e911fe87c382a1", "IPY_MODEL_2084cd42ab2048eb9e03a04ad8341618", "IPY_MODEL_4f22256c9a1f40cd9fd073ff71dbc6d7"], "layout": "IPY_MODEL_f0336d24811448cb9a2def6455e8be87"}}, "afad7ab6ea5f4c1f8145f9f759e89502": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "b105ddce3f3641d08c1c39b99870ce7d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "b1d7483d67d44be587a43505ce686ff3": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "b3736645d86a4b8d968ef34294b46c02": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "b3b29c8ed1594cae9946b4d523879337": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "b564b693644145f2ab97005d04b8ef4b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "VBoxModel", "state": {"children": ["IPY_MODEL_6045dbf805a646a59595c356bd6d7879", "IPY_MODEL_c70966e997044829be6e02842fb8ddb2"], "layout": "IPY_MODEL_de2c16fe2f6b46d6b42178d9b66e946c"}}, "b6d18718763448d8aa447c60941a5432": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "b7a6f0eb67dd431db0e16f34d5141295": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_c1a2fda2f17c48fe9446bce88642fc47", "max": 1, "style": "IPY_MODEL_f2488adb49ac457484a6e8ef0fcb1b1c"}}, "b90aabb0d1db4679851ce00984beebf5": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "b95e9f4b740e48d1a6961c38582e58a7": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "b9a8ce430baa419e8c7cce8228b842c1": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_afad7ab6ea5f4c1f8145f9f759e89502", "style": "IPY_MODEL_5757d68782ec4db5abd9eb0aed13c237", "value": "100%"}}, "b9bdcfd5e89743659f3cbc78ed94c716": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_2fcb06c877ef4e7caebc10b00d8836c7", "max": 15, "style": "IPY_MODEL_1471f23fa18a486d8c22cd7118711e69", "value": 15}}, "ba0e6e3aa2a9421ebb05aed0c129133a": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_4619933d7bbf404395e851b8d982e8e7", "IPY_MODEL_1823b198b4004220ac52cb1868eeb214", "IPY_MODEL_c73b61d31f6e42ce8ae4c642f78f82b7"], "layout": "IPY_MODEL_144e4d49f8d141c9909616faee9d1616"}}, "bded73b8499b4380aba3f58e9a34cde8": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_e405f506a50942a78b012726bcc13d51", "style": "IPY_MODEL_03bd79766c664d5289aec8eacf516eed", "value": "Epochs 1/2. Running Loss:    0.4678: 100%"}}, "bf604caa47bb4c8b99188e1a1e988a9a": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "bf69220f11aa4ea5ac9de7f775054cd8": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "bf9b535bbbd94d2596c9f4bad2f0f8d9": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_ab5dcce08094472e98776932d995f32f", "max": 1, "style": "IPY_MODEL_0f989e4df5ce437689ce35979bc7000f"}}, "c1a2fda2f17c48fe9446bce88642fc47": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "c502f3a77651405fabc2aeed11d739d7": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_dc3ce3ecd5cc44508190f4c331994e34", "max": 1, "style": "IPY_MODEL_87e41ca996c04965aef57a2e63ccb221"}}, "c70966e997044829be6e02842fb8ddb2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_1f5e4447add54d85b71c0543bb940abc", "max": 1, "style": "IPY_MODEL_9c27157bebe9497ba3222411157a6b7c", "value": 1}}, "c73b61d31f6e42ce8ae4c642f78f82b7": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_05d4a123dbd846a68b351af192a8a322", "style": "IPY_MODEL_57be6d107cc74deea806d1cb342c71ae", "value": " 15/15 [00:00&lt;00:00, 27.20it/s]"}}, "c7569c3bfdc74af1a70356d7102627f7": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_999d6b90c124446da7017285a1d633f8", "style": "IPY_MODEL_1c97387068084eef854f7a17c2cee6af", "value": "100%"}}, "c803209b57bf431fa0273d580d364a25": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "ca823c7b515c496d9b3294ee373071d5": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_f8889a99114d45cfaafbd811cd02093c", "max": 46, "style": "IPY_MODEL_a2fadbc7920f4cbdb3b219ec444eddc6", "value": 46}}, "cc614bcec8d14e429f3667405d69af4e": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "cdfd47de23cd4ef398039f6a158beea6": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "ce18e829cb55496885759da79f3734b3": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "ce76689262024b5ea49933d567e27b02": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "LabelModel", "state": {"layout": "IPY_MODEL_bf69220f11aa4ea5ac9de7f775054cd8", "style": "IPY_MODEL_f72e4d16ba214181bc04abcb0165f9d2", "value": "0.013 MB of 0.013 MB uploaded (0.000 MB deduped)\r"}}, "ce8ed345ce9f4a38b9a3735ade62d2d6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "cf20675bfbd841f78ccfab07e2f39f4b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "cf2326c38136428a81b96b657fa64f07": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "d053be3b81f147339fe32edf8d741d81": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "d08b17a818984fc28241cbfa8fb57216": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_e2ad0733229343ed852248d13a9467e7", "max": 1585, "style": "IPY_MODEL_4de325a8c85d45699b4e75eda769c140", "value": 1585}}, "d3b3c675b01e427f85d5f8fab8696fa4": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_ed85e6d878924c8c97c82d9b8df0a3f0", "max": 46, "style": "IPY_MODEL_b90aabb0d1db4679851ce00984beebf5", "value": 46}}, "d48ff126eafd48969ec7ae098a1c23bd": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_7ec1a58b321546ada37b8029b4c39470", "style": "IPY_MODEL_fd6c00d9b87b4ea08640593d81721132", "value": " 0/2 [00:04&lt;?, ?it/s]"}}, "d4abcfe706f64cd0afd40384b2b1c0a5": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "d580432e8def41e4a74fdc4335542d3b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_086e9344a75b4b009960a0c6598d1435", "IPY_MODEL_292e6382f58c4d4ea9789a8dc9908fb4", "IPY_MODEL_3621fe42c1eb4ba38560e1f7e8ccf169"], "layout": "IPY_MODEL_10790726f4aa47cf8c6a1f95eb4d3517"}}, "d6c678008a5f493ca614ea472ef6d233": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "LabelModel", "state": {"layout": "IPY_MODEL_7a95e3cc77854f238beaf9fa59b7153f", "style": "IPY_MODEL_c803209b57bf431fa0273d580d364a25"}}, "d92fea6bd003406593456066d875d9a9": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_892f8f4c0fd5468f9f62d101899af880", "style": "IPY_MODEL_f2c193c199e941f8b3a0f247e65ed1cb", "value": "Epochs 0/2. Running Loss:    0.2772: 100%"}}, "d9e8498c793d4eed8beef99e6848c1fd": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "dc3ce3ecd5cc44508190f4c331994e34": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "de2c16fe2f6b46d6b42178d9b66e946c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "deadc3cef7654f99b3b60ac337abbba0": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "deddbd3bd6884657b1eecfab966de9c5": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "e147ad2ba03c44d8a985a5894e2fe3de": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "e20f85b22125454facc405ab7ddec187": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "LabelModel", "state": {"layout": "IPY_MODEL_1b60d4aed4ce4e15b3e5662b8b7fc7f7", "style": "IPY_MODEL_5be3d29ba75f4c5a896eb05fd872179b", "value": "0.013 MB of 0.013 MB uploaded (0.000 MB deduped)\r"}}, "e273435c3eb44919b184763a16e1dad6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "e28d3f50a84b43c6b9b772fa788ff511": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "e2ad0733229343ed852248d13a9467e7": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "e2f209796b05446d96248c4e8f61643e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "e3ede884152a44bf8da333e3b0ea9c88": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "e405f506a50942a78b012726bcc13d51": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "e5bb7091a5434f3b98e93bf02320c342": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "e5c38284183a42a392bb5f214edc70de": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "e678af0319364bb49885c9e835328f03": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "e6abb867e96a444688a5df535e335afe": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_c7569c3bfdc74af1a70356d7102627f7", "IPY_MODEL_668c12b84f0c4f72814d3f8d5772ae67", "IPY_MODEL_a6806cf07a4e402a86ec1b41f5e9840d"], "layout": "IPY_MODEL_028d645ab929408495c5676b3a368b02"}}, "e6da4fae590e4e178f3333fa24a7fbe3": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_e5bb7091a5434f3b98e93bf02320c342", "max": 1, "style": "IPY_MODEL_01e94069d5304fc087c0cffaf6b2f17f"}}, "e77bca1b6bd945ba8cd3e4bbfee2fddf": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "e79076264c6a4632a44e6fc2c7884293": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "e85a7ddc4e4e4ac2aa3dbff745b5bee4": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "e865495498354d64ab96530bee93ac59": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "e8b4c9b44ab74e3cb50a8d2ae0a63fa0": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "e953541624de4c7698ab3fa12a836b22": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "e95a623933a44ff6bb472969d050b688": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_32f01b16601b4142aa970e8f285e265b", "max": 1, "style": "IPY_MODEL_401117ae25b64e42ad0dbc2eddac904a", "value": 1}}, "e9d0182d252c4b7e97d6cccf7198ff8a": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "ebbb942bf40e4424a0cea09ab1806200": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_ed297eaf3a4a4e56be3bf5314f67e1e1", "style": "IPY_MODEL_f7eccba7992240c095183904336b69bb", "value": " 46/46 [00:05&lt;00:00, 10.02it/s]"}}, "ed297eaf3a4a4e56be3bf5314f67e1e1": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "ed85e6d878924c8c97c82d9b8df0a3f0": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "eda5322f92d54e85905086a0e48b11be": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "ef3e5e79f7a94ed18bd04aea0d16721f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "f0336d24811448cb9a2def6455e8be87": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "f172c78a11304f0fae6531b08264dec9": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "f234ebd3c591443abc730ba1b97bdf67": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "f2488adb49ac457484a6e8ef0fcb1b1c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "f2c193c199e941f8b3a0f247e65ed1cb": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "f2c61d75c5004522b3dcf81f22347cb5": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "f53b9986eae24355ad8ace80c640951b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_7556a856754146f8b56c44bc964f262d", "style": "IPY_MODEL_d9e8498c793d4eed8beef99e6848c1fd", "value": " 1445/1445 [00:00&lt;00:00, 6394.09it/s]"}}, "f6c4bad2654646acabda8c90c089c05e": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "f72e4d16ba214181bc04abcb0165f9d2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "f7eccba7992240c095183904336b69bb": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "f86182a4cd1446c4853a286ec625fc32": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_a06363388b25426098ea1de6736dcd7b", "IPY_MODEL_d08b17a818984fc28241cbfa8fb57216", "IPY_MODEL_a0db4957c44f4ee48602322434b4e823"], "layout": "IPY_MODEL_2651730a18dd4b4fb80d5de3a01cf02d"}}, "f8889a99114d45cfaafbd811cd02093c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "f8d9180da26f4f7b80da75499720fe1d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_fef897fbdff64b4b8908fdd5655d6f96", "IPY_MODEL_6d22b37e0a3d40f59d51afe033b0e544", "IPY_MODEL_0ab624cb828540118e6acbc1419c9649"], "layout": "IPY_MODEL_29d19ce37e1841b5bb7f66c0b9aa1837"}}, "fc6acff3486740deb0cc0b33c0782371": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "fc96aaca084441e5a6ef191a0f11febf": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_eda5322f92d54e85905086a0e48b11be", "style": "IPY_MODEL_1a95bdeb4f454e28b3b48d4ec6f1f9cd", "value": "Epoch 2 of 2: 100%"}}, "fd50f847dad4438ab5a62c7e60a5798f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_cdfd47de23cd4ef398039f6a158beea6", "style": "IPY_MODEL_b105ddce3f3641d08c1c39b99870ce7d", "value": "Epochs 0/2. Running Loss:    0.0796: 100%"}}, "fd6c00d9b87b4ea08640593d81721132": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "fef897fbdff64b4b8908fdd5655d6f96": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_70ae60e41dbe4803ae361cabab9069e8", "style": "IPY_MODEL_e953541624de4c7698ab3fa12a836b22", "value": "Epochs 0/2. Running Loss:    0.5819:  61%"}}}, "version_major": 2, "version_minor": 0}
 </script>
 
 
