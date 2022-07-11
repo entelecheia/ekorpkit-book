@@ -1,0 +1,2065 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Build econ_news_kr corpus &#8212; eKorpkit Tutorials</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/ekorpkit.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Training Classifiers for ESG Ratings" href="classifiers.html" />
+    <link rel="prev" title="Preparing classification datasets" href="snorkel.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-FN4GFT8HP8"></script>
+<script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){ dataLayer.push(arguments); }
+                    gtag('js', new Date());
+                    gtag('config', 'G-FN4GFT8HP8');
+                </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../_static/ekorpkit.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">eKorpkit Tutorials</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    eKonomic Research Python Toolkit
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Basics
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/index.html">
+   Getting started
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/install.html">
+     Installation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/usage.html">
+     Usage
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/features/index.html">
+   Key features
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/easy_config.html">
+     Easy Configuration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/no_boiler.html">
+     No Boilerplate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/workflows.html">
+     Workflows
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/share.html">
+     Sharable and Reproducible
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/plug.html">
+     Pluggable Architece
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tutorials
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/config/index.html">
+   Configuring ekorpkit
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/config/eKonf.html">
+     Using eKonf class
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/datasets/index.html">
+   Datasets
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/corpus.html">
+     Build and Load Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/datasets/dataset.html">
+     Build and Load Datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/pipeline.html">
+     Corpus task pipelines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/models/index.html">
+   Models
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/models/automl/index.html">
+     Auto ML
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/embeddings/index.html">
+     Word Embeddings
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/embeddings/word2vec_basics.html">
+       Word2Vec Basics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/embeddings/eval_vectors.html">
+       Evaluate pretrained embeddings
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/ngram/index.html">
+     N-Grams
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram.html">
+       N-Grams
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram_for_lexicons.html">
+       N-Gram model for ngram lexicon features
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram_for_words.html">
+       N-Gram model for unigram lexicon features
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/sentiment/index.html">
+     Sentiment Analyers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/lbsa_en.html">
+       Lexicon-based Sentiment Analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/financial_phrasebank_lm.html">
+       Evaluate LM with financial phrasebank
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/sentiment.html">
+       LM Dictionary vs. finbert vs. T5
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/models/transformers/index.html">
+     Transformers
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/art/index.html">
+     AI Art (Text-to-Image)
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/art/disco.html">
+       Disco Diffusion
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/pipelines/index.html">
+   Pipelines
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/pipelines/pipeline.html">
+     Instantiating pipeline
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/preprocessors/index.html">
+   Preprocessors
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+  <label for="toctree-checkbox-11">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/normalizer/index.html">
+     Normalizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+    <label for="toctree-checkbox-12">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/normalizer/normalizer.html">
+       Normalizers
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/segmenter/index.html">
+     Segmenters
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+    <label for="toctree-checkbox-13">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/segmenter/segmenter.html">
+       Segmenters
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/tokenizer/index.html">
+     Tokenizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/>
+    <label for="toctree-checkbox-14">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/tokenizer/mecab.html">
+       Mecab Tokenizer
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/visualizers/index.html">
+   Visualizers
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/>
+  <label for="toctree-checkbox-15">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/visualizers/plot.html">
+     Plots
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../tutorials/workflow/index.html">
+   Workflows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Datasets
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../corpus/ekorpkot_corpus.html">
+   The eKorpkit Corpus
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Use Cases
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../fomc/index.html">
+   FOMC
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/>
+  <label for="toctree-checkbox-16">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fomc/02_FOMC_numerical_data.html">
+     Preparing Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fomc/03_FOMC_corpus.html">
+     Preparing Textual Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fomc/04_FOMC_EDA_numericals.html">
+     EDA on Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fomc/05_FOMC_features.html">
+     Visualizing Features
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fomc/06_FOMC_AutoML.html">
+     Checking Baseline with AutoML
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fomc/07_FOMC_sentiments.html">
+     Predicting Sentiments of FOMC Corpus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fomc/08_FOMC_EDA_sentiments.html">
+     EDA on Sentiment Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fomc/09_FOMC_AutoML_with_tones.html">
+     Predicting the next decisions with tones
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../bok/index.html">
+   Bank of Korea
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../edgar/index.html">
+   EDGAR
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" type="checkbox"/>
+  <label for="toctree-checkbox-17">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../edgar/predict_edgar.html">
+     Prediciting Sentiments
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   ESG
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" type="checkbox"/>
+  <label for="toctree-checkbox-18">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="snorkel.html">
+     Preparing classification datasets
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Build
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       econ_news_kr
+      </span>
+     </code>
+     corpus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="classifiers.html">
+     Training Classifiers for ESG Ratings
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="news_sample.html">
+     Predicting ESG Categories and Polarities
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Research
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../research/esg_topics/analyst.html">
+   ESG Topic Analysis
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Lectures
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../lectures/intro/index.html">
+   Introduction to NLP
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../lectures/deep/index.html">
+   Deep Learning for NLP
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../lectures/ds/index.html">
+   Data Science for Economics and Finance
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about/index.html">
+   References
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/entelecheia/ekorpkit-book/main?urlpath=tree/ekorpkit-book/docs/usecases/esg/econ_news_corpus.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://colab.research.google.com/github/entelecheia/ekorpkit-book/blob/main/ekorpkit-book/docs/usecases/esg/econ_news_corpus.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Colab"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../../_static/images/logo_colab.png">
+  </span>
+<span class="headerbtn__text-container">Colab</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/entelecheia/ekorpkit-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/entelecheia/ekorpkit-book/issues/new?title=Issue%20on%20page%20%2Fdocs/usecases/esg/econ_news_corpus.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../../_sources/docs/usecases/esg/econ_news_corpus.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-a-corpus">
+   Load a corpus
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-company-code-info">
+   Load company code info
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Build econ_news_kr corpus</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-a-corpus">
+   Load a corpus
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-company-code-info">
+   Load company code info
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="build-econ-news-kr-corpus">
+<h1>Build <code class="docutils literal notranslate"><span class="pre">econ_news_kr</span></code> corpus<a class="headerlink" href="#build-econ-news-kr-corpus" title="Permalink to this headline">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># %config InlineBackend.figure_format=&#39;retina&#39;</span>
+<span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+
+<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;version:&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is notebook?&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_notebook</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is colab?&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;evironment varialbles:&quot;</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">env</span><span class="p">()</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:IPython version: (6, 9, 0), client: jupyter_client
+INFO:ekorpkit.base:Google Colab not detected.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.35+9.g8c77743.dirty
+is notebook? True
+is colab? False
+evironment varialbles:
+{&#39;CUDA_DEVICE_ORDER&#39;: None,
+ &#39;CUDA_VISIBLE_DEVICES&#39;: None,
+ &#39;EKORPKIT_CONFIG_DIR&#39;: &#39;/workspace/projects/ekorpkit-book/config&#39;,
+ &#39;EKORPKIT_DATA_DIR&#39;: None,
+ &#39;EKORPKIT_LOG_LEVEL&#39;: &#39;INFO&#39;,
+ &#39;EKORPKIT_PROJECT&#39;: &#39;ekorpkit-book&#39;,
+ &#39;EKORPKIT_WORKSPACE_ROOT&#39;: &#39;/workspace&#39;,
+ &#39;KMP_DUPLICATE_LIB_OK&#39;: &#39;TRUE&#39;,
+ &#39;NUM_WORKERS&#39;: 230}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_dir</span> <span class="o">=</span> <span class="s1">&#39;../data/econ_news_kr&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>!ekorpkit \
+    project=esgml \
+    dir.workspace=/workspace \
+    verbose=false \
+    print_config=false \
+    num_workers=200 \
+    cmd=fetch_builtin_corpus \
+    +corpus/builtin=econ_news_kr \
+    corpus.builtin.io.force.summarize=true \
+    corpus.builtin.io.force.preprocess=true \
+    corpus.builtin.io.force.build=true \
+    corpus.builtin.io.force.download=false
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[<span class=" -Color -Color-Cyan">2022-07-11 08:32:02,872</span>][<span class=" -Color -Color-Blue">ekorpkit.base</span>][<span class=" -Color -Color-Green">INFO</span>] - Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+[<span class=" -Color -Color-Cyan">2022-07-11 08:32:02,872</span>][<span class=" -Color -Color-Blue">ekorpkit.base</span>][<span class=" -Color -Color-Green">INFO</span>] - IPython not detected.
+[<span class=" -Color -Color-Cyan">2022-07-11 08:32:04,030</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - Processing [58] files from [&#39;\\d{8}_\\d{8}\\.zip&#39;]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:32:04,030</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 1/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:32:04,033</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20201101_20201115.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:32:04,245</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20201115220149001.txt: 100%|████| 18072/18072 [00:24&lt;00:00, 752.30it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:32:28,329</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 2/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:32:28,330</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20210916_20211930.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:32:28,448</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20210930222419001.txt: 100%|████| 14353/14353 [00:18&lt;00:00, 763.02it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:32:47,302</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 3/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:32:47,303</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20211216_20211231.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:32:47,454</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20211231210909001.txt: 100%|████| 18237/18237 [00:24&lt;00:00, 758.17it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:33:11,552</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 4/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:33:11,552</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20211016_20211031.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:33:11,833</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20211031225941001.txt: 100%|████| 17778/17778 [00:23&lt;00:00, 752.84it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:33:35,492</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 5/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:33:35,492</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20211201_20211215.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:33:35,633</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20211215233519001.txt: 100%|████| 18054/18054 [00:24&lt;00:00, 745.00it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:33:59,906</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 6/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:33:59,907</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20211001_20211015.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:34:00,035</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20211015194431001.txt: 100%|████| 16382/16382 [00:21&lt;00:00, 759.94it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:34:21,632</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 7/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:34:21,634</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20211116_20211130.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:34:21,773</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20211130230055001.txt: 100%|████| 18065/18065 [00:23&lt;00:00, 762.99it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:34:45,483</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 8/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:34:45,483</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20210101_20210115.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:34:45,623</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20210115215435001.txt: 100%|████| 17869/17869 [00:23&lt;00:00, 760.54it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:35:09,155</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 9/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:35:09,156</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20210301_20210315.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:35:09,306</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20210315213324001.txt: 100%|████| 18322/18322 [00:23&lt;00:00, 764.38it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:35:33,320</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 10/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:35:33,321</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20200516_20200531.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:35:33,485</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20200531225540001.txt: 100%|████| 18943/18943 [00:24&lt;00:00, 761.56it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:35:58,399</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 11/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:35:58,400</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20200901_20200915.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:35:58,633</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20200915221258001.txt: 100%|████| 19022/19022 [00:24&lt;00:00, 763.69it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:36:23,583</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 12/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:36:23,584</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20200401_20200415.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:36:23,752</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20200415201826001.txt: 100%|████| 20469/20469 [00:26&lt;00:00, 766.97it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:36:50,494</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 13/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:36:50,495</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20200501_20200515.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:36:50,644</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20200515234223001.txt: 100%|████| 18200/18200 [00:23&lt;00:00, 764.39it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:37:14,500</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 14/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:37:14,501</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20220301_20220315.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:37:14,633</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20220315230125001.txt: 100%|████| 15931/15931 [00:21&lt;00:00, 756.59it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:37:35,729</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 15/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:37:35,730</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20200701_20200715.zip with zip
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[<span class=" -Color -Color-Cyan">2022-07-11 08:37:35,884</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20200715221851001.txt: 100%|████| 19930/19930 [00:26&lt;00:00, 760.16it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:38:02,150</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 16/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:38:02,151</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20201116_20201130.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:38:02,386</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20201130222012001.txt: 100%|████| 19297/19297 [00:25&lt;00:00, 757.43it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:38:27,914</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 17/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:38:27,916</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20200216_20200229.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:38:28,059</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20200229215546001.txt: 100%|████| 18464/18464 [00:24&lt;00:00, 755.95it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:38:52,533</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 18/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:38:52,534</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20220101_20220115.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:38:52,677</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20220115230338001.txt: 100%|████| 17003/17003 [00:22&lt;00:00, 753.39it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:39:15,288</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 19/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:39:15,289</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20201016_20201031.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:39:15,446</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20201031190650001.txt: 100%|████| 20137/20137 [00:26&lt;00:00, 755.47it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:39:42,153</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 20/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:39:42,154</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20201216_20201231.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:39:42,303</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20201231213109001.txt: 100%|████| 18209/18209 [00:24&lt;00:00, 758.00it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:40:06,375</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 21/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:40:06,375</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20200801_20200815.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:40:06,616</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20200815202141001.txt: 100%|████| 17403/17403 [00:22&lt;00:00, 771.82it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:40:29,200</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 22/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:40:29,201</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20200316_20200331.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:40:29,403</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20200331215006001.txt: 100%|████| 25890/25890 [00:33&lt;00:00, 767.21it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:41:03,211</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 23/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:41:03,212</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20220116_20220131.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:41:03,455</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20220131193731001.txt: 100%|████| 18124/18124 [00:23&lt;00:00, 763.23it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:41:27,240</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 24/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:41:27,241</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20210416_20210430.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:41:27,410</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20210430235004001.txt: 100%|████| 20382/20382 [00:26&lt;00:00, 762.77it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:41:54,183</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 25/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:41:54,185</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20200116_20200131.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:41:54,338</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20200131221716001.txt: 100%|████| 18438/18438 [00:24&lt;00:00, 766.96it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:42:18,428</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 26/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:42:18,430</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20210616_20210630.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:42:18,575</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20210630210836001.txt: 100%|████| 18610/18610 [00:24&lt;00:00, 753.86it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:42:43,311</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 27/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:42:43,312</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20200601_20200615.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:42:43,468</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20200615220411001.txt: 100%|████| 20051/20051 [00:26&lt;00:00, 757.23it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:43:09,992</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 28/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:43:09,993</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20210216_20210228.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:43:10,126</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20210228105716001.txt: 100%|████| 16050/16050 [00:21&lt;00:00, 764.22it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:43:31,171</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 29/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:43:31,172</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20210401_20210415.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:43:31,325</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20210415230414001.txt: 100%|████| 19346/19346 [00:25&lt;00:00, 763.37it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:43:56,713</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 30/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:43:56,714</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20210116_20210131.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:43:56,952</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>02100851.20210121163744001.txt: 100%|████| 18136/18136 [00:23&lt;00:00, 761.67it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:44:20,812</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 31/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:44:20,813</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20200101_20200115.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:44:20,954</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20200115221130001.txt: 100%|████| 18176/18176 [00:23&lt;00:00, 761.89it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:44:44,853</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 32/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:44:44,854</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20201001_20201015.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:44:44,977</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20201015235303001.txt: 100%|████| 15840/15840 [00:20&lt;00:00, 761.63it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:45:05,812</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 33/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:45:05,813</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20220201_20220215.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:45:05,953</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+IPS.txt: 100%|███████████████████████████| 16819/16819 [00:22&lt;00:00, 763.52it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:45:28,024</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 34/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:45:28,025</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20210516_20210531.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:45:28,170</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20210531201522001.txt: 100%|████| 18662/18662 [00:24&lt;00:00, 752.98it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:45:53,001</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 35/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:45:53,002</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20200616_20200630.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:45:53,161</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20200630234515001.txt: 100%|████| 20417/20417 [00:26&lt;00:00, 768.56it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:46:19,778</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 36/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:46:19,779</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20220416_20220430.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:46:20,051</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20220430175103001.txt: 100%|████| 18008/18008 [00:23&lt;00:00, 761.14it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:46:43,757</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 37/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:46:43,758</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20210901_20210915.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:46:43,913</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20210915212641001.txt: 100%|████| 18665/18665 [00:24&lt;00:00, 761.57it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:47:08,466</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 38/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:47:08,467</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20200201_20200215.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:47:08,616</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20200215233456001.txt: 100%|████| 19216/19216 [00:24&lt;00:00, 778.86it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:47:33,333</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 39/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:47:33,334</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20210701_20210715.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:47:33,618</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20210715225553001.txt: 100%|████| 19041/19041 [00:25&lt;00:00, 759.79it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:47:58,730</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 40/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:47:58,732</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20200916_20200930.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:47:58,875</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20200930190633001.txt: 100%|████| 17662/17662 [00:23&lt;00:00, 760.16it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:48:22,153</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 41/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:48:22,154</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20220316_20220331.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:48:22,324</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20220331215812001.txt: 100%|████| 20274/20274 [00:26&lt;00:00, 760.41it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:48:49,036</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 42/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:48:49,038</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20200716_20200731.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:48:49,214</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20200731233528001.txt: 100%|████| 20977/20977 [00:27&lt;00:00, 764.02it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:49:16,723</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 43/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:49:16,724</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20210601_20210615.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:49:17,011</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20210615231402001.txt: 100%|████| 18419/18419 [00:24&lt;00:00, 753.92it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:49:41,490</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 44/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:49:41,492</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20220401_20220415.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:49:41,647</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20220415220616001.txt: 100%|████| 17628/17628 [00:23&lt;00:00, 748.69it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:50:05,241</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 45/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:50:05,242</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20210316_20210331.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:50:05,555</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>02100851.20210531201522001.txt: 100%|████| 40291/40291 [00:53&lt;00:00, 757.51it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:50:58,833</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 46/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:50:58,835</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20200816_20200831.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:50:58,964</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20200831223035001.txt: 100%|████| 16703/16703 [00:21&lt;00:00, 767.40it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:51:20,769</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 47/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:51:20,770</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20220516_20220531.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:51:20,921</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20220531221646001.txt: 100%|████| 19535/19535 [00:25&lt;00:00, 756.69it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:51:46,789</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 48/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:51:46,790</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20210816_20210831.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:51:46,935</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20210831202454001.txt: 100%|████| 18633/18633 [00:24&lt;00:00, 753.06it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:52:11,728</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 49/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:52:11,729</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20201201_20201215.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:52:11,877</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20201215200440001.txt: 100%|████| 18829/18829 [00:25&lt;00:00, 752.77it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:52:36,939</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 50/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:52:36,941</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20211101_20211115.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:52:37,097</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20211115220919001.txt: 100%|████| 19016/19016 [00:24&lt;00:00, 763.39it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:53:02,057</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 51/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:53:02,059</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20210716_20210731.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:53:02,364</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20210731180012001.txt: 100%|████| 18405/18405 [00:24&lt;00:00, 761.07it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:53:26,589</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 52/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:53:26,590</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20220501_20220515.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:53:26,714</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20220515191654001.txt: 100%|████| 16052/16052 [00:21&lt;00:00, 762.45it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:53:47,809</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 53/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:53:47,810</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20210801_20210815.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:53:48,095</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20210815215311001.txt: 100%|████| 16598/16598 [00:21&lt;00:00, 763.44it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:54:09,876</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 54/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:54:09,877</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20200301_20200315.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:54:10,038</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20200315191112001.txt: 100%|████| 19385/19385 [00:25&lt;00:00, 763.79it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:54:35,470</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 55/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:54:35,472</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20200416_20200430.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:54:35,633</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20200430220930001.txt: 100%|████| 20745/20745 [00:27&lt;00:00, 753.10it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:55:03,235</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 56/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:55:03,236</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20210201_20210215.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:55:03,380</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20210215222625001.txt: 100%|████| 18154/18154 [00:24&lt;00:00, 753.34it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:55:27,526</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 57/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:55:27,527</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20210501_20210515.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:55:27,673</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20210515181645001.txt: 100%|████| 17658/17658 [00:23&lt;00:00, 752.72it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:55:51,181</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - ==&gt; processing 58/58 files &lt;==
+[<span class=" -Color -Color-Cyan">2022-07-11 08:55:51,183</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - ::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/20220216_20220228.zip with zip
+[<span class=" -Color -Color-Cyan">2022-07-11 08:55:51,305</span>][<span class=" -Color -Color-Blue">ekorpkit.io.load.data</span>][<span class=" -Color -Color-Green">INFO</span>] - Starting multiprocessing with 200 processes at _load_archive
+02100851.20220228223323001.txt: 100%|████| 15683/15683 [00:20&lt;00:00, 756.62it/s]
+{&#39;filename&#39;: &#39;02100101.20201101082723001.txt&#39;, &#39;text&#39;: &#39;\&#39;사보\&#39;는 기업들의 소통수단이다. 계열사 정보 공유 측면도 있다. 또한 대외적으로 기업을 알리는 수단이다. 그런데 최근 사보를 중단하거나, 종이 대신 온라인 사보로 대체하는 기업들이 늘어나고 있다. 사보 대신 SNS 등을 통해 사내 소통에 나선 기업들도 많다. 종이 사보도 자취를 감춰가고 있는 중에도 책자 형태 사보를 고수하는 대기업이 있다. 최근 600호를 발행한 코오롱그룹이다.\n이웅열 코오롱그룹 명예회장은 600호 사보를 통해 &quot;사보는 코오롱 가족 모두가 함께 걸어온 발자취이자 코오롱만의 희로애락이 담긴 일기장&quot;이라며 &quot;코오롱 사보가 과거 기록으로 그치지 않고 코오롱의 미래를 위한 소통의 역할을 해 나가길 바란다&quot;고 밝혔다.\n코오롱 사보는 이원만 창업 회장 시절인 1967년 8월 창간됐다. 당시 이름은 코오롱뉴스였다. 1970년 6월 코오롱뉴스에서 코오롱사보로 제호를 변경했으며, 1976년 5월 문화공보부에 월간 정기간행물 등록을 했다. 그해 9월엔 100호 사보가 발행됐다. 1977년엔 이동찬 코오롱그룹 2대 회장이 취임했다.\n1980년대 해외진출이 본격화하면서, 1981년 10월엔 해외지사 탐방기사가 사보에 처음으로 등장했다. 85년 200호에 이어 94년 300호 사보가 나왔다. 1997년 5월엔 코오롱그룹 창립 40주년 특집호를 발행했다. IMF 외환위기는 사보에도 영향을 미쳤다. 월간으로 발행되던 사보는 1998년 1월부터 1999년 12월까지 격월간으로 발행됐다. 2000년 1월 다시 매월 발행되기 시작했으며, 2004년 2월 400호엔 이웅열 당시 회장 인터뷰도 수록됐다. 2012년 1월 모바일 사보가 등장했으며, 그해 6월 500호 사보가 나왔다. 이웅열 회장은 2018년 11월 퇴임을 발표했으며, 장남 이규호 전무는 코오롱인더스트리 FnC부문 COO(최고운영책임자)다.\n안병덕 코오롱그룹 부회장은 &quot;사보를 통해 코오롱인은 하나가 되었고, 자긍심을 키워왔다&quot;며 &quot;즐거움과 감동, 넘치는 상상력으로 임직원에게 영감을 주며, 성공의 계기를 마련하는 사보가 되었으면 좋겠다&quot;고 전했다.\n유석진 (주)코오롱 대표는 &quot;사보는 공감의 매체&quot;라며 &quot;우리가 코오롱 가족으로서 함께 느끼고 생각할 수 있는 메시지가 중요하다&quot;고 말했다.\n600호 사보엔 코오롱의 미래사업도 소개됐다. 지난해 출범한 코오롱인더스트리 FCH(Fuel Cell Humidifier)사업팀과 FCM(Fuel Cell Materiials)사업추진팀은 수소연료전지 부품 관련 업무를 진행하고 있다. FCH사업팀은 수분제어장치로 불리는 연료전지용 가습기를 판매하고 있다. 가습기는 연료전지 공기공급시스템 핵심부품이다.\nFCM사업추진팀은 연료전지시스템 핵심부품 \&#39;스택(Stack)\&#39;을 구성하는 소재인 MEA(전극)와 PEM(전해질) 소재 사업을 추진하고 있다.\n자동차부품도 코오롱의 새로운 사업이다. 코오롱글로텍 AP(Automotive Parts)사업팀은 2019년부터 자동차부품 사업을 진행하고 있다. 올해 LFI(장섬유 사출 성형) 공법을 활용한 무도장 경량 부품을 국내 최초로 개발했고, 내년부터 버스와 트럭에 적용될 예정이다.\n코오롱글로벌은 지난 6월 자회사 코오롱모듈러스를 설립했다. 코오롱모듈러스는 음압병동을 비롯해 청년임대주택과 오피스텔, 아파트 등 주거시설 분야에서도 모듈형 건축방식을 적용해 나갈 계획이다. 최근엔 국립중앙의료원과 모듈형 음압병원 공급계약을 맺고, 30병상 규모 3층짜리 음압병동을 완공했다.\n코오롱 관계자는 &quot;600호에 이르기까지 인쇄 사보를 중심으로 온라인, 모바일 환경 등 다양한 플랫폼의 사용환경을 제공하며 기업문화를 담아왔다&quot;며 &quot;최근에는 구독 환경 변화로 인쇄 형태의 사보 발행이 줄어드는 추세임에도 모든 세대의 구독자가 익숙하게 접할 수 있도록 매달 5000부 이상을 발행하며 인쇄 사보의 전통을 이어가고 있다&quot;고 밝혔다. 온라인 구독이 불편한 사업 현장의 임직원들이나 인쇄 사보에 대한 선호도가 높은 구독자 등을 위해서다. 구독을 신청한 임직원 가족에게는 매달 사보를 집으로도 발송한다. 또한 SNS(사회관계망서비스)와 온라인을 통해서도 사보의 주요 콘텐츠를 제공한다.\n[정승환 재계·한상 전문기자]&#39;, &#39;category&#39;: None, &#39;split&#39;: &#39;train&#39;}
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[<span class=" -Color -Color-Cyan">2022-07-11 08:56:14,490</span>][<span class=" -Color -Color-Blue">ekorpkit.datasets.build</span>][<span class=" -Color -Color-Green">INFO</span>] -  &gt;&gt; elapsed time to load and parse data: 0:24:10.495403
+[<span class=" -Color -Color-Cyan">2022-07-11 08:56:14,491</span>][<span class=" -Color -Color-Blue">ekorpkit.datasets.build</span>][<span class=" -Color -Color-Green">INFO</span>] - 
+Transforming dataframe with pipeline: [&#39;split_column&#39;, &#39;eval_columns&#39;, &#39;reset_index&#39;, &#39;save_metadata&#39;]
+[<span class=" -Color -Color-Cyan">2022-07-11 08:56:14,501</span>][<span class=" -Color -Color-Blue">ekorpkit.pipelines.pipe</span>][<span class=" -Color -Color-Green">INFO</span>] - Applying pipeline: OrderedDict([(&#39;split_column&#39;, &#39;split_column&#39;), (&#39;eval_columns&#39;, &#39;eval_columns&#39;), (&#39;reset_index&#39;, &#39;reset_index&#39;), (&#39;save_metadata&#39;, &#39;save_metadata&#39;)])
+[<span class=" -Color -Color-Cyan">2022-07-11 08:56:14,503</span>][<span class=" -Color -Color-Blue">ekorpkit.base</span>][<span class=" -Color -Color-Green">INFO</span>] - Applying pipe: functools.partial(&lt;function split_column at 0x7f53ba63d430&gt;)
+[<span class=" -Color -Color-Cyan">2022-07-11 08:56:14,504</span>][<span class=" -Color -Color-Blue">ekorpkit.pipelines.pipe</span>][<span class=" -Color -Color-Green">INFO</span>] - Split column: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.split_column&#39;}, &#39;source&#39;: &#39;filename&#39;, &#39;target&#39;: [&#39;code&#39;, &#39;date&#39;, &#39;ext&#39;], &#39;split&#39;: {&#39;pat&#39;: &#39;.&#39;, &#39;n&#39;: -1, &#39;expand&#39;: True}, &#39;verbose&#39;: False}
+[<span class=" -Color -Color-Cyan">2022-07-11 08:56:17,977</span>][<span class=" -Color -Color-Blue">ekorpkit.base</span>][<span class=" -Color -Color-Green">INFO</span>] - Applying pipe: functools.partial(&lt;function eval_columns at 0x7f5565c5b4c0&gt;)
+[<span class=" -Color -Color-Cyan">2022-07-11 08:56:17,978</span>][<span class=" -Color -Color-Blue">ekorpkit.pipelines.pipe</span>][<span class=" -Color -Color-Green">INFO</span>] - Eval columns: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.eval_columns&#39;}, &#39;expressions&#39;: {&#39;date&#39;: &quot;df.date.str[:4] + &#39;-&#39; + df.date.str[4:6] + &#39;-&#39; + df.date.str[6:8] + &#39; &#39; + df.date.str[8:10] + &#39;:&#39; + df.date.str[10:12] + &#39;:&#39; + df.date.str[12:14]&quot;}, &#39;engine&#39;: &#39;python&#39;, &#39;eval_at&#39;: &#39;python&#39;, &#39;verbose&#39;: False}
+[<span class=" -Color -Color-Cyan">2022-07-11 08:56:21,127</span>][<span class=" -Color -Color-Blue">ekorpkit.base</span>][<span class=" -Color -Color-Green">INFO</span>] - Applying pipe: functools.partial(&lt;function reset_index at 0x7f5565c5b820&gt;)
+[<span class=" -Color -Color-Cyan">2022-07-11 08:56:21,910</span>][<span class=" -Color -Color-Blue">ekorpkit.base</span>][<span class=" -Color -Color-Green">INFO</span>] - Applying pipe: functools.partial(&lt;function save_metadata at 0x7f5565453f70&gt;)
+[<span class=" -Color -Color-Cyan">2022-07-11 08:56:21,982</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - Saving dataframe to /workspace/data/datasets/corpus/ekorpkit/econ_news_kr/meta-econ_news_kr-train.parquet
+[<span class=" -Color -Color-Cyan">2022-07-11 08:56:25,101</span>][<span class=" -Color -Color-Blue">ekorpkit.io.file</span>][<span class=" -Color -Color-Green">INFO</span>] - Saving dataframe to /workspace/data/datasets/corpus/ekorpkit/econ_news_kr/econ_news_kr-train.parquet
+[<span class=" -Color -Color-Cyan">2022-07-11 08:59:52,735</span>][<span class=" -Color -Color-Blue">ekorpkit.base</span>][<span class=" -Color -Color-Green">INFO</span>] - Using batcher with minibatch size: 1000
+[<span class=" -Color -Color-Cyan">2022-07-11 08:59:52,736</span>][<span class=" -Color -Color-Blue">ekorpkit.utils.batch.batcher</span>][<span class=" -Color -Color-Green">INFO</span>] -  backend: joblib  minibatch_size: 1000  procs: 200  input_split: False  merge_output: True  len(data): 1090658 len(args): 5
+apply len_bytes to num_bytes: 100%|█████████| 1091/1091 [00:31&lt;00:00, 34.94it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 09:00:24,024</span>][<span class=" -Color -Color-Blue">ekorpkit.base</span>][<span class=" -Color -Color-Green">INFO</span>] - Using batcher with minibatch size: 1000
+[<span class=" -Color -Color-Cyan">2022-07-11 09:00:24,025</span>][<span class=" -Color -Color-Blue">ekorpkit.utils.batch.batcher</span>][<span class=" -Color -Color-Green">INFO</span>] -  backend: joblib  minibatch_size: 1000  procs: 200  input_split: False  merge_output: True  len(data): 1090658 len(args): 5
+apply len_sents to num_sents: 100%|████████| 1091/1091 [00:06&lt;00:00, 174.99it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 09:00:30,890</span>][<span class=" -Color -Color-Blue">ekorpkit.info.stat</span>][<span class=" -Color -Color-Green">INFO</span>] -  &gt;&gt; elapsed time to calculate statistics before processing: 0:00:38.704031
+[<span class=" -Color -Color-Cyan">2022-07-11 09:00:30,890</span>][<span class=" -Color -Color-Blue">ekorpkit.datasets.build</span>][<span class=" -Color -Color-Green">INFO</span>] - 
+Processing dataframe with pipeline: [&#39;normalize&#39;, &#39;filter_length&#39;, &#39;drop_duplicates&#39;, &#39;save_samples&#39;]
+[<span class=" -Color -Color-Cyan">2022-07-11 09:00:30,901</span>][<span class=" -Color -Color-Blue">ekorpkit.pipelines.pipe</span>][<span class=" -Color -Color-Green">INFO</span>] - Applying pipeline: OrderedDict([(&#39;normalize&#39;, &#39;normalize&#39;), (&#39;filter_length&#39;, &#39;filter_length&#39;), (&#39;drop_duplicates&#39;, &#39;drop_duplicates&#39;), (&#39;save_samples&#39;, &#39;save_samples&#39;)])
+[<span class=" -Color -Color-Cyan">2022-07-11 09:00:30,902</span>][<span class=" -Color -Color-Blue">ekorpkit.base</span>][<span class=" -Color -Color-Green">INFO</span>] - Applying pipe: functools.partial(&lt;function normalize at 0x7f5565c5b430&gt;)
+[<span class=" -Color -Color-Cyan">2022-07-11 09:00:30,906</span>][<span class=" -Color -Color-Blue">ekorpkit.pipelines.pipe</span>][<span class=" -Color -Color-Green">INFO</span>] - instantiating normalizer
+[<span class=" -Color -Color-Cyan">2022-07-11 09:00:31,554</span>][<span class=" -Color -Color-Blue">ekorpkit.base</span>][<span class=" -Color -Color-Green">INFO</span>] - Using batcher with minibatch size: 1000
+[<span class=" -Color -Color-Cyan">2022-07-11 09:00:31,555</span>][<span class=" -Color -Color-Blue">ekorpkit.utils.batch.batcher</span>][<span class=" -Color -Color-Green">INFO</span>] -  backend: joblib  minibatch_size: 1000  procs: 200  input_split: False  merge_output: True  len(data): 1090658 len(args): 5
+Normalizing column: text: 100%|█████████████| 1091/1091 [00:38&lt;00:00, 28.13it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 09:01:13,996</span>][<span class=" -Color -Color-Blue">ekorpkit.pipelines.pipe</span>][<span class=" -Color -Color-Green">INFO</span>] -  &gt;&gt; elapsed time to normalize: 0:00:42.441921
+[<span class=" -Color -Color-Cyan">2022-07-11 09:01:14,001</span>][<span class=" -Color -Color-Blue">ekorpkit.base</span>][<span class=" -Color -Color-Green">INFO</span>] - Applying pipe: functools.partial(&lt;function filter_length at 0x7f5565453a60&gt;, len_bytes={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}, len_words={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_words&#39;})
+[<span class=" -Color -Color-Cyan">2022-07-11 09:01:14,107</span>][<span class=" -Color -Color-Blue">ekorpkit.base</span>][<span class=" -Color -Color-Green">INFO</span>] - Using batcher with minibatch size: 1000
+[<span class=" -Color -Color-Cyan">2022-07-11 09:01:14,107</span>][<span class=" -Color -Color-Blue">ekorpkit.utils.batch.batcher</span>][<span class=" -Color -Color-Green">INFO</span>] -  backend: joblib  minibatch_size: 1000  procs: 200  input_split: False  merge_output: True  len(data): 1090658 len(args): 5
+Calculating length: 100%|██████████████████| 1091/1091 [00:09&lt;00:00, 120.21it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 09:01:23,649</span>][<span class=" -Color -Color-Blue">ekorpkit.pipelines.pipe</span>][<span class=" -Color -Color-Green">INFO</span>] - removed 2 of 1090658 documents with length &lt; 10
+[<span class=" -Color -Color-Cyan">2022-07-11 09:01:23,650</span>][<span class=" -Color -Color-Blue">ekorpkit.pipelines.pipe</span>][<span class=" -Color -Color-Green">INFO</span>] -  &gt;&gt; elapsed time to filter length: 0:00:09.543501
+[<span class=" -Color -Color-Cyan">2022-07-11 09:01:23,652</span>][<span class=" -Color -Color-Blue">ekorpkit.base</span>][<span class=" -Color -Color-Green">INFO</span>] - Applying pipe: functools.partial(&lt;function drop_duplicates at 0x7f5565453b80&gt;)
+[<span class=" -Color -Color-Cyan">2022-07-11 09:01:29,300</span>][<span class=" -Color -Color-Blue">ekorpkit.base</span>][<span class=" -Color -Color-Green">INFO</span>] - Applying pipe: functools.partial(&lt;function save_samples at 0x7f5565453c10&gt;)
+[<span class=" -Color -Color-Cyan">2022-07-11 09:01:29,606</span>][<span class=" -Color -Color-Blue">ekorpkit.base</span>][<span class=" -Color -Color-Green">INFO</span>] - Using batcher with minibatch size: 1000
+[<span class=" -Color -Color-Cyan">2022-07-11 09:01:29,606</span>][<span class=" -Color -Color-Blue">ekorpkit.utils.batch.batcher</span>][<span class=" -Color -Color-Green">INFO</span>] -  backend: joblib  minibatch_size: 1000  procs: 200  input_split: False  merge_output: True  len(data): 1046316 len(args): 5
+apply len_bytes to num_bytes: 100%|████████| 1047/1047 [00:03&lt;00:00, 274.77it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 09:01:33,515</span>][<span class=" -Color -Color-Blue">ekorpkit.base</span>][<span class=" -Color -Color-Green">INFO</span>] - Using batcher with minibatch size: 1000
+[<span class=" -Color -Color-Cyan">2022-07-11 09:01:33,516</span>][<span class=" -Color -Color-Blue">ekorpkit.utils.batch.batcher</span>][<span class=" -Color -Color-Green">INFO</span>] -  backend: joblib  minibatch_size: 1000  procs: 200  input_split: False  merge_output: True  len(data): 1046316 len(args): 5
+apply len_wospc to num_bytes_wospc: 100%|██| 1047/1047 [00:04&lt;00:00, 224.65it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 09:01:38,399</span>][<span class=" -Color -Color-Blue">ekorpkit.base</span>][<span class=" -Color -Color-Green">INFO</span>] - Using batcher with minibatch size: 1000
+[<span class=" -Color -Color-Cyan">2022-07-11 09:01:38,400</span>][<span class=" -Color -Color-Blue">ekorpkit.utils.batch.batcher</span>][<span class=" -Color -Color-Green">INFO</span>] -  backend: joblib  minibatch_size: 1000  procs: 200  input_split: False  merge_output: True  len(data): 1046316 len(args): 5
+apply len_words to num_words: 100%|████████| 1047/1047 [00:04&lt;00:00, 217.29it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 09:01:43,275</span>][<span class=" -Color -Color-Blue">ekorpkit.base</span>][<span class=" -Color -Color-Green">INFO</span>] - Using batcher with minibatch size: 1000
+[<span class=" -Color -Color-Cyan">2022-07-11 09:01:43,275</span>][<span class=" -Color -Color-Blue">ekorpkit.utils.batch.batcher</span>][<span class=" -Color -Color-Green">INFO</span>] -  backend: joblib  minibatch_size: 1000  procs: 200  input_split: False  merge_output: True  len(data): 1046316 len(args): 5
+apply len_sents to num_sents: 100%|████████| 1047/1047 [00:04&lt;00:00, 219.84it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 09:01:48,103</span>][<span class=" -Color -Color-Blue">ekorpkit.base</span>][<span class=" -Color -Color-Green">INFO</span>] - Using batcher with minibatch size: 1000
+[<span class=" -Color -Color-Cyan">2022-07-11 09:01:48,103</span>][<span class=" -Color -Color-Blue">ekorpkit.utils.batch.batcher</span>][<span class=" -Color -Color-Green">INFO</span>] -  backend: joblib  minibatch_size: 1000  procs: 200  input_split: False  merge_output: True  len(data): 1046316 len(args): 5
+apply len_segments to num_segments: 100%|██| 1047/1047 [00:04&lt;00:00, 227.93it/s]
+[<span class=" -Color -Color-Cyan">2022-07-11 09:01:53,263</span>][<span class=" -Color -Color-Blue">ekorpkit.info.stat</span>][<span class=" -Color -Color-Green">INFO</span>] -  &gt;&gt; elapsed time to calculate statistics: 0:00:23.879935
+[<span class=" -Color -Color-Cyan">2022-07-11 09:01:53,901</span>][<span class=" -Color -Color-Blue">ekorpkit.datasets.build</span>][<span class=" -Color -Color-Green">INFO</span>] - 
+Corpus [econ_news_kr] is built to [/workspace/data/datasets/corpus/ekorpkit/econ_news_kr] from [/workspace/data/tbts/archive/datasets/source/econ_news_kr]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="load-a-corpus">
+<h2>Load a corpus<a class="headerlink" href="#load-a-corpus" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corpus_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;corpus&#39;</span><span class="p">,</span> <span class="n">overrides</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;project=esgml&quot;</span><span class="p">])</span>
+<span class="n">corpus_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;econ_news_kr&#39;</span>
+<span class="n">corpus_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">econ_news_kr</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">corpus_cfg</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">econ_news_kr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.datasets.base:Loaded info file: /workspace/data/datasets/corpus/ekorpkit/econ_news_kr/info-econ_news_kr.yaml
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;econ_news_kr-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/data/datasets/corpus/ekorpkit/econ_news_kr/econ_news_kr-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/corpus/ekorpkit/econ_news_kr/econ_news_kr-train.parquet
+INFO:ekorpkit.info.column:index: index, index of data: None, columns: [&#39;id&#39;, &#39;text&#39;, &#39;split&#39;, &#39;ext&#39;], id: [&#39;id&#39;]
+INFO:ekorpkit.info.column:Adding id [split] to [&#39;id&#39;]
+INFO:ekorpkit.info.column:Added id [split], now [&#39;id&#39;, &#39;split&#39;]
+INFO:ekorpkit.info.column:Added a column [split] with value [train]
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;meta-econ_news_kr-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/data/datasets/corpus/ekorpkit/econ_news_kr/meta-econ_news_kr-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/corpus/ekorpkit/econ_news_kr/meta-econ_news_kr-train.parquet
+INFO:ekorpkit.info.column:Added a column [split] with value [train]
+INFO:ekorpkit.info.column:No timestamp key found
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Corpus : econ_news_kr
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">econ_news_kr</span><span class="o">.</span><span class="n">metadata</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>date</th>
+      <th>code</th>
+      <th>category</th>
+      <th>filename</th>
+      <th>split</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>2020-11-01 08:27:23</td>
+      <td>02100101</td>
+      <td>None</td>
+      <td>02100101.20201101082723001.txt</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>2020-11-01 09:01:50</td>
+      <td>02100101</td>
+      <td>None</td>
+      <td>02100101.20201101090150001.txt</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>2020-11-01 09:26:41</td>
+      <td>02100101</td>
+      <td>None</td>
+      <td>02100101.20201101092641001.txt</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>2020-11-01 09:27:48</td>
+      <td>02100101</td>
+      <td>None</td>
+      <td>02100101.20201101092748001.txt</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>2020-11-01 09:32:11</td>
+      <td>02100101</td>
+      <td>None</td>
+      <td>02100101.20201101093211001.txt</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>1090653</th>
+      <td>1090653</td>
+      <td>2022-02-28 19:04:38</td>
+      <td>02100851</td>
+      <td>None</td>
+      <td>02100851.20220228190438002.txt</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>1090654</th>
+      <td>1090654</td>
+      <td>2022-02-28 19:37:36</td>
+      <td>02100851</td>
+      <td>None</td>
+      <td>02100851.20220228193736001.txt</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>1090655</th>
+      <td>1090655</td>
+      <td>2022-02-28 22:33:23</td>
+      <td>02100851</td>
+      <td>None</td>
+      <td>02100851.20220228223323001.txt</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>1090656</th>
+      <td>1090656</td>
+      <td>2022-02-28 22:33:23</td>
+      <td>02100851</td>
+      <td>None</td>
+      <td>02100851.20220228223323001.txt</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>1090657</th>
+      <td>1090657</td>
+      <td>2022-02-28 22:33:23</td>
+      <td>02100851</td>
+      <td>None</td>
+      <td>02100851.20220228223323001.txt</td>
+      <td>train</td>
+    </tr>
+  </tbody>
+</table>
+<p>1090658 rows × 6 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">econ_news_kr</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Concatenating 1 dataframes
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>text</th>
+      <th>split</th>
+      <th>ext</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>'사보'는 기업들의 소통수단이다. 계열사 정보 공유 측면도 있다. 또한 대외적으로 ...</td>
+      <td>train</td>
+      <td>txt</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>2030을 주축으로 한 이른바 '동학개미운동'이 계속되는 등 주식 투자 열풍이 사그...</td>
+      <td>train</td>
+      <td>txt</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>현대모비스가 사회적 거리두기 캠페인에 발맞춰 지난 2월부터 임시적으로 시행해오던 재...</td>
+      <td>train</td>
+      <td>txt</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>우리나라 수출이 한 달 만에 다시 감소세로 전환했다.\n산업통상자원부는 10월 수출...</td>
+      <td>train</td>
+      <td>txt</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>국내 외식업계에 '푸드테크(Food+Technology)' 바람이 불고 있다. 매년...</td>
+      <td>train</td>
+      <td>txt</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>1090653</th>
+      <td>1090653</td>
+      <td>서울 시내 대형마트 가공식품 판매대[사진=연합]\n\n\n 스팸과 리챔 등 캔햄 가...</td>
+      <td>train</td>
+      <td>txt</td>
+    </tr>
+    <tr>
+      <th>1090654</th>
+      <td>1090654</td>
+      <td>[로고=에치에프알]\n\n정보통신 기업 에치에프알(HFR)은 28일 일본 정보통신기...</td>
+      <td>train</td>
+      <td>txt</td>
+    </tr>
+    <tr>
+      <th>1090655</th>
+      <td>1090655</td>
+      <td>[사진=연합뉴스]\n\n\n 한국거래소는 상장적격성 실질심사 대상으로 결정된 오스템...</td>
+      <td>train</td>
+      <td>txt</td>
+    </tr>
+    <tr>
+      <th>1090656</th>
+      <td>1090656</td>
+      <td>[사진=유대길 기자 dbeorlf123@ajunews.com]\n\n고승범 금융위원...</td>
+      <td>train</td>
+      <td>txt</td>
+    </tr>
+    <tr>
+      <th>1090657</th>
+      <td>1090657</td>
+      <td>[사진=아주경제 DB]\n\n\n◆ [우크라 침공] 러·우크라 회담 개시… 회담 성...</td>
+      <td>train</td>
+      <td>txt</td>
+    </tr>
+  </tbody>
+</table>
+<p>1090658 rows × 4 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;pipeline&quot;</span><span class="p">,</span> <span class="n">overrides</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;project=esgml&quot;</span><span class="p">])</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">corpus</span> <span class="o">=</span> <span class="n">corpus_cfg</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">_pipeline_</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;chunk&quot;</span><span class="p">,</span> <span class="s2">&quot;explode_splits&quot;</span><span class="p">,</span><span class="s2">&quot;reset_index&quot;</span><span class="p">,</span> <span class="s2">&quot;save_dataframe&quot;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">chunk</span><span class="o">.</span><span class="n">len_func</span> <span class="o">=</span> <span class="s2">&quot;len_words&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">chunk</span><span class="o">.</span><span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">explode_splits</span><span class="o">.</span><span class="n">id_key</span> <span class="o">=</span> <span class="s2">&quot;id&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">explode_splits</span><span class="o">.</span><span class="n">split_key</span> <span class="o">=</span> <span class="s2">&quot;chunk_id&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">explode_splits</span><span class="o">.</span><span class="n">separator</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">reset_index</span><span class="o">.</span><span class="n">drop_index</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="s1">&#39;../data/econ_news_kr&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="s1">&#39;econ_news_kr_chunks.parquet&#39;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:instantiating ekorpkit.pipelines.pipe.pipeline...
+INFO:ekorpkit.base:instantiating ekorpkit.pipelines.data.Data...
+INFO:ekorpkit.datasets.base:Loaded info file: /workspace/data/datasets/corpus/ekorpkit/econ_news_kr/info-econ_news_kr.yaml
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;econ_news_kr-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/data/datasets/corpus/ekorpkit/econ_news_kr/econ_news_kr-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/corpus/ekorpkit/econ_news_kr/econ_news_kr-train.parquet
+INFO:ekorpkit.info.column:index: index, index of data: None, columns: [&#39;id&#39;, &#39;text&#39;, &#39;split&#39;, &#39;ext&#39;], id: [&#39;id&#39;]
+INFO:ekorpkit.info.column:Adding id [split] to [&#39;id&#39;]
+INFO:ekorpkit.info.column:Added id [split], now [&#39;id&#39;, &#39;split&#39;]
+INFO:ekorpkit.info.column:Added a column [split] with value [train]
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;meta-econ_news_kr-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/data/datasets/corpus/ekorpkit/econ_news_kr/meta-econ_news_kr-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/corpus/ekorpkit/econ_news_kr/meta-econ_news_kr-train.parquet
+INFO:ekorpkit.info.column:Added a column [split] with value [train]
+INFO:ekorpkit.info.column:No timestamp key found
+INFO:ekorpkit.io.file:Concatenating 1 dataframes
+INFO:ekorpkit.pipelines.pipe:Applying pipeline: OrderedDict([(&#39;chunk&#39;, &#39;chunk&#39;), (&#39;explode_splits&#39;, &#39;explode_splits&#39;), (&#39;reset_index&#39;, &#39;reset_index&#39;), (&#39;save_dataframe&#39;, &#39;save_dataframe&#39;)])
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function chunk at 0x7f4280aba160&gt;)
+INFO:ekorpkit.pipelines.pipe:instantiating segmenter
+INFO:ekorpkit.base:instantiating ekorpkit.preprocessors.segmenter.Segmenter...
+INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 230  input_split: False  merge_output: True  len(data): 1090658 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "ee36dd88f1924b709a7c7a97c027b75c", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to segment: 0:01:11.172569
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function explode_splits at 0x7f4280ab8af0&gt;)
+INFO:ekorpkit.pipelines.pipe:Exploding column: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.explode_splits&#39;}, &#39;apply_to&#39;: &#39;text&#39;, &#39;id_key&#39;: &#39;id&#39;, &#39;split_key&#39;: &#39;chunk_id&#39;, &#39;separator&#39;: &#39;\n\n&#39;, &#39;verbose&#39;: True}
+INFO:ekorpkit.pipelines.pipe:1090658 documents exploded into 1387275 documents
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function reset_index at 0x7f4280ab8c10&gt;)
+INFO:ekorpkit.pipelines.pipe:Resetting index: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.reset_index&#39;}, &#39;index_column_name&#39;: &#39;id&#39;, &#39;drop_index&#39;: True, &#39;verbose&#39;: True}
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function save_dataframe at 0x7f4280aba940&gt;)
+INFO:ekorpkit.io.file:Saving dataframe to ../data/econ_news_kr/econ_news_kr_chunks.parquet
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   id                                               text  split  ext  chunk_id
+0   0  &#39;사보&#39;는 기업들의 소통수단이다. 계열사 정보 공유 측면도 있다. 또한 대외적으로 ...  train  txt         0
+1   0  자동차부품도 코오롱의 새로운 사업이다. 코오롱글로텍 AP(Automotive Par...  train  txt         1
+2   1  2030을 주축으로 한 이른바 &#39;동학개미운동&#39;이 계속되는 등 주식 투자 열풍이 사그...  train  txt         0
+3   1  금융위가 인가한 혁신금융플랫폼인 카사는 국내 최초로 건물의 지분인 수익증권(DABS...  train  txt         1
+4   2  현대모비스가 사회적 거리두기 캠페인에 발맞춰 지난 2월부터 임시적으로 시행해오던 재...  train  txt         0
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file: &gt;&gt; elapsed time to save data: 0:03:29.297892
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>text</th>
+      <th>split</th>
+      <th>ext</th>
+      <th>chunk_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>'사보'는 기업들의 소통수단이다. 계열사 정보 공유 측면도 있다. 또한 대외적으로 ...</td>
+      <td>train</td>
+      <td>txt</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>자동차부품도 코오롱의 새로운 사업이다. 코오롱글로텍 AP(Automotive Par...</td>
+      <td>train</td>
+      <td>txt</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>2030을 주축으로 한 이른바 '동학개미운동'이 계속되는 등 주식 투자 열풍이 사그...</td>
+      <td>train</td>
+      <td>txt</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>금융위가 인가한 혁신금융플랫폼인 카사는 국내 최초로 건물의 지분인 수익증권(DABS...</td>
+      <td>train</td>
+      <td>txt</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2</td>
+      <td>현대모비스가 사회적 거리두기 캠페인에 발맞춰 지난 2월부터 임시적으로 시행해오던 재...</td>
+      <td>train</td>
+      <td>txt</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>1387270</th>
+      <td>1090654</td>
+      <td>[로고=에치에프알]\r\n\r\n정보통신 기업 에치에프알(HFR)은 28일 일본 정...</td>
+      <td>train</td>
+      <td>txt</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1387271</th>
+      <td>1090655</td>
+      <td>[사진=연합뉴스]\r\n\r\n\r\n 한국거래소는 상장적격성 실질심사 대상으로 결...</td>
+      <td>train</td>
+      <td>txt</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1387272</th>
+      <td>1090656</td>
+      <td>[사진=유대길 기자 dbeorlf123@ajunews.com]\r\n\r\n고승범 ...</td>
+      <td>train</td>
+      <td>txt</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1387273</th>
+      <td>1090657</td>
+      <td>[사진=아주경제 DB]\r\n\r\n\r\n◆ [우크라 침공] 러·우크라 회담 개시...</td>
+      <td>train</td>
+      <td>txt</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1387274</th>
+      <td>1090657</td>
+      <td>청년희망적금의 가입 자격에 '외국인'이 포함되는 것이 알려지면서 논란이 되자 금융위...</td>
+      <td>train</td>
+      <td>txt</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>1387275 rows × 5 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">22</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1218 489
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&quot;2030을 주축으로 한 이른바 &#39;동학개미운동&#39;이 계속되는 등 주식 투자 열풍이 사그라들지 않고 있다. 신규 투자자가 대폭 늘어나고 있는 상황인 만큼, 금융 업계도 곧바로 반응해 투자에 경험이 없는 초보 개인투자자를 위한 각종 서비스를 내놓고 있어 주목된다.\r\n디셈버앤컴퍼니자산운용은 국내 최초 AI 비대면 투자일임 서비스 &#39;핀트&#39;를 통해 투자 경험이 없는 사회 초년생부터 중장년층까지 소액(최소 20만원)으로 손쉽게 글로벌 분산 투자를 할 수 있는 서비스를 제공한다.\r\n모바일 앱을 이용해 투자자가 수익 추구 방식, 손실 대응 방식, 투자 경험 등을 설정하면, 이후에는 인공지능이 고객 개개인의 포트폴리오를 구성해 투자의 모든 과정을 수행해준다. 핀트는 모바일을 통해 언제 어디서든 이용할 수 있어 시공간의 제약이 없으며, 금융과 국내외 정세를 잘 모르는 초보 투자자자도 터치 몇 번이면 손쉽게 투자를 할 수 있다. 또 오픈뱅킹을 활용해 앱 내에서 직접 입출금 및 적립식 입금(투자)이 가능하며, 등록된 계좌를 통한 제로페이 결제 기능으로 오프라인 결제도 가능해 앱을 처음 이용하는 소비자들의 편의성을 높였다. &#39;핀트&#39; 플랫폼을 통해 인공지능 기반 증권 서비스와 마이데이터와 인공지능이 결합된 혁신적인 핀테크 비즈니스를 선보인다는 계획이다.\r\n한국투자증권은 지난 8월 소액으로 투자 가능한 해외주식 모바일 앱 &#39;미니스탁&#39;을 선보여 젊은 2030세대 가입자가 빠르게 늘어나고 있다. 미니스탁은 해외주식을 환전 없이 소수 여섯 번째 자리까지 1000원 단위로 주문할 수 있도록 했다. 미국의 대형 우량주 260여 종을 쉽게 사고 팔 수 있고, 1주 단위로 구매해야 했던 해외주식을 금액 단위로 주문할 수 있도록 해 투자 진입장벽을 낮춘 것이다. 거래 방식도 간편하다. 쇼핑백 기능을 통해 여러 주식과 다양한 투자테마를 한 번의 클릭으로 살 수 있다. 최근 카카오뱅크와 연결 서비스를 제공해 카카오뱅크 계좌에서 주식계좌로의 입출금도 간소화했다.\r\n부동산 간접투자 플랫폼을 운영하는 카사코리아는 하나은행과 전략적 제휴를 체결하고 디지털 부동산 수익증권 거래 플랫폼 &#39;카사&#39;를 출시했다. 카사는 모바일 앱을 통해 최소 5000원 단위부터 상업용 부동산 자산유동화증권(ABS)에 투자 가능하다. 간편하게 상업용 부동산에 투자하고, 주식처럼 증권을 사고 팔아 시세차익을 실현할 수 있다는 장점이 초보 투자자의 관심을 끌며, 누적 다운로드 이용자의 66%가 2030세대인 것으로 나타났다.\r&quot;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="load-company-code-info">
+<h2>Load company code info<a class="headerlink" href="#load-company-code-info" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;io/loader=plaintext_parser&#39;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;/workspace/data/tbts/archive/datasets/source/econ_news_kr&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_sources</span> <span class="o">=</span> <span class="s2">&quot;news_info.zip&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">item</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;filename&quot;</span><span class="p">,</span> <span class="n">codes</span><span class="o">=</span><span class="s2">&quot;codes&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">split</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">data_key</span> <span class="o">=</span> <span class="s2">&quot;codes&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">progress_per</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">code_info</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="o">**</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">code_info</span><span class="p">,</span> <span class="s2">&quot;econ_news_code_info.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+INFO:ekorpkit.base:IPython version: (6, 9, 0), client: jupyter_client
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;news_info.zip&#39;]
+INFO:ekorpkit.io.load.data:==&gt; processing 1/1 files &lt;==
+INFO:ekorpkit.io.file:::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/news_info.zip with zip
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 18176
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;_target_&#39;: &#39;ekorpkit.io.load.data.load_data&#39;,
+ &#39;data&#39;: {&#39;explode&#39;: False,
+          &#39;field&#39;: None,
+          &#39;item&#39;: {&#39;codes&#39;: &#39;codes&#39;, &#39;filename&#39;: &#39;filename&#39;},
+          &#39;item_separator&#39;: &#39;\\n\\n&#39;},
+ &#39;data_dir&#39;: &#39;/workspace/data/tbts/archive/datasets/source/econ_news_kr&#39;,
+ &#39;data_sources&#39;: &#39;news_info.zip&#39;,
+ &#39;decode_before_parse&#39;: True,
+ &#39;decompressor&#39;: None,
+ &#39;filetype&#39;: None,
+ &#39;limit&#39;: None,
+ &#39;meta&#39;: {&#39;field&#39;: None, &#39;item&#39;: None},
+ &#39;multiprocessing_at&#39;: &#39;_load_archive&#39;,
+ &#39;name&#39;: &#39;&#39;,
+ &#39;num_workers&#39;: 100,
+ &#39;parser&#39;: {&#39;_target_&#39;: &#39;ekorpkit.io.parse.misc.parse_plaintext&#39;,
+            &#39;data_key&#39;: &#39;codes&#39;,
+            &#39;lineno_key&#39;: &#39;lineno&#39;,
+            &#39;meta_key&#39;: None,
+            &#39;meta_line&#39;: None,
+            &#39;progress_per&#39;: None,
+            &#39;split&#39;: True,
+            &#39;verbose&#39;: False},
+ &#39;verbose&#39;: False}
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.parse.json:Number of data in the contents: 18438
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 19216
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 18464
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 19385
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 25890
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 20469
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 20745
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 18200
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 18943
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 20051
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 20417
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 19930
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 20977
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 17403
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 16703
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 19022
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 17662
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 15840
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 20137
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 18072
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 19297
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 18829
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 18209
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 17869
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 18136
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 18154
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 16050
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 18322
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 40291
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 19346
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 20382
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 17658
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 18662
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 18419
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 18610
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 19041
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 18405
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 16598
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 18633
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 18665
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 14353
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 16382
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 17778
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 19016
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 18065
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 18054
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 18237
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 17003
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 18124
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 16819
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 15683
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 15931
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 20274
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 17628
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 18008
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 16052
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 19535
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;filename&#39;: &#39;20200101_20200115.txt&#39;, &#39;codes&#39;: &#39;02100101.20200101001103001&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">code_info</span><span class="p">[</span><span class="s2">&quot;len&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">code_info</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">len</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">code_info</span><span class="p">[</span><span class="n">code_info</span><span class="o">.</span><span class="n">len</span> <span class="o">&gt;</span> <span class="mi">26</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>filename</th>
+      <th>codes</th>
+      <th>len</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2738</th>
+      <td>20200101_20200115.txt</td>
+      <td>02100201.20200102152718001,144960</td>
+      <td>33</td>
+    </tr>
+    <tr>
+      <th>2802</th>
+      <td>20200101_20200115.txt</td>
+      <td>02100201.20200102164904001,285130</td>
+      <td>33</td>
+    </tr>
+    <tr>
+      <th>2985</th>
+      <td>20200101_20200115.txt</td>
+      <td>02100201.20200103151007001,088800</td>
+      <td>33</td>
+    </tr>
+    <tr>
+      <th>3000</th>
+      <td>20200101_20200115.txt</td>
+      <td>02100201.20200103155237001,178920</td>
+      <td>33</td>
+    </tr>
+    <tr>
+      <th>3632</th>
+      <td>20200101_20200115.txt</td>
+      <td>02100201.20200107154901001,007660</td>
+      <td>33</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>1079260</th>
+      <td>20220516_20220531.txt</td>
+      <td>02100311.20220531185816001,010780,011200,00349...</td>
+      <td>124</td>
+    </tr>
+    <tr>
+      <th>1079278</th>
+      <td>20220516_20220531.txt</td>
+      <td>02100501.20220516100127001,139670</td>
+      <td>33</td>
+    </tr>
+    <tr>
+      <th>1085650</th>
+      <td>20220516_20220531.txt</td>
+      <td>02100701.20220531153710002,064960</td>
+      <td>33</td>
+    </tr>
+    <tr>
+      <th>1085800</th>
+      <td>20220516_20220531.txt</td>
+      <td>02100801.20220516111438002,005930</td>
+      <td>33</td>
+    </tr>
+    <tr>
+      <th>1088840</th>
+      <td>20220516_20220531.txt</td>
+      <td>02100851.20220516010042001,003620</td>
+      <td>33</td>
+    </tr>
+  </tbody>
+</table>
+<p>36995 rows × 3 columns</p>
+</div></div></div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./docs/usecases/esg"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="snorkel.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Preparing classification datasets</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="classifiers.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Training Classifiers for ESG Ratings</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Young Joon Lee<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
