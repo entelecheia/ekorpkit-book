@@ -55,7 +55,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Predicting ESG Categories and Polarities" href="news_sample.html" />
-    <link rel="prev" title="ESG" href="index.html" />
+    <link rel="prev" title="Preparing datasets" href="snorkel.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -559,6 +559,11 @@ const thebe_selector_output = ".output, .cell_output"
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="snorkel.html">
+     Preparing datasets
+    </a>
+   </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      Training Classifiers for ESG Ratings
@@ -842,22 +847,22 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#preparing-finsent-kr-dataset">
+  <a class="reference internal nav-link" href="#preparing-esg-polarity-kr-dataset">
    Preparing
    <code class="docutils literal notranslate">
     <span class="pre">
-     finsent_kr
+     esg_polarity_kr
     </span>
    </code>
    dataset
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#training-a-polarity-classficiation-model-with-finsent-kr-dataset">
+  <a class="reference internal nav-link" href="#training-a-polarity-classficiation-model-with-esg-polarity-kr-dataset">
    Training a polarity classficiation model with
    <code class="docutils literal notranslate">
     <span class="pre">
-     finsent_kr
+     esg_polarity_kr
     </span>
    </code>
    dataset
@@ -905,22 +910,22 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#preparing-finsent-kr-dataset">
+  <a class="reference internal nav-link" href="#preparing-esg-polarity-kr-dataset">
    Preparing
    <code class="docutils literal notranslate">
     <span class="pre">
-     finsent_kr
+     esg_polarity_kr
     </span>
    </code>
    dataset
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#training-a-polarity-classficiation-model-with-finsent-kr-dataset">
+  <a class="reference internal nav-link" href="#training-a-polarity-classficiation-model-with-esg-polarity-kr-dataset">
    Training a polarity classficiation model with
    <code class="docutils literal notranslate">
     <span class="pre">
-     finsent_kr
+     esg_polarity_kr
     </span>
    </code>
    dataset
@@ -963,59 +968,76 @@ title="Print to PDF"
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_format=&#39;retina&#39;
-<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
 
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;version:&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is notebook?&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_notebook</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is colab?&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;evironment varialbles:&quot;</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">env</span><span class="p">()</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+3.g3e40284.dirty
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:IPython version: (6, 9, 0), client: jupyter_client
+INFO:ekorpkit.base:Google Colab not detected.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.35+6.g44b548b.dirty
+is notebook? True
+is colab? False
+evironment varialbles:
+{&#39;CUDA_DEVICE_ORDER&#39;: None,
+ &#39;CUDA_VISIBLE_DEVICES&#39;: None,
+ &#39;EKORPKIT_CONFIG_DIR&#39;: &#39;/workspace/projects/ekorpkit-book/config&#39;,
+ &#39;EKORPKIT_DATA_DIR&#39;: None,
+ &#39;EKORPKIT_LOG_LEVEL&#39;: &#39;INFO&#39;,
+ &#39;EKORPKIT_PROJECT&#39;: &#39;ekorpkit-book&#39;,
+ &#39;EKORPKIT_WORKSPACE_ROOT&#39;: &#39;/workspace&#39;,
+ &#39;KMP_DUPLICATE_LIB_OK&#39;: &#39;TRUE&#39;,
+ &#39;NUM_WORKERS&#39;: 230}
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="preparing-finsent-kr-dataset">
-<h2>Preparing <code class="docutils literal notranslate"><span class="pre">finsent_kr</span></code> dataset<a class="headerlink" href="#preparing-finsent-kr-dataset" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
-
-<span class="n">ds_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;dataset=simple_auto&#39;</span><span class="p">)</span>
-<span class="n">ds_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;finsent_kr&#39;</span>
-<span class="n">ds_cfg</span><span class="o">.</span><span class="n">datasets</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;analystsent_kr&#39;</span><span class="p">,</span> <span class="s1">&#39;finphrase_kr&#39;</span><span class="p">]</span>
-<span class="n">ds_cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s1">&#39;/workspace/data/datasets/simple&#39;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/esg&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="preparing-esg-polarity-kr-dataset">
+<h2>Preparing <code class="docutils literal notranslate"><span class="pre">esg_polarity_kr</span></code> dataset<a class="headerlink" href="#preparing-esg-polarity-kr-dataset" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">)</span>
+<span class="n">ds_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;esg_polarity_kr&#39;</span>
+<span class="n">ds_cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
 <span class="n">ds</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">ds_cfg</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.datasets.loader:processing analystsent_kr
-INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/analystsent_kr/analystsent_kr-train.csv
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.datasets.base:Loaded info file: ../data/esg/esg_polarity_kr/info-esg_polarity_kr.yaml
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_polarity_kr-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/esg/esg_polarity_kr/esg_polarity_kr-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/esg/esg_polarity_kr/esg_polarity_kr-train.parquet
+INFO:ekorpkit.info.column:index: index, index of data: index, columns: [&#39;id&#39;, &#39;text&#39;, &#39;labels&#39;, &#39;split&#39;], id: [&#39;id&#39;, &#39;split&#39;]
 INFO:ekorpkit.info.column:Added a column [split] with value [train]
-INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/analystsent_kr/analystsent_kr-test.csv
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_polarity_kr-test.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/esg/esg_polarity_kr/esg_polarity_kr-test.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/esg/esg_polarity_kr/esg_polarity_kr-test.parquet
 INFO:ekorpkit.info.column:Added a column [split] with value [test]
-INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/analystsent_kr/analystsent_kr-dev.csv
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_polarity_kr-dev.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/esg/esg_polarity_kr/esg_polarity_kr-dev.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/esg/esg_polarity_kr/esg_polarity_kr-dev.parquet
 INFO:ekorpkit.info.column:Added a column [split] with value [dev]
-INFO:ekorpkit.datasets.loader:processing finphrase_kr
-INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/finphrase_kr/finphrase_kr-train.csv
-INFO:ekorpkit.info.column:Added a column [split] with value [train]
-INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/finphrase_kr/finphrase_kr-test.csv
-INFO:ekorpkit.info.column:Added a column [split] with value [test]
-INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/finphrase_kr/finphrase_kr-dev.csv
-INFO:ekorpkit.info.column:Added a column [split] with value [dev]
-INFO:ekorpkit.datasets.loader:&gt;&gt;&gt; Elapsed time: 0:00:00.150992 &lt;&lt;&lt; 
-INFO:ekorpkit.ekonf:Calling load
-INFO:ekorpkit.ekonf:Calling concatenate
-INFO:ekorpkit.info.column:Added a column [dataset] with value [analystsent_kr]
-INFO:ekorpkit.info.column:Added a column [dataset] with value [finphrase_kr]
-INFO:ekorpkit.info.column:Added a column [dataset] with value [analystsent_kr]
-INFO:ekorpkit.info.column:Added a column [dataset] with value [finphrase_kr]
-INFO:ekorpkit.info.column:Added a column [dataset] with value [analystsent_kr]
-INFO:ekorpkit.info.column:Added a column [dataset] with value [finphrase_kr]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset : esg_polarity_kr
 </pre></div>
 </div>
 </div>
@@ -1027,38 +1049,21 @@ INFO:ekorpkit.info.column:Added a column [dataset] with value [finphrase_kr]
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;keys&#39;: {&#39;id&#39;: &#39;id&#39;,
-  &#39;text&#39;: &#39;text&#39;,
-  &#39;timestamp&#39;: &#39;timestamp&#39;,
-  &#39;split&#39;: &#39;split&#39;},
- &#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;,
-  &#39;text&#39;: &#39;text&#39;,
-  &#39;merge_meta_on&#39;: None,
-  &#39;timestamp&#39;: None},
- &#39;data&#39;: {&#39;labels&#39;: &#39;object&#39;,
-  &#39;id&#39;: &#39;int64&#39;,
-  &#39;text&#39;: &#39;object&#39;,
-  &#39;split&#39;: &#39;object&#39;,
-  &#39;dataset&#39;: &#39;str&#39;},
- &#39;meta&#39;: None,
- &#39;timestamp&#39;: {&#39;key&#39;: None, &#39;format&#39;: None, &#39;_parms_&#39;: None},
- &#39;datetime&#39;: {&#39;key&#39;: None, &#39;format&#39;: None, &#39;_parms_&#39;: None},
- &#39;segment_separator&#39;: &#39;\\n\\n&#39;,
- &#39;sentence_separator&#39;: &#39;\\n&#39;}
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;columns&#39;: {&#39;id&#39;: [&#39;id&#39;, &#39;split&#39;], &#39;text&#39;: &#39;text&#39;}, &#39;datetime&#39;: {&#39;columns&#39;: None, &#39;format&#39;: None, &#39;rcParams&#39;: None}, &#39;data&#39;: {&#39;id&#39;: &#39;int64&#39;, &#39;text&#39;: &#39;object&#39;, &#39;labels&#39;: &#39;object&#39;, &#39;split&#39;: &#39;object&#39;}}
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-<div class="section" id="training-a-polarity-classficiation-model-with-finsent-kr-dataset">
-<h2>Training a polarity classficiation model with <code class="docutils literal notranslate"><span class="pre">finsent_kr</span></code> dataset<a class="headerlink" href="#training-a-polarity-classficiation-model-with-finsent-kr-dataset" title="Permalink to this headline">#</a></h2>
+<div class="section" id="training-a-polarity-classficiation-model-with-esg-polarity-kr-dataset">
+<h2>Training a polarity classficiation model with <code class="docutils literal notranslate"><span class="pre">esg_polarity_kr</span></code> dataset<a class="headerlink" href="#training-a-polarity-classficiation-model-with-esg-polarity-kr-dataset" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">overrides</span><span class="o">=</span><span class="p">[</span>
-    <span class="s1">&#39;+model/transformer=simple_classification&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;+model/transformer=classification&#39;</span><span class="p">,</span>
     <span class="s1">&#39;+model/transformer/pretrained=ekonelectra-base&#39;</span><span class="p">,</span>
 <span class="p">]</span>
-<span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">overrides</span><span class="o">=</span><span class="n">overrides</span><span class="p">,</span> <span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;model/transformer=simple_classification&#39;</span><span class="p">)</span>
+<span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;model/transformer=classification&#39;</span><span class="p">,</span> <span class="n">overrides</span><span class="p">)</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;esg_polarity&quot;</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">ds_cfg</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
@@ -1073,93 +1078,125 @@ INFO:ekorpkit.info.column:Added a column [dataset] with value [finphrase_kr]
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.ekonf:Calling train
-INFO:ekorpkit.datasets.loader:processing analystsent_kr
-INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/analystsent_kr/analystsent_kr-train.csv
-INFO:ekorpkit.info.base:Added split column [split] with value [train]
-INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/analystsent_kr/analystsent_kr-test.csv
-INFO:ekorpkit.info.base:Added split column [split] with value [test]
-INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/analystsent_kr/analystsent_kr-dev.csv
-INFO:ekorpkit.info.base:Added split column [split] with value [dev]
-INFO:ekorpkit.datasets.loader:processing finphrase_kr
-INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/finphrase_kr/finphrase_kr-train.csv
-INFO:ekorpkit.info.base:Added split column [split] with value [train]
-INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/finphrase_kr/finphrase_kr-test.csv
-INFO:ekorpkit.info.base:Added split column [split] with value [test]
-INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/finphrase_kr/finphrase_kr-dev.csv
-INFO:ekorpkit.info.base:Added split column [split] with value [dev]
-INFO:ekorpkit.datasets.loader:&gt;&gt;&gt; Elapsed time: 0:00:00.134469 &lt;&lt;&lt; 
-INFO:ekorpkit.ekonf:Calling load
-INFO:ekorpkit.ekonf:Calling concatenate
-INFO:ekorpkit.info.base:Added dataset column [dataset] with value [analystsent_kr]
-INFO:ekorpkit.info.base:Added dataset column [dataset] with value [finphrase_kr]
-INFO:ekorpkit.info.base:Added dataset column [dataset] with value [analystsent_kr]
-INFO:ekorpkit.info.base:Added dataset column [dataset] with value [finphrase_kr]
-INFO:ekorpkit.info.base:Added dataset column [dataset] with value [analystsent_kr]
-INFO:ekorpkit.info.base:Added dataset column [dataset] with value [finphrase_kr]
-Some weights of the model checkpoint at entelecheia/ekonelectra-base-discriminator were not used when initializing ElectraForSequenceClassification: [&#39;discriminator_predictions.dense_prediction.weight&#39;, &#39;discriminator_predictions.dense.bias&#39;, &#39;discriminator_predictions.dense.weight&#39;, &#39;discriminator_predictions.dense_prediction.bias&#39;]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Calling train
+INFO:ekorpkit.datasets.base:Loaded info file: ../data/esg/esg_polarity_kr/info-esg_polarity_kr.yaml
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_polarity_kr-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/esg/esg_polarity_kr/esg_polarity_kr-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/esg/esg_polarity_kr/esg_polarity_kr-train.parquet
+INFO:ekorpkit.info.column:index: index, index of data: index, columns: [&#39;id&#39;, &#39;text&#39;, &#39;labels&#39;, &#39;split&#39;], id: [&#39;id&#39;, &#39;split&#39;]
+INFO:ekorpkit.info.column:Added a column [split] with value [train]
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_polarity_kr-test.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/esg/esg_polarity_kr/esg_polarity_kr-test.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/esg/esg_polarity_kr/esg_polarity_kr-test.parquet
+INFO:ekorpkit.info.column:Added a column [split] with value [test]
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_polarity_kr-dev.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/esg/esg_polarity_kr/esg_polarity_kr-dev.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/esg/esg_polarity_kr/esg_polarity_kr-dev.parquet
+INFO:ekorpkit.info.column:Added a column [split] with value [dev]
+INFO:ekorpkit.models.transformer.simple:Renaming columns: {}
+INFO:ekorpkit.models.transformer.simple:Renaming columns: {}
+INFO:ekorpkit.models.transformer.simple:Renaming columns: {}
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "80bd819df04849dd917562dae9de4c8f", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "10dd6786f06e4128be7cfdb087d43e56", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Some weights of the model checkpoint at entelecheia/ekonelectra-base-discriminator were not used when initializing ElectraForSequenceClassification: [&#39;discriminator_predictions.dense_prediction.weight&#39;, &#39;discriminator_predictions.dense_prediction.bias&#39;, &#39;discriminator_predictions.dense.bias&#39;, &#39;discriminator_predictions.dense.weight&#39;]
 - This IS expected if you are initializing ElectraForSequenceClassification from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
 - This IS NOT expected if you are initializing ElectraForSequenceClassification from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
-Some weights of ElectraForSequenceClassification were not initialized from the model checkpoint at entelecheia/ekonelectra-base-discriminator and are newly initialized: [&#39;classifier.out_proj.bias&#39;, &#39;classifier.out_proj.weight&#39;, &#39;classifier.dense.weight&#39;, &#39;classifier.dense.bias&#39;]
+Some weights of ElectraForSequenceClassification were not initialized from the model checkpoint at entelecheia/ekonelectra-base-discriminator and are newly initialized: [&#39;classifier.out_proj.weight&#39;, &#39;classifier.dense.weight&#39;, &#39;classifier.dense.bias&#39;, &#39;classifier.out_proj.bias&#39;]
 You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
-INFO:simpletransformers.classification.classification_model: Converting to features started. Cache is not used.
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "eeef5cf6afe14ce78157706ab6661777", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "e7787254b6584e41a3a45938970b7f81", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:simpletransformers.classification.classification_model: Converting to features started. Cache is not used.
 INFO:simpletransformers.classification.classification_model: Sliding window enabled
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "efc9a1db414a42a1ac2b291e70f95707", "version_major": 2, "version_minor": 0}
-</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:simpletransformers.classification.classification_model: 11372 features created from 11372 samples.
+{"model_id": "fa85309f600340c3889d6ea904b141e6", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Token indices sequence length is longer than the specified maximum sequence length for this model (668 &gt; 512). Running this sequence through the model will result in indexing errors
+INFO:simpletransformers.classification.classification_model: 8850 features created from 8713 samples.
+/opt/conda/lib/python3.8/site-packages/transformers/optimization.py:306: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "e17a32d29e8f410285473510b8857623", "version_major": 2, "version_minor": 0}
+{"model_id": "d9130984b84548d28ee2709fe4691715", "version_major": 2, "version_minor": 0}
 </script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:simpletransformers.classification.classification_model: Initializing WandB run for training.
+<span class=" -Color -Color-Bold -Color-Bold-Blue">wandb</span>: Currently logged in as: <span class=" -Color -Color-Yellow">entelecheia</span>. Use <span class=" -Color -Color-Bold">`wandb login --relogin`</span> to force relogin
 </pre></div>
 </div>
-<div class="output text_html">Finishing last run (ID:3mx5pge6) before initializing another...</div><div class="output text_html">Waiting for W&B process to finish... <strong style="color:green">(success).</strong></div><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_major": 2, "version_minor": 0}
-</script><div class="output text_html">Synced <strong style="color:#cdcd00">super-sound-2</strong>: <a href="https://wandb.ai/entelecheia/esgml-esg_plarity/runs/3mx5pge6" target="_blank">https://wandb.ai/entelecheia/esgml-esg_plarity/runs/3mx5pge6</a><br/>Synced 5 W&B file(s), 1 media file(s), 1 artifact file(s) and 0 other file(s)</div><div class="output text_html">Find logs at: <code>/workspace/projects/esgml/outputs/esgml-esg_plarity/ekonelectra-base/wandb/run-20220528_060612-3mx5pge6/logs</code></div><div class="output text_html">Successfully finished last run (ID:3mx5pge6). Initializing new run:<br/></div><div class="output text_html">wandb version 0.12.17 is available!  To upgrade, please run:
- $ pip install wandb --upgrade</div><div class="output text_html">Tracking run with wandb version 0.12.16</div><div class="output text_html">Run data is saved locally in <code>/workspace/projects/esgml/outputs/esgml-esg_polarity/ekonelectra-base/wandb/run-20220528_060646-23ygz0br</code></div><div class="output text_html">Syncing run <strong><a href="https://wandb.ai/entelecheia/esgml-esg_polarity/runs/23ygz0br" target="_blank">crimson-feather-1</a></strong> to <a href="https://wandb.ai/entelecheia/esgml-esg_polarity" target="_blank">Weights & Biases</a> (<a href="https://wandb.me/run" target="_blank">docs</a>)<br/></div><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "0d657bfbe2ef4fb5b6fabaabc4f789d6", "version_major": 2, "version_minor": 0}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+</pre></div>
+</div>
+<div class="output text_html">wandb version 0.12.21 is available!  To upgrade, please run:
+ $ pip install wandb --upgrade</div><div class="output text_html">Tracking run with wandb version 0.12.19</div><div class="output text_html">Run data is saved locally in <code>/workspace/projects/ekorpkit-book/outputs/esg_polarity/ekonelectra-base/wandb/run-20220711_043725-18k9twmn</code></div><div class="output text_html">Syncing run <strong><a href="https://wandb.ai/entelecheia/ekorpkit-book-esg_polarity/runs/18k9twmn" target="_blank">faithful-sea-1</a></strong> to <a href="https://wandb.ai/entelecheia/ekorpkit-book-esg_polarity" target="_blank">Weights & Biases</a> (<a href="https://wandb.me/run" target="_blank">docs</a>)<br/></div><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "99301f2b2c184cac9cba120b6502084c", "version_major": 2, "version_minor": 0}
 </script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:simpletransformers.classification.classification_model: Converting to features started. Cache is not used.
 INFO:simpletransformers.classification.classification_model: Sliding window enabled
-INFO:simpletransformers.classification.classification_model: 2844 features created from 2844 samples.
-INFO:simpletransformers.classification.classification_model:{&#39;mcc&#39;: 0.65882829309258, &#39;acc&#39;: 0.8407172995780591, &#39;eval_loss&#39;: 0.3738481896312049}
+INFO:simpletransformers.classification.classification_model: 2179 features created from 2179 samples.
+INFO:simpletransformers.classification.classification_model:{&#39;mcc&#39;: 0.4795346284159074, &#39;acc&#39;: 0.7131711794401101, &#39;eval_loss&#39;: 0.5993887332902439}
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "601c26200cce418392566b07eab026a1", "version_major": 2, "version_minor": 0}
+{"model_id": "c7e8a0e7017b4035815da307564fbca7", "version_major": 2, "version_minor": 0}
 </script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:simpletransformers.classification.classification_model: Converting to features started. Cache is not used.
 INFO:simpletransformers.classification.classification_model: Sliding window enabled
-INFO:simpletransformers.classification.classification_model: 2844 features created from 2844 samples.
-INFO:simpletransformers.classification.classification_model:{&#39;mcc&#39;: 0.6730669413393736, &#39;acc&#39;: 0.8484528832630098, &#39;eval_loss&#39;: 0.37974044555023817}
-INFO:simpletransformers.classification.classification_model: Training of electra model complete. Saved to /workspace/projects/esgml/outputs/esgml-esg_polarity/ekonelectra-base.
+INFO:simpletransformers.classification.classification_model: 2179 features created from 2179 samples.
+INFO:simpletransformers.classification.classification_model:{&#39;mcc&#39;: 0.5033993313076224, &#39;acc&#39;: 0.7517209729233594, &#39;eval_loss&#39;: 0.5484368295773215}
+INFO:simpletransformers.classification.classification_model: Training of electra model complete. Saved to /workspace/projects/ekorpkit-book/outputs/esg_polarity/ekonelectra-base.
 INFO:simpletransformers.classification.classification_model: Converting to features started. Cache is not used.
 INFO:simpletransformers.classification.classification_model: Sliding window enabled
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "4e21f32dfe0e42eba0aaa8d1b5cf08dd", "version_major": 2, "version_minor": 0}
-</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:simpletransformers.classification.classification_model: 3555 features created from 3555 samples.
+{"model_id": "b25ea41d2e97407c91fde4984ec53460", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:simpletransformers.classification.classification_model: 2724 features created from 2724 samples.
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "e1e2353d27ee450e8f0f9bb741acc442", "version_major": 2, "version_minor": 0}
+{"model_id": "65559d4357194d77aa5215373befe40c", "version_major": 2, "version_minor": 0}
 </script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:simpletransformers.classification.classification_model: Initializing WandB run for evaluation.
 </pre></div>
 </div>
-<div class="output text_html">Finishing last run (ID:23ygz0br) before initializing another...</div><div class="output text_html">Waiting for W&B process to finish... <strong style="color:green">(success).</strong></div><script type="application/vnd.jupyter.widget-view+json">
+<div class="output text_html">Finishing last run (ID:18k9twmn) before initializing another...</div><div class="output text_html">Waiting for W&B process to finish... <strong style="color:green">(success).</strong></div><script type="application/vnd.jupyter.widget-view+json">
 {"model_id": "", "version_major": 2, "version_minor": 0}
 </script><div class="output text_html"><style>
     table.wandb td:nth-child(1) { padding: 0 10px; text-align: left ; width: auto;} td:nth-child(2) {text-align: left ; width: 100%}
     .wandb-row { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; width: 100% }
     .wandb-col { display: flex; flex-direction: column; flex-basis: 100%; flex: 1; padding: 10px; }
     </style>
-<div class="wandb-row"><div class="wandb-col"><h3>Run history:</h3><br/><table class="wandb"><tr><td>Training loss</td><td>▆█▄▄▄▃▄▃▂▃▁▄▃▃</td></tr><tr><td>acc</td><td>▁█</td></tr><tr><td>eval_loss</td><td>▁█</td></tr><tr><td>global_step</td><td>▁▂▂▃▃▄▄▄▅▅▆▆▇▇██</td></tr><tr><td>lr</td><td>█▇▇▆▆▅▅▄▄▃▃▂▂▁</td></tr><tr><td>mcc</td><td>▁█</td></tr><tr><td>train_loss</td><td>█▁</td></tr></table><br/></div><div class="wandb-col"><h3>Run summary:</h3><br/><table class="wandb"><tr><td>Training loss</td><td>0.34802</td></tr><tr><td>acc</td><td>0.84845</td></tr><tr><td>eval_loss</td><td>0.37974</td></tr><tr><td>global_step</td><td>712</td></tr><tr><td>lr</td><td>0.0</td></tr><tr><td>mcc</td><td>0.67307</td></tr><tr><td>train_loss</td><td>0.2471</td></tr></table><br/></div></div></div><div class="output text_html">Synced <strong style="color:#cdcd00">crimson-feather-1</strong>: <a href="https://wandb.ai/entelecheia/esgml-esg_polarity/runs/23ygz0br" target="_blank">https://wandb.ai/entelecheia/esgml-esg_polarity/runs/23ygz0br</a><br/>Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)</div><div class="output text_html">Find logs at: <code>/workspace/projects/esgml/outputs/esgml-esg_polarity/ekonelectra-base/wandb/run-20220528_060646-23ygz0br/logs</code></div><div class="output text_html">Successfully finished last run (ID:23ygz0br). Initializing new run:<br/></div><div class="output text_html">wandb version 0.12.17 is available!  To upgrade, please run:
- $ pip install wandb --upgrade</div><div class="output text_html">Tracking run with wandb version 0.12.16</div><div class="output text_html">Run data is saved locally in <code>/workspace/projects/esgml/outputs/esgml-esg_polarity/ekonelectra-base/wandb/run-20220528_060841-33g4puva</code></div><div class="output text_html">Syncing run <strong><a href="https://wandb.ai/entelecheia/esgml-esg_polarity/runs/33g4puva" target="_blank">playful-yogurt-2</a></strong> to <a href="https://wandb.ai/entelecheia/esgml-esg_polarity" target="_blank">Weights & Biases</a> (<a href="https://wandb.me/run" target="_blank">docs</a>)<br/></div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:simpletransformers.classification.classification_model:{&#39;mcc&#39;: 0.6552988163412943, &#39;acc&#39;: 0.8388185654008439, &#39;eval_loss&#39;: 0.3973076745335545}
+<div class="wandb-row"><div class="wandb-col"><h3>Run history:</h3><br/><table class="wandb"><tr><td>Training loss</td><td>█▇▅▃▄▁▃▅▂▂▇</td></tr><tr><td>acc</td><td>▁█</td></tr><tr><td>eval_loss</td><td>█▁</td></tr><tr><td>global_step</td><td>▁▂▂▃▄▄▄▅▆▇▇██</td></tr><tr><td>lr</td><td>█▇▇▆▅▅▄▃▂▂▁</td></tr><tr><td>mcc</td><td>▁█</td></tr><tr><td>train_loss</td><td>█▁</td></tr></table><br/></div><div class="wandb-col"><h3>Run summary:</h3><br/><table class="wandb"><tr><td>Training loss</td><td>0.80837</td></tr><tr><td>acc</td><td>0.75172</td></tr><tr><td>eval_loss</td><td>0.54844</td></tr><tr><td>global_step</td><td>554</td></tr><tr><td>lr</td><td>0.0</td></tr><tr><td>mcc</td><td>0.5034</td></tr><tr><td>train_loss</td><td>0.22567</td></tr></table><br/></div></div></div><div class="output text_html">Synced <strong style="color:#cdcd00">faithful-sea-1</strong>: <a href="https://wandb.ai/entelecheia/ekorpkit-book-esg_polarity/runs/18k9twmn" target="_blank">https://wandb.ai/entelecheia/ekorpkit-book-esg_polarity/runs/18k9twmn</a><br/>Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)</div><div class="output text_html">Find logs at: <code>/workspace/projects/ekorpkit-book/outputs/esg_polarity/ekonelectra-base/wandb/run-20220711_043725-18k9twmn/logs</code></div><div class="output text_html">Successfully finished last run (ID:18k9twmn). Initializing new run:<br/></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ekorpkit.models.transformer.simple.SimpleClassification at 0x7faab979c610&gt;
+<div class="output text_html">wandb version 0.12.21 is available!  To upgrade, please run:
+ $ pip install wandb --upgrade</div><div class="output text_html">Tracking run with wandb version 0.12.19</div><div class="output text_html">Run data is saved locally in <code>/workspace/projects/ekorpkit-book/outputs/esg_polarity/ekonelectra-base/wandb/run-20220711_043852-8v72x1hy</code></div><div class="output text_html">Syncing run <strong><a href="https://wandb.ai/entelecheia/ekorpkit-book-esg_polarity/runs/8v72x1hy" target="_blank">winter-brook-2</a></strong> to <a href="https://wandb.ai/entelecheia/ekorpkit-book-esg_polarity" target="_blank">Weights & Biases</a> (<a href="https://wandb.me/run" target="_blank">docs</a>)<br/></div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:simpletransformers.classification.classification_model:{&#39;mcc&#39;: 0.488471340741535, &#39;acc&#39;: 0.7466960352422908, &#39;eval_loss&#39;: 0.5608953100511398}
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ekorpkit.models.transformer.simple.SimpleClassification at 0x7fe429dff4f0&gt;
 </pre></div>
 </div>
 </div>
@@ -1167,10 +1204,10 @@ INFO:simpletransformers.classification.classification_model: Sliding window enab
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">overrides</span><span class="o">=</span><span class="p">[</span>
-    <span class="s1">&#39;+model/transformer=simple_classification&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;+model/transformer=classification&#39;</span><span class="p">,</span>
     <span class="s1">&#39;+model/transformer/pretrained=ekonelectra-base&#39;</span><span class="p">,</span>
 <span class="p">]</span>
-<span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">overrides</span><span class="o">=</span><span class="n">overrides</span><span class="p">,</span> <span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;model/transformer=simple_classification&#39;</span><span class="p">)</span>
+<span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;model/transformer=classification&#39;</span><span class="p">,</span> <span class="n">overrides</span><span class="p">)</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;esg_polarity&quot;</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">ds_cfg</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
@@ -1178,79 +1215,69 @@ INFO:simpletransformers.classification.classification_model: Sliding window enab
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_seq_length</span> <span class="o">=</span> <span class="mi">256</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">train_batch_size</span> <span class="o">=</span> <span class="mi">32</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">eval_batch_size</span> <span class="o">=</span> <span class="mi">32</span>
-<span class="n">model_cfg</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;positive&#39;</span><span class="p">,</span><span class="s1">&#39;neutral&#39;</span><span class="p">,</span><span class="s1">&#39;negative&#39;</span><span class="p">]</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">_method_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;eval&#39;</span><span class="p">]</span>
 <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">model_cfg</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.ekonf:Calling eval
-INFO:ekorpkit.datasets.loader:processing analystsent_kr
-INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/analystsent_kr/analystsent_kr-train.csv
-INFO:ekorpkit.info.base:Added split column [split] with value [train]
-INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/analystsent_kr/analystsent_kr-test.csv
-INFO:ekorpkit.info.base:Added split column [split] with value [test]
-INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/analystsent_kr/analystsent_kr-dev.csv
-INFO:ekorpkit.info.base:Added split column [split] with value [dev]
-INFO:ekorpkit.datasets.loader:processing finphrase_kr
-INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/finphrase_kr/finphrase_kr-train.csv
-INFO:ekorpkit.info.base:Added split column [split] with value [train]
-INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/finphrase_kr/finphrase_kr-test.csv
-INFO:ekorpkit.info.base:Added split column [split] with value [test]
-INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/finphrase_kr/finphrase_kr-dev.csv
-INFO:ekorpkit.info.base:Added split column [split] with value [dev]
-INFO:ekorpkit.datasets.loader:&gt;&gt;&gt; Elapsed time: 0:00:00.321911 &lt;&lt;&lt; 
-INFO:ekorpkit.ekonf:Calling load
-INFO:ekorpkit.ekonf:Calling concatenate
-INFO:ekorpkit.info.base:Added dataset column [dataset] with value [analystsent_kr]
-INFO:ekorpkit.info.base:Added dataset column [dataset] with value [finphrase_kr]
-INFO:ekorpkit.info.base:Added dataset column [dataset] with value [analystsent_kr]
-INFO:ekorpkit.info.base:Added dataset column [dataset] with value [finphrase_kr]
-INFO:ekorpkit.info.base:Added dataset column [dataset] with value [analystsent_kr]
-INFO:ekorpkit.info.base:Added dataset column [dataset] with value [finphrase_kr]
-INFO:ekorpkit.models.transformer.simple:Loaded model from /workspace/projects/esgml/outputs/esgml-esg_polarity/ekonelectra-base/best_model
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Calling eval
+INFO:ekorpkit.datasets.base:Loaded info file: ../data/esg/esg_polarity_kr/info-esg_polarity_kr.yaml
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_polarity_kr-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/esg/esg_polarity_kr/esg_polarity_kr-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/esg/esg_polarity_kr/esg_polarity_kr-train.parquet
+INFO:ekorpkit.info.column:index: index, index of data: index, columns: [&#39;id&#39;, &#39;text&#39;, &#39;labels&#39;, &#39;split&#39;], id: [&#39;id&#39;, &#39;split&#39;]
+INFO:ekorpkit.info.column:Added a column [split] with value [train]
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_polarity_kr-test.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/esg/esg_polarity_kr/esg_polarity_kr-test.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/esg/esg_polarity_kr/esg_polarity_kr-test.parquet
+INFO:ekorpkit.info.column:Added a column [split] with value [test]
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_polarity_kr-dev.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/esg/esg_polarity_kr/esg_polarity_kr-dev.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/esg/esg_polarity_kr/esg_polarity_kr-dev.parquet
+INFO:ekorpkit.info.column:Added a column [split] with value [dev]
+INFO:ekorpkit.models.transformer.simple:Loaded model from /workspace/projects/ekorpkit-book/outputs/esg_polarity/ekonelectra-base/best_model
 INFO:simpletransformers.classification.classification_model: Converting to features started. Cache is not used.
 INFO:simpletransformers.classification.classification_model: Sliding window enabled
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "29496a4ca3e54f669cfb060dba4c3649", "version_major": 2, "version_minor": 0}
-</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:simpletransformers.classification.classification_model: 3555 features created from 3555 samples.
+{"model_id": "ae4e993d00c449788b476663ecd10865", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:simpletransformers.classification.classification_model: 2724 features created from 2724 samples.
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "156c584c20eb4ae196aa2f802bd5fe8d", "version_major": 2, "version_minor": 0}
+{"model_id": "a3a0d14ca5b04214a0dd0d36245baa66", "version_major": 2, "version_minor": 0}
 </script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.models.transformer.simple:type of raw_outputs: &lt;class &#39;list&#39;&gt;
-INFO:ekorpkit.models.transformer.simple:raw_output: [1.0614229440689087, 1.3390781879425049, -2.543381690979004]
-INFO:ekorpkit.io.file:Saving dataframe as /workspace/projects/esgml/outputs/esgml-esg_polarity/ekonelectra-base/predictions/esg_polarity_test_predictions.parquet
+INFO:ekorpkit.models.transformer.simple:raw_output: [-2.369396924972534, 0.5488498210906982, 2.1658785343170166]
+INFO:ekorpkit.io.file:Saving dataframe to /workspace/projects/ekorpkit-book/outputs/esg_polarity/ekonelectra-base/esg_polarity_test_predictions.parquet
+INFO:ekorpkit.visualize.classification:Confusion matrix: {&#39;display_labels&#39;: [&#39;Negative&#39;, &#39;Neutral&#39;, &#39;Positive&#39;], &#39;matrix_labels&#39;: None, &#39;include_values&#39;: True, &#39;include_percentages&#39;: True, &#39;summary_stats&#39;: True, &#39;rcParams&#39;: {&#39;cbar&#39;: True, &#39;cmap&#39;: &#39;Blues&#39;}, &#39;_ax_&#39;: {&#39;xlabel&#39;: &#39;Predicted label&#39;, &#39;ylabel&#39;: &#39;Actual label&#39;}}
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy:  0.8323488045007033
-Precison:  0.8309464506360114
-Recall:  0.8323488045007033
-F1 Score:  0.8315852036083365
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy:  0.7466960352422908
+Precison:  0.749173268981066
+Recall:  0.7466960352422908
+F1 Score:  0.7474877595019509
 Model Report: 
 ___________________________________________________
               precision    recall  f1-score   support
 
-    negative       0.80      0.79      0.80       446
-     neutral       0.88      0.89      0.88      2459
-    positive       0.68      0.65      0.67       650
+    Negative       0.60      0.54      0.57       239
+     Neutral       0.82      0.80      0.81      1805
+    Positive       0.62      0.67      0.64       680
 
-    accuracy                           0.83      3555
-   macro avg       0.78      0.78      0.78      3555
-weighted avg       0.83      0.83      0.83      3555
+    accuracy                           0.75      2724
+   macro avg       0.68      0.67      0.67      2724
+weighted avg       0.75      0.75      0.75      2724
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.classification:Confusion matrix: {&#39;_func_&#39;: &#39;confusion_matrix&#39;, &#39;axno&#39;: 0, &#39;secondary_y&#39;: False, &#39;secondary_to&#39;: 0, &#39;display_labels&#39;: [&#39;positive&#39;, &#39;neutral&#39;, &#39;negative&#39;], &#39;matrix_labels&#39;: None, &#39;include_values&#39;: True, &#39;include_percentages&#39;: True, &#39;summary_stats&#39;: True, &#39;_parms_&#39;: {&#39;cbar&#39;: True, &#39;cmap&#39;: &#39;Blues&#39;}, &#39;figure&#39;: {&#39;xlabel&#39;: &#39;Predicted label&#39;, &#39;ylabel&#39;: &#39;Actual label&#39;}}
-INFO:ekorpkit.visualize.plot:Saved figure to /workspace/projects/esgml/outputs/esgml-esg_polarity/ekonelectra-base/predictions/confusion_matrix.png
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/outputs/esg_polarity/ekonelectra-base/confusion_matrix.png
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ekorpkit.models.transformer.simple.SimpleClassification at 0x7f92ada913d0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ekorpkit.models.transformer.simple.SimpleClassification at 0x7fe5b80733a0&gt;
 </pre></div>
 </div>
-<img alt="../../../_images/classifiers_7_8.png" src="../../../_images/classifiers_7_8.png" />
+<img alt="../../../_images/classifiers_8_8.png" src="../../../_images/classifiers_8_8.png" />
 </div>
 </div>
 </div>
@@ -1258,9 +1285,7 @@ INFO:ekorpkit.visualize.plot:Saved figure to /workspace/projects/esgml/outputs/e
 <h2>Preparing <code class="docutils literal notranslate"><span class="pre">esg_topics</span></code> dataset<a class="headerlink" href="#preparing-esg-topics-dataset" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
-
-<span class="n">ds_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;dataset&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;dataset&#39;</span><span class="p">)</span>
 <span class="n">ds_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;esg_topics&#39;</span>
 <span class="n">ds_cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s1">&#39;/workspace/data/datasets/simple&#39;</span>
 <span class="n">ds</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">ds_cfg</span><span class="p">)</span>
@@ -1270,12 +1295,24 @@ INFO:ekorpkit.visualize.plot:Saved figure to /workspace/projects/esgml/outputs/e
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/esg_topics/esg_topics-train.csv
-INFO:ekorpkit.info.base:Added split column [split] with value [train]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+INFO:ekorpkit.base:IPython version: (6, 9, 0), client: jupyter_client
+INFO:ekorpkit.datasets.base:Loaded info file: /workspace/data/datasets/simple/esg_topics/info-esg_topics.yaml
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_topics-train.csv&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/data/datasets/simple/esg_topics/esg_topics-train.csv&#39;]
+INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/esg_topics/esg_topics-train.csv
+INFO:ekorpkit.info.column:index: index, index of data: None, columns: [&#39;id&#39;, &#39;text&#39;, &#39;labels&#39;, &#39;class&#39;, &#39;example_id&#39;, &#39;count&#39;], id: [&#39;id&#39;]
+INFO:ekorpkit.info.column:Adding id [split] to [&#39;id&#39;]
+INFO:ekorpkit.info.column:Added id [split], now [&#39;id&#39;, &#39;split&#39;]
+INFO:ekorpkit.info.column:Added a column [split] with value [train]
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_topics-test.csv&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/data/datasets/simple/esg_topics/esg_topics-test.csv&#39;]
 INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/esg_topics/esg_topics-test.csv
-INFO:ekorpkit.info.base:Added split column [split] with value [test]
+INFO:ekorpkit.info.column:Added a column [split] with value [test]
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_topics-dev.csv&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/data/datasets/simple/esg_topics/esg_topics-dev.csv&#39;]
 INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/esg_topics/esg_topics-dev.csv
-INFO:ekorpkit.info.base:Added split column [split] with value [dev]
+INFO:ekorpkit.info.column:Added a column [split] with value [dev]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;S-기업(공급망)동반성장/상생&#39;, &#39;G-지배구조&#39;, &#39;G-기업윤리/불공정/소송&#39;, &#39;G-주주환원&#39;, &#39;S-소비자&#39;, &#39;E-신재생에너지 발전&#39;, &#39;S-사회공헌&#39;, &#39;S-기술혁신&#39;, &#39;S-인적자본&#39;, &#39;E-환경영향&#39;, &#39;E-기후변화&#39;, &#39;S-산업재해/안전관리&#39;, &#39;G-정보공시&#39;, &#39;E-환경혁신&#39;, &#39;S-노조/노사&#39;, &#39;E-원자력발전&#39;]
@@ -1289,10 +1326,10 @@ INFO:ekorpkit.info.base:Added split column [split] with value [dev]
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">overrides</span><span class="o">=</span><span class="p">[</span>
-    <span class="s1">&#39;+model/transformer=simple_classification&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;+model/transformer=classification&#39;</span><span class="p">,</span>
     <span class="s1">&#39;+model/transformer/pretrained=ekonelectra-base&#39;</span><span class="p">,</span>
 <span class="p">]</span>
-<span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">overrides</span><span class="o">=</span><span class="n">overrides</span><span class="p">,</span> <span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;model/transformer=simple_classification&#39;</span><span class="p">)</span>
+<span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;model/transformer=classification&#39;</span><span class="p">,</span> <span class="n">overrides</span><span class="p">)</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;esg_topics&quot;</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">ds_cfg</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
@@ -1306,77 +1343,115 @@ INFO:ekorpkit.info.base:Added split column [split] with value [dev]
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.ekonf:Calling train
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Calling train
+INFO:ekorpkit.datasets.base:Loaded info file: /workspace/data/datasets/simple/esg_topics/info-esg_topics.yaml
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_topics-train.csv&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/data/datasets/simple/esg_topics/esg_topics-train.csv&#39;]
 INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/esg_topics/esg_topics-train.csv
-INFO:ekorpkit.info.base:Added split column [split] with value [train]
+INFO:ekorpkit.info.column:index: index, index of data: None, columns: [&#39;id&#39;, &#39;text&#39;, &#39;labels&#39;, &#39;class&#39;, &#39;example_id&#39;, &#39;count&#39;], id: [&#39;id&#39;]
+INFO:ekorpkit.info.column:Adding id [split] to [&#39;id&#39;]
+INFO:ekorpkit.info.column:Added id [split], now [&#39;id&#39;, &#39;split&#39;]
+INFO:ekorpkit.info.column:Added a column [split] with value [train]
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_topics-test.csv&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/data/datasets/simple/esg_topics/esg_topics-test.csv&#39;]
 INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/esg_topics/esg_topics-test.csv
-INFO:ekorpkit.info.base:Added split column [split] with value [test]
+INFO:ekorpkit.info.column:Added a column [split] with value [test]
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_topics-dev.csv&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/data/datasets/simple/esg_topics/esg_topics-dev.csv&#39;]
 INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/esg_topics/esg_topics-dev.csv
-INFO:ekorpkit.info.base:Added split column [split] with value [dev]
-Some weights of the model checkpoint at entelecheia/ekonelectra-base-discriminator were not used when initializing ElectraForSequenceClassification: [&#39;discriminator_predictions.dense_prediction.weight&#39;, &#39;discriminator_predictions.dense.bias&#39;, &#39;discriminator_predictions.dense.weight&#39;, &#39;discriminator_predictions.dense_prediction.bias&#39;]
+INFO:ekorpkit.info.column:Added a column [split] with value [dev]
+INFO:ekorpkit.models.transformer.simple:Renaming columns: {}
+INFO:ekorpkit.models.transformer.simple:Renaming columns: {}
+INFO:ekorpkit.models.transformer.simple:Renaming columns: {}
+Some weights of the model checkpoint at entelecheia/ekonelectra-base-discriminator were not used when initializing ElectraForSequenceClassification: [&#39;discriminator_predictions.dense.bias&#39;, &#39;discriminator_predictions.dense_prediction.weight&#39;, &#39;discriminator_predictions.dense.weight&#39;, &#39;discriminator_predictions.dense_prediction.bias&#39;]
 - This IS expected if you are initializing ElectraForSequenceClassification from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
 - This IS NOT expected if you are initializing ElectraForSequenceClassification from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
-Some weights of ElectraForSequenceClassification were not initialized from the model checkpoint at entelecheia/ekonelectra-base-discriminator and are newly initialized: [&#39;classifier.out_proj.bias&#39;, &#39;classifier.out_proj.weight&#39;, &#39;classifier.dense.weight&#39;, &#39;classifier.dense.bias&#39;]
+Some weights of ElectraForSequenceClassification were not initialized from the model checkpoint at entelecheia/ekonelectra-base-discriminator and are newly initialized: [&#39;classifier.out_proj.bias&#39;, &#39;classifier.out_proj.weight&#39;, &#39;classifier.dense.bias&#39;, &#39;classifier.dense.weight&#39;]
 You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
 INFO:simpletransformers.classification.classification_model: Converting to features started. Cache is not used.
 INFO:simpletransformers.classification.classification_model: Sliding window enabled
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "836998dd8f4546d584f8de82a9423be3", "version_major": 2, "version_minor": 0}
+{"model_id": "a8a869956e8c43c3acad31dbdbe67cd3", "version_major": 2, "version_minor": 0}
 </script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Token indices sequence length is longer than the specified maximum sequence length for this model (731 &gt; 512). Running this sequence through the model will result in indexing errors
 INFO:simpletransformers.classification.classification_model: 11009 features created from 10669 samples.
+/opt/conda/lib/python3.8/site-packages/transformers/optimization.py:306: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "72e1644c17094458a4c7d700d515df6f", "version_major": 2, "version_minor": 0}
+{"model_id": "38867758a904480d9b89004bccc6fe4b", "version_major": 2, "version_minor": 0}
 </script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:simpletransformers.classification.classification_model: Initializing WandB run for training.
+<span class=" -Color -Color-Bold -Color-Bold-Blue">wandb</span>: Currently logged in as: <span class=" -Color -Color-Yellow">entelecheia</span>. Use <span class=" -Color -Color-Bold">`wandb login --relogin`</span> to force relogin
 </pre></div>
 </div>
-<div class="output text_html">Finishing last run (ID:33g4puva) before initializing another...</div><div class="output text_html">Waiting for W&B process to finish... <strong style="color:green">(success).</strong></div><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_major": 2, "version_minor": 0}
-</script><div class="output text_html">Synced <strong style="color:#cdcd00">playful-yogurt-2</strong>: <a href="https://wandb.ai/entelecheia/esgml-esg_polarity/runs/33g4puva" target="_blank">https://wandb.ai/entelecheia/esgml-esg_polarity/runs/33g4puva</a><br/>Synced 5 W&B file(s), 1 media file(s), 1 artifact file(s) and 0 other file(s)</div><div class="output text_html">Find logs at: <code>/workspace/projects/esgml/outputs/esgml-esg_polarity/ekonelectra-base/wandb/run-20220528_060841-33g4puva/logs</code></div><div class="output text_html">Successfully finished last run (ID:33g4puva). Initializing new run:<br/></div><div class="output text_html">wandb version 0.12.17 is available!  To upgrade, please run:
- $ pip install wandb --upgrade</div><div class="output text_html">Tracking run with wandb version 0.12.16</div><div class="output text_html">Run data is saved locally in <code>/workspace/projects/esgml/outputs/esgml-esg_topics/ekonelectra-base/wandb/run-20220528_060919-1kh7bxpt</code></div><div class="output text_html">Syncing run <strong><a href="https://wandb.ai/entelecheia/esgml-esg_topics/runs/1kh7bxpt" target="_blank">rural-sun-1</a></strong> to <a href="https://wandb.ai/entelecheia/esgml-esg_topics" target="_blank">Weights & Biases</a> (<a href="https://wandb.me/run" target="_blank">docs</a>)<br/></div><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "65c6a5dfeb8549e19a3fd34e88c34f7e", "version_major": 2, "version_minor": 0}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+</pre></div>
+</div>
+<div class="output text_html">wandb version 0.12.21 is available!  To upgrade, please run:
+ $ pip install wandb --upgrade</div><div class="output text_html">Tracking run with wandb version 0.12.19</div><div class="output text_html">Run data is saved locally in <code>/workspace/projects/ekorpkit-book/outputs/esg_topics/ekonelectra-base/wandb/run-20220711_044722-21sr827o</code></div><div class="output text_html">Syncing run <strong><a href="https://wandb.ai/entelecheia/ekorpkit-book-esg_topics/runs/21sr827o" target="_blank">dandy-eon-1</a></strong> to <a href="https://wandb.ai/entelecheia/ekorpkit-book-esg_topics" target="_blank">Weights & Biases</a> (<a href="https://wandb.me/run" target="_blank">docs</a>)<br/></div><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "f25335d9fb5d449c830f1ff67262bc01", "version_major": 2, "version_minor": 0}
 </script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:simpletransformers.classification.classification_model: Converting to features started. Cache is not used.
 INFO:simpletransformers.classification.classification_model: Sliding window enabled
 INFO:simpletransformers.classification.classification_model: 1186 features created from 1186 samples.
-INFO:simpletransformers.classification.classification_model:{&#39;mcc&#39;: 0.5975648704950577, &#39;acc&#39;: 0.633220910623946, &#39;eval_loss&#39;: 1.2704797481235706}
+INFO:simpletransformers.classification.classification_model:{&#39;mcc&#39;: 0.6002404148131806, &#39;acc&#39;: 0.633220910623946, &#39;eval_loss&#39;: 1.2466306560917904}
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "477e410308774116986d3be8b86948b0", "version_major": 2, "version_minor": 0}
+{"model_id": "8be6232dd69d432c8dfe6e91647ba8a1", "version_major": 2, "version_minor": 0}
 </script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:simpletransformers.classification.classification_model: Converting to features started. Cache is not used.
 INFO:simpletransformers.classification.classification_model: Sliding window enabled
 INFO:simpletransformers.classification.classification_model: 1186 features created from 1186 samples.
-INFO:simpletransformers.classification.classification_model:{&#39;mcc&#39;: 0.6535361031149577, &#39;acc&#39;: 0.6838111298482293, &#39;eval_loss&#39;: 1.079894207025829}
-INFO:simpletransformers.classification.classification_model: Training of electra model complete. Saved to /workspace/projects/esgml/outputs/esgml-esg_topics/ekonelectra-base.
+INFO:simpletransformers.classification.classification_model:{&#39;mcc&#39;: 0.6612442719219374, &#39;acc&#39;: 0.6905564924114671, &#39;eval_loss&#39;: 1.0752907442419153}
+INFO:simpletransformers.classification.classification_model: Training of electra model complete. Saved to /workspace/projects/ekorpkit-book/outputs/esg_topics/ekonelectra-base.
 INFO:simpletransformers.classification.classification_model: Converting to features started. Cache is not used.
 INFO:simpletransformers.classification.classification_model: Sliding window enabled
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "b4f0f9d13e2941519795f6279e57bd0e", "version_major": 2, "version_minor": 0}
+{"model_id": "18f9d01d3c6f404e83ba7fa234485874", "version_major": 2, "version_minor": 0}
 </script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:simpletransformers.classification.classification_model: 1318 features created from 1318 samples.
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "22e313549da940ca9623beac224e21d4", "version_major": 2, "version_minor": 0}
+{"model_id": "ade8f5735e8a4302bb3a3dff3149748f", "version_major": 2, "version_minor": 0}
 </script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:simpletransformers.classification.classification_model: Initializing WandB run for evaluation.
 </pre></div>
 </div>
-<div class="output text_html">Finishing last run (ID:1kh7bxpt) before initializing another...</div><div class="output text_html">Waiting for W&B process to finish... <strong style="color:green">(success).</strong></div><script type="application/vnd.jupyter.widget-view+json">
+<div class="output text_html">Finishing last run (ID:21sr827o) before initializing another...</div><div class="output text_html">Waiting for W&B process to finish... <strong style="color:green">(success).</strong></div><script type="application/vnd.jupyter.widget-view+json">
 {"model_id": "", "version_major": 2, "version_minor": 0}
 </script><div class="output text_html"><style>
     table.wandb td:nth-child(1) { padding: 0 10px; text-align: left ; width: auto;} td:nth-child(2) {text-align: left ; width: 100%}
     .wandb-row { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; width: 100% }
     .wandb-col { display: flex; flex-direction: column; flex-basis: 100%; flex: 1; padding: 10px; }
     </style>
-<div class="wandb-row"><div class="wandb-col"><h3>Run history:</h3><br/><table class="wandb"><tr><td>Training loss</td><td>█▆▅▄▄▃▃▃▂▃▃▁▃</td></tr><tr><td>acc</td><td>▁█</td></tr><tr><td>eval_loss</td><td>█▁</td></tr><tr><td>global_step</td><td>▁▂▂▃▃▄▄▄▅▅▆▆▇██</td></tr><tr><td>lr</td><td>█▇▇▆▆▅▅▄▃▃▂▂▁</td></tr><tr><td>mcc</td><td>▁█</td></tr><tr><td>train_loss</td><td>▁█</td></tr></table><br/></div><div class="wandb-col"><h3>Run summary:</h3><br/><table class="wandb"><tr><td>Training loss</td><td>1.22312</td></tr><tr><td>acc</td><td>0.68381</td></tr><tr><td>eval_loss</td><td>1.07989</td></tr><tr><td>global_step</td><td>690</td></tr><tr><td>lr</td><td>0.0</td></tr><tr><td>mcc</td><td>0.65354</td></tr><tr><td>train_loss</td><td>1.08579</td></tr></table><br/></div></div></div><div class="output text_html">Synced <strong style="color:#cdcd00">rural-sun-1</strong>: <a href="https://wandb.ai/entelecheia/esgml-esg_topics/runs/1kh7bxpt" target="_blank">https://wandb.ai/entelecheia/esgml-esg_topics/runs/1kh7bxpt</a><br/>Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)</div><div class="output text_html">Find logs at: <code>/workspace/projects/esgml/outputs/esgml-esg_topics/ekonelectra-base/wandb/run-20220528_060919-1kh7bxpt/logs</code></div><div class="output text_html">Successfully finished last run (ID:1kh7bxpt). Initializing new run:<br/></div><div class="output text_html">wandb version 0.12.17 is available!  To upgrade, please run:
- $ pip install wandb --upgrade</div><div class="output text_html">Tracking run with wandb version 0.12.16</div><div class="output text_html">Run data is saved locally in <code>/workspace/projects/esgml/outputs/esgml-esg_topics/ekonelectra-base/wandb/run-20220528_061105-2m47k6xr</code></div><div class="output text_html">Syncing run <strong><a href="https://wandb.ai/entelecheia/esgml-esg_topics/runs/2m47k6xr" target="_blank">snowy-disco-2</a></strong> to <a href="https://wandb.ai/entelecheia/esgml-esg_topics" target="_blank">Weights & Biases</a> (<a href="https://wandb.me/run" target="_blank">docs</a>)<br/></div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:simpletransformers.classification.classification_model:{&#39;mcc&#39;: 0.6369559141371757, &#39;acc&#39;: 0.669195751138088, &#39;eval_loss&#39;: 1.1340322342029838}
+<div class="wandb-row"><div class="wandb-col"><h3>Run history:</h3><br/><table class="wandb"><tr><td>Training loss</td><td>█▅▅▄▄▃▃▄▂▂▂▂▁</td></tr><tr><td>acc</td><td>▁█</td></tr><tr><td>eval_loss</td><td>█▁</td></tr><tr><td>global_step</td><td>▁▂▂▃▃▄▄▄▅▅▆▆▇██</td></tr><tr><td>lr</td><td>█▇▇▆▆▅▅▄▃▃▂▂▁</td></tr><tr><td>mcc</td><td>▁█</td></tr><tr><td>train_loss</td><td>█▁</td></tr></table><br/></div><div class="wandb-col"><h3>Run summary:</h3><br/><table class="wandb"><tr><td>Training loss</td><td>0.79825</td></tr><tr><td>acc</td><td>0.69056</td></tr><tr><td>eval_loss</td><td>1.07529</td></tr><tr><td>global_step</td><td>690</td></tr><tr><td>lr</td><td>0.0</td></tr><tr><td>mcc</td><td>0.66124</td></tr><tr><td>train_loss</td><td>0.2309</td></tr></table><br/></div></div></div><div class="output text_html">Synced <strong style="color:#cdcd00">dandy-eon-1</strong>: <a href="https://wandb.ai/entelecheia/ekorpkit-book-esg_topics/runs/21sr827o" target="_blank">https://wandb.ai/entelecheia/ekorpkit-book-esg_topics/runs/21sr827o</a><br/>Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)</div><div class="output text_html">Find logs at: <code>/workspace/projects/ekorpkit-book/outputs/esg_topics/ekonelectra-base/wandb/run-20220711_044722-21sr827o/logs</code></div><div class="output text_html">Successfully finished last run (ID:21sr827o). Initializing new run:<br/></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ekorpkit.models.transformer.simple.SimpleClassification at 0x7faac20eb400&gt;
+<div class="output text_html">wandb version 0.12.21 is available!  To upgrade, please run:
+ $ pip install wandb --upgrade</div><div class="output text_html">Tracking run with wandb version 0.12.19</div><div class="output text_html">Run data is saved locally in <code>/workspace/projects/ekorpkit-book/outputs/esg_topics/ekonelectra-base/wandb/run-20220711_044858-2lbotnwx</code></div><div class="output text_html">Syncing run <strong><a href="https://wandb.ai/entelecheia/ekorpkit-book-esg_topics/runs/2lbotnwx" target="_blank">bumbling-durian-2</a></strong> to <a href="https://wandb.ai/entelecheia/ekorpkit-book-esg_topics" target="_blank">Weights & Biases</a> (<a href="https://wandb.me/run" target="_blank">docs</a>)<br/></div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:simpletransformers.classification.classification_model:{&#39;mcc&#39;: 0.6521812624015145, &#39;acc&#39;: 0.6828528072837633, &#39;eval_loss&#39;: 1.1140903525574262}
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ekorpkit.models.transformer.simple.SimpleClassification at 0x7f01e56417f0&gt;
 </pre></div>
 </div>
 </div>
@@ -1384,10 +1459,10 @@ INFO:simpletransformers.classification.classification_model: Sliding window enab
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">overrides</span><span class="o">=</span><span class="p">[</span>
-    <span class="s1">&#39;+model/transformer=simple_classification&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;+model/transformer=classification&#39;</span><span class="p">,</span>
     <span class="s1">&#39;+model/transformer/pretrained=ekonelectra-base&#39;</span><span class="p">,</span>
 <span class="p">]</span>
-<span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">overrides</span><span class="o">=</span><span class="n">overrides</span><span class="p">,</span> <span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;model/transformer=simple_classification&#39;</span><span class="p">)</span>
+<span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;model/transformer=classification&#39;</span><span class="p">,</span> <span class="n">overrides</span><span class="p">)</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;esg_topics&quot;</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">ds_cfg</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
@@ -1398,74 +1473,85 @@ INFO:simpletransformers.classification.classification_model: Sliding window enab
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">_method_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;eval&#39;</span><span class="p">]</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="o">.</span><span class="n">visualize</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">confusion_matrix</span><span class="o">.</span><span class="n">include_values</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="o">.</span><span class="n">visualize</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">confusion_matrix</span><span class="o">.</span><span class="n">include_percentages</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="o">.</span><span class="n">visualize</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">model_cfg</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.ekonf:Calling eval
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Calling eval
+INFO:ekorpkit.datasets.base:Loaded info file: /workspace/data/datasets/simple/esg_topics/info-esg_topics.yaml
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_topics-train.csv&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/data/datasets/simple/esg_topics/esg_topics-train.csv&#39;]
 INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/esg_topics/esg_topics-train.csv
-INFO:ekorpkit.info.base:Added split column [split] with value [train]
+INFO:ekorpkit.info.column:index: index, index of data: None, columns: [&#39;id&#39;, &#39;text&#39;, &#39;labels&#39;, &#39;class&#39;, &#39;example_id&#39;, &#39;count&#39;], id: [&#39;id&#39;]
+INFO:ekorpkit.info.column:Adding id [split] to [&#39;id&#39;]
+INFO:ekorpkit.info.column:Added id [split], now [&#39;id&#39;, &#39;split&#39;]
+INFO:ekorpkit.info.column:Added a column [split] with value [train]
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_topics-test.csv&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/data/datasets/simple/esg_topics/esg_topics-test.csv&#39;]
 INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/esg_topics/esg_topics-test.csv
-INFO:ekorpkit.info.base:Added split column [split] with value [test]
+INFO:ekorpkit.info.column:Added a column [split] with value [test]
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_topics-dev.csv&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/data/datasets/simple/esg_topics/esg_topics-dev.csv&#39;]
 INFO:ekorpkit.io.file:Loading data from /workspace/data/datasets/simple/esg_topics/esg_topics-dev.csv
-INFO:ekorpkit.info.base:Added split column [split] with value [dev]
-INFO:ekorpkit.models.transformer.simple:Loaded model from /workspace/projects/esgml/outputs/esgml-esg_topics/ekonelectra-base/best_model
+INFO:ekorpkit.info.column:Added a column [split] with value [dev]
+INFO:ekorpkit.models.transformer.simple:Loaded model from /workspace/projects/ekorpkit-book/outputs/esg_topics/ekonelectra-base/best_model
 INFO:simpletransformers.classification.classification_model: Converting to features started. Cache is not used.
 INFO:simpletransformers.classification.classification_model: Sliding window enabled
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "347418beb5ff442e9beb0d4c1e5923c2", "version_major": 2, "version_minor": 0}
+{"model_id": "ae8ef039eb964515a29626a8704f4d2a", "version_major": 2, "version_minor": 0}
 </script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Token indices sequence length is longer than the specified maximum sequence length for this model (712 &gt; 512). Running this sequence through the model will result in indexing errors
 INFO:simpletransformers.classification.classification_model: 1318 features created from 1318 samples.
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "e4e88091372b445396a83b55bad42e93", "version_major": 2, "version_minor": 0}
+{"model_id": "b57fe8c5d26147bf880b971c731fc6a7", "version_major": 2, "version_minor": 0}
 </script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.models.transformer.simple:type of raw_outputs: &lt;class &#39;list&#39;&gt;
-INFO:ekorpkit.models.transformer.simple:raw_output: [0.8873550295829773, -1.4042227268218994, -0.9927069544792175, -1.5206907987594604, -0.05941705033183098, -0.9372580051422119, 4.283428192138672, 0.03589600324630737, 0.6752013564109802, 0.7132291197776794, -0.4526979327201843, 0.17319411039352417, 0.8416115045547485, -0.7481359839439392, -0.7303427457809448, -0.49421727657318115]
-INFO:ekorpkit.io.file:Saving dataframe as /workspace/projects/esgml/outputs/esgml-esg_topics/ekonelectra-base/predictions/esg_topics_test_predictions.parquet
-INFO:ekorpkit.visualize.classification:Confusion matrix: {&#39;_func_&#39;: &#39;confusion_matrix&#39;, &#39;axno&#39;: 0, &#39;secondary_y&#39;: False, &#39;secondary_to&#39;: 0, &#39;display_labels&#39;: None, &#39;matrix_labels&#39;: None, &#39;include_values&#39;: False, &#39;include_percentages&#39;: False, &#39;summary_stats&#39;: True, &#39;_parms_&#39;: {&#39;cbar&#39;: True, &#39;cmap&#39;: &#39;Blues&#39;}, &#39;figure&#39;: {&#39;xlabel&#39;: &#39;Predicted label&#39;, &#39;ylabel&#39;: &#39;Actual label&#39;}}
+INFO:ekorpkit.models.transformer.simple:raw_output: [1.5525614023208618, -1.328703761100769, -0.8933546543121338, -1.9074918031692505, -0.46544021368026733, -0.9958542585372925, 4.0744194984436035, -0.5456516742706299, 0.5567707419395447, 0.5152987241744995, -0.8728444576263428, 0.33895838260650635, 0.4165045917034149, -1.2813531160354614, 0.3255947530269623, -1.0257333517074585]
+INFO:ekorpkit.io.file:Saving dataframe to /workspace/projects/ekorpkit-book/outputs/esg_topics/ekonelectra-base/esg_topics_test_predictions.parquet
+INFO:ekorpkit.visualize.classification:Confusion matrix: {&#39;display_labels&#39;: [&#39;S-기업(공급망)동반성장/상생&#39;, &#39;G-지배구조&#39;, &#39;G-기업윤리/불공정/소송&#39;, &#39;G-주주환원&#39;, &#39;S-소비자&#39;, &#39;E-신재생에너지 발전&#39;, &#39;S-사회공헌&#39;, &#39;S-기술혁신&#39;, &#39;S-인적자본&#39;, &#39;E-환경영향&#39;, &#39;E-기후변화&#39;, &#39;S-산업재해/안전관리&#39;, &#39;G-정보공시&#39;, &#39;E-환경혁신&#39;, &#39;S-노조/노사&#39;, &#39;E-원자력발전&#39;], &#39;matrix_labels&#39;: None, &#39;include_values&#39;: False, &#39;include_percentages&#39;: False, &#39;summary_stats&#39;: True, &#39;rcParams&#39;: {&#39;cbar&#39;: True, &#39;cmap&#39;: &#39;Blues&#39;}, &#39;_ax_&#39;: {&#39;xlabel&#39;: &#39;Predicted label&#39;, &#39;ylabel&#39;: &#39;Actual label&#39;}}
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy:  0.669195751138088
-Precison:  0.6583205598702675
-Recall:  0.669195751138088
-F1 Score:  0.6525866906289334
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy:  0.6828528072837633
+Precison:  0.678254993620542
+Recall:  0.6828528072837633
+F1 Score:  0.6631596311220908
 Model Report: 
 ___________________________________________________
                   precision    recall  f1-score   support
 
-          E-기후변화       0.49      0.60      0.54        63
-     E-신재생에너지 발전       0.55      0.19      0.29        31
-         E-원자력발전       1.00      0.42      0.59        19
-          E-환경영향       0.46      0.46      0.46        61
-          E-환경혁신       0.49      0.44      0.46        52
-   G-기업윤리/불공정/소송       0.59      0.58      0.59        91
-          G-정보공시       0.33      0.02      0.04        50
-          G-주주환원       0.67      0.78      0.72       162
-          G-지배구조       0.74      0.81      0.77       172
-          S-기술혁신       0.73      0.78      0.75       158
-S-기업(공급망)동반성장/상생       0.59      0.41      0.48        39
-         S-노조/노사       0.84      0.84      0.84        70
-          S-사회공헌       0.82      0.82      0.82        68
-     S-산업재해/안전관리       0.79      0.70      0.74        37
-           S-소비자       0.65      0.75      0.70       159
-          S-인적자본       0.64      0.70      0.67        86
+          E-기후변화       0.70      0.60      0.65        63
+     E-신재생에너지 발전       0.77      0.74      0.75        31
+         E-원자력발전       0.91      0.53      0.67        19
+          E-환경영향       0.49      0.52      0.51        61
+          E-환경혁신       0.48      0.40      0.44        52
+   G-기업윤리/불공정/소송       0.60      0.56      0.58        91
+          G-정보공시       0.29      0.04      0.07        50
+          G-주주환원       0.68      0.79      0.73       162
+          G-지배구조       0.76      0.82      0.79       172
+          S-기술혁신       0.73      0.80      0.77       158
+S-기업(공급망)동반성장/상생       1.00      0.10      0.19        39
+         S-노조/노사       0.82      0.87      0.85        70
+          S-사회공헌       0.67      0.87      0.76        68
+     S-산업재해/안전관리       0.78      0.76      0.77        37
+           S-소비자       0.63      0.73      0.68       159
+          S-인적자본       0.66      0.69      0.67        86
 
-        accuracy                           0.67      1318
-       macro avg       0.65      0.58      0.59      1318
-    weighted avg       0.66      0.67      0.65      1318
+        accuracy                           0.68      1318
+       macro avg       0.69      0.61      0.62      1318
+    weighted avg       0.68      0.68      0.66      1318
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.plot:Saved figure to /workspace/projects/esgml/outputs/esgml-esg_topics/ekonelectra-base/predictions/confusion_matrix.png
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.visualize.base:Saved figure to /workspace/projects/ekorpkit-book/outputs/esg_topics/ekonelectra-base/confusion_matrix.png
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ekorpkit.models.transformer.simple.SimpleClassification at 0x7f92ade87700&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ekorpkit.models.transformer.simple.SimpleClassification at 0x7f0124b3c9d0&gt;
 </pre></div>
 </div>
-<img alt="../../../_images/classifiers_12_8.png" src="../../../_images/classifiers_12_8.png" />
+<img alt="../../../_images/classifiers_13_8.png" src="../../../_images/classifiers_13_8.png" />
 </div>
 </div>
 </div>
@@ -1498,11 +1584,11 @@ S-기업(공급망)동반성장/상생       0.59      0.41      0.48        39
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="index.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="snorkel.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">ESG</p>
+            <p class="prev-next-title">Preparing datasets</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="news_sample.html" title="next page">
