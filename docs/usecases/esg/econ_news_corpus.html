@@ -50,8 +50,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Training Classifiers for ESG Ratings" href="classifiers.html" />
@@ -1565,15 +1563,15 @@ INFO:ekorpkit.info.column:No timestamp key found
 <span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">corpus</span> <span class="o">=</span> <span class="n">corpus_cfg</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">_pipeline_</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;chunk&quot;</span><span class="p">,</span> <span class="s2">&quot;explode_splits&quot;</span><span class="p">,</span><span class="s2">&quot;reset_index&quot;</span><span class="p">,</span> <span class="s2">&quot;save_dataframe&quot;</span><span class="p">]</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">chunk</span><span class="o">.</span><span class="n">len_func</span> <span class="o">=</span> <span class="s2">&quot;len_words&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">chunk</span><span class="o">.</span><span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">chunk</span><span class="o">.</span><span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">200</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">explode_splits</span><span class="o">.</span><span class="n">id_key</span> <span class="o">=</span> <span class="s2">&quot;id&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">explode_splits</span><span class="o">.</span><span class="n">split_key</span> <span class="o">=</span> <span class="s2">&quot;chunk_id&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">explode_splits</span><span class="o">.</span><span class="n">separator</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">reset_index</span><span class="o">.</span><span class="n">drop_index</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="s1">&#39;../data/econ_news_kr&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">save_dataframe</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="s1">&#39;econ_news_kr_chunks.parquet&#39;</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
-<span class="n">df</span>
+<span class="n">chunk_df</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">chunk_df</span>
 </pre></div>
 </div>
 </div>
@@ -1595,7 +1593,7 @@ INFO:ekorpkit.info.column:Added a column [split] with value [train]
 INFO:ekorpkit.info.column:No timestamp key found
 INFO:ekorpkit.io.file:Concatenating 1 dataframes
 INFO:ekorpkit.pipelines.pipe:Applying pipeline: OrderedDict([(&#39;chunk&#39;, &#39;chunk&#39;), (&#39;explode_splits&#39;, &#39;explode_splits&#39;), (&#39;reset_index&#39;, &#39;reset_index&#39;), (&#39;save_dataframe&#39;, &#39;save_dataframe&#39;)])
-INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function chunk at 0x7f4280aba160&gt;)
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function chunk at 0x7f98e57950d0&gt;)
 INFO:ekorpkit.pipelines.pipe:instantiating segmenter
 INFO:ekorpkit.base:instantiating ekorpkit.preprocessors.segmenter.Segmenter...
 INFO:ekorpkit.base:Using batcher with minibatch size: 1000
@@ -1603,26 +1601,26 @@ INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs:
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "ee36dd88f1924b709a7c7a97c027b75c", "version_major": 2, "version_minor": 0}
-</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to segment: 0:01:11.172569
-INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function explode_splits at 0x7f4280ab8af0&gt;)
+{"model_id": "72cfe8ecb5bc400f8332e52de2a87591", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to segment: 0:01:57.068135
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function explode_splits at 0x7f98e5794a60&gt;)
 INFO:ekorpkit.pipelines.pipe:Exploding column: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.explode_splits&#39;}, &#39;apply_to&#39;: &#39;text&#39;, &#39;id_key&#39;: &#39;id&#39;, &#39;split_key&#39;: &#39;chunk_id&#39;, &#39;separator&#39;: &#39;\n\n&#39;, &#39;verbose&#39;: True}
-INFO:ekorpkit.pipelines.pipe:1090658 documents exploded into 1387275 documents
-INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function reset_index at 0x7f4280ab8c10&gt;)
+INFO:ekorpkit.pipelines.pipe:1090658 documents exploded into 1816019 documents
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function reset_index at 0x7f98e5794b80&gt;)
 INFO:ekorpkit.pipelines.pipe:Resetting index: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.reset_index&#39;}, &#39;index_column_name&#39;: &#39;id&#39;, &#39;drop_index&#39;: True, &#39;verbose&#39;: True}
-INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function save_dataframe at 0x7f4280aba940&gt;)
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function save_dataframe at 0x7f98e57958b0&gt;)
 INFO:ekorpkit.io.file:Saving dataframe to ../data/econ_news_kr/econ_news_kr_chunks.parquet
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   id                                               text  split  ext  chunk_id
 0   0  &#39;사보&#39;는 기업들의 소통수단이다. 계열사 정보 공유 측면도 있다. 또한 대외적으로 ...  train  txt         0
-1   0  자동차부품도 코오롱의 새로운 사업이다. 코오롱글로텍 AP(Automotive Par...  train  txt         1
-2   1  2030을 주축으로 한 이른바 &#39;동학개미운동&#39;이 계속되는 등 주식 투자 열풍이 사그...  train  txt         0
-3   1  금융위가 인가한 혁신금융플랫폼인 카사는 국내 최초로 건물의 지분인 수익증권(DABS...  train  txt         1
-4   2  현대모비스가 사회적 거리두기 캠페인에 발맞춰 지난 2월부터 임시적으로 시행해오던 재...  train  txt         0
+1   0  안병덕 코오롱그룹 부회장은 &quot;사보를 통해 코오롱인은 하나가 되었고, 자긍심을 키워왔...  train  txt         1
+2   0  코오롱 관계자는 &quot;600호에 이르기까지 인쇄 사보를 중심으로 온라인, 모바일 환경 ...  train  txt         2
+3   1  2030을 주축으로 한 이른바 &#39;동학개미운동&#39;이 계속되는 등 주식 투자 열풍이 사그...  train  txt         0
+4   1  한국투자증권은 지난 8월 소액으로 투자 가능한 해외주식 모바일 앱 &#39;미니스탁&#39;을 선...  train  txt         1
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file: &gt;&gt; elapsed time to save data: 0:03:29.297892
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file: &gt;&gt; elapsed time to save data: 0:03:27.543973
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1662,13 +1660,21 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/econ_news_kr/econ_news_kr_chun
     <tr>
       <th>1</th>
       <td>0</td>
-      <td>자동차부품도 코오롱의 새로운 사업이다. 코오롱글로텍 AP(Automotive Par...</td>
+      <td>안병덕 코오롱그룹 부회장은 "사보를 통해 코오롱인은 하나가 되었고, 자긍심을 키워왔...</td>
       <td>train</td>
       <td>txt</td>
       <td>1</td>
     </tr>
     <tr>
       <th>2</th>
+      <td>0</td>
+      <td>코오롱 관계자는 "600호에 이르기까지 인쇄 사보를 중심으로 온라인, 모바일 환경 ...</td>
+      <td>train</td>
+      <td>txt</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>3</th>
       <td>1</td>
       <td>2030을 주축으로 한 이른바 '동학개미운동'이 계속되는 등 주식 투자 열풍이 사그...</td>
       <td>train</td>
@@ -1676,20 +1682,12 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/econ_news_kr/econ_news_kr_chun
       <td>0</td>
     </tr>
     <tr>
-      <th>3</th>
-      <td>1</td>
-      <td>금융위가 인가한 혁신금융플랫폼인 카사는 국내 최초로 건물의 지분인 수익증권(DABS...</td>
-      <td>train</td>
-      <td>txt</td>
-      <td>1</td>
-    </tr>
-    <tr>
       <th>4</th>
-      <td>2</td>
-      <td>현대모비스가 사회적 거리두기 캠페인에 발맞춰 지난 2월부터 임시적으로 시행해오던 재...</td>
+      <td>1</td>
+      <td>한국투자증권은 지난 8월 소액으로 투자 가능한 해외주식 모바일 앱 '미니스탁'을 선...</td>
       <td>train</td>
       <td>txt</td>
-      <td>0</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>...</th>
@@ -1700,70 +1698,77 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/econ_news_kr/econ_news_kr_chun
       <td>...</td>
     </tr>
     <tr>
-      <th>1387270</th>
-      <td>1090654</td>
-      <td>[로고=에치에프알]\r\n\r\n정보통신 기업 에치에프알(HFR)은 28일 일본 정...</td>
-      <td>train</td>
-      <td>txt</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>1387271</th>
+      <th>1816014</th>
       <td>1090655</td>
-      <td>[사진=연합뉴스]\r\n\r\n\r\n 한국거래소는 상장적격성 실질심사 대상으로 결...</td>
+      <td>[사진=연합뉴스]\n 한국거래소는 상장적격성 실질심사 대상으로 결정된 오스템임플란트...</td>
       <td>train</td>
       <td>txt</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>1387272</th>
+      <th>1816015</th>
       <td>1090656</td>
-      <td>[사진=유대길 기자 dbeorlf123@ajunews.com]\r\n\r\n고승범 ...</td>
+      <td>[사진=유대길 기자 dbeorlf123@ajunews.com]\n고승범 금융위원장이...</td>
       <td>train</td>
       <td>txt</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>1387273</th>
+      <th>1816016</th>
       <td>1090657</td>
-      <td>[사진=아주경제 DB]\r\n\r\n\r\n◆ [우크라 침공] 러·우크라 회담 개시...</td>
+      <td>[사진=아주경제 DB]\n◆ [우크라 침공] 러·우크라 회담 개시… 회담 성과는 미...</td>
       <td>train</td>
       <td>txt</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>1387274</th>
+      <th>1816017</th>
       <td>1090657</td>
-      <td>청년희망적금의 가입 자격에 '외국인'이 포함되는 것이 알려지면서 논란이 되자 금융위...</td>
+      <td>서울시 등 각 지방자치단체에 따르면 이날 0시부터 오후 9시까지 전국 17개 시도에...</td>
       <td>train</td>
       <td>txt</td>
       <td>1</td>
     </tr>
+    <tr>
+      <th>1816018</th>
+      <td>1090657</td>
+      <td>청년희망적금은 정부가 청년층의 자산형성을 돕기 위해 내놓은 정책금융 상품이다. 직전...</td>
+      <td>train</td>
+      <td>txt</td>
+      <td>2</td>
+    </tr>
   </tbody>
 </table>
-<p>1387275 rows × 5 columns</p>
+<p>1816019 rows × 5 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">22</span><span class="p">]))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chunk_df</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;econ_news_kr_chunks.parquet&#39;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">chunk_df</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunk_df</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">22</span><span class="p">]))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1218 489
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;econ_news_kr_chunks.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/econ_news_kr/econ_news_kr_chunks.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/econ_news_kr/econ_news_kr_chunks.parquet
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1213 484
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chunk_df</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&quot;2030을 주축으로 한 이른바 &#39;동학개미운동&#39;이 계속되는 등 주식 투자 열풍이 사그라들지 않고 있다. 신규 투자자가 대폭 늘어나고 있는 상황인 만큼, 금융 업계도 곧바로 반응해 투자에 경험이 없는 초보 개인투자자를 위한 각종 서비스를 내놓고 있어 주목된다.\r\n디셈버앤컴퍼니자산운용은 국내 최초 AI 비대면 투자일임 서비스 &#39;핀트&#39;를 통해 투자 경험이 없는 사회 초년생부터 중장년층까지 소액(최소 20만원)으로 손쉽게 글로벌 분산 투자를 할 수 있는 서비스를 제공한다.\r\n모바일 앱을 이용해 투자자가 수익 추구 방식, 손실 대응 방식, 투자 경험 등을 설정하면, 이후에는 인공지능이 고객 개개인의 포트폴리오를 구성해 투자의 모든 과정을 수행해준다. 핀트는 모바일을 통해 언제 어디서든 이용할 수 있어 시공간의 제약이 없으며, 금융과 국내외 정세를 잘 모르는 초보 투자자자도 터치 몇 번이면 손쉽게 투자를 할 수 있다. 또 오픈뱅킹을 활용해 앱 내에서 직접 입출금 및 적립식 입금(투자)이 가능하며, 등록된 계좌를 통한 제로페이 결제 기능으로 오프라인 결제도 가능해 앱을 처음 이용하는 소비자들의 편의성을 높였다. &#39;핀트&#39; 플랫폼을 통해 인공지능 기반 증권 서비스와 마이데이터와 인공지능이 결합된 혁신적인 핀테크 비즈니스를 선보인다는 계획이다.\r\n한국투자증권은 지난 8월 소액으로 투자 가능한 해외주식 모바일 앱 &#39;미니스탁&#39;을 선보여 젊은 2030세대 가입자가 빠르게 늘어나고 있다. 미니스탁은 해외주식을 환전 없이 소수 여섯 번째 자리까지 1000원 단위로 주문할 수 있도록 했다. 미국의 대형 우량주 260여 종을 쉽게 사고 팔 수 있고, 1주 단위로 구매해야 했던 해외주식을 금액 단위로 주문할 수 있도록 해 투자 진입장벽을 낮춘 것이다. 거래 방식도 간편하다. 쇼핑백 기능을 통해 여러 주식과 다양한 투자테마를 한 번의 클릭으로 살 수 있다. 최근 카카오뱅크와 연결 서비스를 제공해 카카오뱅크 계좌에서 주식계좌로의 입출금도 간소화했다.\r\n부동산 간접투자 플랫폼을 운영하는 카사코리아는 하나은행과 전략적 제휴를 체결하고 디지털 부동산 수익증권 거래 플랫폼 &#39;카사&#39;를 출시했다. 카사는 모바일 앱을 통해 최소 5000원 단위부터 상업용 부동산 자산유동화증권(ABS)에 투자 가능하다. 간편하게 상업용 부동산에 투자하고, 주식처럼 증권을 사고 팔아 시세차익을 실현할 수 있다는 장점이 초보 투자자의 관심을 끌며, 누적 다운로드 이용자의 66%가 2030세대인 것으로 나타났다.\r&quot;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;\&#39;사보\&#39;는 기업들의 소통수단이다. 계열사 정보 공유 측면도 있다. 또한 대외적으로 기업을 알리는 수단이다. 그런데 최근 사보를 중단하거나, 종이 대신 온라인 사보로 대체하는 기업들이 늘어나고 있다. 사보 대신 SNS 등을 통해 사내 소통에 나선 기업들도 많다. 종이 사보도 자취를 감춰가고 있는 중에도 책자 형태 사보를 고수하는 대기업이 있다. 최근 600호를 발행한 코오롱그룹이다.\n이웅열 코오롱그룹 명예회장은 600호 사보를 통해 &quot;사보는 코오롱 가족 모두가 함께 걸어온 발자취이자 코오롱만의 희로애락이 담긴 일기장&quot;이라며 &quot;코오롱 사보가 과거 기록으로 그치지 않고 코오롱의 미래를 위한 소통의 역할을 해 나가길 바란다&quot;고 밝혔다.\n코오롱 사보는 이원만 창업 회장 시절인 1967년 8월 창간됐다. 당시 이름은 코오롱뉴스였다. 1970년 6월 코오롱뉴스에서 코오롱사보로 제호를 변경했으며, 1976년 5월 문화공보부에 월간 정기간행물 등록을 했다. 그해 9월엔 100호 사보가 발행됐다. 1977년엔 이동찬 코오롱그룹 2대 회장이 취임했다.\n1980년대 해외진출이 본격화하면서, 1981년 10월엔 해외지사 탐방기사가 사보에 처음으로 등장했다. 85년 200호에 이어 94년 300호 사보가 나왔다. 1997년 5월엔 코오롱그룹 창립 40주년 특집호를 발행했다. IMF 외환위기는 사보에도 영향을 미쳤다. 월간으로 발행되던 사보는 1998년 1월부터 1999년 12월까지 격월간으로 발행됐다. 2000년 1월 다시 매월 발행되기 시작했으며, 2004년 2월 400호엔 이웅열 당시 회장 인터뷰도 수록됐다. 2012년 1월 모바일 사보가 등장했으며, 그해 6월 500호 사보가 나왔다. 이웅열 회장은 2018년 11월 퇴임을 발표했으며, 장남 이규호 전무는 코오롱인더스트리 FnC부문 COO(최고운영책임자)다.&#39;
 </pre></div>
 </div>
 </div>
@@ -1786,41 +1791,11 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/econ_news_kr/econ_news_kr_chun
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
-INFO:ekorpkit.base:IPython version: (6, 9, 0), client: jupyter_client
-INFO:ekorpkit.io.file:Processing [1] files from [&#39;news_info.zip&#39;]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;news_info.zip&#39;]
 INFO:ekorpkit.io.load.data:==&gt; processing 1/1 files &lt;==
 INFO:ekorpkit.io.file:::Extracting files from /workspace/data/tbts/archive/datasets/source/econ_news_kr/news_info.zip with zip
 INFO:ekorpkit.io.parse.json:Number of data in the contents: 18176
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;_target_&#39;: &#39;ekorpkit.io.load.data.load_data&#39;,
- &#39;data&#39;: {&#39;explode&#39;: False,
-          &#39;field&#39;: None,
-          &#39;item&#39;: {&#39;codes&#39;: &#39;codes&#39;, &#39;filename&#39;: &#39;filename&#39;},
-          &#39;item_separator&#39;: &#39;\\n\\n&#39;},
- &#39;data_dir&#39;: &#39;/workspace/data/tbts/archive/datasets/source/econ_news_kr&#39;,
- &#39;data_sources&#39;: &#39;news_info.zip&#39;,
- &#39;decode_before_parse&#39;: True,
- &#39;decompressor&#39;: None,
- &#39;filetype&#39;: None,
- &#39;limit&#39;: None,
- &#39;meta&#39;: {&#39;field&#39;: None, &#39;item&#39;: None},
- &#39;multiprocessing_at&#39;: &#39;_load_archive&#39;,
- &#39;name&#39;: &#39;&#39;,
- &#39;num_workers&#39;: 100,
- &#39;parser&#39;: {&#39;_target_&#39;: &#39;ekorpkit.io.parse.misc.parse_plaintext&#39;,
-            &#39;data_key&#39;: &#39;codes&#39;,
-            &#39;lineno_key&#39;: &#39;lineno&#39;,
-            &#39;meta_key&#39;: None,
-            &#39;meta_line&#39;: None,
-            &#39;progress_per&#39;: None,
-            &#39;split&#39;: True,
-            &#39;verbose&#39;: False},
- &#39;verbose&#39;: False}
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.parse.json:Number of data in the contents: 18438
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 18438
 INFO:ekorpkit.io.parse.json:Number of data in the contents: 19216
 INFO:ekorpkit.io.parse.json:Number of data in the contents: 18464
 INFO:ekorpkit.io.parse.json:Number of data in the contents: 19385
@@ -1882,22 +1857,30 @@ INFO:ekorpkit.io.parse.json:Number of data in the contents: 19535
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;filename&#39;: &#39;20200101_20200115.txt&#39;, &#39;codes&#39;: &#39;02100101.20200101001103001&#39;}
 </pre></div>
 </div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Saving dataframe to ../data/econ_news_kr/econ_news_code_info.parquet
+</pre></div>
+</div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">code_info</span><span class="p">[</span><span class="s2">&quot;len&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">code_info</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">len</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">code_info</span><span class="p">[</span><span class="n">code_info</span><span class="o">.</span><span class="n">len</span> <span class="o">&gt;</span> <span class="mi">26</span><span class="p">]</span>
+<span class="n">code_info_available</span> <span class="o">=</span> <span class="n">code_info</span><span class="p">[</span><span class="n">code_info</span><span class="o">.</span><span class="n">len</span> <span class="o">&gt;</span> <span class="mi">26</span><span class="p">]</span>
+<span class="n">code_info_available</span><span class="p">[</span><span class="s2">&quot;filename&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">code_info_available</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">str</span><span class="p">[:</span><span class="mi">26</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span>
+<span class="n">code_info_available</span><span class="p">[</span><span class="s2">&quot;codes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">code_info_available</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">str</span><span class="p">[</span><span class="mi">27</span><span class="p">:]</span>
+<span class="n">code_info_available</span><span class="p">[</span><span class="s2">&quot;codes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">code_info_available</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+<span class="n">code_info_available</span><span class="p">[</span><span class="s2">&quot;num_codes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">code_info_available</span><span class="p">[</span><span class="s2">&quot;codes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">len</span><span class="p">)</span>
+<span class="n">code_info_available</span> <span class="o">=</span> <span class="n">code_info_available</span><span class="o">.</span><span class="n">explode</span><span class="p">(</span><span class="s2">&quot;codes&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">code_info_available</span><span class="p">,</span> <span class="s2">&quot;econ_news_code_info_available.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+<span class="n">code_info_available</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Saving dataframe to ../data/econ_news_kr/econ_news_code_info_available.parquet
+</pre></div>
+</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1919,79 +1902,104 @@ INFO:ekorpkit.io.parse.json:Number of data in the contents: 19535
       <th>filename</th>
       <th>codes</th>
       <th>len</th>
+      <th>num_codes</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>2738</th>
-      <td>20200101_20200115.txt</td>
-      <td>02100201.20200102152718001,144960</td>
+      <th>0</th>
+      <td>02100201.20200102152718001.txt</td>
+      <td>144960</td>
       <td>33</td>
+      <td>1</td>
     </tr>
     <tr>
-      <th>2802</th>
-      <td>20200101_20200115.txt</td>
-      <td>02100201.20200102164904001,285130</td>
+      <th>1</th>
+      <td>02100201.20200102164904001.txt</td>
+      <td>285130</td>
       <td>33</td>
+      <td>1</td>
     </tr>
     <tr>
-      <th>2985</th>
-      <td>20200101_20200115.txt</td>
-      <td>02100201.20200103151007001,088800</td>
+      <th>2</th>
+      <td>02100201.20200103151007001.txt</td>
+      <td>088800</td>
       <td>33</td>
+      <td>1</td>
     </tr>
     <tr>
-      <th>3000</th>
-      <td>20200101_20200115.txt</td>
-      <td>02100201.20200103155237001,178920</td>
+      <th>3</th>
+      <td>02100201.20200103155237001.txt</td>
+      <td>178920</td>
       <td>33</td>
+      <td>1</td>
     </tr>
     <tr>
-      <th>3632</th>
-      <td>20200101_20200115.txt</td>
-      <td>02100201.20200107154901001,007660</td>
+      <th>4</th>
+      <td>02100201.20200107154901001.txt</td>
+      <td>007660</td>
       <td>33</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>...</th>
       <td>...</td>
       <td>...</td>
       <td>...</td>
+      <td>...</td>
     </tr>
     <tr>
-      <th>1079260</th>
-      <td>20220516_20220531.txt</td>
-      <td>02100311.20220531185816001,010780,011200,00349...</td>
+      <th>108945</th>
+      <td>02100311.20220531185816001.txt</td>
+      <td>011070</td>
       <td>124</td>
+      <td>14</td>
     </tr>
     <tr>
-      <th>1079278</th>
-      <td>20220516_20220531.txt</td>
-      <td>02100501.20220516100127001,139670</td>
+      <th>108946</th>
+      <td>02100501.20220516100127001.txt</td>
+      <td>139670</td>
       <td>33</td>
+      <td>1</td>
     </tr>
     <tr>
-      <th>1085650</th>
-      <td>20220516_20220531.txt</td>
-      <td>02100701.20220531153710002,064960</td>
+      <th>108947</th>
+      <td>02100701.20220531153710002.txt</td>
+      <td>064960</td>
       <td>33</td>
+      <td>1</td>
     </tr>
     <tr>
-      <th>1085800</th>
-      <td>20220516_20220531.txt</td>
-      <td>02100801.20220516111438002,005930</td>
+      <th>108948</th>
+      <td>02100801.20220516111438002.txt</td>
+      <td>005930</td>
       <td>33</td>
+      <td>1</td>
     </tr>
     <tr>
-      <th>1088840</th>
-      <td>20220516_20220531.txt</td>
-      <td>02100851.20220516010042001,003620</td>
+      <th>108949</th>
+      <td>02100851.20220516010042001.txt</td>
+      <td>003620</td>
       <td>33</td>
+      <td>1</td>
     </tr>
   </tbody>
 </table>
-<p>36995 rows × 3 columns</p>
+<p>108950 rows × 4 columns</p>
 </div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">code_info_available</span><span class="o">.</span><span class="n">num_codes</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:&gt;
+</pre></div>
+</div>
+<img alt="../../../_images/econ_news_corpus_14_1.png" src="../../../_images/econ_news_corpus_14_1.png" />
+</div>
 </div>
 </div>
 </div>
