@@ -863,6 +863,11 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#snorkel-labelmodel">
+   Snorkel LabelModel
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#writing-labeling-functions">
    Writing Labeling Functions
   </a>
@@ -906,6 +911,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#fetch-the-labeled-dataset-from-the-labelstudio-server">
    Fetch the labeled dataset from the labelstudio server
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#snorkel-labelmodel">
+   Snorkel LabelModel
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -1007,115 +1017,66 @@ INFO:ekorpkit.io.file:Loading data from /workspace/.tmp/fetcher/esg_polarity_lab
 </div>
 </div>
 </div>
+</div>
+<div class="section" id="snorkel-labelmodel">
+<h2>Snorkel LabelModel<a class="headerlink" href="#snorkel-labelmodel" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
-
-<span class="n">esg_polarity_data</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
-<span class="n">le</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">LabelEncoder</span><span class="p">()</span>
-<span class="n">le</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">esg_polarity_data</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
-<span class="n">classes</span> <span class="o">=</span> <span class="n">le</span><span class="o">.</span><span class="n">classes_</span>
-<span class="n">esg_polarity_data</span><span class="p">[</span><span class="s2">&quot;classes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">le</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">esg_polarity_data</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
-
-<span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.2</span>
-<span class="n">random_state</span> <span class="o">=</span> <span class="mi">12345</span>
-<span class="n">shuffle</span> <span class="o">=</span> <span class="kc">True</span>
-
-<span class="n">df_train</span><span class="p">,</span> <span class="n">df_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
-    <span class="n">esg_polarity_data</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">test_size</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="n">shuffle</span>
-<span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_train</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_test</span><span class="p">))</span>
-<span class="n">df_train</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;model/snorkel&quot;</span><span class="p">)</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;esg_polarity_snorkel&quot;</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">snorkel</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">model_cfg</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13936 3485
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:instantiating ekorpkit.models.snorkel.base.BaseSnorkel...
 </pre></div>
 </div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">snorkel</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">ls</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">12345</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.models.snorkel.base:Train data: (13936, 7), Test data: (3485, 7)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Train data: (13936, 7)
+          id                                               text  annot_id  \
+6531   36071  정 장관은 문화적 소외·격차와 관련, &#39;격차를 없애기 위해 촘촘하고 항구적인 시스템...      4674   
+13479  20523  특히 기후변화에 대한 전 세계적인 관심이 높아짐에 따라 csr 내에서 온실가스 감축...      6266   
+4151   44044  정경유착 및 갑질 근절 등 재벌개혁 범죄수익 환수, 전경련 해체, 불법 재벌총수 처...      1225   
+2414   48651  ugv의 하위 인식 시스템은 센서로부터 데이터를 가져와 ugv 주변 환경을 재현하는...      5214   
+452    54286  이전의 패키지 요금제에서는 데이터 사용량 증가와 요금제 상향 사이에 괴리가 있었으나...      6865   
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
+       annotator  origin    labels  classes  
+6531           5  manual   Neutral        1  
+13479          8  manual  Positive        2  
+4151           3  manual   Neutral        1  
+2414           5  manual   Neutral        1  
+452            6  manual  Positive        2  
+Test data: (3485, 7)
+          id                                               text  annot_id  \
+9696   24469  고용노동부가 중심이 되어 저리 대부사업 민관 모태펀드 조성 등을 진행하고 있으나 시...      3132   
+13195  20826  &#39;제품 기반 투자 배제&#39;는 담배, 술, 도박, 마약, 대량살상무기 제조업체와 같이 ...      1899   
+4286   43469  같은 이유로 택배노조의 시선도 시장 파급력과 투자여력이 가장 큰 cj대한통운에게 먼...      9522   
+13042  20983  미국 질병관리예방본부 산하 foodnet 조사 결과에 의하면, 유아층 및 노년층은 ...      2553   
+11946  22135  또한 모회사가 선임한 이사들도 사후적 책임으로부터 자유로울 수 있다는 이유에서 이러...     15830   
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id</th>
-      <th>text</th>
-      <th>annot_id</th>
-      <th>annotator</th>
-      <th>origin</th>
-      <th>labels</th>
-      <th>classes</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>13441</th>
-      <td>20564</td>
-      <td>군집분석을 통해 네 개의 군집으로 분류한 결과, '1차 금속 제조업', '고무제품 ...</td>
-      <td>6833</td>
-      <td>6</td>
-      <td>manual</td>
-      <td>Neutral</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>3613</th>
-      <td>45534</td>
-      <td>세아네트웍스 통신부품 판매 및 공장자동화 및 사무자동화 구축 용역을 주 사업부문으로...</td>
-      <td>5076</td>
-      <td>5</td>
-      <td>manual</td>
-      <td>Neutral</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>10522</th>
-      <td>23616</td>
-      <td>이에 따라, 양로연금의 지급 방법은 기업이 퇴직자에게 직접 지급하던 종래의 지급방식...</td>
-      <td>10232</td>
-      <td>6</td>
-      <td>manual</td>
-      <td>Neutral</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1728</th>
-      <td>51904</td>
-      <td>이에 따라 에너지 절약에 대한 정부의 정책적 지원 강화가 예상되는 가운데,제도 점차...</td>
-      <td>11431</td>
-      <td>5</td>
-      <td>manual</td>
-      <td>Neutral</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>10559</th>
-      <td>23579</td>
-      <td>법규 및 제도\n정의화 국회의장이 11월 27일 지정한 세입 예산안 부수 법률안 1...</td>
-      <td>6456</td>
-      <td>8</td>
-      <td>manual</td>
-      <td>Positive</td>
-      <td>2</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
+       annotator  origin    labels  classes  
+9696           8  manual  Positive        2  
+13195          5  manual   Neutral        1  
+4286           5  manual   Neutral        1  
+13042          4  manual   Neutral        1  
+11946          8  manual   Neutral        1  
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 <div class="section" id="writing-labeling-functions">
@@ -1125,72 +1086,75 @@ INFO:ekorpkit.io.file:Loading data from /workspace/.tmp/fetcher/esg_polarity_lab
 <h3>Crowdworker labeling functions<a class="headerlink" href="#crowdworker-labeling-functions" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">labels_by_annotator</span> <span class="o">=</span> <span class="n">esg_polarity_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;annotator&quot;</span><span class="p">)</span>
-<span class="n">worker_dicts</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">for</span> <span class="n">worker_id</span> <span class="ow">in</span> <span class="n">labels_by_annotator</span><span class="o">.</span><span class="n">groups</span><span class="p">:</span>
-    <span class="n">worker_df</span> <span class="o">=</span> <span class="n">labels_by_annotator</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="n">worker_id</span><span class="p">)</span>
-    <span class="n">worker_dicts</span><span class="p">[</span><span class="n">worker_id</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">worker_df</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">worker_df</span><span class="o">.</span><span class="n">classes</span><span class="p">))</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of workers:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">worker_dicts</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eKonf</span><span class="o">.</span><span class="n">viewsource</span><span class="p">(</span><span class="n">snorkel</span><span class="o">.</span><span class="n">compose_worker_lfs</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of workers: 9
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    def compose_worker_lfs(self):
+        labels_by_annotator = self.data.groupby(self.columns.annotator)
+        worker_dicts = {}
+        for worker_id in labels_by_annotator.groups:
+            worker_df = labels_by_annotator.get_group(worker_id)
+            worker_dicts[worker_id] = dict(zip(worker_df.id, worker_df.classes))
+
+        log.info(f&quot;Number of workers: {len(worker_dicts)}&quot;)
+
+        def worker_lf(x, worker_dict):
+            return worker_dict.get(x.id, self.ABSTAIN)
+
+        def make_worker_lf(worker_id):
+            worker_dict = worker_dicts[worker_id]
+            name = f&quot;worker_{worker_id}&quot;
+            return LabelingFunction(
+                name, f=worker_lf, resources={&quot;worker_dict&quot;: worker_dict}
+            )
+
+        worker_lfs = [make_worker_lf(worker_id) for worker_id in worker_dicts]
+        self._worker_lfs = worker_lfs
+        return worker_lfs
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.models.snorkel.labeling</span> <span class="kn">import</span> <span class="n">LabelingFunction</span>
-
-<span class="n">ABSTAIN</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-
-<span class="k">def</span> <span class="nf">worker_lf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">worker_dict</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">worker_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">ABSTAIN</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">make_worker_lf</span><span class="p">(</span><span class="n">worker_id</span><span class="p">):</span>
-    <span class="n">worker_dict</span> <span class="o">=</span> <span class="n">worker_dicts</span><span class="p">[</span><span class="n">worker_id</span><span class="p">]</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;worker_</span><span class="si">{</span><span class="n">worker_id</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">return</span> <span class="n">LabelingFunction</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="n">worker_lf</span><span class="p">,</span> <span class="n">resources</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;worker_dict&quot;</span><span class="p">:</span> <span class="n">worker_dict</span><span class="p">})</span>
-
-
-<span class="n">worker_lfs</span> <span class="o">=</span> <span class="p">[</span><span class="n">make_worker_lf</span><span class="p">(</span><span class="n">worker_id</span><span class="p">)</span> <span class="k">for</span> <span class="n">worker_id</span> <span class="ow">in</span> <span class="n">worker_dicts</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">worker_lfs</span> <span class="o">=</span> <span class="n">snorkel</span><span class="o">.</span><span class="n">compose_worker_lfs</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.models.snorkel.base:Number of workers: 9
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.models.snorkel.labeling</span> <span class="kn">import</span> <span class="n">PandasLFApplier</span>
-
-<span class="n">applier</span> <span class="o">=</span> <span class="n">PandasLFApplier</span><span class="p">(</span><span class="n">worker_lfs</span><span class="p">)</span>
-<span class="n">L_train</span> <span class="o">=</span> <span class="n">applier</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">df_train</span><span class="p">)</span>
-<span class="n">L_test</span> <span class="o">=</span> <span class="n">applier</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">df_test</span><span class="p">)</span>
-<span class="n">L_data</span> <span class="o">=</span> <span class="n">applier</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">esg_polarity_data</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">snorkel</span><span class="o">.</span><span class="n">apply_worker_lfs</span><span class="p">(</span><span class="n">worker_lfs</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 13936/13936 [00:01&lt;00:00, 13828.21it/s]
-100%|██████████| 3485/3485 [00:00&lt;00:00, 15590.91it/s]
-100%|██████████| 17421/17421 [00:01&lt;00:00, 14719.26it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.models.snorkel.base:Applying worker lfs to train data
+100%|██████████| 13936/13936 [00:00&lt;00:00, 15567.94it/s]
+INFO:ekorpkit.models.snorkel.base:Applying worker lfs to test data
+100%|██████████| 3485/3485 [00:00&lt;00:00, 15432.48it/s]
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.models.snorkel.labeling</span> <span class="kn">import</span> <span class="n">LFAnalysis</span>
-
-<span class="n">Y_train</span> <span class="o">=</span> <span class="n">df_train</span><span class="o">.</span><span class="n">classes</span><span class="o">.</span><span class="n">values</span>
-<span class="n">LFAnalysis</span><span class="p">(</span><span class="n">L_train</span><span class="p">,</span> <span class="n">worker_lfs</span><span class="p">)</span><span class="o">.</span><span class="n">lf_summary</span><span class="p">(</span><span class="n">Y_train</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">summary</span> <span class="o">=</span> <span class="n">snorkel</span><span class="o">.</span><span class="n">lf_summary</span><span class="p">()</span>
+<span class="n">summary</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.models.snorkel.base:Training set coverage:  100.0%
+</pre></div>
+</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1323,51 +1287,25 @@ INFO:ekorpkit.io.file:Loading data from /workspace/.tmp/fetcher/esg_polarity_lab
 </table>
 </div></div></div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training set coverage: </span><span class="si">{</span><span class="mi">100</span> <span class="o">*</span> <span class="n">LFAnalysis</span><span class="p">(</span><span class="n">L_train</span><span class="p">)</span><span class="o">.</span><span class="n">label_coverage</span><span class="p">()</span><span class="si">:</span><span class="s2"> 0.1f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training set coverage:  100.0%
-</pre></div>
-</div>
-</div>
-</div>
 </div>
 </div>
 <div class="section" id="train-labelmodel-and-generate-probabilistic-labels">
 <h2>Train LabelModel And Generate Probabilistic Labels<a class="headerlink" href="#train-labelmodel-and-generate-probabilistic-labels" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.models.snorkel.labeling.model</span> <span class="kn">import</span> <span class="n">LabelModel</span>
-
-<span class="c1"># Train LabelModel.</span>
-<span class="n">label_model</span> <span class="o">=</span> <span class="n">LabelModel</span><span class="p">(</span><span class="n">cardinality</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">label_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">L_train</span><span class="p">,</span> <span class="n">n_epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">12345</span><span class="p">,</span> <span class="n">log_freq</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">l2</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">snorkel</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 100/100 [00:00&lt;00:00, 1010.20epoch/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 100/100 [00:01&lt;00:00, 60.76epoch/s]
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.models.snorkel.analysis</span> <span class="kn">import</span> <span class="n">metric_score</span>
-
-<span class="n">Y_test</span> <span class="o">=</span> <span class="n">df_test</span><span class="o">.</span><span class="n">classes</span><span class="o">.</span><span class="n">values</span>
-
-<span class="n">preds_train</span> <span class="o">=</span> <span class="n">label_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">L_train</span><span class="p">,</span> <span class="n">tie_break_policy</span><span class="o">=</span><span class="s2">&quot;abstain&quot;</span><span class="p">)</span>
-<span class="n">acc</span> <span class="o">=</span> <span class="n">metric_score</span><span class="p">(</span><span class="n">Y_train</span><span class="p">,</span> <span class="n">preds_train</span><span class="p">,</span> <span class="n">probs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;accuracy&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;LabelModel Accuracy for train: </span><span class="si">{</span><span class="n">acc</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="n">preds_test</span> <span class="o">=</span> <span class="n">label_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">L_test</span><span class="p">,</span> <span class="n">tie_break_policy</span><span class="o">=</span><span class="s2">&quot;abstain&quot;</span><span class="p">)</span>
-<span class="n">acc</span> <span class="o">=</span> <span class="n">metric_score</span><span class="p">(</span><span class="n">Y_test</span><span class="p">,</span> <span class="n">preds_test</span><span class="p">,</span> <span class="n">probs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;accuracy&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;LabelModel Accuracy for test: </span><span class="si">{</span><span class="n">acc</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">snorkel</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1380,15 +1318,60 @@ LabelModel Accuracy for test: 0.994
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">esg_polarity_data</span><span class="p">[</span><span class="s2">&quot;snorkel_classes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">label_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">L_data</span><span class="p">,</span> <span class="n">tie_break_policy</span><span class="o">=</span><span class="s2">&quot;abstain&quot;</span><span class="p">)</span>
-<span class="n">esg_polarity_data</span> <span class="o">=</span> <span class="n">esg_polarity_data</span><span class="p">[</span><span class="n">esg_polarity_data</span><span class="o">.</span><span class="n">snorkel_classes</span> <span class="o">!=</span> <span class="n">ABSTAIN</span><span class="p">]</span>
-
-<span class="n">esg_polarity_data</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">le</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">esg_polarity_data</span><span class="p">[</span><span class="s2">&quot;snorkel_classes&quot;</span><span class="p">])</span>
-<span class="n">esg_polarity_data</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;classes != snorkel_classes&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">preds</span> <span class="o">=</span> <span class="n">snorkel</span><span class="o">.</span><span class="n">predict</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 17421/17421 [00:01&lt;00:00, 15436.72it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data that predictions are different from classes:
+          id                                               text  annot_id  \
+38     29214  재판부가 선고를 미루며 학부모에게 용서를 빌 기회를 준 것은 이번 사건이 사회적 파...     15298   
+55     25177  삼성정밀화학, 폴리실리콘 공장 건설 시동\n삼성정밀화학과 미국 memc사가 합작으로...     15035   
+70     24388  그렇게 하기 위해서는 가령 녹색유통채널을 구축하고 녹색소비자에 대한 소비실적에 대해...     13725   
+71     24368  이렇게 중소기업의 범위는 비록 복잡하지만 뚜렷하게 정의되어 있으나 중견기업의 범위는...     13711   
+78     24266  사회적기업 육성을 위한 자본시장 지원방안\n취약계층에게 사회서비스 또는 일자리를 제...     14983   
+...      ...                                                ...       ...   
+13281  20730  국내 온실가스 관련 환경법률 개정 동향 안 세 환 연구원\n환경부는 배출권거래제 시...     16226   
+13315  20696  따라서 현재 정책의 한계와 문제 점을 적극적으로 확인하고 사회 전체적으로 온실가스 ...       218   
+13553  20447  우리나라는 온실가스 감축 비의무국가중 처음으로&#39;저탄소 녹색성장 기본법&#39;제정하였으며,...      1460   
+13559  20441  환경부는 2011년 12월 환경정보 공개제도 운영규정 을 고시하고, 녹색기업, 공공...      1457   
+13573  20424  문제점 및 개선방안\n먼저 녹색금융, 특히 에너지관련 금융은 효율적인 정책의 수행을...      1443   
+
+       annotator  origin    labels  classes  snorkel_classes  
+38             6  manual  Positive        1                2  
+55             7  manual  Positive        1                2  
+70             6  manual  Positive        1                2  
+71             6  manual  Positive        1                2  
+78             8  manual  Positive        0                2  
+...          ...     ...       ...      ...              ...  
+13281          6  manual  Negative        1                0  
+13315          2  manual   Neutral        0                1  
+13553          4  manual  Positive        1                2  
+13559          4  manual  Positive        1                2  
+13573          4  manual  Positive        1                2  
+
+[93 rows x 8 columns]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">snorkel</span><span class="o">.</span><span class="n">save_preds</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s2">&quot;labels&quot;</span><span class="p">])</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;esg_polarity_snorkel_preds.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Saving dataframe to ../data/esg/esg_polarity_snorkel_preds.parquet
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_polarity_snorkel_preds.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/esg/esg_polarity_snorkel_preds.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/esg/esg_polarity_snorkel_preds.parquet
+</pre></div>
+</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1409,154 +1392,80 @@ LabelModel Accuracy for test: 0.994
       <th></th>
       <th>id</th>
       <th>text</th>
-      <th>annot_id</th>
-      <th>annotator</th>
-      <th>origin</th>
       <th>labels</th>
-      <th>classes</th>
-      <th>snorkel_classes</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>38</th>
-      <td>29214</td>
-      <td>재판부가 선고를 미루며 학부모에게 용서를 빌 기회를 준 것은 이번 사건이 사회적 파...</td>
-      <td>15298</td>
-      <td>6</td>
-      <td>manual</td>
-      <td>Positive</td>
-      <td>1</td>
-      <td>2</td>
+      <th>0</th>
+      <td>26444</td>
+      <td>국내 중소 서버업계 관계자는 '그동안 hpe, 델 등 미국 업체와 경쟁도 힘겨웠는데...</td>
+      <td>Negative</td>
     </tr>
     <tr>
-      <th>55</th>
-      <td>25177</td>
-      <td>삼성정밀화학, 폴리실리콘 공장 건설 시동\n삼성정밀화학과 미국 memc사가 합작으로...</td>
-      <td>15035</td>
-      <td>7</td>
-      <td>manual</td>
-      <td>Positive</td>
-      <td>1</td>
-      <td>2</td>
+      <th>1</th>
+      <td>26377</td>
+      <td>현대차·모비스·lg이노텍 / 자동차 외장램프용 면조명 확산시트\n현대자동차, 현대모...</td>
+      <td>Neutral</td>
     </tr>
     <tr>
-      <th>70</th>
-      <td>24388</td>
-      <td>그렇게 하기 위해서는 가령 녹색유통채널을 구축하고 녹색소비자에 대한 소비실적에 대해...</td>
-      <td>13725</td>
-      <td>6</td>
-      <td>manual</td>
+      <th>2</th>
+      <td>26426</td>
+      <td>현대·기아차, 미국에 신모델 투입\n현대·기아자동차가 다음달부터 미국에 신모델을 잇...</td>
       <td>Positive</td>
-      <td>1</td>
-      <td>2</td>
     </tr>
     <tr>
-      <th>71</th>
-      <td>24368</td>
-      <td>이렇게 중소기업의 범위는 비록 복잡하지만 뚜렷하게 정의되어 있으나 중견기업의 범위는...</td>
-      <td>13711</td>
-      <td>6</td>
-      <td>manual</td>
+      <th>3</th>
+      <td>26389</td>
+      <td>1인승인 ft2는 음성이나 화상 인식 기술을 활용해 운전자의 감정을 읽고, 미리 축...</td>
       <td>Positive</td>
-      <td>1</td>
-      <td>2</td>
     </tr>
     <tr>
-      <th>78</th>
-      <td>24266</td>
-      <td>사회적기업 육성을 위한 자본시장 지원방안\n취약계층에게 사회서비스 또는 일자리를 제...</td>
-      <td>14983</td>
-      <td>8</td>
-      <td>manual</td>
-      <td>Positive</td>
-      <td>0</td>
-      <td>2</td>
+      <th>4</th>
+      <td>26388</td>
+      <td>곧 내놓을 신차는 물론 다소 먼 미래에 출시하기 위해 개발 중인 차가 콘셉트카 형태...</td>
+      <td>Neutral</td>
     </tr>
     <tr>
       <th>...</th>
       <td>...</td>
       <td>...</td>
       <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
     </tr>
     <tr>
-      <th>13281</th>
-      <td>20730</td>
-      <td>국내 온실가스 관련 환경법률 개정 동향 안 세 환 연구원\n환경부는 배출권거래제 시...</td>
-      <td>16226</td>
-      <td>6</td>
-      <td>manual</td>
-      <td>Negative</td>
-      <td>1</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>13315</th>
-      <td>20696</td>
-      <td>따라서 현재 정책의 한계와 문제 점을 적극적으로 확인하고 사회 전체적으로 온실가스 ...</td>
-      <td>218</td>
-      <td>2</td>
-      <td>manual</td>
+      <th>13628</th>
+      <td>20367</td>
+      <td>2015 17년 동안 업종별 에너지 사용량을 살펴보면, 사용량 총량은 d35(전기,...</td>
       <td>Neutral</td>
-      <td>0</td>
-      <td>1</td>
     </tr>
     <tr>
-      <th>13553</th>
-      <td>20447</td>
-      <td>우리나라는 온실가스 감축 비의무국가중 처음으로'저탄소 녹색성장 기본법'제정하였으며,...</td>
-      <td>1460</td>
-      <td>4</td>
-      <td>manual</td>
-      <td>Positive</td>
-      <td>1</td>
-      <td>2</td>
+      <th>13628</th>
+      <td>20367</td>
+      <td>2015 17년 동안 업종별 에너지 사용량을 살펴보면, 사용량 총량은 d35(전기,...</td>
+      <td>Neutral</td>
     </tr>
     <tr>
-      <th>13559</th>
-      <td>20441</td>
-      <td>환경부는 2011년 12월 환경정보 공개제도 운영규정 을 고시하고, 녹색기업, 공공...</td>
-      <td>1457</td>
-      <td>4</td>
-      <td>manual</td>
-      <td>Positive</td>
-      <td>1</td>
-      <td>2</td>
+      <th>13628</th>
+      <td>20367</td>
+      <td>2015 17년 동안 업종별 에너지 사용량을 살펴보면, 사용량 총량은 d35(전기,...</td>
+      <td>Neutral</td>
     </tr>
     <tr>
-      <th>13573</th>
-      <td>20424</td>
-      <td>문제점 및 개선방안\n먼저 녹색금융, 특히 에너지관련 금융은 효율적인 정책의 수행을...</td>
-      <td>1443</td>
-      <td>4</td>
-      <td>manual</td>
+      <th>13629</th>
+      <td>20366</td>
+      <td>동 제도는 2011년 5월 개선 작업을 통하여운영 요령을 개정하여 금융권 여신심사항...</td>
       <td>Positive</td>
-      <td>1</td>
-      <td>2</td>
+    </tr>
+    <tr>
+      <th>13629</th>
+      <td>20366</td>
+      <td>동 제도는 2011년 5월 개선 작업을 통하여운영 요령을 개정하여 금융권 여신심사항...</td>
+      <td>Positive</td>
     </tr>
   </tbody>
 </table>
-<p>93 rows × 8 columns</p>
+<p>17421 rows × 3 columns</p>
 </div></div></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s2">&quot;labels&quot;</span><span class="p">]</span>
-<span class="n">esg_polarity_snorkel_data</span> <span class="o">=</span> <span class="n">esg_polarity_data</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="n">cols</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">esg_polarity_snorkel_data</span><span class="p">,</span> <span class="s2">&quot;esg_polarity_snorkel_data.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Saving dataframe to ../data/esg/esg_polarity_snorkel_data.parquet
-</pre></div>
-</div>
-</div>
 </div>
 </div>
 <div class="section" id="build-a-dataset-using-the-data-generated-by-the-label-model">
