@@ -18,7 +18,7 @@ docker run -it --rm \
   --ulimit memlock=-1 \
   --ulimit stack=67108864 \
   --env-file .env \
-  -p $JUPYTER_HOST_PORT:$JUPYTER_PORT \
+  --publish $JUPYTER_HOST_PORT:$JUPYTER_PORT \
   --volume $HOST_WORKSPACE_ROOT:$EKORPKIT_WORKSPACE_ROOT \
   --name $DOCKER_CONTAINER_NAME \
   $DOCKER_IMAGE_NAME $CMD
