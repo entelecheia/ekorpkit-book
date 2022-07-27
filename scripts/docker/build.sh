@@ -1,16 +1,11 @@
 #!/bin/bash
-# Copyright (c) 2020 NVIDIA CORPORATION. All rights reserved.
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+set -x
+set -o allexport
+source .env
+set +o allexport
 
-# docker build . --rm -t ekorpkit-torch:21.05-py3
-docker build . --rm -t ekorpkit-torch:22.02-py3
+docker build \
+    --network=host --rm \
+    --build-arg workspace_dir=$EKORPKIT_WORKSPACE_ROOT \
+    --build-arg project_name=$EKORPKIT_PROJECT \
+    . -t $DOCKER_IMAGE_NAME
