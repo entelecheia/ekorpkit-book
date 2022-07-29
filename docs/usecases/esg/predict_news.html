@@ -350,6 +350,11 @@ const thebe_selector_output = ".output, .cell_output"
        Disco Diffusion
       </a>
      </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/art/dalle-mini.html">
+       DALL·E Mini
+      </a>
+     </li>
     </ul>
    </li>
   </ul>
@@ -933,11 +938,10 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:IPython version: (6, 9, 0), client: jupyter_client
-INFO:ekorpkit.base:Google Colab not detected.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Google Colab not detected.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.35+9.g8c77743.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.38
 is notebook? True
 is colab? False
 evironment varialbles:
@@ -1550,6 +1554,470 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/econ_news_kr/esg_categories-pr
 </table>
 <p>56854 rows × 7 columns</p>
 </div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">polarity_preds_df</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;esg_polarities-preds.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+<span class="n">polarity_preds_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_polarities-preds.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/econ_news_kr/esg_polarities-preds.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/econ_news_kr/esg_polarities-preds.parquet
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>chunk_id</th>
+      <th>text</th>
+      <th>filename</th>
+      <th>pred_labels</th>
+      <th>raw_preds</th>
+      <th>pred_probs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1303</td>
+      <td>0</td>
+      <td>대신증권은 미국 정규시장이 열리기 2시간 30분 전부터 미국 주식을 거래할 수 있는...</td>
+      <td>02100311.20201101100459001.txt</td>
+      <td>Positive</td>
+      <td>[-2.616201639175415, 1.3725110292434692, 1.558...</td>
+      <td>0.541830</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1304</td>
+      <td>0</td>
+      <td>[디지털뉴스국 news@mkinternet.com]</td>
+      <td>02100311.20201101100459001.txt</td>
+      <td>Neutral</td>
+      <td>[-1.743383765220642, 3.050320625305176, -0.924...</td>
+      <td>0.973645</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1309</td>
+      <td>0</td>
+      <td>코스피가 외국인이 대규모 순매수세를 보인 가운데 보합권에서 마감했다.\n6일 코스피...</td>
+      <td>02100311.20201101102709001.txt</td>
+      <td>Neutral</td>
+      <td>[-1.7145445346832275, 2.7398393154144287, -0.6...</td>
+      <td>0.401355</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1309</td>
+      <td>1</td>
+      <td>시가총액 상위 종목들은 흐름이 엇갈렸다. LG화학이 6% 이상 뛰었고 셀트리온, 삼...</td>
+      <td>02100311.20201101102709001.txt</td>
+      <td>Neutral</td>
+      <td>[-1.3195880651474, 2.872457504272461, -1.18959...</td>
+      <td>0.968683</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1310</td>
+      <td>0</td>
+      <td>롯데쇼핑은 올해 3분기 영업이익(연결 기준)이 1110억원으로 전년 동기대비 26....</td>
+      <td>02100311.20201101103117001.txt</td>
+      <td>Neutral</td>
+      <td>[-2.1306374073028564, 2.276362419128418, 0.191...</td>
+      <td>0.879886</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>56849</th>
+      <td>1089862</td>
+      <td>0</td>
+      <td>[출처=카드고릴라]\n카드사들이 연초부터 연일 신상품을 쏟아내고 있다. 새 카드로 ...</td>
+      <td>02100851.20220223082114001.txt</td>
+      <td>Neutral</td>
+      <td>[-2.320831060409546, 2.678330659866333, 0.0352...</td>
+      <td>0.348214</td>
+    </tr>
+    <tr>
+      <th>56850</th>
+      <td>1089862</td>
+      <td>1</td>
+      <td>가장 인기가 많은 카드사는 신한카드였다. 신한카드는 개별 상품페이지 관련 23%의 ...</td>
+      <td>02100851.20220223082114001.txt</td>
+      <td>Neutral</td>
+      <td>[-2.2986679077148438, 2.5738255977630615, 0.13...</td>
+      <td>0.487420</td>
+    </tr>
+    <tr>
+      <th>56851</th>
+      <td>1089862</td>
+      <td>2</td>
+      <td>이용자들이 가장 많이 검색한 혜택은 교통(14.9%)이었다. 평균 사용 연령층이 더...</td>
+      <td>02100851.20220223082114001.txt</td>
+      <td>Neutral</td>
+      <td>[-2.1390669345855713, 2.4953033924102783, 0.01...</td>
+      <td>0.533359</td>
+    </tr>
+    <tr>
+      <th>56852</th>
+      <td>1089862</td>
+      <td>3</td>
+      <td>따라서 올해에는 무실적, 또는 실적 조건이 낮아 사용 부담이 적으면서 모든 가맹점에...</td>
+      <td>02100851.20220223082114001.txt</td>
+      <td>Neutral</td>
+      <td>[-2.3649559020996094, 2.436711072921753, 0.312...</td>
+      <td>0.886730</td>
+    </tr>
+    <tr>
+      <th>56853</th>
+      <td>1089863</td>
+      <td>0</td>
+      <td>제 39차 부동산시장 점검 관계장관회의\n홍남기 부총리 겸 기획재정부 장관이 23일...</td>
+      <td>02100851.20220223082114001.txt</td>
+      <td>Neutral</td>
+      <td>[-1.901430368423462, 1.5780322551727295, 0.729...</td>
+      <td>0.384297</td>
+    </tr>
+  </tbody>
+</table>
+<p>56854 rows × 7 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">category_preds_df</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;esg_categories-preds.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+<span class="n">category_preds_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_categories-preds.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/econ_news_kr/esg_categories-preds.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/econ_news_kr/esg_categories-preds.parquet
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>chunk_id</th>
+      <th>text</th>
+      <th>filename</th>
+      <th>pred_labels</th>
+      <th>raw_preds</th>
+      <th>pred_probs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1303</td>
+      <td>0</td>
+      <td>대신증권은 미국 정규시장이 열리기 2시간 30분 전부터 미국 주식을 거래할 수 있는...</td>
+      <td>02100311.20201101100459001.txt</td>
+      <td>S-소비자</td>
+      <td>[-0.3635081648826599, 0.37070703506469727, -0....</td>
+      <td>0.641072</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1304</td>
+      <td>0</td>
+      <td>[디지털뉴스국 news@mkinternet.com]</td>
+      <td>02100311.20201101100459001.txt</td>
+      <td>S-소비자</td>
+      <td>[-0.1256369799375534, 0.20957696437835693, 0.0...</td>
+      <td>0.506109</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1309</td>
+      <td>0</td>
+      <td>코스피가 외국인이 대규모 순매수세를 보인 가운데 보합권에서 마감했다.\n6일 코스피...</td>
+      <td>02100311.20201101102709001.txt</td>
+      <td>G-주주환원</td>
+      <td>[-0.8959301710128784, 1.594657301902771, -0.44...</td>
+      <td>0.346036</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1309</td>
+      <td>1</td>
+      <td>시가총액 상위 종목들은 흐름이 엇갈렸다. LG화학이 6% 이상 뛰었고 셀트리온, 삼...</td>
+      <td>02100311.20201101102709001.txt</td>
+      <td>G-주주환원</td>
+      <td>[-0.9104948043823242, 1.5245412588119507, -0.5...</td>
+      <td>0.853084</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1310</td>
+      <td>0</td>
+      <td>롯데쇼핑은 올해 3분기 영업이익(연결 기준)이 1110억원으로 전년 동기대비 26....</td>
+      <td>02100311.20201101103117001.txt</td>
+      <td>G-주주환원</td>
+      <td>[-0.9264926910400391, 1.6014995574951172, -0.6...</td>
+      <td>0.875771</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>56849</th>
+      <td>1089862</td>
+      <td>0</td>
+      <td>[출처=카드고릴라]\n카드사들이 연초부터 연일 신상품을 쏟아내고 있다. 새 카드로 ...</td>
+      <td>02100851.20220223082114001.txt</td>
+      <td>S-소비자</td>
+      <td>[-0.22719579935073853, 0.01108001358807087, 0....</td>
+      <td>0.322013</td>
+    </tr>
+    <tr>
+      <th>56850</th>
+      <td>1089862</td>
+      <td>1</td>
+      <td>가장 인기가 많은 카드사는 신한카드였다. 신한카드는 개별 상품페이지 관련 23%의 ...</td>
+      <td>02100851.20220223082114001.txt</td>
+      <td>S-소비자</td>
+      <td>[-0.4069870114326477, 0.3556715250015259, 0.29...</td>
+      <td>0.396827</td>
+    </tr>
+    <tr>
+      <th>56851</th>
+      <td>1089862</td>
+      <td>2</td>
+      <td>이용자들이 가장 많이 검색한 혜택은 교통(14.9%)이었다. 평균 사용 연령층이 더...</td>
+      <td>02100851.20220223082114001.txt</td>
+      <td>S-소비자</td>
+      <td>[-0.2538611888885498, 0.12173940986394882, 0.1...</td>
+      <td>0.406933</td>
+    </tr>
+    <tr>
+      <th>56852</th>
+      <td>1089862</td>
+      <td>3</td>
+      <td>따라서 올해에는 무실적, 또는 실적 조건이 낮아 사용 부담이 적으면서 모든 가맹점에...</td>
+      <td>02100851.20220223082114001.txt</td>
+      <td>S-소비자</td>
+      <td>[-0.3447725772857666, 0.5259126424789429, 0.19...</td>
+      <td>0.784171</td>
+    </tr>
+    <tr>
+      <th>56853</th>
+      <td>1089863</td>
+      <td>0</td>
+      <td>제 39차 부동산시장 점검 관계장관회의\n홍남기 부총리 겸 기획재정부 장관이 23일...</td>
+      <td>02100851.20220223082114001.txt</td>
+      <td>S-소비자</td>
+      <td>[0.4430272877216339, 0.10475224256515503, 1.87...</td>
+      <td>0.296401</td>
+    </tr>
+  </tbody>
+</table>
+<p>56854 rows × 7 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">code_info_available</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;econ_news_code_info_available.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+<span class="n">code_info_available</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;econ_news_code_info_available.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/econ_news_kr/econ_news_code_info_available.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/econ_news_kr/econ_news_code_info_available.parquet
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>filename</th>
+      <th>codes</th>
+      <th>len</th>
+      <th>num_codes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>02100201.20200102152718001.txt</td>
+      <td>144960</td>
+      <td>33</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>02100201.20200102164904001.txt</td>
+      <td>285130</td>
+      <td>33</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>02100201.20200103151007001.txt</td>
+      <td>088800</td>
+      <td>33</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>02100201.20200103155237001.txt</td>
+      <td>178920</td>
+      <td>33</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>02100201.20200107154901001.txt</td>
+      <td>007660</td>
+      <td>33</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>108945</th>
+      <td>02100311.20220531185816001.txt</td>
+      <td>011070</td>
+      <td>124</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <th>108946</th>
+      <td>02100501.20220516100127001.txt</td>
+      <td>139670</td>
+      <td>33</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>108947</th>
+      <td>02100701.20220531153710002.txt</td>
+      <td>064960</td>
+      <td>33</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>108948</th>
+      <td>02100801.20220516111438002.txt</td>
+      <td>005930</td>
+      <td>33</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>108949</th>
+      <td>02100851.20220516010042001.txt</td>
+      <td>003620</td>
+      <td>33</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>108950 rows × 4 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;chunk_id&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_labels&#39;</span><span class="p">]</span>
+<span class="n">c_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;chunk_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pred_labels&#39;</span><span class="p">]</span>
+<span class="n">pred_data</span> <span class="o">=</span> <span class="n">polarity_preds_df</span><span class="p">[</span><span class="n">p_cols</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;pred_labels&quot;</span><span class="p">:</span> <span class="s2">&quot;pred_polarity&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">category_preds_df</span><span class="p">[</span><span class="n">c_cols</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;pred_labels&quot;</span><span class="p">:</span> <span class="s2">&quot;pred_category&quot;</span><span class="p">}),</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;chunk_id&#39;</span><span class="p">]</span>
+<span class="p">)</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">code_info_available</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;filename&#39;</span>
+<span class="p">)</span>
+
+<span class="n">xls_path</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;esg_preds_all.xlsx&quot;</span><span class="p">)</span>
+<span class="n">pred_data</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">xls_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">codes</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;codes.csv&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;codes&quot;</span><span class="p">:</span><span class="s2">&quot;str&quot;</span><span class="p">})</span>
+<span class="n">xls_path</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;esg_preds.xlsx&quot;</span><span class="p">)</span>
+<span class="n">pred_data</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">codes</span><span class="p">)</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">xls_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;codes.csv&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/econ_news_kr/codes.csv&#39;]
+INFO:ekorpkit.io.file:Loading data from ../data/econ_news_kr/codes.csv
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 </div>
