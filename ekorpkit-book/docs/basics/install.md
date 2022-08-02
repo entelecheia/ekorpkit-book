@@ -61,3 +61,13 @@ eKonf.dependencies("visualize")
 ```{code-cell} ipython3
 eKonf.dependencies("all")
 ```
+
+### self-upgrade of ekorpkit
+
+```{code-cell} ipython3
+eKonf.upgrade(
+  prelease=True, 
+  quiet=True, 
+  verbose=True, 
+  force_reinstall=False)
+```
