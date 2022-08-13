@@ -33,5 +33,7 @@ RUN pip install --no-cache-dir \
 RUN jupyter labextension enable @jupyter-widgets/jupyterlab-manager
 RUN jupyter nbextension enable --py widgetsnbextension
 RUN jupyter nbextensions_configurator enable
+RUN . /root/.bashrc && \
+    /opt/conda/bin/conda init bash
 
 CMD ["/bin/bash"]
