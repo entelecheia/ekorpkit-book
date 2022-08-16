@@ -6,7 +6,8 @@ ARG project_name
 
 RUN apt-get update && apt-get install -y fontconfig fonts-nanum
 # for disco-diffusion
-RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get install -y tzdata imagemagick ffmpeg openssh-server
+RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get install -y tzdata imagemagick ffmpeg 
+RUN apt-get update && apt-get install -y --fix-missing openssh-server
 
 # Set up environment variables
 ENV EKORPKIT_WORKSPACE_ROOT=${workspace_dir}
