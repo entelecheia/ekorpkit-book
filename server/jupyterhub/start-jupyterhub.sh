@@ -4,4 +4,4 @@ set -o allexport
 source .env
 set +o allexport
 
-jupyterhub -f ./server/jupyterhub/jupyterhub_config.py
+jupyterhub -f ./server/jupyterhub/jupyterhub_config.py &>> ./.logs/jupyterhub.log
