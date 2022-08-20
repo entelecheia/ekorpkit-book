@@ -20,6 +20,7 @@ docker run -it --rm \
   --ulimit stack=67108864 \
   --env-file .env \
   --publish $JUPYTER_HOST_PORT:$JUPYTER_PORT \
+  --publish $JUPYTERHUB_HOST_PORT:$JUPYTERHUB_PORT \
   --publish $DOCKER_SSH_PORT:22 \
   --volume $HOST_WORKSPACE_ROOT:$EKORPKIT_WORKSPACE_ROOT \
   --name $DOCKER_CONTAINER_NAME \

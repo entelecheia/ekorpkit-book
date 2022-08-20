@@ -4,10 +4,23 @@ FROM nvcr.io/nvidia/pytorch:22.02-py3
 ARG workspace_dir
 ARG project_name
 
-RUN apt-get update && apt-get install -y fontconfig fonts-nanum
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y fontconfig fonts-nanum
 # for disco-diffusion
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get install -y tzdata imagemagick ffmpeg 
-RUN apt-get update && apt-get install -y --fix-missing openssh-server
+# for sshd
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-missing openssh-server
+# for jupyterhub
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    gnupg \
+    locales \
+    python3-pip \
+    python3-pycurl \
+    nodejs \
+    npm \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
 # Set up environment variables
 ENV EKORPKIT_WORKSPACE_ROOT=${workspace_dir}
@@ -20,6 +33,12 @@ ENV DS_BUILD_FUSED_ADAM 1
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV KMP_DUPLICATE_LIB_OK TRUE
+# for jupyterhub
+ENV SHELL=/bin/bash \
+    LC_ALL=en_US.UTF-8 \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US.UTF-8
+RUN locale-gen $LC_ALL
 
 WORKDIR $EKORPKIT_PROJECT_DIR
 
@@ -30,11 +49,17 @@ RUN pip install --no-cache-dir \
         tensorflow jupyter_nbextensions_configurator ipywidgets \
         imageio pyspng==0.1.0 lpips timm pytorch-lightning>=1.0.8 torch-fidelity \
         einops ftfy seaborn flax unidecode opencv-python==4.5.5.64
+        
+RUN npm install -g configurable-http-proxy
+RUN pip install jupyterhub jupytext nbgitpuller
 
 RUN jupyter labextension enable @jupyter-widgets/jupyterlab-manager
 RUN jupyter nbextension enable --py widgetsnbextension
 RUN jupyter nbextensions_configurator enable
 RUN . /root/.bashrc && \
     /opt/conda/bin/conda init bash
+
+RUN mkdir -p /root/.ssh
+COPY ./server/ssh/authorized_keys /root/.ssh/authorized_keys
 
 CMD ["/bin/bash"]
