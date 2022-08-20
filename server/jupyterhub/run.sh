@@ -12,16 +12,15 @@ if [ "$HOST_WORKSPACE_ROOT" == "" ]; then
 fi
 
 docker run -it --rm \
+  --privileged \
   --runtime=nvidia \
   --gpus $NVIDIA_VISIBLE_DEVICES \
-  --network=$DOCKER_NETWORK \
   --ipc=$DOCKER_IPC \
   --ulimit memlock=-1 \
   --ulimit stack=67108864 \
   --env-file .env \
-  --publish $JUPYTER_HOST_PORT:$JUPYTER_PORT \
-  --publish $DOCKER_SSH_PORT:22 \
+  --publish $JUPYTERHUB_HOST_PORT:$JUPYTERHUB_PORT \
   --volume $HOST_WORKSPACE_ROOT:$EKORPKIT_WORKSPACE_ROOT \
-  --name $DOCKER_CONTAINER_NAME \
-  $DOCKER_IMAGE_NAME $CMD
+  --name $JUPYTERHUB_CONTAINER_NAME \
+  $JUPYTERHUB_IMAGE_NAME $CMD
   
