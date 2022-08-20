@@ -15,6 +15,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     curl \
     gnupg \
     locales \
+    python3-dev \
     python3-pip \
     python3-pycurl \
     nodejs \
@@ -34,6 +35,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV KMP_DUPLICATE_LIB_OK TRUE
 # for jupyterhub
+ENV JUPYTERHUB_ADMIN_USERNAME admin
 ENV SHELL=/bin/bash \
     LC_ALL=en_US.UTF-8 \
     LANG=en_US.UTF-8 \
@@ -50,9 +52,6 @@ RUN pip install --no-cache-dir \
         imageio pyspng==0.1.0 lpips timm pytorch-lightning>=1.0.8 torch-fidelity \
         einops ftfy seaborn flax unidecode opencv-python==4.5.5.64
         
-RUN npm install -g configurable-http-proxy
-RUN pip install jupyterhub jupytext nbgitpuller
-
 RUN jupyter labextension enable @jupyter-widgets/jupyterlab-manager
 RUN jupyter nbextension enable --py widgetsnbextension
 RUN jupyter nbextensions_configurator enable
@@ -61,5 +60,9 @@ RUN . /root/.bashrc && \
 
 RUN mkdir -p /root/.ssh
 COPY ./server/ssh/authorized_keys /root/.ssh/authorized_keys
+
+RUN curl -L https://tljh.jupyter.org/bootstrap.py | \
+    -E python3 - --admin $JUPYTERHUB_ADMIN_USERNAME \
+    --user-requirements-txt-url https://raw.githubusercontent.com/entelecheia/ekorpkit-book/main/server/jupyterhub/requirements.txt
 
 CMD ["/bin/bash"]
