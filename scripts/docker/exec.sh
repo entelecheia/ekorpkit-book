@@ -6,4 +6,4 @@ set +o allexport
 
 CMD=${1:-/bin/bash}
 
-docker exec -it $DOCKER_CONTAINER_NAME $CMD
+docker exec -it $EKORPKIT_DOCKER_CONTAINER_NAME $CMD
