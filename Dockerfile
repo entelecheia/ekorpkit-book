@@ -41,6 +41,6 @@ RUN . /root/.bashrc && \
     /opt/conda/bin/conda init bash
 
 RUN mkdir -p /root/.ssh
-COPY ./server/ssh/authorized_keys /root/.ssh/authorized_keys
+COPY ./scripts/ssh/authorized_keys /root/.ssh/authorized_keys
 
 CMD ["/bin/bash"]
