@@ -2,7 +2,7 @@ FROM pytorch/pytorch:1.11.0-cuda11.3-cudnn8-runtime
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y fontconfig fonts-nanum
 # for disco-diffusion
-RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get install -y tzdata imagemagick ffmpeg \ 
+RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get install -y tzdata imagemagick ffmpeg git \ 
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -27,6 +27,8 @@ RUN pip install --upgrade --no-cache-dir pip && \
         imageio pyspng==0.1.0 lpips timm pytorch-lightning>=1.0.8 torch-fidelity \
         einops ftfy seaborn flax unidecode opencv-python==4.5.5.64 \
         fastapi uvicorn
+
+RUN pip install --no-cache-dir --pre --upgrade ekorpkit
 
 COPY . .
 
