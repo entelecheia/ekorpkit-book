@@ -1,8 +1,17 @@
 import asyncio
+from email import generator
 import time
 import uuid
 from concurrent.futures import ProcessPoolExecutor
 from functools import partial
+from PIL import Image
+from fastapi import FastAPI
+from pydantic import BaseModel, ValidationError
+from fastapi.responses import Response
+from typing import Generator
+from starlette.responses import StreamingResponse
+import io
+import PIL
 
 import uvicorn
 from fastapi import File
@@ -10,11 +19,10 @@ from fastapi import FastAPI
 from fastapi import UploadFile
 from ekorpkit import eKonf
 
-# import config
-# import inference
-
 
 app = FastAPI()
+disco_cfg = eKonf.compose("model/disco")
+disco = eKonf.instantiate(disco_cfg)
 
 
 @app.get("/")
@@ -27,40 +35,42 @@ def read_version():
     return {"version": eKonf.__version__}
 
 
+@app.get("/config")
+def read_config(config_group: str = "model/disco"):
+    return eKonf.compose(config_group, return_as_dict=True)
+
+
 @app.get("/env")
 def read_env():
     return eKonf.env().dict()
 
-# @app.post("/disco/{model}")
-# async def imagine(model: str, file: UploadFile = File(...)):
-#     image = np.array(Image.open(file.file))
-#     model = config.STYLES[style]
-#     start = time.time()
-#     output, resized = inference.inference(model, image)
-#     name = f"/storage/{str(uuid.uuid4())}.jpg"
-#     print(f"name: {name}")
-#     # name = file.file.filename
-#     cv2.imwrite(name, output)
-#     models = config.STYLES.copy()
-#     del models[style]
-#     asyncio.create_task(generate_remaining_models(models, image, name))
-#     return {"name": name, "time": time.time() - start}
+
+class ImagineRequest(BaseModel):
+    text_prompts: str = "Beautiful photorealistic rendering of Jeju Island"
+    batch_name: str = str(uuid.uuid4())
+    steps = 250
+    display_rate = 10
 
 
-# async def generate_remaining_models(models, image, name: str):
-#     executor = ProcessPoolExecutor()
-#     event_loop = asyncio.get_event_loop()
-#     await event_loop.run_in_executor(
-#         executor, partial(process_image, models, image, name)
-#     )
+@app.post("/disco")
+async def imagine(req: ImagineRequest):
+    images = get_image(req)
+    reponse = StreamingResponse(images, media_type="image/png")
+    return reponse
 
 
-# def process_image(models, image, name: str):
-#     for model in models:
-#         output, resized = inference.inference(models[model], image)
-#         name = name.split(".")[0]
-#         name = f"{name.split('_')[0]}_{models[model]}.jpg"
-#         cv2.imwrite(name, output)
+def get_image(req: ImagineRequest):
+    for sample in disco.imagine_generator(**req.dict()):
+        image = sample["image"]
+        image_as_bytes = image_to_bytearray(image)
+        yield image_as_bytes
+
+
+def image_to_bytearray(image: Image) -> bytes:
+    img_bytearr = io.BytesIO()
+    image.save(img_bytearr, format="png")
+    img_bytearr = img_bytearr.getvalue()
+    return img_bytearr
 
 
 if __name__ == "__main__":
