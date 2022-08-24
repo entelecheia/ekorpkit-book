@@ -1,5 +1,4 @@
-FROM pytorch/pytorch:1.11.0-cuda11.3-cudnn8-runtime
-# FROM nvcr.io/nvidia/pytorch:22.02-py3
+FROM nvcr.io/nvidia/pytorch:22.02-py3
 # FROM nvcr.io/nvidia/pytorch:21.05-py3
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y fontconfig fonts-nanum
@@ -18,7 +17,6 @@ RUN pip install --no-cache-dir \
         imageio pyspng==0.1.0 lpips timm pytorch-lightning>=1.0.8 torch-fidelity \
         einops ftfy seaborn flax unidecode opencv-python==4.5.5.64
         
-# RUN jupyter labextension enable @jupyter-widgets/jupyterlab-manager
 RUN jupyter nbextension enable --py widgetsnbextension
 RUN jupyter nbextensions_configurator enable
 
@@ -45,4 +43,17 @@ RUN . /root/.bashrc && \
 RUN mkdir -p /root/.ssh
 COPY ./scripts/ssh/authorized_keys /root/.ssh/authorized_keys
 
+RUN pip install --no-cache-dir --upgrade \
+    jupyterlab \
+    jupyterlab_execute_time \
+    jupyterlab-git \
+    jupyterlab-vim \
+    ipympl 
+RUN conda install -c conda-forge nodejs
+RUN jupyter labextension install \
+    @jupyter-widgets/jupyterlab-manager \
+    jupyterlab-slide-mode-keyboard-shortcuts \
+    jupyter-matplotlib \
+    jupyterlab-spreadsheet
+    
 CMD ["/bin/bash"]
