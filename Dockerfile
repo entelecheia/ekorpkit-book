@@ -1,8 +1,6 @@
-FROM nvcr.io/nvidia/pytorch:22.02-py3
+FROM pytorch/pytorch:1.11.0-cuda11.3-cudnn8-runtime
+# FROM nvcr.io/nvidia/pytorch:22.02-py3
 # FROM nvcr.io/nvidia/pytorch:21.05-py3
-
-ARG workspace_dir
-ARG project_name
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y fontconfig fonts-nanum
 # for disco-diffusion
@@ -11,6 +9,21 @@ RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get install -y tzdata imagemag
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-missing openssh-server \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+RUN pip install --upgrade --no-cache-dir pip && \
+    pip install --no-cache-dir jax[cuda11_cudnn82] -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+RUN pip install --no-cache-dir \
+        ekorpkit[all] wandb transformers simpletransformers hydra-core hydra-colorlog \
+        tensorflow jupyter_nbextensions_configurator ipywidgets RISE \
+        imageio pyspng==0.1.0 lpips timm pytorch-lightning>=1.0.8 torch-fidelity \
+        einops ftfy seaborn flax unidecode opencv-python==4.5.5.64
+        
+# RUN jupyter labextension enable @jupyter-widgets/jupyterlab-manager
+RUN jupyter nbextension enable --py widgetsnbextension
+RUN jupyter nbextensions_configurator enable
+
+ARG workspace_dir
+ARG project_name
 
 # Set up environment variables
 ENV EKORPKIT_WORKSPACE_ROOT=${workspace_dir}
@@ -26,17 +39,6 @@ ENV KMP_DUPLICATE_LIB_OK TRUE
 
 WORKDIR $EKORPKIT_PROJECT_DIR
 
-RUN pip install --upgrade --no-cache-dir pip && \
-    pip install --no-cache-dir jax[cuda11_cudnn82] -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
-RUN pip install --no-cache-dir \
-        ekorpkit[all] wandb transformers simpletransformers hydra-core hydra-colorlog \
-        tensorflow jupyter_nbextensions_configurator ipywidgets RISE \
-        imageio pyspng==0.1.0 lpips timm pytorch-lightning>=1.0.8 torch-fidelity \
-        einops ftfy seaborn flax unidecode opencv-python==4.5.5.64
-        
-RUN jupyter labextension enable @jupyter-widgets/jupyterlab-manager
-RUN jupyter nbextension enable --py widgetsnbextension
-RUN jupyter nbextensions_configurator enable
 RUN . /root/.bashrc && \
     /opt/conda/bin/conda init bash
 

@@ -4,6 +4,5 @@ set -o allexport
 source .env
 set +o allexport
 
-docker push $EKORPKIT_DOCKER_IMAGE_NAME:$DATESTAMP
 docker push $EKORPKIT_DOCKER_IMAGE_NAME:latest
-
+docker push $EKORPKIT_DOCKER_IMAGE_NAME:$DATESTAMP
