@@ -610,14 +610,36 @@ const thebe_selector_output = ".output, .cell_output"
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../lectures/intro/index.html">
+  <a class="reference internal" href="../../lectures/intro_nlp/index.html">
    Introduction to NLP
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../lectures/deep/index.html">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../lectures/deep_nlp/index.html">
    Deep Learning for NLP
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/>
+  <label for="toctree-checkbox-19">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/deep_nlp/lecture01.html">
+     1. Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/deep_nlp/lecture02.html">
+     2. Text Representation I - Word Embeddings
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/deep_nlp/lecture03.html">
+     3. Text Representation II - Contextualized Word Embeddings
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../../lectures/ds/index.html">
@@ -923,10 +945,10 @@ title="Print to PDF"
 <h1>Predicting ESG Categories and Polarities<a class="headerlink" href="#predicting-esg-categories-and-polarities" title="Permalink to this headline">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_format=&#39;retina&#39;
-<span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
 
-<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;WARNING&quot;</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">set_cuda</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;version:&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is notebook?&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_notebook</span><span class="p">())</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is colab?&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">())</span>
@@ -936,18 +958,20 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Google Colab not detected.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Setting cuda device to [&#39;A100-SXM4-40GB (id:0)&#39;]
+INFO:ekorpkit.base:shell type: ZMQInteractiveShell
+INFO:ekorpkit.base:Google Colab not detected.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.38
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.38+19.g57d76db.dirty
 is notebook? True
 is colab? False
-evironment varialbles:
-{&#39;CUDA_DEVICE_ORDER&#39;: None,
- &#39;CUDA_VISIBLE_DEVICES&#39;: None,
+environment variables:
+{&#39;CUDA_DEVICE_ORDER&#39;: &#39;PCI_BUS_ID&#39;,
+ &#39;CUDA_VISIBLE_DEVICES&#39;: &#39;0&#39;,
  &#39;EKORPKIT_CONFIG_DIR&#39;: &#39;/workspace/projects/ekorpkit-book/config&#39;,
  &#39;EKORPKIT_DATA_DIR&#39;: None,
- &#39;EKORPKIT_LOG_LEVEL&#39;: &#39;INFO&#39;,
+ &#39;EKORPKIT_LOG_LEVEL&#39;: &#39;WARNING&#39;,
  &#39;EKORPKIT_PROJECT&#39;: &#39;ekorpkit-book&#39;,
  &#39;EKORPKIT_WORKSPACE_ROOT&#39;: &#39;/workspace&#39;,
  &#39;KMP_DUPLICATE_LIB_OK&#39;: &#39;TRUE&#39;,
@@ -973,11 +997,6 @@ evironment varialbles:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;econ_news_filtered.parquet&#39;]
-INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/econ_news_kr/econ_news_filtered.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from ../data/econ_news_kr/econ_news_filtered.parquet
-</pre></div>
-</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1005,38 +1024,38 @@ INFO:ekorpkit.io.file:Loading data from ../data/econ_news_kr/econ_news_filtered.
   <tbody>
     <tr>
       <th>0</th>
-      <td>1303</td>
       <td>0</td>
-      <td>대신증권은 미국 정규시장이 열리기 2시간 30분 전부터 미국 주식을 거래할 수 있는...</td>
-      <td>02100311.20201101100459001.txt</td>
+      <td>0</td>
+      <td>'사보'는 기업들의 소통수단이다. 계열사 정보 공유 측면도 있다. 또한 대외적으로 ...</td>
+      <td>02100101.20201101082723001.txt</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>1304</td>
       <td>0</td>
-      <td>[디지털뉴스국 news@mkinternet.com]</td>
-      <td>02100311.20201101100459001.txt</td>
+      <td>1</td>
+      <td>안병덕 코오롱그룹 부회장은 "사보를 통해 코오롱인은 하나가 되었고, 자긍심을 키워왔...</td>
+      <td>02100101.20201101082723001.txt</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>1309</td>
       <td>0</td>
-      <td>코스피가 외국인이 대규모 순매수세를 보인 가운데 보합권에서 마감했다.\n6일 코스피...</td>
-      <td>02100311.20201101102709001.txt</td>
+      <td>2</td>
+      <td>코오롱 관계자는 "600호에 이르기까지 인쇄 사보를 중심으로 온라인, 모바일 환경 ...</td>
+      <td>02100101.20201101082723001.txt</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>1309</td>
       <td>1</td>
-      <td>시가총액 상위 종목들은 흐름이 엇갈렸다. LG화학이 6% 이상 뛰었고 셀트리온, 삼...</td>
-      <td>02100311.20201101102709001.txt</td>
+      <td>0</td>
+      <td>2030을 주축으로 한 이른바 '동학개미운동'이 계속되는 등 주식 투자 열풍이 사그...</td>
+      <td>02100101.20201101090150001.txt</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>1310</td>
-      <td>0</td>
-      <td>롯데쇼핑은 올해 3분기 영업이익(연결 기준)이 1110억원으로 전년 동기대비 26....</td>
-      <td>02100311.20201101103117001.txt</td>
+      <td>1</td>
+      <td>1</td>
+      <td>한국투자증권은 지난 8월 소액으로 투자 가능한 해외주식 모바일 앱 '미니스탁'을 선...</td>
+      <td>02100101.20201101090150001.txt</td>
     </tr>
     <tr>
       <th>...</th>
@@ -1046,43 +1065,43 @@ INFO:ekorpkit.io.file:Loading data from ../data/econ_news_kr/econ_news_filtered.
       <td>...</td>
     </tr>
     <tr>
-      <th>56849</th>
-      <td>1089862</td>
-      <td>0</td>
-      <td>[출처=카드고릴라]\n카드사들이 연초부터 연일 신상품을 쏟아내고 있다. 새 카드로 ...</td>
-      <td>02100851.20220223082114001.txt</td>
-    </tr>
-    <tr>
-      <th>56850</th>
-      <td>1089862</td>
+      <th>553936</th>
+      <td>1090639</td>
       <td>1</td>
-      <td>가장 인기가 많은 카드사는 신한카드였다. 신한카드는 개별 상품페이지 관련 23%의 ...</td>
-      <td>02100851.20220223082114001.txt</td>
+      <td>과거 러시아 중앙은행 고위 관료였던 세르게이 알레카센코는 WSJ에 “30~40% 수...</td>
+      <td>02100851.20220228175603001.txt</td>
     </tr>
     <tr>
-      <th>56851</th>
-      <td>1089862</td>
+      <th>553937</th>
+      <td>1090639</td>
       <td>2</td>
-      <td>이용자들이 가장 많이 검색한 혜택은 교통(14.9%)이었다. 평균 사용 연령층이 더...</td>
-      <td>02100851.20220223082114001.txt</td>
+      <td>특히 스위프트 제재 대상인 러 금융기관들은 백척간두에 서 있다. 유럽중앙은행(ECB...</td>
+      <td>02100851.20220228175603001.txt</td>
     </tr>
     <tr>
-      <th>56852</th>
-      <td>1089862</td>
-      <td>3</td>
-      <td>따라서 올해에는 무실적, 또는 실적 조건이 낮아 사용 부담이 적으면서 모든 가맹점에...</td>
-      <td>02100851.20220223082114001.txt</td>
-    </tr>
-    <tr>
-      <th>56853</th>
-      <td>1089863</td>
+      <th>553938</th>
+      <td>1090645</td>
       <td>0</td>
-      <td>제 39차 부동산시장 점검 관계장관회의\n홍남기 부총리 겸 기획재정부 장관이 23일...</td>
-      <td>02100851.20220223082114001.txt</td>
+      <td>이재명 더불어민주당 대선 후보(왼쪽)와 윤석열 국민의힘 후보가 각각 GTX 관련 공...</td>
+      <td>02100851.20220228180156001.txt</td>
+    </tr>
+    <tr>
+      <th>553939</th>
+      <td>1090645</td>
+      <td>1</td>
+      <td>한 전문가는 서울권, 특히 강남권의 최근 아파트 거래 현황이 지난해 같은 기간보다 ...</td>
+      <td>02100851.20220228180156001.txt</td>
+    </tr>
+    <tr>
+      <th>553940</th>
+      <td>1090645</td>
+      <td>2</td>
+      <td>철도 공약인 만큼 현실 시점이 멀다는 이유도 있겠지만, 그만큼 정치권의 부동산 정책...</td>
+      <td>02100851.20220228180156001.txt</td>
     </tr>
   </tbody>
 </table>
-<p>56854 rows × 4 columns</p>
+<p>553941 rows × 4 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -1092,7 +1111,7 @@ INFO:ekorpkit.io.file:Loading data from ../data/econ_news_kr/econ_news_filtered.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;65년 역사를 자랑하는 버스 전문 제조업체 자일대우상용차가 내년 울산공장 재가동을 목표로 노사 협상을 이어가고 있다.\n9일 자동차업계에 따르면 지난 7일 자일대우 노사는 교섭을 열고 정리해고 철회와 공장 정상화 방안에 대한 논의를 진행했다. 양측은 울산공장 재가동에 대해 공감대를 이뤘지만 생산인력 축소 등에서 의견 차를 좁히지 못한 것으로 전해졌다. 다만 이달 말까지 지속적으로 교섭을 이어가면서 공장 운영을 재개하기 위해 노력하기로 했다.\n자일대우는 1955년 대우버스 전신인 신진공업사로 출발한 버스 전문업체다. 1987년 신진공업사의 부도로 대우그룹 품에 안겼지만 2002년 GM이 대우자동차를 매각하는 과정에서 분리돼 다음 해인 2003년 영안모자그룹에 인수됐다. 2018년 자일대우상용차로 사명을 변경하면서 65년 역사를 이어왔다. 자일대우는 한때 현대·기아자동차와 함께 국내 버스 시장을 양분했지만 최근 몇 년 새 내리막길을 걷고 있다. 한국자동차산업협회에 따르면 자일대우의 버스 판매량은 2013년 3903대로 정점을 찍은 뒤 2016년 2942대, 2018년 1991대 등으로 6년 새 반 토막 났다. 이 같은 경영 악화로 업계 안팎에서는 공장 폐쇄는 물론 해외 업체로의 공장 매각설까지 불거졌다. 이에 대해 자일대우 측은 &quot;울산공장과 관련해 중국 BYD를 포함한 어떠한 기업과도 인수, 매각 등과 관련한 협의를 진행한 바 없다&quot;며 &quot;BYD가 자일대우 울산공장을 실사한 바 없고, 회사는 직원들과 작은 규모라도 국내에서 생산을 유지하는 방안에 대해 지속적으로 협의하고 있다&quot;고 밝혔다.&#39;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;재산세 감면 범위를 둘러싸고 혼선을 빚었던 정부와 더불어민주당이 공시가격 6억원 이하 1주택자의 재산세를 감면해주는 방향으로 가닥을 잡은 것으로 알려졌다.\n3일 정치권에 따르면 당정은 1가구 1주택 재산세율은 공시가격 6억원 이하에 대해서만 0.05%포인트 인하하기로 방침을 정한 것으로 전해졌다. 현재 재산세율은 과세표준(공시가격 60%) 구간에 따라 0.1~0.4%다.\n6일 발표할 것으로 예상되는 당정의 이번 대책이 성난 민심을 가라앉힐 수 있을지 관심이 모아지고 있다. 올해 정부가 발표한 부동산 정책마다 논란에 휩싸였기 때문이다.\n실제로 국토교통부가 지난달 20일 주택자금조달계획서 제출 확대를 주요 내용으로 하는 \&#39;부동산 거래 신고 등에 관한 법률\&#39; 시행령 일부 개정안이 국무회의를 통과했다고 밝히자 &quot;민주주의 국가가 맞냐&quot;는 지적이 나왔다.\n또 김현미 국토교통부 장관이 지난달 23일 국회 국토교통위원회의 국토부 종합 국정감사에서 &quot;월세 세액공제 등을 통해 세입자의 부담을 덜어주는 방안에 대해 공감한다&quot;라며 &quot;재정 당국과 협의가 필요한 문제여서 함께 협의해 나가겠다&quot;고 말하자, 이를 비판하는 의견이 쇄도했다. 전세를 구하기 어려운데 월세를 사는 사람들에게 혜택을 주는 것은 결국 정부가 월세를 권장하는 것 아니냐는 지적이었다.\n홍남기 부총리 겸 기획재정부 장관이 지난달 28일 토지·건물 지분의 20∼25%만으로 주택을 분양받아 입주하고 이후 20∼30년간 남은 지분을 취득하는 지분적립형 주택을 도입하겠다고 밝혔을 때도 논란이 일었다. 지분형 주택은 대출받아서 집을 사거나 장기간 월세로 산 후 30년 된 낡은 집을 받는 것과 다름이 없다는 이유에서다.&#39;
 </pre></div>
 </div>
 </div>
@@ -1135,33 +1154,21 @@ INFO:ekorpkit.io.file:Loading data from ../data/econ_news_kr/econ_news_filtered.
 </div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
-INFO:ekorpkit.base:IPython version: (6, 9, 0), client: jupyter_client
-INFO:ekorpkit.io.file:Processing [1] files from [&#39;econ_news_filtered.parquet&#39;]
-INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/econ_news_kr/econ_news_filtered.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from ../data/econ_news_kr/econ_news_filtered.parquet
-INFO:ekorpkit.pipelines.pipe:Applying pipeline: OrderedDict([(&#39;predict&#39;, &#39;predict&#39;)])
-INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function predict at 0x7fcf1454b040&gt;)
+INFO:ekorpkit.base:shell type: ZMQInteractiveShell
+INFO:ekorpkit.base:setting environment variable CACHED_PATH_CACHE_ROOT to /workspace/.cache/cached_path
+INFO:ekorpkit.base:setting environment variable KMP_DUPLICATE_LIB_OK to TRUE
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function predict at 0x7fd89c1484c0&gt;)
 INFO:ekorpkit.base:No method defined to call
-INFO:ekorpkit.models.transformer.simple:Loaded model from /workspace/projects/ekorpkit-book/outputs/esg_polarity/ekonelectra-base/best_model
-INFO:simpletransformers.classification.classification_model: Converting to features started. Cache is not used.
-INFO:simpletransformers.classification.classification_model: Sliding window enabled
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "4642f4b9cb4b473fad47e1e1a0822f4e", "version_major": 2, "version_minor": 0}
-</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Token indices sequence length is longer than the specified maximum sequence length for this model (543 &gt; 512). Running this sequence through the model will result in indexing errors
-INFO:simpletransformers.classification.classification_model: 56854 features created from 56854 samples.
+{"model_id": "bbcc3368f7274403bc7d5987b8811b8c", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Token indices sequence length is longer than the specified maximum sequence length for this model (564 &gt; 512). Running this sequence through the model will result in indexing errors
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "25bf59fb19814edc9ab027d80bf84a60", "version_major": 2, "version_minor": 0}
-</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.models.transformer.simple:type of raw_outputs: &lt;class &#39;list&#39;&gt;
-INFO:ekorpkit.models.transformer.simple:raw_output: [-2.616201639175415, 1.3725110292434692, 1.5585768222808838]
-INFO:ekorpkit.pipelines.pipe:Saving data to: {&#39;file&#39;: &#39;esg_polarities-preds.parquet&#39;, &#39;filename&#39;: &#39;esg_polarities-preds.parquet&#39;, &#39;base_dir&#39;: &#39;../data/econ_news_kr&#39;, &#39;filetype&#39;: &#39;&#39;, &#39;columns&#39;: None, &#39;suffix&#39;: None, &#39;filepath&#39;: &#39;../data/econ_news_kr/esg_polarities-preds.parquet&#39;}
-INFO:ekorpkit.io.file:Saving dataframe to ../data/econ_news_kr/esg_polarities-preds.parquet
-</pre></div>
-</div>
-<div class="output text_html"><div>
+{"model_id": "96379dc7ba254fc294eac7578f315e3c", "version_major": 2, "version_minor": 0}
+</script><div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
@@ -1191,59 +1198,59 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/econ_news_kr/esg_polarities-pr
   <tbody>
     <tr>
       <th>0</th>
-      <td>1303</td>
       <td>0</td>
-      <td>대신증권은 미국 정규시장이 열리기 2시간 30분 전부터 미국 주식을 거래할 수 있는...</td>
-      <td>02100311.20201101100459001.txt</td>
-      <td>Positive</td>
-      <td>[-2.616201639175415, 1.3725110292434692, 1.558...</td>
-      <td>0.541830</td>
+      <td>0</td>
+      <td>'사보'는 기업들의 소통수단이다. 계열사 정보 공유 측면도 있다. 또한 대외적으로 ...</td>
+      <td>02100101.20201101082723001.txt</td>
+      <td>Neutral</td>
+      <td>[-2.4318339824676514, 0.8959189653396606, 1.84...</td>
+      <td>0.401912</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>1304</td>
       <td>0</td>
-      <td>[디지털뉴스국 news@mkinternet.com]</td>
-      <td>02100311.20201101100459001.txt</td>
-      <td>Neutral</td>
-      <td>[-1.743383765220642, 3.050320625305176, -0.924...</td>
-      <td>0.973645</td>
+      <td>1</td>
+      <td>안병덕 코오롱그룹 부회장은 "사보를 통해 코오롱인은 하나가 되었고, 자긍심을 키워왔...</td>
+      <td>02100101.20201101082723001.txt</td>
+      <td>Positive</td>
+      <td>[-2.316277503967285, 0.3658405840396881, 2.254...</td>
+      <td>0.300486</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>1309</td>
       <td>0</td>
-      <td>코스피가 외국인이 대규모 순매수세를 보인 가운데 보합권에서 마감했다.\n6일 코스피...</td>
-      <td>02100311.20201101102709001.txt</td>
-      <td>Neutral</td>
-      <td>[-1.7145445346832275, 2.7398393154144287, -0.6...</td>
-      <td>0.401355</td>
+      <td>2</td>
+      <td>코오롱 관계자는 "600호에 이르기까지 인쇄 사보를 중심으로 온라인, 모바일 환경 ...</td>
+      <td>02100101.20201101082723001.txt</td>
+      <td>Positive</td>
+      <td>[-2.5923120975494385, 1.227860927581787, 1.683...</td>
+      <td>0.606853</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>1309</td>
       <td>1</td>
-      <td>시가총액 상위 종목들은 흐름이 엇갈렸다. LG화학이 6% 이상 뛰었고 셀트리온, 삼...</td>
-      <td>02100311.20201101102709001.txt</td>
-      <td>Neutral</td>
-      <td>[-1.3195880651474, 2.872457504272461, -1.18959...</td>
-      <td>0.968683</td>
+      <td>0</td>
+      <td>2030을 주축으로 한 이른바 '동학개미운동'이 계속되는 등 주식 투자 열풍이 사그...</td>
+      <td>02100101.20201101090150001.txt</td>
+      <td>Positive</td>
+      <td>[-2.567436933517456, 1.0360676050186157, 1.814...</td>
+      <td>0.341340</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>1310</td>
-      <td>0</td>
-      <td>롯데쇼핑은 올해 3분기 영업이익(연결 기준)이 1110억원으로 전년 동기대비 26....</td>
-      <td>02100311.20201101103117001.txt</td>
+      <td>1</td>
+      <td>1</td>
+      <td>한국투자증권은 지난 8월 소액으로 투자 가능한 해외주식 모바일 앱 '미니스탁'을 선...</td>
+      <td>02100101.20201101090150001.txt</td>
       <td>Neutral</td>
-      <td>[-2.1306374073028564, 2.276362419128418, 0.191...</td>
-      <td>0.879886</td>
+      <td>[-2.502641439437866, 0.918285071849823, 1.9027...</td>
+      <td>0.372076</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xls_path</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;esg_polarities-preds.xlsx&quot;</span><span class="p">)</span>
 <span class="n">preds_df</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">xls_path</span><span class="p">)</span>
@@ -1288,32 +1295,18 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/econ_news_kr/esg_polarities-pr
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;econ_news_filtered.parquet&#39;]
-INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/econ_news_kr/econ_news_filtered.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from ../data/econ_news_kr/econ_news_filtered.parquet
-INFO:ekorpkit.pipelines.pipe:Applying pipeline: OrderedDict([(&#39;predict&#39;, &#39;predict&#39;)])
-INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function predict at 0x7fcf1454b040&gt;)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function predict at 0x7fd89c1484c0&gt;)
 INFO:ekorpkit.base:No method defined to call
-INFO:ekorpkit.models.transformer.simple:Loaded model from /workspace/projects/ekorpkit-book/outputs/esg_topics/ekonelectra-base/best_model
-INFO:simpletransformers.classification.classification_model: Converting to features started. Cache is not used.
-INFO:simpletransformers.classification.classification_model: Sliding window enabled
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "186fe647a23c4786a5463208a3d1c20f", "version_major": 2, "version_minor": 0}
-</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Token indices sequence length is longer than the specified maximum sequence length for this model (543 &gt; 512). Running this sequence through the model will result in indexing errors
-INFO:simpletransformers.classification.classification_model: 56854 features created from 56854 samples.
+{"model_id": "70cac40ce02e4dfeb14e096769e41ca3", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Token indices sequence length is longer than the specified maximum sequence length for this model (564 &gt; 512). Running this sequence through the model will result in indexing errors
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "eaef08a6649849c287e09cff81fd9057", "version_major": 2, "version_minor": 0}
-</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.models.transformer.simple:type of raw_outputs: &lt;class &#39;list&#39;&gt;
-INFO:ekorpkit.models.transformer.simple:raw_output: [-0.3635081648826599, 0.37070703506469727, -0.0803101435303688, 1.6292757987976074, 3.845372438430786, -1.571161150932312, -1.3662763833999634, 2.5274786949157715, -0.5879923701286316, -0.42675259709358215, -0.8758111596107483, -1.8513715267181396, 0.061824191361665726, 0.6198759078979492, -1.7138009071350098, -1.8754594326019287]
-INFO:ekorpkit.pipelines.pipe:Saving data to: {&#39;file&#39;: &#39;esg_categories-preds.parquet&#39;, &#39;filename&#39;: &#39;esg_categories-preds.parquet&#39;, &#39;base_dir&#39;: &#39;../data/econ_news_kr&#39;, &#39;filetype&#39;: &#39;&#39;, &#39;columns&#39;: None, &#39;suffix&#39;: None, &#39;filepath&#39;: &#39;../data/econ_news_kr/esg_categories-preds.parquet&#39;}
-INFO:ekorpkit.io.file:Saving dataframe to ../data/econ_news_kr/esg_categories-preds.parquet
-</pre></div>
-</div>
-<div class="output text_html"><div>
+{"model_id": "f1b905a7fa9247139b2f90b0b5813347", "version_major": 2, "version_minor": 0}
+</script><div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
@@ -1343,69 +1336,63 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/econ_news_kr/esg_categories-pr
   <tbody>
     <tr>
       <th>0</th>
-      <td>1303</td>
       <td>0</td>
-      <td>대신증권은 미국 정규시장이 열리기 2시간 30분 전부터 미국 주식을 거래할 수 있는...</td>
-      <td>02100311.20201101100459001.txt</td>
-      <td>S-소비자</td>
-      <td>[-0.3635081648826599, 0.37070703506469727, -0....</td>
-      <td>0.641072</td>
+      <td>0</td>
+      <td>'사보'는 기업들의 소통수단이다. 계열사 정보 공유 측면도 있다. 또한 대외적으로 ...</td>
+      <td>02100101.20201101082723001.txt</td>
+      <td>G-지배구조</td>
+      <td>[1.9145476818084717, -0.024444209411740303, 1....</td>
+      <td>0.532799</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>1304</td>
       <td>0</td>
-      <td>[디지털뉴스국 news@mkinternet.com]</td>
-      <td>02100311.20201101100459001.txt</td>
-      <td>S-소비자</td>
-      <td>[-0.1256369799375534, 0.20957696437835693, 0.0...</td>
-      <td>0.506109</td>
+      <td>1</td>
+      <td>안병덕 코오롱그룹 부회장은 "사보를 통해 코오롱인은 하나가 되었고, 자긍심을 키워왔...</td>
+      <td>02100101.20201101082723001.txt</td>
+      <td>S-기술혁신</td>
+      <td>[0.11691971123218536, 1.8329441547393799, -0.8...</td>
+      <td>0.301615</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>1309</td>
       <td>0</td>
-      <td>코스피가 외국인이 대규모 순매수세를 보인 가운데 보합권에서 마감했다.\n6일 코스피...</td>
-      <td>02100311.20201101102709001.txt</td>
-      <td>G-주주환원</td>
-      <td>[-0.8959301710128784, 1.594657301902771, -0.44...</td>
-      <td>0.346036</td>
+      <td>2</td>
+      <td>코오롱 관계자는 "600호에 이르기까지 인쇄 사보를 중심으로 온라인, 모바일 환경 ...</td>
+      <td>02100101.20201101082723001.txt</td>
+      <td>S-소비자</td>
+      <td>[3.184396743774414, 1.4087409973144531, -0.136...</td>
+      <td>0.579502</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>1309</td>
       <td>1</td>
-      <td>시가총액 상위 종목들은 흐름이 엇갈렸다. LG화학이 6% 이상 뛰었고 셀트리온, 삼...</td>
-      <td>02100311.20201101102709001.txt</td>
-      <td>G-주주환원</td>
-      <td>[-0.9104948043823242, 1.5245412588119507, -0.5...</td>
-      <td>0.853084</td>
+      <td>0</td>
+      <td>2030을 주축으로 한 이른바 '동학개미운동'이 계속되는 등 주식 투자 열풍이 사그...</td>
+      <td>02100101.20201101090150001.txt</td>
+      <td>S-소비자</td>
+      <td>[3.4277491569519043, 3.1105027198791504, 0.159...</td>
+      <td>0.333507</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>1310</td>
-      <td>0</td>
-      <td>롯데쇼핑은 올해 3분기 영업이익(연결 기준)이 1110억원으로 전년 동기대비 26....</td>
-      <td>02100311.20201101103117001.txt</td>
-      <td>G-주주환원</td>
-      <td>[-0.9264926910400391, 1.6014995574951172, -0.6...</td>
-      <td>0.875771</td>
+      <td>1</td>
+      <td>1</td>
+      <td>한국투자증권은 지난 8월 소액으로 투자 가능한 해외주식 모바일 앱 '미니스탁'을 선...</td>
+      <td>02100101.20201101090150001.txt</td>
+      <td>S-소비자</td>
+      <td>[3.432396411895752, 2.870363473892212, 0.29488...</td>
+      <td>0.273119</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xls_path</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;esg_categories-preds.xlsx&quot;</span><span class="p">)</span>
 <span class="n">cat_preds_df</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">xls_path</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cat_preds_df</span>
+<span class="n">cat_preds_df</span>
 </pre></div>
 </div>
 </div>
@@ -1440,53 +1427,53 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/econ_news_kr/esg_categories-pr
   <tbody>
     <tr>
       <th>0</th>
-      <td>1303</td>
       <td>0</td>
-      <td>대신증권은 미국 정규시장이 열리기 2시간 30분 전부터 미국 주식을 거래할 수 있는...</td>
-      <td>02100311.20201101100459001.txt</td>
-      <td>S-소비자</td>
-      <td>[-0.3635081648826599, 0.37070703506469727, -0....</td>
-      <td>0.641072</td>
+      <td>0</td>
+      <td>'사보'는 기업들의 소통수단이다. 계열사 정보 공유 측면도 있다. 또한 대외적으로 ...</td>
+      <td>02100101.20201101082723001.txt</td>
+      <td>G-지배구조</td>
+      <td>[1.9145476818084717, -0.024444209411740303, 1....</td>
+      <td>0.532799</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>1304</td>
       <td>0</td>
-      <td>[디지털뉴스국 news@mkinternet.com]</td>
-      <td>02100311.20201101100459001.txt</td>
-      <td>S-소비자</td>
-      <td>[-0.1256369799375534, 0.20957696437835693, 0.0...</td>
-      <td>0.506109</td>
+      <td>1</td>
+      <td>안병덕 코오롱그룹 부회장은 "사보를 통해 코오롱인은 하나가 되었고, 자긍심을 키워왔...</td>
+      <td>02100101.20201101082723001.txt</td>
+      <td>S-기술혁신</td>
+      <td>[0.11691971123218536, 1.8329441547393799, -0.8...</td>
+      <td>0.301615</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>1309</td>
       <td>0</td>
-      <td>코스피가 외국인이 대규모 순매수세를 보인 가운데 보합권에서 마감했다.\n6일 코스피...</td>
-      <td>02100311.20201101102709001.txt</td>
-      <td>G-주주환원</td>
-      <td>[-0.8959301710128784, 1.594657301902771, -0.44...</td>
-      <td>0.346036</td>
+      <td>2</td>
+      <td>코오롱 관계자는 "600호에 이르기까지 인쇄 사보를 중심으로 온라인, 모바일 환경 ...</td>
+      <td>02100101.20201101082723001.txt</td>
+      <td>S-소비자</td>
+      <td>[3.184396743774414, 1.4087409973144531, -0.136...</td>
+      <td>0.579502</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>1309</td>
       <td>1</td>
-      <td>시가총액 상위 종목들은 흐름이 엇갈렸다. LG화학이 6% 이상 뛰었고 셀트리온, 삼...</td>
-      <td>02100311.20201101102709001.txt</td>
-      <td>G-주주환원</td>
-      <td>[-0.9104948043823242, 1.5245412588119507, -0.5...</td>
-      <td>0.853084</td>
+      <td>0</td>
+      <td>2030을 주축으로 한 이른바 '동학개미운동'이 계속되는 등 주식 투자 열풍이 사그...</td>
+      <td>02100101.20201101090150001.txt</td>
+      <td>S-소비자</td>
+      <td>[3.4277491569519043, 3.1105027198791504, 0.159...</td>
+      <td>0.333507</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>1310</td>
-      <td>0</td>
-      <td>롯데쇼핑은 올해 3분기 영업이익(연결 기준)이 1110억원으로 전년 동기대비 26....</td>
-      <td>02100311.20201101103117001.txt</td>
-      <td>G-주주환원</td>
-      <td>[-0.9264926910400391, 1.6014995574951172, -0.6...</td>
-      <td>0.875771</td>
+      <td>1</td>
+      <td>1</td>
+      <td>한국투자증권은 지난 8월 소액으로 투자 가능한 해외주식 모바일 앱 '미니스탁'을 선...</td>
+      <td>02100101.20201101090150001.txt</td>
+      <td>S-소비자</td>
+      <td>[3.432396411895752, 2.870363473892212, 0.29488...</td>
+      <td>0.273119</td>
     </tr>
     <tr>
       <th>...</th>
@@ -1499,58 +1486,58 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/econ_news_kr/esg_categories-pr
       <td>...</td>
     </tr>
     <tr>
-      <th>56849</th>
-      <td>1089862</td>
-      <td>0</td>
-      <td>[출처=카드고릴라]\n카드사들이 연초부터 연일 신상품을 쏟아내고 있다. 새 카드로 ...</td>
-      <td>02100851.20220223082114001.txt</td>
-      <td>S-소비자</td>
-      <td>[-0.22719579935073853, 0.01108001358807087, 0....</td>
-      <td>0.322013</td>
-    </tr>
-    <tr>
-      <th>56850</th>
-      <td>1089862</td>
+      <th>553936</th>
+      <td>1090639</td>
       <td>1</td>
-      <td>가장 인기가 많은 카드사는 신한카드였다. 신한카드는 개별 상품페이지 관련 23%의 ...</td>
-      <td>02100851.20220223082114001.txt</td>
-      <td>S-소비자</td>
-      <td>[-0.4069870114326477, 0.3556715250015259, 0.29...</td>
-      <td>0.396827</td>
+      <td>과거 러시아 중앙은행 고위 관료였던 세르게이 알레카센코는 WSJ에 “30~40% 수...</td>
+      <td>02100851.20220228175603001.txt</td>
+      <td>G-주주환원</td>
+      <td>[1.4552439451217651, -0.23222839832305908, 0.4...</td>
+      <td>0.118807</td>
     </tr>
     <tr>
-      <th>56851</th>
-      <td>1089862</td>
+      <th>553937</th>
+      <td>1090639</td>
       <td>2</td>
-      <td>이용자들이 가장 많이 검색한 혜택은 교통(14.9%)이었다. 평균 사용 연령층이 더...</td>
-      <td>02100851.20220223082114001.txt</td>
-      <td>S-소비자</td>
-      <td>[-0.2538611888885498, 0.12173940986394882, 0.1...</td>
-      <td>0.406933</td>
+      <td>특히 스위프트 제재 대상인 러 금융기관들은 백척간두에 서 있다. 유럽중앙은행(ECB...</td>
+      <td>02100851.20220228175603001.txt</td>
+      <td>G-지배구조</td>
+      <td>[0.552001953125, -0.5348021984100342, 2.861389...</td>
+      <td>0.365142</td>
     </tr>
     <tr>
-      <th>56852</th>
-      <td>1089862</td>
-      <td>3</td>
-      <td>따라서 올해에는 무실적, 또는 실적 조건이 낮아 사용 부담이 적으면서 모든 가맹점에...</td>
-      <td>02100851.20220223082114001.txt</td>
-      <td>S-소비자</td>
-      <td>[-0.3447725772857666, 0.5259126424789429, 0.19...</td>
-      <td>0.784171</td>
-    </tr>
-    <tr>
-      <th>56853</th>
-      <td>1089863</td>
+      <th>553938</th>
+      <td>1090645</td>
       <td>0</td>
-      <td>제 39차 부동산시장 점검 관계장관회의\n홍남기 부총리 겸 기획재정부 장관이 23일...</td>
-      <td>02100851.20220223082114001.txt</td>
+      <td>이재명 더불어민주당 대선 후보(왼쪽)와 윤석열 국민의힘 후보가 각각 GTX 관련 공...</td>
+      <td>02100851.20220228180156001.txt</td>
       <td>S-소비자</td>
-      <td>[0.4430272877216339, 0.10475224256515503, 1.87...</td>
-      <td>0.296401</td>
+      <td>[3.0158867835998535, 0.18313424289226532, 1.51...</td>
+      <td>0.291026</td>
+    </tr>
+    <tr>
+      <th>553939</th>
+      <td>1090645</td>
+      <td>1</td>
+      <td>한 전문가는 서울권, 특히 강남권의 최근 아파트 거래 현황이 지난해 같은 기간보다 ...</td>
+      <td>02100851.20220228180156001.txt</td>
+      <td>S-소비자</td>
+      <td>[3.171722650527954, 0.41740426421165466, 0.905...</td>
+      <td>0.283430</td>
+    </tr>
+    <tr>
+      <th>553940</th>
+      <td>1090645</td>
+      <td>2</td>
+      <td>철도 공약인 만큼 현실 시점이 멀다는 이유도 있겠지만, 그만큼 정치권의 부동산 정책...</td>
+      <td>02100851.20220228180156001.txt</td>
+      <td>S-소비자</td>
+      <td>[2.211320161819458, -0.4039093852043152, 2.383...</td>
+      <td>0.147899</td>
     </tr>
   </tbody>
 </table>
-<p>56854 rows × 7 columns</p>
+<p>553941 rows × 7 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -1560,154 +1547,6 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/econ_news_kr/esg_categories-pr
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_polarities-preds.parquet&#39;]
-INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/econ_news_kr/esg_polarities-preds.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from ../data/econ_news_kr/esg_polarities-preds.parquet
-</pre></div>
-</div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id</th>
-      <th>chunk_id</th>
-      <th>text</th>
-      <th>filename</th>
-      <th>pred_labels</th>
-      <th>raw_preds</th>
-      <th>pred_probs</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1303</td>
-      <td>0</td>
-      <td>대신증권은 미국 정규시장이 열리기 2시간 30분 전부터 미국 주식을 거래할 수 있는...</td>
-      <td>02100311.20201101100459001.txt</td>
-      <td>Positive</td>
-      <td>[-2.616201639175415, 1.3725110292434692, 1.558...</td>
-      <td>0.541830</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>1304</td>
-      <td>0</td>
-      <td>[디지털뉴스국 news@mkinternet.com]</td>
-      <td>02100311.20201101100459001.txt</td>
-      <td>Neutral</td>
-      <td>[-1.743383765220642, 3.050320625305176, -0.924...</td>
-      <td>0.973645</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>1309</td>
-      <td>0</td>
-      <td>코스피가 외국인이 대규모 순매수세를 보인 가운데 보합권에서 마감했다.\n6일 코스피...</td>
-      <td>02100311.20201101102709001.txt</td>
-      <td>Neutral</td>
-      <td>[-1.7145445346832275, 2.7398393154144287, -0.6...</td>
-      <td>0.401355</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>1309</td>
-      <td>1</td>
-      <td>시가총액 상위 종목들은 흐름이 엇갈렸다. LG화학이 6% 이상 뛰었고 셀트리온, 삼...</td>
-      <td>02100311.20201101102709001.txt</td>
-      <td>Neutral</td>
-      <td>[-1.3195880651474, 2.872457504272461, -1.18959...</td>
-      <td>0.968683</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>1310</td>
-      <td>0</td>
-      <td>롯데쇼핑은 올해 3분기 영업이익(연결 기준)이 1110억원으로 전년 동기대비 26....</td>
-      <td>02100311.20201101103117001.txt</td>
-      <td>Neutral</td>
-      <td>[-2.1306374073028564, 2.276362419128418, 0.191...</td>
-      <td>0.879886</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>56849</th>
-      <td>1089862</td>
-      <td>0</td>
-      <td>[출처=카드고릴라]\n카드사들이 연초부터 연일 신상품을 쏟아내고 있다. 새 카드로 ...</td>
-      <td>02100851.20220223082114001.txt</td>
-      <td>Neutral</td>
-      <td>[-2.320831060409546, 2.678330659866333, 0.0352...</td>
-      <td>0.348214</td>
-    </tr>
-    <tr>
-      <th>56850</th>
-      <td>1089862</td>
-      <td>1</td>
-      <td>가장 인기가 많은 카드사는 신한카드였다. 신한카드는 개별 상품페이지 관련 23%의 ...</td>
-      <td>02100851.20220223082114001.txt</td>
-      <td>Neutral</td>
-      <td>[-2.2986679077148438, 2.5738255977630615, 0.13...</td>
-      <td>0.487420</td>
-    </tr>
-    <tr>
-      <th>56851</th>
-      <td>1089862</td>
-      <td>2</td>
-      <td>이용자들이 가장 많이 검색한 혜택은 교통(14.9%)이었다. 평균 사용 연령층이 더...</td>
-      <td>02100851.20220223082114001.txt</td>
-      <td>Neutral</td>
-      <td>[-2.1390669345855713, 2.4953033924102783, 0.01...</td>
-      <td>0.533359</td>
-    </tr>
-    <tr>
-      <th>56852</th>
-      <td>1089862</td>
-      <td>3</td>
-      <td>따라서 올해에는 무실적, 또는 실적 조건이 낮아 사용 부담이 적으면서 모든 가맹점에...</td>
-      <td>02100851.20220223082114001.txt</td>
-      <td>Neutral</td>
-      <td>[-2.3649559020996094, 2.436711072921753, 0.312...</td>
-      <td>0.886730</td>
-    </tr>
-    <tr>
-      <th>56853</th>
-      <td>1089863</td>
-      <td>0</td>
-      <td>제 39차 부동산시장 점검 관계장관회의\n홍남기 부총리 겸 기획재정부 장관이 23일...</td>
-      <td>02100851.20220223082114001.txt</td>
-      <td>Neutral</td>
-      <td>[-1.901430368423462, 1.5780322551727295, 0.729...</td>
-      <td>0.384297</td>
-    </tr>
-  </tbody>
-</table>
-<p>56854 rows × 7 columns</p>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1716,154 +1555,6 @@ INFO:ekorpkit.io.file:Loading data from ../data/econ_news_kr/esg_polarities-pred
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_categories-preds.parquet&#39;]
-INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/econ_news_kr/esg_categories-preds.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from ../data/econ_news_kr/esg_categories-preds.parquet
-</pre></div>
-</div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id</th>
-      <th>chunk_id</th>
-      <th>text</th>
-      <th>filename</th>
-      <th>pred_labels</th>
-      <th>raw_preds</th>
-      <th>pred_probs</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1303</td>
-      <td>0</td>
-      <td>대신증권은 미국 정규시장이 열리기 2시간 30분 전부터 미국 주식을 거래할 수 있는...</td>
-      <td>02100311.20201101100459001.txt</td>
-      <td>S-소비자</td>
-      <td>[-0.3635081648826599, 0.37070703506469727, -0....</td>
-      <td>0.641072</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>1304</td>
-      <td>0</td>
-      <td>[디지털뉴스국 news@mkinternet.com]</td>
-      <td>02100311.20201101100459001.txt</td>
-      <td>S-소비자</td>
-      <td>[-0.1256369799375534, 0.20957696437835693, 0.0...</td>
-      <td>0.506109</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>1309</td>
-      <td>0</td>
-      <td>코스피가 외국인이 대규모 순매수세를 보인 가운데 보합권에서 마감했다.\n6일 코스피...</td>
-      <td>02100311.20201101102709001.txt</td>
-      <td>G-주주환원</td>
-      <td>[-0.8959301710128784, 1.594657301902771, -0.44...</td>
-      <td>0.346036</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>1309</td>
-      <td>1</td>
-      <td>시가총액 상위 종목들은 흐름이 엇갈렸다. LG화학이 6% 이상 뛰었고 셀트리온, 삼...</td>
-      <td>02100311.20201101102709001.txt</td>
-      <td>G-주주환원</td>
-      <td>[-0.9104948043823242, 1.5245412588119507, -0.5...</td>
-      <td>0.853084</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>1310</td>
-      <td>0</td>
-      <td>롯데쇼핑은 올해 3분기 영업이익(연결 기준)이 1110억원으로 전년 동기대비 26....</td>
-      <td>02100311.20201101103117001.txt</td>
-      <td>G-주주환원</td>
-      <td>[-0.9264926910400391, 1.6014995574951172, -0.6...</td>
-      <td>0.875771</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>56849</th>
-      <td>1089862</td>
-      <td>0</td>
-      <td>[출처=카드고릴라]\n카드사들이 연초부터 연일 신상품을 쏟아내고 있다. 새 카드로 ...</td>
-      <td>02100851.20220223082114001.txt</td>
-      <td>S-소비자</td>
-      <td>[-0.22719579935073853, 0.01108001358807087, 0....</td>
-      <td>0.322013</td>
-    </tr>
-    <tr>
-      <th>56850</th>
-      <td>1089862</td>
-      <td>1</td>
-      <td>가장 인기가 많은 카드사는 신한카드였다. 신한카드는 개별 상품페이지 관련 23%의 ...</td>
-      <td>02100851.20220223082114001.txt</td>
-      <td>S-소비자</td>
-      <td>[-0.4069870114326477, 0.3556715250015259, 0.29...</td>
-      <td>0.396827</td>
-    </tr>
-    <tr>
-      <th>56851</th>
-      <td>1089862</td>
-      <td>2</td>
-      <td>이용자들이 가장 많이 검색한 혜택은 교통(14.9%)이었다. 평균 사용 연령층이 더...</td>
-      <td>02100851.20220223082114001.txt</td>
-      <td>S-소비자</td>
-      <td>[-0.2538611888885498, 0.12173940986394882, 0.1...</td>
-      <td>0.406933</td>
-    </tr>
-    <tr>
-      <th>56852</th>
-      <td>1089862</td>
-      <td>3</td>
-      <td>따라서 올해에는 무실적, 또는 실적 조건이 낮아 사용 부담이 적으면서 모든 가맹점에...</td>
-      <td>02100851.20220223082114001.txt</td>
-      <td>S-소비자</td>
-      <td>[-0.3447725772857666, 0.5259126424789429, 0.19...</td>
-      <td>0.784171</td>
-    </tr>
-    <tr>
-      <th>56853</th>
-      <td>1089863</td>
-      <td>0</td>
-      <td>제 39차 부동산시장 점검 관계장관회의\n홍남기 부총리 겸 기획재정부 장관이 23일...</td>
-      <td>02100851.20220223082114001.txt</td>
-      <td>S-소비자</td>
-      <td>[0.4430272877216339, 0.10475224256515503, 1.87...</td>
-      <td>0.296401</td>
-    </tr>
-  </tbody>
-</table>
-<p>56854 rows × 7 columns</p>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1872,118 +1563,6 @@ INFO:ekorpkit.io.file:Loading data from ../data/econ_news_kr/esg_categories-pred
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;econ_news_code_info_available.parquet&#39;]
-INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;../data/econ_news_kr/econ_news_code_info_available.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from ../data/econ_news_kr/econ_news_code_info_available.parquet
-</pre></div>
-</div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>filename</th>
-      <th>codes</th>
-      <th>len</th>
-      <th>num_codes</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>02100201.20200102152718001.txt</td>
-      <td>144960</td>
-      <td>33</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>02100201.20200102164904001.txt</td>
-      <td>285130</td>
-      <td>33</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>02100201.20200103151007001.txt</td>
-      <td>088800</td>
-      <td>33</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>02100201.20200103155237001.txt</td>
-      <td>178920</td>
-      <td>33</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>02100201.20200107154901001.txt</td>
-      <td>007660</td>
-      <td>33</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>108945</th>
-      <td>02100311.20220531185816001.txt</td>
-      <td>011070</td>
-      <td>124</td>
-      <td>14</td>
-    </tr>
-    <tr>
-      <th>108946</th>
-      <td>02100501.20220516100127001.txt</td>
-      <td>139670</td>
-      <td>33</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>108947</th>
-      <td>02100701.20220531153710002.txt</td>
-      <td>064960</td>
-      <td>33</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>108948</th>
-      <td>02100801.20220516111438002.txt</td>
-      <td>005930</td>
-      <td>33</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>108949</th>
-      <td>02100851.20220516010042001.txt</td>
-      <td>003620</td>
-      <td>33</td>
-      <td>1</td>
-    </tr>
-  </tbody>
-</table>
-<p>108950 rows × 4 columns</p>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
