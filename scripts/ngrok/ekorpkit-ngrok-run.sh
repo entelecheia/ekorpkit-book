@@ -11,4 +11,4 @@ docker run -d -p $EKORPKIT_NGROK_PORT \
 	--name $EKORPKIT_NGROK_CONTAINER_NAME \
 	wernight/ngrok:latest
 
-# curl $(docker port www_ngrok 4840)/api/tunnels
+# curl $(docker port ekorpkit-book-ngrok 4840)/api/tunnels
