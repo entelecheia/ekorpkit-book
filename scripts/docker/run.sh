@@ -20,9 +20,10 @@ docker run -it --rm \
   --ulimit stack=67108864 \
   --env-file .env \
   --publish $JUPYTER_HOST_PORT:$JUPYTER_PORT \
-  --publish $RUBRIX_HOST_PORT:6900
+  --publish $RUBRIX_HOST_PORT:6900 \
   --publish $DOCKER_SSH_PORT:22 \
   --volume $HOST_WORKSPACE_ROOT:$EKORPKIT_WORKSPACE_ROOT \
+  --volume $HOST_HF_HOME:/root/.cache/huggingface \
   --name $EKORPKIT_DOCKER_CONTAINER_NAME \
   $EKORPKIT_DOCKER_IMAGE_NAME:latest $CMD
 
