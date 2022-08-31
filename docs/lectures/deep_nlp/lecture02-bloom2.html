@@ -57,7 +57,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Language Models I - Recurrent Neural Networks" href="lecture04.html" />
-    <link rel="prev" title="BLOOM" href="lecture02-bloom.html" />
+    <link rel="prev" title="What is BLOOM?" href="lecture02-bloom.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -722,7 +722,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="lecture02-bloom.html">
-     BLOOM
+     What is BLOOM?
     </a>
    </li>
    <li class="toctree-l2 current active">
@@ -1335,9 +1335,7 @@ Each part is dependent on the previous parts, thus we can use an auto-regressive
 <div class="math notranslate nohighlight">
 \[ P(w_{1:T} | W_0 ) = \prod_{t=1}^T P(w_{t} | w_{1: t-1}, W_0) \text{ ,with }  w_{1: 0} = \emptyset, \]</div>
 <blockquote>
-<div><p>\(W_0\) being the initial <em>context</em> word sequence. The length \(T\)
-of the word sequence is usually determined <em>on-the-fly</em> and corresponds
-to the timestep \(t=T\) the EOS token is generated from \(P(w_{t} | w_{1: t-1}, W_{0})\).</p>
+<div><p><span class="math notranslate nohighlight">\(W_0\)</span> being the initial <em>context</em> word sequence. The length <span class="math notranslate nohighlight">\(T\)</span> of the word sequence is usually determined <em>on-the-fly</em> and corresponds to the timestep <span class="math notranslate nohighlight">\(t=T\)</span> the EOS token is generated from <span class="math notranslate nohighlight">\(P(w_{t} | w_{1: t-1}, W_{0})\)</span>.</p>
 </div></blockquote>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1371,17 +1369,12 @@ If your task is similar to the task the model of the checkpoint was trained on, 
 </div>
 <div class="section" id="greedy-search">
 <h3>Greedy Search<a class="headerlink" href="#greedy-search" title="Permalink to this headline">#</a></h3>
-<p>Greedy search simply selects the word with the highest probability as
-its next word: \(w_t = argmax_{w}P(w | w_{1:t-1})\) at each timestep
-\(t\).</p>
-<p>Starting from the word \(\text{“The”},\) the algorithm greedily chooses
-the next word of highest probability \(\text{“nice”}\) and so on, so
-that the final generated word sequence is \((\text{“The”}, \text{“nice”}, \text{“woman”})\)
-having an overall probability of \(0.5 \times 0.4 = 0.2\).</p>
+<p>Greedy search simply selects the word with the highest probability as its next word: <span class="math notranslate nohighlight">\(w_t = argmax_{w}P(w | w_{1:t-1})\)</span> at each timestep <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>Starting from the word “The” the algorithm greedily chooses the next word of highest probability “nice” and so on, so
+that the final generated word sequence is (“The”, “nice”, “woman”) having an overall probability of <span class="math notranslate nohighlight">\(0.5 \times 0.4 = 0.2\)</span>.</p>
 <p><img alt="greedy" src="../../../_images/deepnlp_2_greedy_search.png" /></p>
 <ul class="simple">
-<li><p>Generate word sequences using GPT2 on the
-context \((\text{“I”}, \text{“enjoy”}, \text{“studying”}, \text{“deep”}, \text{“learning”}, \text{“for”}, \text{“NLP”})\).</p></li>
+<li><p>Generate word sequences using GPT2 on the context (“I”,”enjoy”,”walking”,”with”,”my”,”cute”,”dog”).</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1417,13 +1410,9 @@ I&#39;m not sure if I can do it in a way that is as good as the NLP. I&#39;m not
 <p>Beam search reduces the risk of missing hidden high probability word sequences by keeping the most likely <code class="docutils literal notranslate"><span class="pre">num_beams</span></code> of hypotheses at each time step and eventually choosing the hypothesis that has the overall highest probability.</p>
 <ul class="simple">
 <li><p>Beam search with <code class="docutils literal notranslate"><span class="pre">num_beams=2</span></code>:</p></li>
-<li><p>At time step 1, besides the most likely hypothesis \((\text{“The”}, \text{“nice”})\),
-beam search also keeps track of the second
-most likely one \((\text{“The”}, \text{“dog”})\).</p></li>
-<li><p>At time step 2, beam search finds that the word sequence \((\text{“The”}, \text{“dog”}, \text{“has”})\),
-has with \(0.36\)
-a higher probability than \((\text{“The”}, \text{“nice”}, \text{“woman”})\),
-which has \(0.2\) .</p></li>
+<li><p>At time step 1, besides the most likely hypothesis  (“The”,”nice”), beam search also keeps track of the second
+most likely one (“The”,”dog”).</p></li>
+<li><p>At time step 2, beam search finds that the word sequence (“The”,”dog”,”has”),  has with <span class="math notranslate nohighlight">\(0.36\)</span>, a higher probability than (“The”,”nice”,”woman”), which has <span class="math notranslate nohighlight">\(0.2\)</span>.</p></li>
 <li><p>It has found the most likely word sequence in our toy example!</p></li>
 <li><p>Beam search will always find an output sequence with higher probability than greedy search, but is not guaranteed to find the most likely output.</p></li>
 </ul>
@@ -1543,8 +1532,7 @@ In this post, I&#39;m going to show you how you can use Deep Learning to build a
 <ul class="simple">
 <li><p>The five beam hypotheses are only marginally different to each other - which should not be too surprising when using only 5 beams.</p></li>
 </ul>
-<p>In open-ended generation, a couple of reasons have recently been brought
-forward why beam search might not be the best possible option:</p>
+<p>In open-ended generation, a couple of reasons have recently been brought forward why beam search might not be the best possible option:</p>
 <ul class="simple">
 <li><p>Beam search can work very well in tasks where the length of the desired generation is more or less predictable as in machine translation or summarization.</p></li>
 <li><p>But this is not the case for open-ended generation where the desired output length can vary greatly, e.g. dialog and story generation.</p></li>
@@ -1557,13 +1545,13 @@ forward why beam search might not be the best possible option:</p>
 </div>
 <div class="section" id="sampling">
 <h3>Sampling<a class="headerlink" href="#sampling" title="Permalink to this headline">#</a></h3>
-<p>Sampling means randomly picking the next word \(w_t\) according to its conditional probability distribution:</p>
+<p>Sampling means randomly picking the next word <span class="math notranslate nohighlight">\(w_t\)</span> according to its conditional probability distribution:</p>
 <div class="math notranslate nohighlight">
 \[ w_t \sim P(w|w_{1:t-1}) \]</div>
 <p>The following graphic visualizes language generation when sampling.</p>
 <p><img alt="sampling" src="../../../_images/deepnlp_2_sampling_search.png" /></p>
 <p>Language generation using sampling is not <em>deterministic</em> anymore.
-The word \((\text{“car”})\) is sampled from the conditioned probability distribution \(P(w | \text{“The”})\), followed by sampling \((\text{“drives”})\) from \(P(w | \text{“The”}, \text{“car”})\) .</p>
+The word (“car”) is sampled from the conditioned probability distribution <span class="math notranslate nohighlight">\(P(w | \text{&quot;The&quot;})\)</span>, followed by sampling (“drives”) from <span class="math notranslate nohighlight">\(P(w | \text{&quot;The&quot;}, \text{&quot;car&quot;})\)</span>.</p>
 <ul class="simple">
 <li><p>Set <code class="docutils literal notranslate"><span class="pre">do_sample=True</span></code> and deactivate <em>Top-K</em> sampling via <code class="docutils literal notranslate"><span class="pre">top_k=0</span></code>.</p></li>
 </ul>
@@ -1601,7 +1589,7 @@ We think that machine learning is next-generation of image-based image inference
 <li><p>Interesting! The text seems alright - but when taking a closer look, it is not very coherent.</p></li>
 <li><p>Some words don’t sound like they were written by a human.</p></li>
 <li><p>That is the big problem when sampling word sequences: The models often generate incoherent gibberish, <em>cf.</em> <a class="reference external" href="https://arxiv.org/abs/1904.09751">Ari Holtzman et al. (2019)</a>.</p></li>
-<li><p>A trick is to make the distribution \(P(w|w_{1:t-1})\) sharper (increasing the likelihood of high probability words and decreasing the likelihood of low probability words) by lowering the so-called <code class="docutils literal notranslate"><span class="pre">temperature</span></code> of the <a class="reference external" href="https://en.wikipedia.org/wiki/Softmax_function#Smooth_arg_max">softmax</a>.</p></li>
+<li><p>A trick is to make the distribution <span class="math notranslate nohighlight">\(P(w|w_{1:t-1})\)</span> sharper (increasing the likelihood of high probability words and decreasing the likelihood of low probability words) by lowering the so-called <code class="docutils literal notranslate"><span class="pre">temperature</span></code> of the <a class="reference external" href="https://en.wikipedia.org/wiki/Softmax_function#Smooth_arg_max">softmax</a>.</p></li>
 </ul>
 <p><img alt="temperature" src="../../../_images/deepnlp_2_sampling_search_with_temp.png" /></p>
 <ul class="simple">
@@ -1815,7 +1803,7 @@ One of the key objectives I would like to work on in order to get to a place whe
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">BLOOM</p>
+            <p class="prev-next-title">What is BLOOM?</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="lecture04.html" title="next page">
