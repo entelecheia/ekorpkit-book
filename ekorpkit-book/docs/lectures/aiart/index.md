@@ -1,2 +1,2 @@
-# AI Art - Text-to-Image
+# AI Art (Text-to-Image)
 

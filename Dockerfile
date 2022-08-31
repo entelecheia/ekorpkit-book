@@ -37,12 +37,15 @@ ENV KMP_DUPLICATE_LIB_OK TRUE
 
 WORKDIR $EKORPKIT_PROJECT_DIR
 
+# Set up conda environment 
 RUN . /root/.bashrc && \
     /opt/conda/bin/conda init bash
 
+# Set up ssh key
 RUN mkdir -p /root/.ssh
 COPY ./scripts/ssh/authorized_keys /root/.ssh/authorized_keys
 
+# Set up jupyter notebook extensions
 RUN pip install --no-cache-dir --upgrade \
     jupyterlab \
     jupyterlab_execute_time \
@@ -55,5 +58,14 @@ RUN jupyter labextension install \
     jupyterlab-slide-mode-keyboard-shortcuts \
     jupyter-matplotlib \
     jupyterlab-spreadsheet
-    
+
+# for rubrix
+ENV USERS_DB=/config/.users.yml
+
+RUN pip install --no-cache-dir rubrix[server] loguru
+
+# See <https://github.com/tiangolo/uvicorn-gunicorn-fastapi-docker#module_name>
+ENV MODULE_NAME="rubrix"
+ENV VARIABLE_NAME="app"
+
 CMD ["/bin/bash"]
