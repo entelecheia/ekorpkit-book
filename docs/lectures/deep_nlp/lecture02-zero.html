@@ -50,8 +50,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -1336,124 +1334,19 @@ Each part is dependent on the previous parts, thus we can use an auto-regressive
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
 <span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">TFGPT2LMHeadModel</span><span class="p">,</span> <span class="n">GPT2Tokenizer</span>
 
-
 <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">GPT2Tokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;gpt2&quot;</span><span class="p">)</span>
 
 <span class="c1"># add the EOS token as PAD token to avoid warnings</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">TFGPT2LMHeadModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;gpt2&quot;</span><span class="p">,</span> <span class="n">pad_token_id</span><span class="o">=</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token_id</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">TFGPT2LMHeadModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;gpt2&quot;</span><span class="p">,</span>
+                                          <span class="n">pad_token_id</span><span class="o">=</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token_id</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2022-08-31 10:30:49.576146: W tensorflow/core/common_runtime/bfc_allocator.cc:479] Allocator (GPU_0_bfc) ran out of memory trying to allocate 147.24MiB (rounded to 154389504)requested by op TruncatedNormal
-If the cause is memory fragmentation maybe the environment variable &#39;TF_GPU_ALLOCATOR=cuda_malloc_async&#39; will improve the situation. 
-Current allocation summary follows.
-Current allocation summary follows.
-2022-08-31 10:30:49.576340: W tensorflow/core/common_runtime/bfc_allocator.cc:491] *__________________________******************************************_______________________________
-2022-08-31 10:30:49.576391: W tensorflow/core/framework/op_kernel.cc:1745] OP_REQUIRES failed at random_op.cc:74 : RESOURCE_EXHAUSTED: OOM when allocating tensor with shape[50257,768] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
-</pre></div>
-</div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>---------------------------------------------------------------------------
-ResourceExhaustedError                    Traceback (most recent call last)
-Input In [3], in &lt;module&gt;
-      5 tokenizer = GPT2Tokenizer.from_pretrained(&quot;gpt2&quot;)
-      7 # add the EOS token as PAD token to avoid warnings
-----&gt; 8 model = TFGPT2LMHeadModel.from_pretrained(&quot;gpt2&quot;, pad_token_id=tokenizer.eos_token_id)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>All model checkpoint layers were used when initializing TFGPT2LMHeadModel.
 
-File /opt/conda/lib/python3.8/site-packages/transformers/modeling_tf_utils.py:2379, in TFPreTrainedModel.from_pretrained(cls, pretrained_model_name_or_path, *model_args, **kwargs)
-   2377         model(model.dummy_inputs)  # build the network with dummy inputs
-   2378 else:
--&gt; 2379     model(model.dummy_inputs)  # build the network with dummy inputs
-   2381 # &#39;by_name&#39; allow us to do transfer learning by skipping/adding layers
-   2382 # see https://github.com/tensorflow/tensorflow/blob/00fad90125b18b80fe054de1055770cfb8fe4ba3/tensorflow/python/keras/engine/network.py#L1339-L1357
-   2383 try:
-
-File /opt/conda/lib/python3.8/site-packages/keras/utils/traceback_utils.py:67, in filter_traceback.&lt;locals&gt;.error_handler(*args, **kwargs)
-     65 except Exception as e:  # pylint: disable=broad-except
-     66   filtered_tb = _process_traceback_frames(e.__traceback__)
----&gt; 67   raise e.with_traceback(filtered_tb) from None
-     68 finally:
-     69   del filtered_tb
-
-File /opt/conda/lib/python3.8/site-packages/transformers/modeling_tf_utils.py:413, in unpack_inputs.&lt;locals&gt;.run_call_with_unpacked_inputs(self, *args, **kwargs)
-    410     config = self.config
-    412 unpacked_inputs = input_processing(func, config, **fn_args_and_kwargs)
---&gt; 413 return func(self, **unpacked_inputs)
-
-File /opt/conda/lib/python3.8/site-packages/transformers/models/gpt2/modeling_tf_gpt2.py:890, in TFGPT2LMHeadModel.call(self, input_ids, past, attention_mask, token_type_ids, position_ids, head_mask, inputs_embeds, encoder_hidden_states, encoder_attention_mask, use_cache, output_attentions, output_hidden_states, return_dict, labels, training)
-    840 @unpack_inputs
-    841 @add_start_docstrings_to_model_forward(GPT2_INPUTS_DOCSTRING)
-    842 @add_code_sample_docstrings(
-   (...)
-    864     training: Optional[bool] = False,
-    865 ) -&gt; Union[TFCausalLMOutputWithCrossAttentions, Tuple[tf.Tensor]]:
-    866     r&quot;&quot;&quot;
-    867     encoder_hidden_states  (`tf.Tensor` of shape `(batch_size, sequence_length, hidden_size)`, *optional*):
-    868         Sequence of hidden-states at the output of the last layer of the encoder. Used in the cross-attention if
-   (...)
-    887         config.vocab_size - 1]`.
-    888     &quot;&quot;&quot;
---&gt; 890     transformer_outputs = self.transformer(
-    891         input_ids=input_ids,
-    892         past=past,
-    893         attention_mask=attention_mask,
-    894         token_type_ids=token_type_ids,
-    895         position_ids=position_ids,
-    896         head_mask=head_mask,
-    897         inputs_embeds=inputs_embeds,
-    898         encoder_hidden_states=encoder_hidden_states,
-    899         encoder_attention_mask=encoder_attention_mask,
-    900         use_cache=use_cache,
-    901         output_attentions=output_attentions,
-    902         output_hidden_states=output_hidden_states,
-    903         return_dict=return_dict,
-    904         training=training,
-    905     )
-    906     hidden_states = transformer_outputs[0]
-    907     logits = self.transformer.wte(hidden_states, mode=&quot;linear&quot;)
-
-File /opt/conda/lib/python3.8/site-packages/transformers/modeling_tf_utils.py:413, in unpack_inputs.&lt;locals&gt;.run_call_with_unpacked_inputs(self, *args, **kwargs)
-    410     config = self.config
-    412 unpacked_inputs = input_processing(func, config, **fn_args_and_kwargs)
---&gt; 413 return func(self, **unpacked_inputs)
-
-File /opt/conda/lib/python3.8/site-packages/transformers/models/gpt2/modeling_tf_gpt2.py:445, in TFGPT2MainLayer.call(self, input_ids, past, attention_mask, token_type_ids, position_ids, head_mask, inputs_embeds, encoder_hidden_states, encoder_attention_mask, use_cache, output_attentions, output_hidden_states, return_dict, training)
-    442 position_ids = tf.reshape(position_ids, [-1, shape_list(position_ids)[-1]])
-    444 if inputs_embeds is None:
---&gt; 445     inputs_embeds = self.wte(input_ids, mode=&quot;embedding&quot;)
-    447 position_embeds = tf.gather(self.wpe, position_ids)
-    449 if token_type_ids is not None:
-
-File /opt/conda/lib/python3.8/site-packages/transformers/modeling_tf_utils.py:2556, in TFSharedEmbeddings.build(self, input_shape)
-   2551 def build(self, input_shape):
-   2552     &quot;&quot;&quot;
-   2553     Build shared token embedding layer Shared weights logic adapted from
-   2554     https://github.com/tensorflow/models/blob/a009f4fb9d2fc4949e32192a944688925ef78659/official/transformer/v2/embedding_layer.py#L24
-   2555     &quot;&quot;&quot;
--&gt; 2556     self.weight = self.add_weight(
-   2557         &quot;weight&quot;, shape=[self.vocab_size, self.hidden_size], initializer=get_initializer(self.initializer_range)
-   2558     )
-   2559     super().build(input_shape)
-
-ResourceExhaustedError: Exception encountered when calling layer &quot;transformer&quot; (type TFGPT2MainLayer).
-
-OOM when allocating tensor with shape[50257,768] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:TruncatedNormal]
-
-Call arguments received by layer &quot;transformer&quot; (type TFGPT2MainLayer):
-  • input_ids=tf.Tensor(shape=(3, 5), dtype=int32)
-  • past=None
-  • attention_mask=None
-  • token_type_ids=None
-  • position_ids=None
-  • head_mask=None
-  • inputs_embeds=None
-  • encoder_hidden_states=None
-  • encoder_attention_mask=None
-  • use_cache=True
-  • output_attentions=False
-  • output_hidden_states=False
-  • return_dict=True
-  • training=False
+All the layers of TFGPT2LMHeadModel were initialized from the model checkpoint at gpt2.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use TFGPT2LMHeadModel for predictions without further training.
 </pre></div>
 </div>
 </div>
