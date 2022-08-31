@@ -3,6 +3,7 @@
 
 [![PyPI version](https://badge.fury.io/py/ekorpkit.svg)](https://badge.fury.io/py/ekorpkit) [![Jupyter Book Badge](https://jupyterbook.org/badge.svg)](https://entelecheia.github.io/ekorpkit-book/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6497226.svg)](https://doi.org/10.5281/zenodo.6497226)
 
+![library](library.png)
 ## Introduction
 
 eKorpkit provides a flexible interface for NLP and ML research pipelines such as extraction, transformation, tokenization, training, and visualization. Its powerful config composition is backed by [Hydra](https://hydra.cc/).
