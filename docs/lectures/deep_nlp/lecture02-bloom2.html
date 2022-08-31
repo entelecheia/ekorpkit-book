@@ -1,0 +1,1853 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Getting Started with Bloom &#8212; eKorpkit Tutorials</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/ekorpkit.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Language Models I - Recurrent Neural Networks" href="lecture04.html" />
+    <link rel="prev" title="BLOOM" href="lecture02-bloom.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-FN4GFT8HP8"></script>
+<script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){ dataLayer.push(arguments); }
+                    gtag('js', new Date());
+                    gtag('config', 'G-FN4GFT8HP8');
+                </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../_static/ekorpkit.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">eKorpkit Tutorials</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    eKonomic Research Python Toolkit
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Basics
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/index.html">
+   Getting started
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/install.html">
+     Installation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/usage.html">
+     Usage
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/features/index.html">
+   Key features
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/easy_config.html">
+     Easy Configuration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/no_boiler.html">
+     No Boilerplate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/workflows.html">
+     Workflows
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/share.html">
+     Sharable and Reproducible
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/plug.html">
+     Pluggable Architece
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tutorials
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/config/index.html">
+   Configuring ekorpkit
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/config/eKonf.html">
+     Using eKonf class
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/datasets/index.html">
+   Datasets
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/corpus.html">
+     Build and Load Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/datasets/dataset.html">
+     Build and Load Datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/pipeline.html">
+     Corpus task pipelines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/models/index.html">
+   Models
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/models/automl/index.html">
+     Auto ML
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/embeddings/index.html">
+     Word Embeddings
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/embeddings/word2vec_basics.html">
+       Word2Vec Basics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/embeddings/eval_vectors.html">
+       Evaluate pretrained embeddings
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/ngram/index.html">
+     N-Grams
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram.html">
+       N-Grams
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram_for_lexicons.html">
+       N-Gram model for ngram lexicon features
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram_for_words.html">
+       N-Gram model for unigram lexicon features
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/sentiment/index.html">
+     Sentiment Analyers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/lbsa_en.html">
+       Lexicon-based Sentiment Analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/financial_phrasebank_lm.html">
+       Evaluate LM with financial phrasebank
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/sentiment.html">
+       LM Dictionary vs. finbert vs. T5
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/models/transformers/index.html">
+     Transformers
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/art/index.html">
+     AI Art (Text-to-Image)
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/art/disco.html">
+       Disco Diffusion
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/art/dalle-mini.html">
+       DALL·E Mini
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/pipelines/index.html">
+   Pipelines
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/pipelines/pipeline.html">
+     Instantiating pipeline
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/preprocessors/index.html">
+   Preprocessors
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+  <label for="toctree-checkbox-11">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/normalizer/index.html">
+     Normalizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+    <label for="toctree-checkbox-12">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/normalizer/normalizer.html">
+       Normalizers
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/segmenter/index.html">
+     Segmenters
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+    <label for="toctree-checkbox-13">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/segmenter/segmenter.html">
+       Segmenters
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/tokenizer/index.html">
+     Tokenizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/>
+    <label for="toctree-checkbox-14">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/tokenizer/mecab.html">
+       Mecab Tokenizer
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/visualizers/index.html">
+   Visualizers
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/>
+  <label for="toctree-checkbox-15">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/visualizers/plot.html">
+     Plots
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../tutorials/workflow/index.html">
+   Workflows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Datasets
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../corpus/ekorpkot_corpus.html">
+   The eKorpkit Corpus
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Use Cases
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/fomc/index.html">
+   FOMC
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/>
+  <label for="toctree-checkbox-16">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/02_FOMC_numerical_data.html">
+     Preparing Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/03_FOMC_corpus.html">
+     Preparing Textual Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/04_FOMC_EDA_numericals.html">
+     EDA on Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/05_FOMC_features.html">
+     Visualizing Features
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/06_FOMC_AutoML.html">
+     Checking Baseline with AutoML
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/07_FOMC_sentiments.html">
+     Predicting Sentiments of FOMC Corpus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/08_FOMC_EDA_sentiments.html">
+     EDA on Sentiment Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/09_FOMC_AutoML_with_tones.html">
+     Predicting the next decisions with tones
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../usecases/bok/index.html">
+   Bank of Korea
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/edgar/index.html">
+   EDGAR
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" type="checkbox"/>
+  <label for="toctree-checkbox-17">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/edgar/predict_edgar.html">
+     Prediciting Sentiments
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/esg/index.html">
+   ESG
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" type="checkbox"/>
+  <label for="toctree-checkbox-18">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/snorkel.html">
+     Preparing classification datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/econ_news_corpus.html">
+     Building
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       econ_news_kr
+      </span>
+     </code>
+     corpus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/classifiers.html">
+     Training Classifiers for ESG Ratings
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/predict_news.html">
+     Predicting ESG Categories and Polarities
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Research
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../research/esg_topics/analyst.html">
+   ESG Topic Analysis
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Lectures
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../intro_nlp/index.html">
+   Introduction to NLP
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/>
+  <label for="toctree-checkbox-19">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lecture01.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lecture01-2.html">
+     Getting started with ekorpkit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lecture02.html">
+     Morphology
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lecture03.html">
+     Syntax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lecture04.html">
+     Semantics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lecture05.html">
+     Text pre-processing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lecture06.html">
+     Tokenization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lecture07.html">
+     Vector Semantics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lecture09.html">
+     Text Classification I
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lecture10.html">
+     Text Classification II
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lecture11.html">
+     Topic Modeling I
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lecture12.html">
+     Topic Modeling II
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lecture13.html">
+     Word Embeddings I
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lecture14.html">
+     Word Embeddings II
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lecture15.html">
+     Other Topics
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   Deep Learning for NLP
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" type="checkbox"/>
+  <label for="toctree-checkbox-20">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture01.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture02-ekorpkit.html">
+     Getting started with ekorpkit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture02-bloom.html">
+     BLOOM
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Getting Started with Bloom
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture04.html">
+     Language Models I - Recurrent Neural Networks
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture05.html">
+     Language Models II - Transformers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture06.html">
+     Pretraining Language Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture07.html">
+     Fine-tuning Language Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture09.html">
+     Sequence Tagging I - Named Entity Recognition
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture10.html">
+     Sequence Tagging II - Question Answering
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture11.html">
+     Sequence Generation I - Text Summarization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture12.html">
+     Sequence Generation II - Machine Translation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture13.html">
+     Zero-shot Learning I - Text Classification
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture14.html">
+     Zero-shot Learning II - Sequence Tagging
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture15.html">
+     Other Topics
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../aiart/index.html">
+   AI Art (Text-to-Image)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ds/index.html">
+   Data Science for Economics and Finance
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about/index.html">
+   References
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/entelecheia/ekorpkit-book/main?urlpath=tree/ekorpkit-book/docs/lectures/deep_nlp/lecture02-bloom2.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://colab.research.google.com/github/entelecheia/ekorpkit-book/blob/main/ekorpkit-book/docs/lectures/deep_nlp/lecture02-bloom2.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Colab"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../../_static/images/logo_colab.png">
+  </span>
+<span class="headerbtn__text-container">Colab</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/entelecheia/ekorpkit-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/entelecheia/ekorpkit-book/issues/new?title=Issue%20on%20page%20%2Fdocs/lectures/deep_nlp/lecture02-bloom2.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../../_sources/docs/lectures/deep_nlp/lecture02-bloom2.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#transparency-openness-and-inclusivity">
+   Transparency, openness, and inclusivity
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#zero-shot-and-few-shot-learners">
+   Zero Shot and Few Shot Learners
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prompting-on-llms">
+   Prompting on LLMs
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#zero-shot">
+     Zero-shot
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#one-shot">
+     One-shot
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#few-shot">
+     Few-shot
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#zero-shot-reasoners-and-chain-of-thought">
+   Zero Shot Reasoners and Chain-of-Thought
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#decoding-search-strategies">
+   Decoding / search strategies
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#greedy-search">
+     Greedy Search
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#beam-search">
+     Beam search
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sampling">
+     Sampling
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#top-k-sampling">
+     Top-K Sampling
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#decoding-search-strategies-for-better-responses">
+   Decoding / search strategies for better responses
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bloom-examples">
+   Bloom Examples
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Getting Started with Bloom</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#transparency-openness-and-inclusivity">
+   Transparency, openness, and inclusivity
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#zero-shot-and-few-shot-learners">
+   Zero Shot and Few Shot Learners
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prompting-on-llms">
+   Prompting on LLMs
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#zero-shot">
+     Zero-shot
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#one-shot">
+     One-shot
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#few-shot">
+     Few-shot
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#zero-shot-reasoners-and-chain-of-thought">
+   Zero Shot Reasoners and Chain-of-Thought
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#decoding-search-strategies">
+   Decoding / search strategies
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#greedy-search">
+     Greedy Search
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#beam-search">
+     Beam search
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sampling">
+     Sampling
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#top-k-sampling">
+     Top-K Sampling
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#decoding-search-strategies-for-better-responses">
+   Decoding / search strategies for better responses
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bloom-examples">
+   Bloom Examples
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="getting-started-with-bloom">
+<h1>Getting Started with Bloom<a class="headerlink" href="#getting-started-with-bloom" title="Permalink to this headline">#</a></h1>
+<p><img alt="bloom" src="../../../_images/entelecheia_BLOOM.png" /></p>
+<div class="section" id="transparency-openness-and-inclusivity">
+<h2>Transparency, openness, and inclusivity<a class="headerlink" href="#transparency-openness-and-inclusivity" title="Permalink to this headline">#</a></h2>
+<p>While most major LLMs have been trained exclusively on English text, BLOOM’s training corpus includes 46 natural languages and 13 programming languages. This makes it useful for the many regions where English is not the main language.</p>
+<p>BLOOM is also a break from the de facto reliance on big tech to train models. One of the main problems of LLMs is the prohibitive costs of training and tuning them. This hurdle has made 100-billion-parameter LLMs the exclusive domain of big tech companies with deep pockets. Recent years have seen AI labs gravitate toward big tech to gain access to subsidized cloud compute resources and fund their research.</p>
+<p>The BLOOM research team has been completely transparent about the entire process of training the model. They have published the dataset, the meeting notes, discussions, and code, as well as the logs and technical details of training the model.</p>
+</div>
+<div class="section" id="zero-shot-and-few-shot-learners">
+<h2>Zero Shot and Few Shot Learners<a class="headerlink" href="#zero-shot-and-few-shot-learners" title="Permalink to this headline">#</a></h2>
+<p>Large Language Models can show good enough performance for some tasks based on just a few examples.
+These examples are called <code class="docutils literal notranslate"><span class="pre">prompts</span></code> to a language model.</p>
+<p>For clarity, we will define a prompting task as one that requires no fine-tuning to the base language model.
+This is done by inputting some prompts into the language model and asking it to return a response.
+The model does not see any training data for this task and is expected to generalize from these few examples.</p>
+<p>Formatting the examples as input is referred to as <code class="docutils literal notranslate"><span class="pre">prompt</span> <span class="pre">engineering</span></code> and is a process that comes with some trial and error.
+The goal of prompt engineering is to take your prompts and format them in a way, so they are easy to input into the model.</p>
+<p>Language generation based on prompts is a brilliant concept, and it can be done in two ways, mainly - Zero Shot predictions and Few Shot predictions.
+Zero-Shot prediction is where the model is not trained on any data for that specific task, and Few Shot predictions are where the model is trained on a very few amount of data for that specific task.
+In both cases, we need some sort of prompt or seed text to get started with so that the model can generate new text from there.</p>
+<p><img alt="prompt" src="../../../_images/entelecheia_Prompt_Engineering.png" /></p>
+</div>
+<div class="section" id="prompting-on-llms">
+<h2>Prompting on LLMs<a class="headerlink" href="#prompting-on-llms" title="Permalink to this headline">#</a></h2>
+<p>All you need to do is input several examples of your prompts into the <code class="docutils literal notranslate"><span class="pre">generate</span></code> function on either <code class="docutils literal notranslate"><span class="pre">gpt2</span></code> or <code class="docutils literal notranslate"><span class="pre">gpt3</span></code>. You don’t even have to specify what kind of task it is, just give it some example inputs and let it figure out how to generalize from there! The only parameters required are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">text</span></code>, which contains the text you want to be generated for (this should be your prompt set)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">length</span></code>, which specifies how long you want each generated sequence returned by the model</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_return_sequences</span></code>, which specifies how many sequences you want to be returned by the model</p></li>
+</ul>
+<p>In Zero-shot predictions, you mainly pass prompts which give a task description to the LLM to generate text. For example, for zero-shot summarization, you can present a body of text to the LLM along with an instruction for it to follow, like ‘In summary’, or ‘tldr:’, or even ‘To explain to a 5-year-old’.</p>
+<p>In Few-Shot summarization, you can preset a few examples of text &amp; their summary to an LLM. You can then present a text to the model and could expect the summary generated by the model. In other words, you give it a few examples vs. none.
+Language generation based on prompts is a brilliant concept and it is so much simpler than fine-tuning.</p>
+<div class="section" id="zero-shot">
+<h3>Zero-shot<a class="headerlink" href="#zero-shot" title="Permalink to this headline">#</a></h3>
+<p>The model predicts the answer when provided only a description of the task.
+No gradient updates are performed on the model.</p>
+<ul class="simple">
+<li><p>prompt =&gt; Translate English to French: (This is the task description)</p></li>
+<li><p>Cheese =&gt; (this is you prompting the LLM to complete the sentence)</p></li>
+</ul>
+</div>
+<div class="section" id="one-shot">
+<h3>One-shot<a class="headerlink" href="#one-shot" title="Permalink to this headline">#</a></h3>
+<p>In addition to task description, you provide the model with one example of what you are expecting it to produce.</p>
+<ul class="simple">
+<li><p>prompt =&gt; Translate English to French: (Task description for the model)</p></li>
+<li><p>Sea Otter =&gt; loutre de mer (One example for the model to learn from)</p></li>
+<li><p>Cheese =&gt; (providing a prompt to LLM to follow the lead)</p></li>
+</ul>
+</div>
+<div class="section" id="few-shot">
+<h3>Few-shot<a class="headerlink" href="#few-shot" title="Permalink to this headline">#</a></h3>
+<p>On addition to task description, the model is provided with a few examples of the task.</p>
+<ul class="simple">
+<li><p>prompt =&gt; Translate English to French: (Task description for the model)</p></li>
+<li><p>Sea Otter =&gt; loutre de mer (a few examples for the model to learn from)</p></li>
+<li><p>Plush girafe =&gt; girafe poivree</p></li>
+<li><p>Cheese =&gt; (providing a prompt to LLM to follow the lead)</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">pipeline</span>
+
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">pipeline</span><span class="p">(</span><span class="s2">&quot;zero-shot-classification&quot;</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;distilgpt2&quot;</span><span class="p">)</span>
+<span class="n">classifier</span><span class="p">(</span>
+    <span class="s2">&quot;One of the hottest areas of investing in recent years has been ESG&quot;</span><span class="p">,</span>
+    <span class="n">candidate_labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;education&quot;</span><span class="p">,</span> <span class="s2">&quot;politics&quot;</span><span class="p">,</span> <span class="s2">&quot;business&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Some weights of the model checkpoint at distilgpt2 were not used when initializing GPT2ForSequenceClassification: [&#39;lm_head.weight&#39;]
+- This IS expected if you are initializing GPT2ForSequenceClassification from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing GPT2ForSequenceClassification from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Some weights of GPT2ForSequenceClassification were not initialized from the model checkpoint at distilgpt2 and are newly initialized: [&#39;score.weight&#39;]
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Failed to determine &#39;entailment&#39; label id from the label2id mapping in the model config. Setting to -1. Define a descriptive label2id mapping in the model config to ensure correct outputs.
+Using pad_token, but it is not set yet.
+Tokenizer was not supporting padding necessary for zero-shot, attempting to use  `pad_token=eos_token`
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;sequence&#39;: &#39;One of the hottest areas of investing in recent years has been ESG&#39;,
+ &#39;labels&#39;: [&#39;business&#39;, &#39;politics&#39;, &#39;education&#39;],
+ &#39;scores&#39;: [0.37581318616867065, 0.31898653507232666, 0.3052002489566803]}
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="zero-shot-reasoners-and-chain-of-thought">
+<h2>Zero Shot Reasoners and Chain-of-Thought<a class="headerlink" href="#zero-shot-reasoners-and-chain-of-thought" title="Permalink to this headline">#</a></h2>
+<p>The <a class="reference external" href="https://arxiv.org/abs/2205.11916">paper</a> from University of Tokyo and Google Brain team suggests that LLMs have fundamental zero-shot capabilities in high-level broad cognitive tasks and that these capabilities can be extracted by simple Chain-of-Thought (or CoT) prompting.</p>
+<p>Another <a class="reference external" href="https://arxiv.org/abs/2201.11903">paper</a> by Google Brain team has further investigated the CoT prompting. They noted that by generating a chain-of-thought (or a series of intermediate reasoning steps) LLMs significantly improve their ability to perform complex reasoning. Their experiments on three large language models have shown that chain-of-thought prompting improves performance on a range of arithmetic, common sense, and symbolic reasoning tasks.</p>
+<p>One exmaple:</p>
+<ul class="simple">
+<li><p>Q: Roger has 5 tennis balls. He buys 2 more cans of tennis balls. Each can has 3 tennis  balls. How many tennis balls does he have now?</p></li>
+<li><p>A: Roger started with 5 balls. 2 cans of 3 tennis balls each is 6 tennis balls. 5 + 6 = 11. The answer is 11.</p></li>
+</ul>
+<p>Additionally:</p>
+<ul class="simple">
+<li><p>Q: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more, how many apples do they have</p></li>
+<li><p>A: The cafeteria had 23 apples originally. They used 20 to make lunch. So they had 23 - 20 = 3. They bought 6 more apples, so they have 3 + 6 = 9. The answer is 9.</p></li>
+</ul>
+<blockquote>
+<div><p>Chain of thought reasoning allows models to decompose complex problems into intermediate steps that are solved individually. Moreover, the language-based nature of chain of thought makes it applicable to any task that a person could solve via language. We find through empirical experiments that chain of thought prompting can improve performance on various reasoning tasks, and that successful chain of thought reasoning is an emergent property of model scale.</p>
+</div></blockquote>
+</div>
+<div class="section" id="decoding-search-strategies">
+<h2>Decoding / search strategies<a class="headerlink" href="#decoding-search-strategies" title="Permalink to this headline">#</a></h2>
+<p><a class="reference external" href="https://huggingface.co/blog/how-to-generate">How to generate text</a> - using different decoding methods for language generation with Transformers
+by Patrick von Platen (Huggingface)</p>
+<ul class="simple">
+<li><p>In recent years, there has been an increasing interest in open-ended language generation thanks to the rise of LLMs trained on millions of documents, such as GPT2, XLNet, OpenAi-GPT, CTRL, TransfoXL, XLM, Bart, T5, GPT3, and BLOOM.</p></li>
+<li><p>Such models have achieved promising results on several generation tasks, including open-ended dialogue, summarization, and story generation.</p></li>
+<li><p>For these models, better decoding methods have played an important role.</p></li>
+</ul>
+<p>Auto-regressive language generation is based on the assumption that the text being generated can be decomposed into a sequence of subparts.
+Each part is dependent on the previous parts, thus we can use an auto-regressive decoder to generate text one token at a time based on its predecessors.</p>
+<div class="math notranslate nohighlight">
+\[ P(w_{1:T} | W_0 ) = \prod_{t=1}^T P(w_{t} | w_{1: t-1}, W_0) \text{ ,with }  w_{1: 0} = \emptyset, \]</div>
+<blockquote>
+<div><p>\(W_0\) being the initial <em>context</em> word sequence. The length \(T\)
+of the word sequence is usually determined <em>on-the-fly</em> and corresponds
+to the timestep \(t=T\) the EOS token is generated from \(P(w_{t} | w_{1: t-1}, W_{0})\).</p>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">TFGPT2LMHeadModel</span><span class="p">,</span> <span class="n">GPT2Tokenizer</span>
+
+
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">GPT2Tokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;gpt2&quot;</span><span class="p">)</span>
+
+<span class="c1"># add the EOS token as PAD token to avoid warnings</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">TFGPT2LMHeadModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;gpt2&quot;</span><span class="p">,</span> <span class="n">pad_token_id</span><span class="o">=</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token_id</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "bc59a1fdbc1f4e8885c1a4b3549e1403", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "2b8fa97ddf3748fdba824a351c3d9673", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "c85dd2fd3219496d96cc687dadf697b7", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "5439a7b680814159853bd2519fed83c1", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>All model checkpoint layers were used when initializing TFGPT2LMHeadModel.
+
+All the layers of TFGPT2LMHeadModel were initialized from the model checkpoint at gpt2.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use TFGPT2LMHeadModel for predictions without further training.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="greedy-search">
+<h3>Greedy Search<a class="headerlink" href="#greedy-search" title="Permalink to this headline">#</a></h3>
+<p>Greedy search simply selects the word with the highest probability as
+its next word: \(w_t = argmax_{w}P(w | w_{1:t-1})\) at each timestep
+\(t\).</p>
+<p>Starting from the word \(\text{“The”},\) the algorithm greedily chooses
+the next word of highest probability \(\text{“nice”}\) and so on, so
+that the final generated word sequence is \((\text{“The”}, \text{“nice”}, \text{“woman”})\)
+having an overall probability of \(0.5 \times 0.4 = 0.2\).</p>
+<p><img alt="greedy" src="../../../_images/deepnlp_2_greedy_search.png" /></p>
+<ul class="simple">
+<li><p>Generate word sequences using GPT2 on the
+context \((\text{“I”}, \text{“enjoy”}, \text{“studying”}, \text{“deep”}, \text{“learning”}, \text{“for”}, \text{“NLP”})\).</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># encode context the generation is conditioned on</span>
+<span class="n">input_ids</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;I enjoy studying deep learning for NLP&#39;</span><span class="p">,</span>
+                             <span class="n">return_tensors</span><span class="o">=</span><span class="s1">&#39;tf&#39;</span><span class="p">)</span>
+
+<span class="c1"># generate text until the output length (which includes the context length) reaches 50</span>
+<span class="n">greedy_output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="mi">100</span> <span class="o">*</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">greedy_output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Output:
+----------------------------------------------------------------------------------------------------
+I enjoy studying deep learning for NLP, but I&#39;m not sure if I can do it in a way that is as good as the NLP. I&#39;m not sure if I can do it in a way that is as good as the NLP.
+
+I&#39;m not sure if I can do it in a way that is as good as the NLP. I&#39;m not sure if I can do it in a way that is as good as the NLP. I&#39;m not sure
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>The generated words following the context are reasonable, but the model quickly starts repeating itself! This is a very common problem in language generation in general and seems to be even more so in greedy and beam search.</p></li>
+<li><p>The major drawback of greedy search though is that it misses high probability words hidden behind a low probability word as can be seen in our sketch above:</p></li>
+</ul>
+</div>
+<div class="section" id="beam-search">
+<h3>Beam search<a class="headerlink" href="#beam-search" title="Permalink to this headline">#</a></h3>
+<p>Beam search reduces the risk of missing hidden high probability word sequences by keeping the most likely <code class="docutils literal notranslate"><span class="pre">num_beams</span></code> of hypotheses at each time step and eventually choosing the hypothesis that has the overall highest probability.</p>
+<ul class="simple">
+<li><p>Beam search with <code class="docutils literal notranslate"><span class="pre">num_beams=2</span></code>:</p></li>
+<li><p>At time step 1, besides the most likely hypothesis \((\text{“The”}, \text{“nice”})\),
+beam search also keeps track of the second
+most likely one \((\text{“The”}, \text{“dog”})\).</p></li>
+<li><p>At time step 2, beam search finds that the word sequence \((\text{“The”}, \text{“dog”}, \text{“has”})\),
+has with \(0.36\)
+a higher probability than \((\text{“The”}, \text{“nice”}, \text{“woman”})\),
+which has \(0.2\) .</p></li>
+<li><p>It has found the most likely word sequence in our toy example!</p></li>
+<li><p>Beam search will always find an output sequence with higher probability than greedy search, but is not guaranteed to find the most likely output.</p></li>
+</ul>
+<p><img alt="beam" src="../../../_images/deepnlp_2_greedy_search.png" /></p>
+<ul class="simple">
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">num_beams</span> <span class="pre">&gt;</span> <span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">early_stopping=True</span></code> so that generation is finished when all beam hypotheses reached the EOS token</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># activate beam search and early_stopping</span>
+<span class="n">beam_output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
+    <span class="n">input_ids</span><span class="p">,</span>
+    <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">num_beams</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">early_stopping</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="mi">100</span> <span class="o">*</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">beam_output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Output:
+----------------------------------------------------------------------------------------------------
+I enjoy studying deep learning for NLP, but I don&#39;t think it&#39;s the best way to learn NLP. I think it&#39;s the best way to learn NLP. I think it&#39;s the best way to learn NLP. I think it&#39;s the best way to learn NLP. I think it&#39;s the best way to learn NLP. I think it&#39;s the best way to learn NLP. I think it&#39;s the best way to learn NLP. I think it&#39;s
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>While the result is arguably more fluent, the output still includes repetitions of the same word sequences.</p></li>
+<li><p>A simple remedy is to introduce <em>n-grams</em> penalties as introduced by Paulus et al. (2017) and Klein et al. (2017).</p></li>
+<li><p>The most common n-grams penalty makes sure that no <em>n-gram</em> appears twice by manually setting the probability of next words that could create an already seen <em>n-gram</em> to 0.</p></li>
+</ul>
+<ul class="simple">
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">no_repeat_ngram_size=2</span></code> so that no 2-gram appears twice</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set no_repeat_ngram_size to 2</span>
+<span class="n">beam_output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
+    <span class="n">input_ids</span><span class="p">,</span>
+    <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">num_beams</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">no_repeat_ngram_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">early_stopping</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="mi">100</span> <span class="o">*</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">beam_output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Output:
+----------------------------------------------------------------------------------------------------
+I enjoy studying deep learning for NLP, but I don&#39;t think it&#39;s the best way to do it.
+
+In this post, I&#39;m going to show you how you can use Deep Learning to build a neural network that can be used in a variety of applications. The goal is to create a machine learning system that is able to learn from the input data, and then use that data to train the system on the output data. In this case, we&#39;ll be using a simple neural
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>Looks much better! We can see that the repetition does not appear anymore.</p></li>
+<li><p>Nevertheless, <em>n-gram</em> penalties have to be used with care.</p></li>
+<li><p>An article generated about the city <em>New York</em> should not use a <em>2-gram</em> penalty or otherwise, the name of the city would only appear once in the whole text!</p></li>
+</ul>
+<ul class="simple">
+<li><p>We can compare the top beams after generation and choose the generated beam that fits our purpose best.</p></li>
+<li><p>Set the parameter <code class="docutils literal notranslate"><span class="pre">num_return_sequences</span></code> to the number of highest scoring beams that should be returned.</p></li>
+<li><p>Make sure that <code class="docutils literal notranslate"><span class="pre">num_return_sequences</span> <span class="pre">&lt;=</span> <span class="pre">num_beams</span></code>!</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set return_num_sequences &gt; 1</span>
+<span class="n">beam_outputs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
+    <span class="n">input_ids</span><span class="p">,</span>
+    <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">num_beams</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">no_repeat_ngram_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">num_return_sequences</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">early_stopping</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># now we have 3 output sequences</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="mi">100</span> <span class="o">*</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">beam_output</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">beam_outputs</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">beam_output</span><span class="p">,</span> <span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Output:
+----------------------------------------------------------------------------------------------------
+0: I enjoy studying deep learning for NLP, but I don&#39;t think it&#39;s the best way to do it.
+
+In this post, I&#39;m going to show you how you can use Deep Learning to build a neural network that can be used in a variety of applications. The goal is to create a machine learning system that is able to learn from the input data, and then use that data to train the system on the output data. In this case, we&#39;ll be using a simple neural
+1: I enjoy studying deep learning for NLP, but I don&#39;t think it&#39;s the best way to do it.
+
+In this post, I&#39;m going to show you how you can use Deep Learning to build a neural network that can be used in a variety of applications. The goal is to create a machine learning system that is able to learn from the input data, and then use that data to train the system on the output data. In this case, we&#39;ll be using a deep neural
+2: I enjoy studying deep learning for NLP, but I don&#39;t think it&#39;s the best way to do it.
+
+In this post, I&#39;m going to show you how you can use Deep Learning to build a neural network that can be used in a variety of applications. The goal is to create a machine learning system that is able to learn from the input data, and then use that data to train the system on the output data. In this case, we&#39;ll be building a deep neural
+3: I enjoy studying deep learning for NLP, but I don&#39;t think it&#39;s the best way to do it.
+
+In this post, I&#39;m going to show you how you can use Deep Learning to build a neural network that can be used in a variety of applications. The goal is to create a machine learning system that is able to learn from the input data, and then use that data to train the system on the output data. In this case, we&#39;ll be using the neural networks
+4: I enjoy studying deep learning for NLP, but I don&#39;t think it&#39;s the best way to do it.
+
+In this post, I&#39;m going to show you how you can use Deep Learning to build a neural network that can be used in a variety of applications. The goal is to create a machine learning system that is able to learn from the input data, and then use that data to train the system on the output data. In this case, we&#39;ll be using the Deep Neural
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>The five beam hypotheses are only marginally different to each other - which should not be too surprising when using only 5 beams.</p></li>
+</ul>
+<p>In open-ended generation, a couple of reasons have recently been brought
+forward why beam search might not be the best possible option:</p>
+<ul class="simple">
+<li><p>Beam search can work very well in tasks where the length of the desired generation is more or less predictable as in machine translation or summarization.</p></li>
+<li><p>But this is not the case for open-ended generation where the desired output length can vary greatly, e.g. dialog and story generation.</p></li>
+<li><p>We have seen that beam search heavily suffers from repetitive generation.</p></li>
+<li><p>This is especially hard to control with <em>n-gram</em>- or other penalties in story generation since finding a good trade-off between forced “no-repetition” and repeating cycles of identical <em>n-grams</em> requires a lot of finetuning.</p></li>
+<li><p>High quality human language does not follow a distribution of high probability next words.</p></li>
+<li><p>In other words, as humans, we want generated text to surprise us and not to be boring/predictable. <a class="reference external" href="https://arxiv.org/abs/1904.09751">(Ari Holtzman et al., 2019)</a></p></li>
+</ul>
+<p><img alt="beam_vs_human" src="../../../_images/deepnlp_2_beam_vs_human.png" /></p>
+</div>
+<div class="section" id="sampling">
+<h3>Sampling<a class="headerlink" href="#sampling" title="Permalink to this headline">#</a></h3>
+<p>Sampling means randomly picking the next word \(w_t\) according to its conditional probability distribution:</p>
+<div class="math notranslate nohighlight">
+\[ w_t \sim P(w|w_{1:t-1}) \]</div>
+<p>The following graphic visualizes language generation when sampling.</p>
+<p><img alt="sampling" src="../../../_images/deepnlp_2_sampling_search.png" /></p>
+<p>Language generation using sampling is not <em>deterministic</em> anymore.
+The word \((\text{“car”})\) is sampled from the conditioned probability distribution \(P(w | \text{“The”})\), followed by sampling \((\text{“drives”})\) from \(P(w | \text{“The”}, \text{“car”})\) .</p>
+<ul class="simple">
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">do_sample=True</span></code> and deactivate <em>Top-K</em> sampling via <code class="docutils literal notranslate"><span class="pre">top_k=0</span></code>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set seed to reproduce results. Feel free to change the seed though to get different results</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">set_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># activate sampling and deactivate top_k by setting top_k sampling to 0</span>
+<span class="n">sample_output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
+    <span class="n">input_ids</span><span class="p">,</span>
+    <span class="n">do_sample</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">top_k</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="mi">100</span> <span class="o">*</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">sample_output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Output:
+----------------------------------------------------------------------------------------------------
+I enjoy studying deep learning for NLP and geometric singularities within the matrix. It really boosts all visualization to reach newer paradigms.
+
+Future Machine Learning
+
+We think that machine learning is next-generation of image-based image inference and image processing, will enable us to help predict large-scale global and specific markets in deep learning, continue to deploy algorithms for community-based action network AI, and remove the initial bottleneck that appears to cluster high value data too quickly internally to legacy
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>Interesting! The text seems alright - but when taking a closer look, it is not very coherent.</p></li>
+<li><p>Some words don’t sound like they were written by a human.</p></li>
+<li><p>That is the big problem when sampling word sequences: The models often generate incoherent gibberish, <em>cf.</em> <a class="reference external" href="https://arxiv.org/abs/1904.09751">Ari Holtzman et al. (2019)</a>.</p></li>
+<li><p>A trick is to make the distribution \(P(w|w_{1:t-1})\) sharper (increasing the likelihood of high probability words and decreasing the likelihood of low probability words) by lowering the so-called <code class="docutils literal notranslate"><span class="pre">temperature</span></code> of the <a class="reference external" href="https://en.wikipedia.org/wiki/Softmax_function#Smooth_arg_max">softmax</a>.</p></li>
+</ul>
+<p><img alt="temperature" src="../../../_images/deepnlp_2_sampling_search_with_temp.png" /></p>
+<ul class="simple">
+<li><p>The conditional next word distribution of step t=1t=1 becomes much sharper leaving almost no chance for word (“car”) to be selected.</p></li>
+</ul>
+<ul class="simple">
+<li><p>Cool down the distribution in the library by setting <code class="docutils literal notranslate"><span class="pre">temperature=0.7</span></code>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set seed to reproduce results. Feel free to change the seed though to get different results</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">set_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># use temperature to decrease the sensitivity to low probability candidates</span>
+<span class="n">sample_output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
+    <span class="n">input_ids</span><span class="p">,</span>
+    <span class="n">do_sample</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">top_k</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="mi">100</span> <span class="o">*</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">sample_output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Output:
+----------------------------------------------------------------------------------------------------
+I enjoy studying deep learning for NLP, and I often hear similar comments from the people who are interested in NLP. I&#39;ve recently been asked how my NLP training was affected by the NLP training I did in 2015. I&#39;m trying to figure out why.
+
+I would like to share the following:
+
+1. The impact of training on my learning
+
+The main part of my training was to learn a sentence structure to get more sentences. I was given a few
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>There are less weird n-grams and the output is a bit more coherent now.</p></li>
+<li><p>While applying temperature can make a distribution less random, in its limit, when setting <code class="docutils literal notranslate"><span class="pre">temperature</span></code> <span class="math notranslate nohighlight">\(\to 0\)</span>, temperature scaled sampling becomes equal to greedy decoding and will suffer from the same problems as before.</p></li>
+</ul>
+</div>
+<div class="section" id="top-k-sampling">
+<h3>Top-K Sampling<a class="headerlink" href="#top-k-sampling" title="Permalink to this headline">#</a></h3>
+<p>In <em>Top-K</em> sampling, the <em>K</em> most likely next words are filtered and the probability mass is redistributed among only those <em>K</em> next words. GPT2 adopted this sampling scheme, which was one of the reasons for its success in story generation.</p>
+<p><img alt="top_k" src="../../../_images/deepnlp_2_top_k_sampling.png" /></p>
+<ul class="simple">
+<li><p>Having set <span class="math notranslate nohighlight">\(K = 6\)</span>, in both sampling steps we limit our sampling pool to 6 words.</p></li>
+<li><p>While the 6 most likely words, defined as <span class="math notranslate nohighlight">\(V_{\text{top-K}}\)</span> encompass only two-thirds of the whole
+probability mass in the first step, it includes almost all of the probability mass in the second step.</p></li>
+<li><p>Nevertheless, we see that it successfully eliminates the rather weird candidates (“not”, “the”, “small”, “told”) in the second sampling step.</p></li>
+</ul>
+<p>Let’s see how <em>Top-K</em> can be used in the library by setting <code class="docutils literal notranslate"><span class="pre">top_k=50</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set seed to reproduce results. Feel free to change the seed though to get different results</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">set_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># set top_k to 50</span>
+<span class="n">sample_output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
+    <span class="n">input_ids</span><span class="p">,</span>
+    <span class="n">do_sample</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">top_k</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="mi">100</span> <span class="o">*</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">sample_output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Output:
+----------------------------------------------------------------------------------------------------
+I enjoy studying deep learning for NLP tasks at a relatively quick pace – it allows me to focus primarily on an important task. I found myself needing to do several key tasks in order to gain access to many data types and features of my NLP work. Although I would normally not do them, I found it easy as these tasks were very easy to achieve.
+
+One of the key objectives I would like to work on in order to get to a place where my NLP will be as
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>The text is arguably the most <em>human-sounding</em> text so far.</p></li>
+<li><p>One concern with <em>Top-K</em> sampling is that it does not dynamically adapt the number of words that are filtered from the next word probability distribution <span class="math notranslate nohighlight">\(P(w|w_{1:t-1})\)</span>.</p></li>
+<li><p>This can be problematic as some words might be sampled from a very sharp distribution (distribution on the right in the graph above), whereas others from a much more flat distribution (distribution on the left in the graph above).</p></li>
+<li><p>In step <span class="math notranslate nohighlight">\(t=1\)</span>, Top-K eliminates the possibility to sample (“people”,”big”,”house”,”cat”), which seem like reasonable candidates.</p></li>
+<li><p>On the other hand, in step <span class="math notranslate nohighlight">\(t=2\)</span> the method includes the arguably ill-fitted words (“down”,”a”) in the sample pool of words.</p></li>
+<li><p>Thus, limiting the sample pool to a fixed size <span class="math notranslate nohighlight">\(K\)</span> could endanger the model to produce gibberish for sharp distributions and limit the model’s creativity for flat distribution.</p></li>
+<li><p>This intuition led Ari Holtzman et al. (2019) to create <em><strong>Top-p</strong></em>- or <em><strong>nucleus</strong></em>-sampling.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="decoding-search-strategies-for-better-responses">
+<h2>Decoding / search strategies for better responses<a class="headerlink" href="#decoding-search-strategies-for-better-responses" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>Greedy Search</p>
+<ul>
+<li><p>simply chooses the next word at each timestep t+1 that has the highest predicted probability of following the word at t.</p></li>
+<li><p>One of the main issues here is that greedy search will miss words with a high probability at t+1 if it is preceded by a word with a low probability at t.</p></li>
+</ul>
+</li>
+<li><p>Beam Search</p>
+<ul>
+<li><p>keeps track of the n-th (num_beams) most likely word sequences and outputs the most likely sequence.</p></li>
+<li><p>Sounds great, but this method breaks down when the output length can be highly variable — as in the case of open-ended text generation.</p></li>
+<li><p>Both greedy and beam search also produce outputs whose distribution does not align very well with the way humans might perform the same task (i.e. both are liable to produce fairly repetitive, boring text).</p></li>
+</ul>
+</li>
+<li><p>Sampling With Top-k + Top-p</p>
+<ul>
+<li><p>a combination of three methods.</p></li>
+<li><p>By sampling, we mean that the next word is chosen randomly based on its conditional probability distribution (von Platen, 2020).</p></li>
+<li><p>In Top-k, we choose the k most likely words, and then redistribute the probability mass amongst them before the next draw.</p></li>
+<li><p>Top-p adds an additional constraint to top-k, in that we’re choosing from the smallest set of words whose cumulative probability exceed p.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="bloom-examples">
+<h2>Bloom Examples<a class="headerlink" href="#bloom-examples" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+<span class="kn">from</span> <span class="nn">ekorpkit.models.bloom.demo</span> <span class="kn">import</span> <span class="n">BloomDemo</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">demo</span> <span class="o">=</span> <span class="n">BloomDemo</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">demo</span><span class="o">.</span><span class="n">TRANSFORMERS_CACHE</span><span class="p">)</span>
+<span class="n">demo</span><span class="o">.</span><span class="n">init_model</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/workspace/data/tbts/.cache/huggingface/transformers
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "5ee9585d203a4871924e1f9e3f9d710d", "version_major": 2, "version_minor": 0}
+</script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;model/bloom=demo&quot;</span><span class="p">)</span>
+<span class="n">demo</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">demo</span><span class="o">.</span><span class="n">init_model</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prompt</span> <span class="o">=</span> <span class="s2">&quot;One of the hottest areas of investing in recent years has been ESG: &quot;</span>
+<span class="n">promtt</span> <span class="o">+=</span> <span class="s2">&quot;the use of environmental, social, and governance criteria to evaluate possible investments.&quot;</span>
+
+<span class="n">result_length</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<script type="application/vnd.jupyter.widget-state+json">
+{"state": {"0007e9ef13d64435a75f9ac6baf4f7ec": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_52dd93b0f73148be98d6bfe30a5c49f7", "style": "IPY_MODEL_2bef10f1307844249f6fe69227fe439f", "value": " 90.4k/90.4k [00:00&lt;00:00, 168kB/s]"}}, "00a7c42a61df467a92483ea845628ae2": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "02db1ddc2903487bbbcf8229e9b4da75": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_dc18576ac2ee4714b9bb6b0d58aeed0f", "style": "IPY_MODEL_811e0ba515ab4314950653ab21ed86c8", "value": " 126M/6.70G [00:24&lt;05:25, 21.7MB/s]"}}, "03828c87c2f445878aad8aaf0964224f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "049186ed42d94cfe9a7259ecdff50c88": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_4ce93d47236b4a778e8168f75866a860", "IPY_MODEL_6ccba48aae174dddada6d3bbe431b6a3", "IPY_MODEL_cfe813ce480e4f469a62c14b96e89986"], "layout": "IPY_MODEL_333be306be054df7bb2a6d85167baa86"}}, "05684f84900b4906bd835c876abb2ac7": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "05736c4dadc141689a2ea96b3fd2965c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "084d59ca166f4d4ea4b932d2c67511d1": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_bc2e5daa20574ff58930ab6b6c66d794", "IPY_MODEL_8f0c818fc47344f2b5b3dd21947326fa", "IPY_MODEL_291b907abb214588869d83f77b7537f9"], "layout": "IPY_MODEL_a8b3d2f7817f46989ced9490d1c5797c"}}, "0bea8bd7773a42ef83790a816646c3d4": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "128116ff10b54f3da1d7efe51b5761f8": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "15c551d72799491e8939cc994b71e6c6": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "167669b5ae6946faafcb0c7b21f7a5a8": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "18696da9728247e6bd7aefc3e72d86af": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "1c8ae7a46d274d6a95c4d214088690dc": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "1df7c60eb4604fb7bb14346d9d60683c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_03828c87c2f445878aad8aaf0964224f", "style": "IPY_MODEL_a6b11f5b49b940f08891432429cb3dcf", "value": " 66.1M/6.70G [00:41&lt;05:13, 22.8MB/s]"}}, "1eb10cd78d6446c89adf2d6c9fc3ed64": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_71840e3772a94814a92a57b90fff3369", "max": 222, "style": "IPY_MODEL_5eed3475a56c42b98c0d46e232a99380", "value": 222}}, "1f6dfe0e65b942c7b56ee594b330da41": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "25082bbdae6a43a1944a2ceb4d2622e2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "255d5d5edc3043528274d02a54ea8af2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "291b907abb214588869d83f77b7537f9": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_91c6ee085d264b9fa554696b38a7472f", "style": "IPY_MODEL_7fcf8a50dbdf48008e1eff1fd20ef855", "value": " 5.60G/6.70G [04:40&lt;00:52, 22.6MB/s]"}}, "2a1554d16332402ab2982e2d8d40cf15": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "2a50915ea521406a82b481ff38b79ed2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "2b585b55541d4a98b64c3a34fd79ef1c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "2bbdd28d441d4f188016d533d7a08fcc": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "2be2c2727f5548878d959e91088794a2": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "2bef10f1307844249f6fe69227fe439f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "2d485f0538c349968b2124d251d4b36b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "301e42092c914581b521408397a3c6a3": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_4d66e54331864d66a05ba48da6000b93", "IPY_MODEL_edbc9575a03b428c823e9c470d3476ba", "IPY_MODEL_9a4df43081d945d0b8ed196466ae20de"], "layout": "IPY_MODEL_a36dee72bf3b437384c43dfbe3a78d05"}}, "333be306be054df7bb2a6d85167baa86": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "336e4205258e45829195d6929d005e6f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_e082002ae99143ad968b7392caaa0acf", "IPY_MODEL_82cc5b0e38074d9784f5b374d3c16995", "IPY_MODEL_ed20ea0e358040118f63dbac0660ab2b"], "layout": "IPY_MODEL_634c8b26689042a680bf890439d92ffc"}}, "3429865c957744f89de78a0103376043": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "35ab56c8cf124e1ea388aeb6a6bf611f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "39d3192269ef43149e465862dbbf266c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "3a7141f32d84495a94f8dadcbcf397c0": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "3b2dcc3f31294f9fa0193ccd6c3bf62a": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "3b7ce4c8bcce45b3beb219203c4181f6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "3c74373db3654201970d43d6fc541c71": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "3e665fdbf3ca4e8aa2031b71b3236eb2": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "417dc907625b489484bfeac514b6b16e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "42e736027b794134acbdcbdac02e838c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "431186b9bd95428993ebbfb6c0015a34": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "435581952245497396ab61acf3ac7330": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "4547fc46ddbd4db48c50b1fa721aedc3": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_8c1813f121f04b58b15d7ca349edafee", "IPY_MODEL_785b9d9a6efe4bd6b1a842b029fbfe3f", "IPY_MODEL_02db1ddc2903487bbbcf8229e9b4da75"], "layout": "IPY_MODEL_ee5b4f1ef575494e93edc912fa6087a6"}}, "4791a19a20b444ac98c98a6285544140": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "49b10eddcd014a06bc40da4f180882f7": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "4ba6b340d83944ad99e7ffcea3f0cda1": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "4ba976e8eb3e43daab628a92e91357fc": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "4c51149cd9dc4fe4a31bba5f51acb10d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "4ce93d47236b4a778e8168f75866a860": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_cf3b8bb52cb24d87980bcc4fe1e1f74c", "style": "IPY_MODEL_e3614906cbd04988acba01ace74dbad4", "value": "Downloading special_tokens_map.json: 100%"}}, "4d66e54331864d66a05ba48da6000b93": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_05684f84900b4906bd835c876abb2ac7", "style": "IPY_MODEL_431186b9bd95428993ebbfb6c0015a34", "value": "Downloading pytorch_model.bin.index.json: 100%"}}, "4f593f8d13994e54aa25d0d1fd94f112": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_f64b1db0e00b409d923876ad0669e0a7", "IPY_MODEL_6ef446e236c248688ead223ce0adf2bf", "IPY_MODEL_f39b73a8cc194f2f8edeca3a18e53055"], "layout": "IPY_MODEL_9a6bd9f7048c4eec9bf2c4a321082565"}}, "503caa3f560241cba7bef4b198fafa7f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_4ba6b340d83944ad99e7ffcea3f0cda1", "style": "IPY_MODEL_3429865c957744f89de78a0103376043", "value": "Downloading: 100%"}}, "51300b7926f84680be028dd41e31d0ee": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "514ad3a52b684430aa006d48392daa27": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_cacbab415473486f9cbc3bbb9e0340d3", "IPY_MODEL_b2e288c05ea44480b086e9cb3488fc24", "IPY_MODEL_b101bae982d744d9974bf2612da12a02"], "layout": "IPY_MODEL_fbda30ec61cc42ac9da3240ac9b070a6"}}, "52dd93b0f73148be98d6bfe30a5c49f7": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "52f16151dfcb456c825cb3dae442d5ad": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_42e736027b794134acbdcbdac02e838c", "style": "IPY_MODEL_72ea378ae6c9452a82938c6d9ddf2160", "value": "Downloading: 100%"}}, "54d82726a2924d948c54b144e2a7d89c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "5774ac0228ca4a32b1575071b093f650": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "57b5f0bd8e8941fc9dc925ead9198d98": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_789e1e25688445a982f1a69cc941bd74", "max": 92568, "style": "IPY_MODEL_989c282496904f628e3cdaea7595fa70", "value": 92568}}, "588738651d714523932552dc8332e1fd": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_75308d7b88284f6b978a0982a287b203", "style": "IPY_MODEL_8eb4582896c34c1f96406c860ba7bc14", "value": " 99.7M/6.70G [06:51&lt;05:14, 22.5MB/s]"}}, "5b33285cce0e49df9a7a7fe197871513": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_8433364da70740adac53b59954dab93e", "style": "IPY_MODEL_417dc907625b489484bfeac514b6b16e", "value": "Downloading pytorch_model_00001-of-00072.bin:   1%"}}, "5bffd62e9df74bc092e0000412567f8e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_8c80a319e3304a11b77eba302b51a42f", "IPY_MODEL_c811e8bf2d074cb38762b2593b0f38a8", "IPY_MODEL_0007e9ef13d64435a75f9ac6baf4f7ec"], "layout": "IPY_MODEL_7cb653e50ef84102adc221a3433189d9"}}, "5e3dd821bef34f69b90df0ab3966f883": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_bc670f08059e4214831a7695ad5ee4bb", "style": "IPY_MODEL_632f60a0742647349a9c5295d101a10b", "value": "Downloading tokenizer_config.json: 100%"}}, "5e757c41f48f479db278668a5ed0d9dc": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "5ee9585d203a4871924e1f9e3f9d710d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_52f16151dfcb456c825cb3dae442d5ad", "IPY_MODEL_57b5f0bd8e8941fc9dc925ead9198d98", "IPY_MODEL_c7c614834f8149bea48ba010897358ab"], "layout": "IPY_MODEL_639a65d9264a448fb7a742e6919c5b7c"}}, "5eed3475a56c42b98c0d46e232a99380": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "614ddb6fd7af407d939448a6baeb3b25": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "632f60a0742647349a9c5295d101a10b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "634c8b26689042a680bf890439d92ffc": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "639a65d9264a448fb7a742e6919c5b7c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "68febe5ca93b496eb1131f602520e885": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_5b33285cce0e49df9a7a7fe197871513", "IPY_MODEL_e3255c2cb1a74bddae1b0954a8a87e77", "IPY_MODEL_1df7c60eb4604fb7bb14346d9d60683c"], "layout": "IPY_MODEL_15c551d72799491e8939cc994b71e6c6"}}, "6a16627ddbe84047af82a82eab0d6725": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_bc353301f82949ba9ee3a1f27529e039", "style": "IPY_MODEL_f9e325431df049be855ba5cbfd61b4e0", "value": " 68.3M/6.70G [00:20&lt;05:30, 21.5MB/s]"}}, "6a4d9c306b394bc693943a46fbb135fd": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "6b0feb496e914d45b94e4153862da161": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_d594c19ddc194b7cb92f50a569636d04", "style": "IPY_MODEL_f7c0ff48b0054f44b1f73b23b42929ba", "value": " 163M/6.70G [00:22&lt;05:06, 22.9MB/s]"}}, "6ccba48aae174dddada6d3bbe431b6a3": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_49b10eddcd014a06bc40da4f180882f7", "max": 85, "style": "IPY_MODEL_3b7ce4c8bcce45b3beb219203c4181f6", "value": 85}}, "6ea9ede1f0504343b1b88002739dcaef": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "6ef446e236c248688ead223ce0adf2bf": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_fc093097005f4262895b079a6be2db8c", "max": 63701, "style": "IPY_MODEL_d2b0d2cdef5e42a0a7f274a419045f96", "value": 63701}}, "717cb4a2b94d43cb946e1067404bf633": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_98a813c72978467bb876ec0685d166d9", "IPY_MODEL_c971eec8a5b24bc488e6f8f29fb38605", "IPY_MODEL_6a16627ddbe84047af82a82eab0d6725"], "layout": "IPY_MODEL_6ea9ede1f0504343b1b88002739dcaef"}}, "71840e3772a94814a92a57b90fff3369": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "72ea378ae6c9452a82938c6d9ddf2160": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "75308d7b88284f6b978a0982a287b203": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "75e0f19b3abf49049d0098fc5eb8fa42": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "75e9db04d1434a899673066bc893c973": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_8fc16263fdf742ab8015d982f086a22a", "style": "IPY_MODEL_e78f7cfd5e6b4393a4bd52bfd91c0cd9", "value": " 90.4k/90.4k [00:00&lt;00:00, 105kB/s]"}}, "785b9d9a6efe4bd6b1a842b029fbfe3f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_18696da9728247e6bd7aefc3e72d86af", "max": 7193290147, "style": "IPY_MODEL_d1abad7f75af411bad0fc7324a2d6313", "value": 132189184}}, "789e1e25688445a982f1a69cc941bd74": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "78c17d0ea69b48ed925e8b0ab59df178": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_3c74373db3654201970d43d6fc541c71", "style": "IPY_MODEL_2a50915ea521406a82b481ff38b79ed2", "value": "Downloading pytorch_model_00001-of-00072.bin:   2%"}}, "7be14acfbe8a4e4b81de9eedae5e5e99": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_5e3dd821bef34f69b90df0ab3966f883", "IPY_MODEL_1eb10cd78d6446c89adf2d6c9fc3ed64", "IPY_MODEL_f635c00a05d746c0a37c2a22608d9cc6"], "layout": "IPY_MODEL_e57cd74666e44d098e983319170f76bd"}}, "7c429975848b42009dceefe5400b89a1": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_98565f41b47a48d48b86ccbe5f6bb8c8", "style": "IPY_MODEL_eaaaf93a61d24042b3276e763a5300ff", "value": " 568/568 [00:00&lt;00:00, 34.8kB/s]"}}, "7cb653e50ef84102adc221a3433189d9": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "7fcf8a50dbdf48008e1eff1fd20ef855": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "811e0ba515ab4314950653ab21ed86c8": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "82405802a6074a5c9b114c70f4374bb6": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "82cc5b0e38074d9784f5b374d3c16995": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "danger", "layout": "IPY_MODEL_6a4d9c306b394bc693943a46fbb135fd", "max": 7193290147, "style": "IPY_MODEL_54d82726a2924d948c54b144e2a7d89c", "value": 162958336}}, "8433364da70740adac53b59954dab93e": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "84bbee6cec4e462f9a51693f444fa955": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "854766c3110046039efc97d1547ace58": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_4ba976e8eb3e43daab628a92e91357fc", "max": 568, "style": "IPY_MODEL_9c85c520b62845418536863b5aa57d2c", "value": 568}}, "872c8c776b4e420ebdc557e58464e409": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "8a4fc71df7b44b7db78de0f7c004320c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "8a73e87f6df34d52a43059a01f5eab5e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_c3b874aab18445a3b7b5595a5f7df6ed", "IPY_MODEL_854766c3110046039efc97d1547ace58", "IPY_MODEL_cdb9f43738324248abdf8e80482ff4b6"], "layout": "IPY_MODEL_be3dfb25663d46be8058ecf949556b85"}}, "8c1813f121f04b58b15d7ca349edafee": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_167669b5ae6946faafcb0c7b21f7a5a8", "style": "IPY_MODEL_3a7141f32d84495a94f8dadcbcf397c0", "value": "Downloading pytorch_model_00001-of-00072.bin:   2%"}}, "8c5e043b598b41c2a47bd8a185bcbe63": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "8c80a319e3304a11b77eba302b51a42f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_de4f934014d4475e9659b82105920e86", "style": "IPY_MODEL_255d5d5edc3043528274d02a54ea8af2", "value": "Downloading: 100%"}}, "8d8e2b7af99f476088de10969cf5afa6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_dab8bd0e54804ed2964e03e0bf7f46c6", "IPY_MODEL_df0cd099621b4155aa66a9c6feae656b", "IPY_MODEL_7c429975848b42009dceefe5400b89a1"], "layout": "IPY_MODEL_da0e46cf6bdf417caef090bb59812a8b"}}, "8eb4582896c34c1f96406c860ba7bc14": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "8ec28a8cdc0a4263b3f285d669deeeaa": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "8f0c818fc47344f2b5b3dd21947326fa": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_da94f3c500be4999bedd1d4c7837b62e", "max": 7193290147, "style": "IPY_MODEL_84bbee6cec4e462f9a51693f444fa955", "value": 6009051136}}, "8fc16263fdf742ab8015d982f086a22a": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "90e058b83f694cb7b1e430cb8ba60772": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_78c17d0ea69b48ed925e8b0ab59df178", "IPY_MODEL_eed1232419904990b3b5d1bfc6deab8c", "IPY_MODEL_6b0feb496e914d45b94e4153862da161"], "layout": "IPY_MODEL_39d3192269ef43149e465862dbbf266c"}}, "9150c0dc08e04954baf0040ede597b6d": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "91c6ee085d264b9fa554696b38a7472f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "93c798fed06e436490ef522bc32a9272": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "93e15dbd1f824745b228f881d62d7a03": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_503caa3f560241cba7bef4b198fafa7f", "IPY_MODEL_ca1f05a69c0f49dda95cc749f53f2f94", "IPY_MODEL_75e9db04d1434a899673066bc893c973"], "layout": "IPY_MODEL_2a1554d16332402ab2982e2d8d40cf15"}}, "9620386e3a4048199e1d1e0bf649e693": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "98565f41b47a48d48b86ccbe5f6bb8c8": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "989c282496904f628e3cdaea7595fa70": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "98a813c72978467bb876ec0685d166d9": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_daebae1f915644c1b0918d8eae1e673e", "style": "IPY_MODEL_1f6dfe0e65b942c7b56ee594b330da41", "value": "Downloading pytorch_model_00001-of-00072.bin:   1%"}}, "9a4df43081d945d0b8ed196466ae20de": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_82405802a6074a5c9b114c70f4374bb6", "style": "IPY_MODEL_2b585b55541d4a98b64c3a34fd79ef1c", "value": " 62.2k/62.2k [00:00&lt;00:00, 109kB/s]"}}, "9a6bd9f7048c4eec9bf2c4a321082565": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "9c85c520b62845418536863b5aa57d2c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "9ea66902cae045e78d0b5d8d5597bdf3": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "a36dee72bf3b437384c43dfbe3a78d05": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "a6b11f5b49b940f08891432429cb3dcf": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "a8b3d2f7817f46989ced9490d1c5797c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "a9fedff0b2204873b7de765d0fc19d34": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "ab7a7b2fd97f46f4815a46fef04e6c2c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "ac689d6f6112494da1eea57204942b52": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "b101bae982d744d9974bf2612da12a02": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_ac689d6f6112494da1eea57204942b52", "style": "IPY_MODEL_51300b7926f84680be028dd41e31d0ee", "value": " 13.8M/13.8M [00:00&lt;00:00, 56.9MB/s]"}}, "b2e288c05ea44480b086e9cb3488fc24": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_3b2dcc3f31294f9fa0193ccd6c3bf62a", "max": 14500438, "style": "IPY_MODEL_df35d7e00b2841e38c5498f42ba5e78b", "value": 14500438}}, "bc2e5daa20574ff58930ab6b6c66d794": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_435581952245497396ab61acf3ac7330", "style": "IPY_MODEL_05736c4dadc141689a2ea96b3fd2965c", "value": "Downloading pytorch_model_00001-of-00072.bin:  84%"}}, "bc353301f82949ba9ee3a1f27529e039": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "bc670f08059e4214831a7695ad5ee4bb": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "be3dfb25663d46be8058ecf949556b85": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "be5f2bc864f548faa89218da3650c474": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "be98cf4db0714332ae57f2165695579d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "c3b874aab18445a3b7b5595a5f7df6ed": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_d47c5aca05e54e45b1a6fd792a1d24b0", "style": "IPY_MODEL_2bbdd28d441d4f188016d533d7a08fcc", "value": "Downloading config.json: 100%"}}, "c6bfab214f48415c9816cdce63f5e5ee": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "c7c614834f8149bea48ba010897358ab": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_128116ff10b54f3da1d7efe51b5761f8", "style": "IPY_MODEL_f743ab34fe314b8a9d4e6d590e645b26", "value": " 90.4k/90.4k [00:00&lt;00:00, 74.8kB/s]"}}, "c811e8bf2d074cb38762b2593b0f38a8": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_9150c0dc08e04954baf0040ede597b6d", "max": 92568, "style": "IPY_MODEL_0bea8bd7773a42ef83790a816646c3d4", "value": 92568}}, "c971eec8a5b24bc488e6f8f29fb38605": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_5e757c41f48f479db278668a5ed0d9dc", "max": 7193290147, "style": "IPY_MODEL_93c798fed06e436490ef522bc32a9272", "value": 71576576}}, "ca1f05a69c0f49dda95cc749f53f2f94": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_2be2c2727f5548878d959e91088794a2", "max": 92568, "style": "IPY_MODEL_be98cf4db0714332ae57f2165695579d", "value": 92568}}, "ca35e145455e4b99874830dde49c3f4d": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "cacbab415473486f9cbc3bbb9e0340d3": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_9620386e3a4048199e1d1e0bf649e693", "style": "IPY_MODEL_8c5e043b598b41c2a47bd8a185bcbe63", "value": "Downloading tokenizer.json: 100%"}}, "cb01b78953724b4cbd32792c0da1ffc8": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "danger", "layout": "IPY_MODEL_4791a19a20b444ac98c98a6285544140", "max": 7193290147, "style": "IPY_MODEL_25082bbdae6a43a1944a2ceb4d2622e2", "value": 104550400}}, "cdaf8c71f2644559a38d7afec3348f94": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_f948765b124545db83e20e2c9b0db6e6", "IPY_MODEL_cb01b78953724b4cbd32792c0da1ffc8", "IPY_MODEL_588738651d714523932552dc8332e1fd"], "layout": "IPY_MODEL_dc3e54c07ecd4b4f981c8e830c1ecddb"}}, "cdb9f43738324248abdf8e80482ff4b6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_e14d1c1e1cd84341a78a11a6a1b0d69e", "style": "IPY_MODEL_8a4fc71df7b44b7db78de0f7c004320c", "value": " 568/568 [00:00&lt;00:00, 31.1kB/s]"}}, "cf3b8bb52cb24d87980bcc4fe1e1f74c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "cfe813ce480e4f469a62c14b96e89986": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_eecd2659a30d481f82dc59d4cfb82a37", "style": "IPY_MODEL_1c8ae7a46d274d6a95c4d214088690dc", "value": " 85.0/85.0 [00:00&lt;00:00, 5.44kB/s]"}}, "d1abad7f75af411bad0fc7324a2d6313": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "d2b0d2cdef5e42a0a7f274a419045f96": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "d47c5aca05e54e45b1a6fd792a1d24b0": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "d594c19ddc194b7cb92f50a569636d04": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "da0e46cf6bdf417caef090bb59812a8b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "da94f3c500be4999bedd1d4c7837b62e": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "dab8bd0e54804ed2964e03e0bf7f46c6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_00a7c42a61df467a92483ea845628ae2", "style": "IPY_MODEL_c6bfab214f48415c9816cdce63f5e5ee", "value": "Downloading config.json: 100%"}}, "dac79f9c9db844e2b5c0b4ee2b74afb5": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "daebae1f915644c1b0918d8eae1e673e": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "dc18576ac2ee4714b9bb6b0d58aeed0f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "dc3e54c07ecd4b4f981c8e830c1ecddb": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "de2a95e8d7d947cfa68d33014981b7d9": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "de4f934014d4475e9659b82105920e86": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "df0cd099621b4155aa66a9c6feae656b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_dac79f9c9db844e2b5c0b4ee2b74afb5", "max": 568, "style": "IPY_MODEL_2d485f0538c349968b2124d251d4b36b", "value": 568}}, "df35d7e00b2841e38c5498f42ba5e78b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "e082002ae99143ad968b7392caaa0acf": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_614ddb6fd7af407d939448a6baeb3b25", "style": "IPY_MODEL_ab7a7b2fd97f46f4815a46fef04e6c2c", "value": "Downloading pytorch_model_00001-of-00072.bin:   2%"}}, "e14d1c1e1cd84341a78a11a6a1b0d69e": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "e3255c2cb1a74bddae1b0954a8a87e77": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "danger", "layout": "IPY_MODEL_be5f2bc864f548faa89218da3650c474", "max": 7193290147, "style": "IPY_MODEL_9ea66902cae045e78d0b5d8d5597bdf3", "value": 69310464}}, "e3614906cbd04988acba01ace74dbad4": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "e57cd74666e44d098e983319170f76bd": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "e62e0f07f4c14418a0cd162c477be7c5": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "e78f7cfd5e6b4393a4bd52bfd91c0cd9": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "eaaaf93a61d24042b3276e763a5300ff": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "ed20ea0e358040118f63dbac0660ab2b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_872c8c776b4e420ebdc557e58464e409", "style": "IPY_MODEL_8ec28a8cdc0a4263b3f285d669deeeaa", "value": " 155M/6.70G [03:22&lt;08:30, 13.8MB/s]"}}, "edbc9575a03b428c823e9c470d3476ba": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_5774ac0228ca4a32b1575071b093f650", "max": 63701, "style": "IPY_MODEL_fe1cf438a485476ea4e9322ddefcfa43", "value": 63701}}, "ee5b4f1ef575494e93edc912fa6087a6": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "eecd2659a30d481f82dc59d4cfb82a37": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "eed1232419904990b3b5d1bfc6deab8c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_3e665fdbf3ca4e8aa2031b71b3236eb2", "max": 7193290147, "style": "IPY_MODEL_4c51149cd9dc4fe4a31bba5f51acb10d", "value": 170480640}}, "efceec34a7b24ee6b82c48f34196a79c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "f39b73a8cc194f2f8edeca3a18e53055": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_ca35e145455e4b99874830dde49c3f4d", "style": "IPY_MODEL_f840e1e8da7c4d3da371faa9d459d4d8", "value": " 62.2k/62.2k [00:00&lt;00:00, 160kB/s]"}}, "f635c00a05d746c0a37c2a22608d9cc6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_de2a95e8d7d947cfa68d33014981b7d9", "style": "IPY_MODEL_a9fedff0b2204873b7de765d0fc19d34", "value": " 222/222 [00:00&lt;00:00, 13.1kB/s]"}}, "f64b1db0e00b409d923876ad0669e0a7": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_e62e0f07f4c14418a0cd162c477be7c5", "style": "IPY_MODEL_35ab56c8cf124e1ea388aeb6a6bf611f", "value": "Downloading pytorch_model.bin.index.json: 100%"}}, "f743ab34fe314b8a9d4e6d590e645b26": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "f7c0ff48b0054f44b1f73b23b42929ba": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "f840e1e8da7c4d3da371faa9d459d4d8": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "f948765b124545db83e20e2c9b0db6e6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_efceec34a7b24ee6b82c48f34196a79c", "style": "IPY_MODEL_75e0f19b3abf49049d0098fc5eb8fa42", "value": "Downloading pytorch_model_00001-of-00072.bin:   1%"}}, "f9e325431df049be855ba5cbfd61b4e0": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "fbda30ec61cc42ac9da3240ac9b070a6": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "fc093097005f4262895b079a6be2db8c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "fe1cf438a485476ea4e9322ddefcfa43": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}}, "version_major": 2, "version_minor": 0}
+</script>
+
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./docs/lectures/deep_nlp"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="lecture02-bloom.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">BLOOM</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="lecture04.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Language Models I - Recurrent Neural Networks</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Young Joon Lee<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
