@@ -50,6 +50,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Data Science for Economics and Finance" href="../ds/index.html" />
@@ -1111,11 +1113,6 @@ title="Print to PDF"
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#a-latent-space">
-       A latent space
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#autoencoders">
        Autoencoders
       </a>
@@ -1133,6 +1130,11 @@ title="Print to PDF"
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#uncertainty-in-the-posterior">
        Uncertainty in the Posterior
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#decoder">
+       Decoder
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
@@ -1238,11 +1240,6 @@ title="Print to PDF"
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#a-latent-space">
-       A latent space
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#autoencoders">
        Autoencoders
       </a>
@@ -1260,6 +1257,11 @@ title="Print to PDF"
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#uncertainty-in-the-posterior">
        Uncertainty in the Posterior
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#decoder">
+       Decoder
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
@@ -1399,30 +1401,70 @@ title="Print to PDF"
 <div class="section" id="vq-vae">
 <h4>VQ-VAE<a class="headerlink" href="#vq-vae" title="Permalink to this headline">#</a></h4>
 <p><img alt="vqvae" src="../../../_images/aiart_1_dalle1_vqvae.png" /></p>
-</div>
-<div class="section" id="a-latent-space">
-<h4>A latent space<a class="headerlink" href="#a-latent-space" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p>VQ-VAE is a type of variational autoencoder that uses vector quantization to obtain a discrete latent representation.</p></li>
+<li><p>This is in contrast to the continuous latent space that other variational autoencoders have.</p></li>
+<li><p>The objective function of a VQ-VAE, when trained on an image dataset, can be written as:
+$<span class="math notranslate nohighlight">\(\mathcal{L} = \mathbb{E}_{q(z|x)}[\log p(x|z)] - \beta \cdot D_{KL}[q(z|x) || p(z)]\)</span><span class="math notranslate nohighlight">\(
+where \)</span>p(x)<span class="math notranslate nohighlight">\( is the data distribution, \)</span>q<span class="math notranslate nohighlight">\( is the approximate posterior over latent variables and \)</span>D_{KL}$ denotes the Kullback-Leibler divergence.</p></li>
+<li><p>This objective function encourages the model to learn an efficient codebook that minimises reconstruction error while also matching the prior distribution over codes.</p></li>
+</ul>
+<p><strong>A latent space</strong></p>
+<p>A latent space is obtained by encoding the input image into the nearest codebook entry. This process is called vector quantization and results in a discrete latent space.</p>
 <p><img alt="latent" src="../../../_images/aiart_1_dalle1_latent.png" /></p>
 </div>
 <div class="section" id="autoencoders">
 <h4>Autoencoders<a class="headerlink" href="#autoencoders" title="Permalink to this headline">#</a></h4>
 <p><img alt="autoencoder" src="../../../_images/aiart_1_dalle1_autoencoder.png" /></p>
+<ul class="simple">
+<li><p>Autoencoder is a neural network that is trained to predict its input.</p></li>
+<li><p>The objective function of an autoencoder can be written as:
+$<span class="math notranslate nohighlight">\(\mathcal{L} = \mathbb{E}_{p(x)}[\log p(x|z)]\)</span><span class="math notranslate nohighlight">\(
+where \)</span>p(x)<span class="math notranslate nohighlight">\( is the data distribution and \)</span>p(x|z)$ is the model distribution.</p></li>
+<li><p>This objective function encourages the model to learn a latent space that captures the underlying structure of the data.</p></li>
+<li><p>A VQ-VAE can be seen as a type of autoencoder where the latent space is constrained to be discrete.</p></li>
+</ul>
 </div>
 <div class="section" id="variational-autoencoders-vae">
 <h4>Variational Autoencoders (VAE)<a class="headerlink" href="#variational-autoencoders-vae" title="Permalink to this headline">#</a></h4>
 <p><img alt="vae" src="../../../_images/aiart_1_dalle1_vae.png" /></p>
+<ul class="simple">
+<li><p>Variational Autoencoders (VAE) is a type of autoencoder where the latent space is continuous.</p></li>
+<li><p>The objective function of a VAE can be written as:
+$<span class="math notranslate nohighlight">\(\mathcal{L} = \mathbb{E}_{q(z|x)}[\log p(x|z)] - D_{KL}[q(z|x) || p(z)]\)</span><span class="math notranslate nohighlight">\(
+where \)</span>p(x)<span class="math notranslate nohighlight">\( is the data distribution, \)</span>q<span class="math notranslate nohighlight">\( is the approximate posterior over latent variables and \)</span>D_{KL}$ denotes the Kullback-Leibler divergence.</p></li>
+<li><p>This objective function encourages the model to learn a latent space that captures the underlying structure of the data while also matching the prior distribution over latent variables.</p></li>
+</ul>
 </div>
 <div class="section" id="discrete-spaces">
 <h4>Discrete Spaces<a class="headerlink" href="#discrete-spaces" title="Permalink to this headline">#</a></h4>
 <p><img alt="discrete" src="../../../_images/aiart_1_dalle1_discrete.png" /></p>
+<ul class="simple">
+<li><p>Discrete spaces are more efficient to represent than continuous spaces.</p></li>
+<li><p>This is because a discrete space can be represented with a finite number of bits, whereas a continuous space requires an infinite number of bits.</p></li>
+<li><p>In addition, discrete spaces are easier to manipulate and reason about than continuous spaces.</p></li>
+<li><p>For these reasons, VQ-VAE is more efficient than VAE at learning latent representations of data.</p></li>
+</ul>
 </div>
 <div class="section" id="uncertainty-in-the-posterior">
 <h4>Uncertainty in the Posterior<a class="headerlink" href="#uncertainty-in-the-posterior" title="Permalink to this headline">#</a></h4>
 <p><img alt="uncetainty1" src="../../../_images/aiart_1_dalle1_uncetainty1.png" /></p>
 <p><strong>Uncertainty in the Posterior</strong></p>
 <p><img alt="uncetainty2" src="../../../_images/aiart_1_dalle1_uncetainty2.png" /></p>
+<ul class="simple">
+<li><p>Uncertainty in the posterior is added by soft-sampling codebook vectors from the Gumbel-Softmax distribution.</p></li>
+<li><p>This results in a softened latent space which can be seen as a continuous approximation of the discrete latent space.</p></li>
+<li><p>The Gumbel-Softmax distribution is a type of distribution that allows for sampling from a discrete space while still allowing for gradients to flow through the samples.</p></li>
+<li><p>This is useful for training models with discrete latent spaces, such as VQ-VAE.</p></li>
+<li><p>The Gumbel-Softmax distribution is defined as:
+$<span class="math notranslate nohighlight">\(G(z;\mu,\beta) = \frac{\exp((z - \mu)/\beta)}{\sum_{k=1}^K \exp((z_k - \mu)/\beta)}\)</span><span class="math notranslate nohighlight">\(
+where \)</span>\mu<span class="math notranslate nohighlight">\( is the mean, \)</span>\beta<span class="math notranslate nohighlight">\( is the temperature and \)</span>K$ is the number of classes.</p></li>
+</ul>
 <p><strong>Comparison of original images (top) and reconstructions from the dVAE (bottom)</strong></p>
 <p><img alt="dvae" src="../../../_images/aiart_1_dalle1_dvae.png" /></p>
+</div>
+<div class="section" id="decoder">
+<h4>Decoder<a class="headerlink" href="#decoder" title="Permalink to this headline">#</a></h4>
 <p>A GPT-3 like transformer decoder consumes a sequence of text tokens and (optional) image tokens (here a single image token with id 42) and produces a continuation of an image (here the next image token with id 1369)</p>
 <p><img alt="decoder" src="../../../_images/aiart_1_dalle1_decoder.png" /></p>
 </div>
