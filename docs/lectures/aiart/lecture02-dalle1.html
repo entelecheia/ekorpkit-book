@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Art (Text-to-Image) &#8212; eKorpkit Tutorials</title>
+    <title>DALL·E 1 &#8212; eKorpkit Tutorials</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -50,10 +50,12 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Introduction" href="lecture01.html" />
-    <link rel="prev" title="What is BLOOM?" href="../deep_nlp/lecture02-bloom.html" />
+    <link rel="next" title="Data Science for Economics and Finance" href="../ds/index.html" />
+    <link rel="prev" title="Introduction" href="lecture01.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -669,7 +671,7 @@ const thebe_selector_output = ".output, .cell_output"
   </ul>
  </li>
  <li class="toctree-l1 current active has-children">
-  <a class="current reference internal" href="#">
+  <a class="reference internal" href="index.html">
    AI Art (Text-to-Image)
   </a>
   <input checked="" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" type="checkbox"/>
@@ -677,14 +679,14 @@ const thebe_selector_output = ".output, .cell_output"
    <i class="fas fa-chevron-down">
    </i>
   </label>
-  <ul>
+  <ul class="current">
    <li class="toctree-l2">
     <a class="reference internal" href="lecture01.html">
      Introduction
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="lecture02-dalle1.html">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
      DALL·E 1
     </a>
    </li>
@@ -766,7 +768,7 @@ title="Toggle navigation"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://mybinder.org/v2/gh/entelecheia/ekorpkit-book/main?urlpath=tree/ekorpkit-book/docs/lectures/aiart/index.ipynb"
+        <a href="https://mybinder.org/v2/gh/entelecheia/ekorpkit-book/main?urlpath=tree/ekorpkit-book/docs/lectures/aiart/lecture02-dalle1.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -784,7 +786,7 @@ title="Launch on Binder"
       </li>
       
       <li>
-        <a href="https://colab.research.google.com/github/entelecheia/ekorpkit-book/blob/main/ekorpkit-book/docs/lectures/aiart/index.ipynb"
+        <a href="https://colab.research.google.com/github/entelecheia/ekorpkit-book/blob/main/ekorpkit-book/docs/lectures/aiart/lecture02-dalle1.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -844,7 +846,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://github.com/entelecheia/ekorpkit-book/issues/new?title=Issue%20on%20page%20%2Fdocs/lectures/aiart/index.html&body=Your%20issue%20content%20here."
+        <a href="https://github.com/entelecheia/ekorpkit-book/issues/new?title=Issue%20on%20page%20%2Fdocs/lectures/aiart/lecture02-dalle1.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -872,7 +874,7 @@ title="Open an issue"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="../../../_sources/docs/lectures/aiart/index.ipynb"
+        <a href="../../../_sources/docs/lectures/aiart/lecture02-dalle1.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -932,40 +934,84 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#course-description">
-   📜 Course Description
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#learning-goals">
-   ♾️ Learning Goals
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#term-project">
-   🧠 Term Project
+  <a class="reference internal nav-link" href="#dalle-1-charateristics">
+   DALL·E 1 Charateristics
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#project-proposal">
-     Project Proposal
+    <a class="reference internal nav-link" href="#controlling-attributes">
+     Controlling Attributes
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#drawing-multiple-objects">
+     Drawing Multiple Objects
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#visualizing-perspective-and-three-dimensionality">
+     Visualizing Perspective and Three-Dimensionality
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#visualizing-internal-and-external-structure">
+     Visualizing Internal and External Structure
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#inferring-contextual-details">
+     Inferring Contextual Details
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#lecture-notes">
-   📒 Lecture Notes
+  <a class="reference internal nav-link" href="#dalle-1-architecture">
+   DALL·E 1 Architecture
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#vq-vae">
+     VQ-VAE
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#autoencoders">
+     Autoencoders
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#variational-autoencoders-vae">
+       Variational Autoencoders (VAE)
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#discrete-spaces">
+     Discrete Spaces
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#uncertainty-in-the-posterior">
+     Uncertainty in the Posterior
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#decoder">
+     Decoder
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sampling-from-a-trained-dall-e">
+     Sampling From a Trained DALL-E
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#course-schedule">
-   Course Schedule
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#table-of-contents">
-   🗓️ Table of Contents
+  <a class="reference internal nav-link" href="#dalle-1-results">
+   DALL·E 1 Results
   </a>
  </li>
 </ul>
@@ -977,7 +1023,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>AI Art (Text-to-Image)</h1>
+                <h1>DALL·E 1</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -988,40 +1034,84 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#course-description">
-   📜 Course Description
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#learning-goals">
-   ♾️ Learning Goals
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#term-project">
-   🧠 Term Project
+  <a class="reference internal nav-link" href="#dalle-1-charateristics">
+   DALL·E 1 Charateristics
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#project-proposal">
-     Project Proposal
+    <a class="reference internal nav-link" href="#controlling-attributes">
+     Controlling Attributes
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#drawing-multiple-objects">
+     Drawing Multiple Objects
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#visualizing-perspective-and-three-dimensionality">
+     Visualizing Perspective and Three-Dimensionality
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#visualizing-internal-and-external-structure">
+     Visualizing Internal and External Structure
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#inferring-contextual-details">
+     Inferring Contextual Details
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#lecture-notes">
-   📒 Lecture Notes
+  <a class="reference internal nav-link" href="#dalle-1-architecture">
+   DALL·E 1 Architecture
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#vq-vae">
+     VQ-VAE
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#autoencoders">
+     Autoencoders
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#variational-autoencoders-vae">
+       Variational Autoencoders (VAE)
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#discrete-spaces">
+     Discrete Spaces
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#uncertainty-in-the-posterior">
+     Uncertainty in the Posterior
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#decoder">
+     Decoder
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sampling-from-a-trained-dall-e">
+     Sampling From a Trained DALL-E
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#course-schedule">
-   Course Schedule
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#table-of-contents">
-   🗓️ Table of Contents
+  <a class="reference internal nav-link" href="#dalle-1-results">
+   DALL·E 1 Results
   </a>
  </li>
 </ul>
@@ -1034,143 +1124,146 @@ title="Print to PDF"
                 
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="ai-art-text-to-image">
-<h1>AI Art (Text-to-Image)<a class="headerlink" href="#ai-art-text-to-image" title="Permalink to this headline">#</a></h1>
-<p><img alt="aiart" src="../../../_images/entelecheia_robot_art.png" /></p>
-<div class="section" id="course-description">
-<h2>📜 Course Description<a class="headerlink" href="#course-description" title="Permalink to this headline">#</a></h2>
+  <div class="tex2jax_ignore mathjax_ignore section" id="dalle-1">
+<h1>DALL·E 1<a class="headerlink" href="#dalle-1" title="Permalink to this headline">#</a></h1>
 <ul class="simple">
-<li><p>This course is an introduction to AI-generated art using text prompt-based models.</p></li>
-<li><p>We will explore how to use different types of models, how to interpret the results, and how to critique the output.</p></li>
-<li><p>In addition, we will discuss the ethical implications of AI-generated art.</p></li>
+<li><p>Paper: <a class="reference external" href="https://arxiv.org/abs/2102.12092">https://arxiv.org/abs/2102.12092</a></p></li>
+<li><p>Blog post: <a class="reference external" href="https://openai.com/blog/dall-e/">https://openai.com/blog/dall-e/</a></p></li>
+<li><p>Code: <a class="reference external" href="https://github.com/openai/dall-e">https://github.com/openai/dall-e</a> (it’s not complete and covers only the dVAE part)</p></li>
+<li><p>Model: Not available</p></li>
+<li><p>Alternative code (PyTorch): <a class="reference external" href="https://github.com/lucidrains/DALLE-pytorch">https://github.com/lucidrains/DALLE-pytorch</a></p></li>
+<li><p>Alternative code (JAX/Flax): <a class="reference external" href="https://github.com/borisdayma/dalle-mini">https://github.com/borisdayma/dalle-mini</a></p></li>
 </ul>
+<p><img alt="dalle2" src="../../../_images/aiart_1_dalle1.png" /></p>
+<ul class="simple">
+<li><p>The first version of DALL·E was a GPT-3 style transformer decoder that autoregressively generated a 256×256 image based on textual input and an optional beginning of the image.</p></li>
+<li><p>A text is encoded by BPE-tokens (max. 256), and an image is encoded by special image tokens (1024 of them) produced by a discrete variational autoencoder (dVAE).</p></li>
+<li><p>dVAE encodes a 256×256 image into a grid of 32×32 tokens with a vocabulary of 8192 possible values.</p></li>
+<li><p>Because of the dVAE, some details and high-frequency features are lost in generated images, so some blurriness and smoothness are the features of the DALL·E-generated images.</p></li>
+</ul>
+<div class="section" id="dalle-1-charateristics">
+<h2>DALL·E 1 Charateristics<a class="headerlink" href="#dalle-1-charateristics" title="Permalink to this headline">#</a></h2>
+<div class="section" id="controlling-attributes">
+<h3>Controlling Attributes<a class="headerlink" href="#controlling-attributes" title="Permalink to this headline">#</a></h3>
+<p><img alt="attributes" src="../../../_images/aiart_1_dalle1_attributes.png" /></p>
 </div>
-<div class="section" id="learning-goals">
-<h2>♾️ Learning Goals<a class="headerlink" href="#learning-goals" title="Permalink to this headline">#</a></h2>
-<p>By the end of this course, students will be able to:</p>
-<ul class="simple">
-<li><p>Understand the basics of AI-generated art</p></li>
-<li><p>Generate their own AI-generated art</p></li>
-<li><p>Critique AI-generated art</p></li>
-<li><p>Understand the ethical implications of AI-generated art</p></li>
-</ul>
+<div class="section" id="drawing-multiple-objects">
+<h3>Drawing Multiple Objects<a class="headerlink" href="#drawing-multiple-objects" title="Permalink to this headline">#</a></h3>
+<p><img alt="objects" src="../../../_images/aiart_1_dalle1_objects.png" /></p>
 </div>
-<div class="section" id="term-project">
-<h2>🧠 Term Project<a class="headerlink" href="#term-project" title="Permalink to this headline">#</a></h2>
-<p>For the term project, students will create their own AI-generated art piece using a text prompt-based model. Students will be required to submit their project proposal, code, and results.</p>
-<div class="section" id="project-proposal">
-<h3>Project Proposal<a class="headerlink" href="#project-proposal" title="Permalink to this headline">#</a></h3>
-<p>The project proposal should include the following:</p>
-<ul class="simple">
-<li><p>A description of the project</p></li>
-<li><p>The text prompt that will be used</p></li>
-<li><p>The type of model that will be used</p></li>
-<li><p>The training data that will be used</p></li>
-<li><p>The evaluation metric that will be used</p></li>
-<li><p>The expected results</p></li>
-</ul>
+<div class="section" id="visualizing-perspective-and-three-dimensionality">
+<h3>Visualizing Perspective and Three-Dimensionality<a class="headerlink" href="#visualizing-perspective-and-three-dimensionality" title="Permalink to this headline">#</a></h3>
+<p><img alt="perspective" src="../../../_images/aiart_1_dalle1_perspective.png" /></p>
+</div>
+<div class="section" id="visualizing-internal-and-external-structure">
+<h3>Visualizing Internal and External Structure<a class="headerlink" href="#visualizing-internal-and-external-structure" title="Permalink to this headline">#</a></h3>
+<p><img alt="structure" src="../../../_images/aiart_1_dalle1_structure.png" /></p>
+</div>
+<div class="section" id="inferring-contextual-details">
+<h3>Inferring Contextual Details<a class="headerlink" href="#inferring-contextual-details" title="Permalink to this headline">#</a></h3>
+<p><img alt="context" src="../../../_images/aiart_1_dalle1_context.png" /></p>
 </div>
 </div>
-<div class="section" id="lecture-notes">
-<h2>📒 Lecture Notes<a class="headerlink" href="#lecture-notes" title="Permalink to this headline">#</a></h2>
-<p>You can find the lecture notes of the course by clicking on the following link:</p>
-<p><a class="reference external" href="https://entelecheia.github.io/ekorpkit-book/docs/lectures/aiart">https://entelecheia.github.io/ekorpkit-book/docs/lectures/aiart</a></p>
-</div>
-<div class="section" id="course-schedule">
-<h2>Course Schedule<a class="headerlink" href="#course-schedule" title="Permalink to this headline">#</a></h2>
-<p>Week 1: Introduction</p>
+<div class="section" id="dalle-1-architecture">
+<h2>DALL·E 1 Architecture<a class="headerlink" href="#dalle-1-architecture" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
-<li><p>What is AI-generated art?</p></li>
-<li><p>History of AI-generated art</p></li>
-<li><p>Examples of AI-generated art</p></li>
-</ul>
-<p>Week 2: Models</p>
-<ul class="simple">
-<li><p>Types of models</p></li>
-<li><p>How to train a model</p></li>
-<li><p>How to interpret the results</p></li>
-</ul>
-<p>Week 3: Language Models I</p>
-<ul class="simple">
-<li><p>Introduction to language models</p></li>
-<li><p>Text prompt-based models</p></li>
-<li><p>Image captioning</p></li>
-</ul>
-<p>Week 4: Language Models II</p>
-<ul class="simple">
-<li><p>Neural style transfer</p></li>
-<li><p>GPT-3, T5</p></li>
-<li><p>Text to image synthesis</p></li>
-</ul>
-<p>Week 5: Diffusion Models I</p>
-<ul class="simple">
-<li><p>Introduction to diffusion models</p></li>
-<li><p>Perlin noise</p></li>
-<li><p>Cellular automata</p></li>
-</ul>
-<p>Week 6: Diffusion Models II</p>
-<ul class="simple">
-<li><p>Reaction-diffusion models</p></li>
-<li><p>Neural fields</p></li>
-<li><p>Image quilting</p></li>
-</ul>
-<p>Week 7: GAN I</p>
-<ul class="simple">
-<li><p>Introduction to GANs</p></li>
-<li><p>DCGAN</p></li>
-<li><p>CycleGAN</p></li>
-</ul>
-<p>Week 8: GAN II</p>
-<ul class="simple">
-<li><p>BigGAN</p></li>
-<li><p>StyleGAN</p></li>
-<li><p>PGAN</p></li>
-</ul>
-<p>Week 9: Vision Transformers I</p>
-<ul class="simple">
-<li><p>Introduction to vision transformers</p></li>
-<li><p>DETR</p></li>
-<li><p>ViT</p></li>
-</ul>
-<p>Week 10: Vision Transformers II</p>
-<ul class="simple">
-<li><p>Reformer</p></li>
-<li><p>LVIS</p></li>
-<li><p>Swin-Transformer</p></li>
-</ul>
-<p>Week 11: Super Resolutions I</p>
-<ul class="simple">
-<li><p>Introduction to super resolutions</p></li>
-<li><p>SRGAN</p></li>
-<li><p>ESRGAN</p></li>
-</ul>
-<p>Week 12: Super Resolutions II</p>
-<ul class="simple">
-<li><p>SFTGAN</p></li>
-<li><p>RCAN</p></li>
-<li><p>CARN</p></li>
-</ul>
-<p>Week 13: Ethics</p>
-<ul class="simple">
-<li><p>The ethical implications of AI-generated art</p></li>
-</ul>
-<p>Week 14: Student Presentations I</p>
-<ul class="simple">
-<li><p>Student presentations</p></li>
-</ul>
-<p>Week 15: Student Presentations II</p>
-<ul class="simple">
-<li><p>Student presentations</p></li>
-</ul>
-</div>
-<div class="section" id="table-of-contents">
-<h2>🗓️ Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">#</a></h2>
-<div class="toctree-wrapper compound">
+<li><p>The transformer is a large model with 12B parameters.</p></li>
+<li><p>It consisted of 64 sparse transformer blocks with a complicated set of attention mechanisms inside, consisting of</p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="lecture01.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="lecture02-dalle1.html">DALL·E 1</a></li>
+<li><p>classical text-to-text masked attention,</p></li>
+<li><p>image-to-text attention, and</p></li>
+<li><p>image-to-image sparse attention.</p></li>
+</ul>
+</li>
+<li><p>All three attention types are merged into a single attention operation.</p></li>
+<li><p>The model was trained on a dataset of 250M image-text pairs.</p></li>
+</ul>
+<div class="section" id="vq-vae">
+<h3>VQ-VAE<a class="headerlink" href="#vq-vae" title="Permalink to this headline">#</a></h3>
+<p><img alt="vqvae" src="../../../_images/aiart_1_dalle1_vqvae.png" /></p>
+<ul>
+<li><p>VQ-VAE is a type of variational autoencoder that uses vector quantization to obtain a discrete latent representation.</p></li>
+<li><p>This is in contrast to the continuous latent space that other variational autoencoders have.</p></li>
+<li><p>The objective function of a VQ-VAE, when trained on an image dataset, can be written as:</p>
+<p><span class="math notranslate nohighlight">\(\mathcal{L} = \mathbb{E}_{q(z|x)}[\log p(x|z)] - \beta \cdot D_{KL}[q(z|x) || p(z)]\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(p(x)\)</span> is the data distribution, <span class="math notranslate nohighlight">\(q\)</span> is the approximate posterior over latent variables and <span class="math notranslate nohighlight">\(D_{KL}\)</span> denotes the Kullback-Leibler divergence.</p>
+</li>
+<li><p>This objective function encourages the model to learn an efficient codebook that minimises reconstruction error while also matching the prior distribution over codes.</p></li>
+</ul>
+<p><strong>A latent space</strong></p>
+<p>A latent space is obtained by encoding the input image into the nearest codebook entry. This process is called vector quantization and results in a discrete latent space.</p>
+<p><img alt="latent" src="../../../_images/aiart_1_dalle1_latent.png" /></p>
+</div>
+<div class="section" id="autoencoders">
+<h3>Autoencoders<a class="headerlink" href="#autoencoders" title="Permalink to this headline">#</a></h3>
+<p><img alt="autoencoder" src="../../../_images/aiart_1_dalle1_autoencoder.png" /></p>
+<ul>
+<li><p>Autoencoder is a neural network that is trained to predict its input.</p></li>
+<li><p>The objective function of an autoencoder can be written as:</p>
+<p><span class="math notranslate nohighlight">\(\mathcal{L} = \mathbb{E}_{p(x)}[\log p(x|z)]\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(p(x)\)</span> is the data distribution and <span class="math notranslate nohighlight">\(p(x|z)\)</span> is the model distribution.</p>
+</li>
+<li><p>This objective function encourages the model to learn a latent space that captures the underlying structure of the data.</p></li>
+<li><p>A VQ-VAE can be seen as a type of autoencoder where the latent space is constrained to be discrete.</p></li>
+</ul>
+<div class="section" id="variational-autoencoders-vae">
+<h4>Variational Autoencoders (VAE)<a class="headerlink" href="#variational-autoencoders-vae" title="Permalink to this headline">#</a></h4>
+<p><img alt="vae" src="../../../_images/aiart_1_dalle1_vae.png" /></p>
+<ul>
+<li><p>Variational Autoencoders (VAE) is a type of autoencoder where the latent space is continuous.</p></li>
+<li><p>The objective function of a VAE can be written as:</p>
+<p><span class="math notranslate nohighlight">\(\mathcal{L} = \mathbb{E}_{q(z|x)}[\log p(x|z)] - D_{KL}[q(z|x) || p(z)]\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(p(x)\)</span> is the data distribution, <span class="math notranslate nohighlight">\(q\)</span> is the approximate posterior over latent variables and <span class="math notranslate nohighlight">\(D_{KL}\)</span> denotes the Kullback-Leibler divergence.</p>
+</li>
+<li><p>This objective function encourages the model to learn a latent space that captures the underlying structure of the data while also matching the prior distribution over latent variables.</p></li>
 </ul>
 </div>
+</div>
+<div class="section" id="discrete-spaces">
+<h3>Discrete Spaces<a class="headerlink" href="#discrete-spaces" title="Permalink to this headline">#</a></h3>
+<p><img alt="discrete" src="../../../_images/aiart_1_dalle1_discrete.png" /></p>
+<ul class="simple">
+<li><p>Discrete spaces are more efficient to represent than continuous spaces.</p></li>
+<li><p>This is because a discrete space can be represented with a finite number of bits, whereas a continuous space requires an infinite number of bits.</p></li>
+<li><p>In addition, discrete spaces are easier to manipulate and reason about than continuous spaces.</p></li>
+<li><p>For these reasons, VQ-VAE is more efficient than VAE at learning latent representations of data.</p></li>
+</ul>
+</div>
+<div class="section" id="uncertainty-in-the-posterior">
+<h3>Uncertainty in the Posterior<a class="headerlink" href="#uncertainty-in-the-posterior" title="Permalink to this headline">#</a></h3>
+<p><img alt="uncetainty1" src="../../../_images/aiart_1_dalle1_uncetainty1.png" /></p>
+<p><strong>Uncertainty in the Posterior</strong></p>
+<p><img alt="uncetainty2" src="../../../_images/aiart_1_dalle1_uncetainty2.png" /></p>
+<ul>
+<li><p>Uncertainty in the posterior is added by soft-sampling codebook vectors from the Gumbel-Softmax distribution.</p></li>
+<li><p>This results in a softened latent space which can be seen as a continuous approximation of the discrete latent space.</p></li>
+<li><p>The Gumbel-Softmax distribution is a type of distribution that allows for sampling from a discrete space while still allowing for gradients to flow through the samples.</p></li>
+<li><p>This is useful for training models with discrete latent spaces, such as VQ-VAE.</p></li>
+<li><p>The Gumbel-Softmax distribution is defined as:</p>
+<p><span class="math notranslate nohighlight">\(G(z;\mu,\beta) = \frac{\exp((z - \mu)/\beta)}{\sum_{k=1}^K \exp((z_k - \mu)/\beta)}\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(\mu\)</span> is the mean, <span class="math notranslate nohighlight">\(\beta\)</span> is the temperature and <span class="math notranslate nohighlight">\(K\)</span> is the number of classes.</p>
+</li>
+</ul>
+<p><strong>Comparison of original images (top) and reconstructions from the dVAE (bottom)</strong></p>
+<p><img alt="dvae" src="../../../_images/aiart_1_dalle1_dvae.png" /></p>
+</div>
+<div class="section" id="decoder">
+<h3>Decoder<a class="headerlink" href="#decoder" title="Permalink to this headline">#</a></h3>
+<p>A GPT-3 like transformer decoder consumes a sequence of text tokens and (optional) image tokens (here a single image token with id 42) and produces a continuation of an image (here the next image token with id 1369)</p>
+<p><img alt="decoder" src="../../../_images/aiart_1_dalle1_decoder.png" /></p>
+</div>
+<div class="section" id="sampling-from-a-trained-dall-e">
+<h3>Sampling From a Trained DALL-E<a class="headerlink" href="#sampling-from-a-trained-dall-e" title="Permalink to this headline">#</a></h3>
+<p><img alt="sampling" src="../../../_images/aiart_1_dalle1_sampling.png" /></p>
+<p><img alt="sampling" src="../../../_images/aiart_1_dalle1_sampling2.png" /></p>
+</div>
+</div>
+<div class="section" id="dalle-1-results">
+<h2>DALL·E 1 Results<a class="headerlink" href="#dalle-1-results" title="Permalink to this headline">#</a></h2>
+<p>Several image generation examples from the original paper</p>
+<p><img alt="examples" src="../../../_images/aiart_1_dalle1_examples.png" /></p>
+<p>The trained model generated several samples (up to 512!) based on the text provided, then all these samples were ranked by a special model called CLIP, and the top-ranked one was chosen as the result of the model.</p>
+<p><img alt="eval" src="../../../_images/aiart_1_dalle1_eval.png" /></p>
 </div>
 </div>
 
@@ -1201,17 +1294,17 @@ title="Print to PDF"
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="../deep_nlp/lecture02-bloom.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="lecture01.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">What is BLOOM?</p>
+            <p class="prev-next-title">Introduction</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="lecture01.html" title="next page">
+    <a class='right-next' id="next-link" href="../ds/index.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Introduction</p>
+        <p class="prev-next-title">Data Science for Economics and Finance</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
