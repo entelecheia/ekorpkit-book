@@ -22,9 +22,9 @@ docker run -it --rm \
   --publish $JUPYTER_HOST_PORT:$JUPYTER_PORT \
   --publish $RUBRIX_HOST_PORT:6900 \
   --publish $DOCKER_SSH_PORT:22 \
-  --volume $HOST_WORKSPACE_ROOT:$EKORPKIT_WORKSPACE_ROOT \
   --volume $HOST_HF_HOME:/root/.cache/huggingface \
+  --volume $HOST_WORKSPACE_ROOT:$EKORPKIT_WORKSPACE_ROOT \
+  --volume $PWD/scripts/rubrix/.users.yaml:/config/.users.yaml \
   --name $EKORPKIT_DOCKER_CONTAINER_NAME \
   $EKORPKIT_DOCKER_IMAGE_NAME:latest $CMD
 
-# TODO: add huggingface cache volume to persist cache between runs

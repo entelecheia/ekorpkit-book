@@ -13,7 +13,7 @@ docker run -it --rm \
 	--env-file .env \
 	--publish 6900:6900 \
 	--env-file .env \
-    --volume $PWD/.users.yaml:/config/.users.yaml
+    --volume $PWD/.users.yaml:/config/.users.yaml \
 	--name $RUBRIX_DOCKER_CONTAINER_NAME \
 	$RUBRIX_DOCKER_IMAGE_NAME:latest $CMD
   

@@ -11,6 +11,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-missing openssh-serv
 
 RUN pip install --upgrade --no-cache-dir pip && \
     pip install --no-cache-dir jax[cuda11_cudnn82] -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+# for ekorpkit
 RUN pip install --no-cache-dir \
         ekorpkit[all] wandb transformers simpletransformers hydra-core hydra-colorlog \
         tensorflow jupyter_nbextensions_configurator ipywidgets RISE \
@@ -60,10 +61,9 @@ RUN jupyter labextension install \
     jupyterlab-spreadsheet
 
 # for rubrix
-ENV USERS_DB=/config/.users.yml
-
 RUN pip install --no-cache-dir rubrix[server] loguru
-
+# for rubrix
+ENV USERS_DB=/config/.users.yml
 # See <https://github.com/tiangolo/uvicorn-gunicorn-fastapi-docker#module_name>
 ENV MODULE_NAME="rubrix"
 ENV VARIABLE_NAME="app"
