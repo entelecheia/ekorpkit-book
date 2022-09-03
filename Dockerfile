@@ -16,7 +16,8 @@ RUN pip install --no-cache-dir \
         ekorpkit[all] wandb transformers simpletransformers hydra-core hydra-colorlog \
         tensorflow jupyter_nbextensions_configurator ipywidgets RISE \
         imageio pyspng==0.1.0 lpips timm pytorch-lightning>=1.0.8 torch-fidelity \
-        einops ftfy seaborn flax unidecode opencv-python==4.5.5.64
+        einops ftfy seaborn flax unidecode opencv-python==4.5.5.64 \
+        rubrix[server] loguru
         
 RUN jupyter nbextension enable --py widgetsnbextension
 RUN jupyter nbextensions_configurator enable
@@ -38,13 +39,16 @@ ENV KMP_DUPLICATE_LIB_OK TRUE
 
 WORKDIR $EKORPKIT_PROJECT_DIR
 
-# Set up conda environment 
-RUN . /root/.bashrc && \
-    /opt/conda/bin/conda init bash
+RUN sh -c "$(wget -O- https://raw.githubusercontent.com/entelecheia/ekorpkit-book/main/scripts/zsh/zsh-install.sh)" -- \
+    -t gnzh \
+    -p git \
+    -p ssh-agent \
+    -p https://github.com/zsh-users/zsh-autosuggestions \
+    -p https://github.com/zsh-users/zsh-completions
 
-# Set up ssh key
-RUN mkdir -p /root/.ssh
-COPY ./scripts/ssh/authorized_keys /root/.ssh/authorized_keys
+# Set up conda environment 
+RUN /opt/conda/bin/conda init zsh
+
 
 # Set up jupyter notebook extensions
 RUN pip install --no-cache-dir --upgrade \
@@ -61,11 +65,16 @@ RUN jupyter labextension install \
     jupyterlab-spreadsheet
 
 # for rubrix
-RUN pip install --no-cache-dir rubrix[server] loguru
+# RUN pip install --no-cache-dir rubrix[server] loguru
 # for rubrix
 ENV USERS_DB=/config/.users.yml
 # See <https://github.com/tiangolo/uvicorn-gunicorn-fastapi-docker#module_name>
 ENV MODULE_NAME="rubrix"
 ENV VARIABLE_NAME="app"
 
-CMD ["/bin/bash"]
+
+# Set up ssh key
+RUN mkdir -p /root/.ssh
+COPY ./scripts/ssh/authorized_keys /root/.ssh/authorized_keys
+
+CMD ["/bin/zsh"]

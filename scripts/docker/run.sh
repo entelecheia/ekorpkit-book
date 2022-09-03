@@ -4,7 +4,7 @@ set -o allexport
 source .env
 set +o allexport
 
-CMD=${1:-/bin/bash}
+CMD=${1:-/bin/zsh}
 
 if [ "$HOST_WORKSPACE_ROOT" == "" ]; then
   HOST_WORKSPACE_ROOT=${HOME}${EKORPKIT_WORKSPACE_ROOT}

@@ -67,9 +67,10 @@ RUN sh -c "$(wget -O- https://raw.githubusercontent.com/entelecheia/ekorpkit-boo
 ```Dockerfile
 # Uses "git", "ssh-agent" and "history-substring-search" bundled plugins and installs some more from github
 RUN sh -c "$(wget -O- https://raw.githubusercontent.com/entelecheia/ekorpkit-book/main/scripts/zsh/zsh-install.sh)" -- \
+    -t gnzh \
     -p git -p ssh-agent -p 'history-substring-search' \
     -p https://github.com/zsh-users/zsh-autosuggestions \
-    -p https://github.com/zsh-users/zsh-completions
+    -p https://github.com/zsh-users/zsh-completions \
     -a 'bindkey "\$terminfo[kcuu1]" history-substring-search-up' \
     -a 'bindkey "\$terminfo[kcud1]" history-substring-search-down'
 
