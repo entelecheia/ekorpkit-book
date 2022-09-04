@@ -40,12 +40,13 @@ ENV KMP_DUPLICATE_LIB_OK TRUE
 WORKDIR $EKORPKIT_PROJECT_DIR
 
 RUN sh -c "$(wget -O- https://raw.githubusercontent.com/entelecheia/ekorpkit-book/main/scripts/zsh/zsh-install.sh)" -- \
-    -t gnzh \
+    -t https://github.com/denysdovhan/spaceship-prompt \
     -p git \
-    -p ssh-agent \
+    -p git-prompt \
     -p https://github.com/zsh-users/zsh-autosuggestions \
     -p https://github.com/zsh-users/zsh-completions
 
+COPY ./scripts/zsh/.spaceshiprc.zsh /root/.spaceshiprc.zsh
 # Set up conda environment 
 RUN /opt/conda/bin/conda init zsh
 

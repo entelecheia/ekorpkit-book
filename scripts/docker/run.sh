@@ -25,6 +25,7 @@ docker run -it --rm \
   --volume $HOST_HF_HOME:/root/.cache/huggingface \
   --volume $HOST_WORKSPACE_ROOT:$EKORPKIT_WORKSPACE_ROOT \
   --volume $PWD/scripts/rubrix/.users.yaml:/config/.users.yaml \
+  --volume $PWD/scripts/zsh/.spaceshiprc.zsh:/root/.spaceshiprc.zsh \
   --name $EKORPKIT_DOCKER_CONTAINER_NAME \
   $EKORPKIT_DOCKER_IMAGE_NAME:latest $CMD
 
