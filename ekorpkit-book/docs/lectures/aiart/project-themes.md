@@ -1,6 +1,6 @@
 # Project Themes - A Brave New World
 
-There are people who have no emotions in s really beautiful and futuristic world.  They don't know what love is, they don't get angry or sad. They don't experience any of the full range of human emotions. It's a bit like living in a fairy tale, but everything is controlled by the government.
+There are people who have no emotions in a really beautiful and futuristic world.  They don't know what love is, they don't get angry or sad. They don't experience any of the full range of human emotions. It's a bit like living in a fairy tale, but everything is controlled by the government.
 
 ![](../figs/aiart/brave/entelecheia_brave1.png)
 ![](../figs/aiart/brave/entelecheia_brave2.png)
