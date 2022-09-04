@@ -5,10 +5,13 @@ DEP=""
 THEME=default
 PLUGINS=""
 ZSHRC_APPEND=""
+ZSHRC_SFX=""
 
-while getopts ":d:t:p:a:" opt; do
+while getopts ":z:d:t:p:a:" opt; do
     case ${opt} in
         d)  DEP=$OPTARG
+            ;;
+        z)  ZSHRC_SFX=$OPTARG
             ;;
         t)  THEME=$OPTARG
             ;;
