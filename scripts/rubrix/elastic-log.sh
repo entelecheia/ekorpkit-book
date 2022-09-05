@@ -4,5 +4,4 @@ set -o allexport
 source .env
 set +o allexport
 
-python -m rubrix &
-
+docker logs $RUBRIX_ELASTIC_DOCKER_CONTAINER_NAME

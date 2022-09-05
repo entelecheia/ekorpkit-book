@@ -14,7 +14,7 @@ fi
 docker run -it --rm \
   --runtime=nvidia \
   --gpus $NVIDIA_VISIBLE_DEVICES \
-  --network=$DOCKER_NETWORK \
+	--network=$EKORPKIT_DOCKER_NETWORK_NAME \
   --ipc=$DOCKER_IPC \
   --ulimit memlock=-1 \
   --ulimit stack=67108864 \

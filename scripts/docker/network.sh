@@ -4,5 +4,4 @@ set -o allexport
 source .env
 set +o allexport
 
-python -m rubrix &
-
+docker network create -d bridge $EKORPKIT_DOCKER_NETWORK_NAME
