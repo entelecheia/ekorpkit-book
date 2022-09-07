@@ -50,11 +50,9 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="ESG" href="../cointax/index.html" />
+    <link rel="next" title="Taxation on Cryptocurrency" href="../cointax/index.html" />
     <link rel="prev" title="Building econ_news_kr corpus" href="econ_news_corpus.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -599,7 +597,7 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../cointax/index.html">
-   ESG
+   Taxation on Cryptocurrency
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/>
   <label for="toctree-checkbox-19">
@@ -975,6 +973,11 @@ title="Print to PDF"
    Predicting categories
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#check-and-label-predictions">
+   Check and label predictions
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -1009,6 +1012,11 @@ title="Print to PDF"
    Predicting categories
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#check-and-label-predictions">
+   Check and label predictions
+  </a>
+ </li>
 </ul>
 
                         </nav>
@@ -1039,7 +1047,7 @@ title="Print to PDF"
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Setting cuda device to [&#39;A100-SXM4-40GB (id:0)&#39;]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.38+26.g3d56094
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.38+27.g87e2806.dirty
 is notebook? True
 is colab? False
 environment variables:
@@ -1505,312 +1513,23 @@ INFO:ekorpkit.base:No method defined to call
 </table>
 </div></div></div>
 </div>
+</div>
+<div class="section" id="check-and-label-predictions">
+<h2>Check and label predictions<a class="headerlink" href="#check-and-label-predictions" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">polarity_preds_df</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;esg_polarities_20220905-preds.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
-<span class="n">polarity_preds_df</span>
+<span class="n">category_preds_df</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;esg_categories_20220905-preds.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+<span class="n">code_info_available</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;econ_news_code_info_available_20220905.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id</th>
-      <th>chunk_id</th>
-      <th>text</th>
-      <th>filename</th>
-      <th>pred_labels</th>
-      <th>raw_preds</th>
-      <th>pred_probs</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>11</td>
-      <td>0</td>
-      <td>문재인 대통령이 지난해 전용차로 선택한 수소전기차 '넥쏘'가 중·장년층 남성들로부터...</td>
-      <td>02100101.20201101113442001.txt</td>
-      <td>Positive</td>
-      <td>{'Negative': 0.003234388916771163, 'Neutral': ...</td>
-      <td>0.320464</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>11</td>
-      <td>1</td>
-      <td>넥쏘는 국내 뿐만 아니라 해외에서도 코로나19 확산 여파를 이겨내고 질주하고 있다....</td>
-      <td>02100101.20201101113442001.txt</td>
-      <td>Positive</td>
-      <td>{'Negative': 0.005179156956969719, 'Neutral': ...</td>
-      <td>0.463171</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>19</td>
-      <td>0</td>
-      <td>LG전자는 국내 최대 쇼핑 행사 ‘2020 코리아세일페스타’에 맞춰 11월 1일부터...</td>
-      <td>02100101.20201101125903001.txt</td>
-      <td>Positive</td>
-      <td>{'Negative': 0.0022622254938860858, 'Neutral':...</td>
-      <td>0.293573</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>20</td>
-      <td>0</td>
-      <td>SK는 그룹 8개 관계사가 한국 최초로 ‘RE100’에 가입한다고 1일 밝혔다.\n...</td>
-      <td>02100101.20201101130118001.txt</td>
-      <td>Positive</td>
-      <td>{'Negative': 0.003873849489889034, 'Neutral': ...</td>
-      <td>0.457221</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>20</td>
-      <td>1</td>
-      <td>SK 8개사가 신청서를 제출하면 더 클라이밋 그룹의 검토를 거친 후 가입이 최종 확...</td>
-      <td>02100101.20201101130118001.txt</td>
-      <td>Positive</td>
-      <td>{'Negative': 0.0033662562749769104, 'Neutral':...</td>
-      <td>0.387810</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>160582</th>
-      <td>1090535</td>
-      <td>1</td>
-      <td>업종별로 하락한 업종은 운수창고(-1.22%), 운수장비(-1.12%), 전기전자(...</td>
-      <td>02100851.20220228093428001.txt</td>
-      <td>Neutral</td>
-      <td>{'Negative': 0.021272389449621617, 'Neutral': ...</td>
-      <td>0.558927</td>
-    </tr>
-    <tr>
-      <th>160583</th>
-      <td>1090566</td>
-      <td>0</td>
-      <td>[회사채 미매각 현황]\n회사채 시장에 미매각이 속출하고 있다. 현재 연 1.25%...</td>
-      <td>02100851.20220228103653001.txt</td>
-      <td>Negative</td>
-      <td>{'Negative': 0.3028968002392749, 'Neutral': 0....</td>
-      <td>0.302897</td>
-    </tr>
-    <tr>
-      <th>160584</th>
-      <td>1090566</td>
-      <td>1</td>
-      <td>하지만 가뜩이나 악화된 회사채 시장 분위기에 사고 소식까지 전해지면서 아무도 수요예...</td>
-      <td>02100851.20220228103653001.txt</td>
-      <td>Negative</td>
-      <td>{'Negative': 0.21217251856446653, 'Neutral': 0...</td>
-      <td>0.227077</td>
-    </tr>
-    <tr>
-      <th>160585</th>
-      <td>1090566</td>
-      <td>2</td>
-      <td>이에 채권시장에서 자금을 운용하는 각 증권사들의 부담이 커지고 있다. 대부분이 총액...</td>
-      <td>02100851.20220228103653001.txt</td>
-      <td>Neutral</td>
-      <td>{'Negative': 0.16820714620311472, 'Neutral': 0...</td>
-      <td>0.807850</td>
-    </tr>
-    <tr>
-      <th>160586</th>
-      <td>1090615</td>
-      <td>0</td>
-      <td>[사진=아주경제 DB]\n우크라이나와 러시아가 협상 테이블을 마련한다는 소식에 국내...</td>
-      <td>02100851.20220228154344001.txt</td>
-      <td>Neutral</td>
-      <td>{'Negative': 0.0016530643290730905, 'Neutral':...</td>
-      <td>0.287802</td>
-    </tr>
-  </tbody>
-</table>
-<p>160587 rows × 7 columns</p>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">category_preds_df</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;esg_categories_20220905-preds.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
-<span class="n">category_preds_df</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id</th>
-      <th>chunk_id</th>
-      <th>text</th>
-      <th>filename</th>
-      <th>pred_labels</th>
-      <th>raw_preds</th>
-      <th>pred_probs</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>11</td>
-      <td>0</td>
-      <td>문재인 대통령이 지난해 전용차로 선택한 수소전기차 '넥쏘'가 중·장년층 남성들로부터...</td>
-      <td>02100101.20201101113442001.txt</td>
-      <td>E-환경혁신</td>
-      <td>{'E-기후변화': 0.030596958199968844, 'E-환경영향': 0.0...</td>
-      <td>0.274359</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>11</td>
-      <td>1</td>
-      <td>넥쏘는 국내 뿐만 아니라 해외에서도 코로나19 확산 여파를 이겨내고 질주하고 있다....</td>
-      <td>02100101.20201101113442001.txt</td>
-      <td>E-환경혁신</td>
-      <td>{'E-기후변화': 0.06051763617022947, 'E-환경영향': 0.03...</td>
-      <td>0.385310</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>19</td>
-      <td>0</td>
-      <td>LG전자는 국내 최대 쇼핑 행사 ‘2020 코리아세일페스타’에 맞춰 11월 1일부터...</td>
-      <td>02100101.20201101125903001.txt</td>
-      <td>S-소비자</td>
-      <td>{'E-기후변화': 0.0021545055695108587, 'E-환경영향': 0....</td>
-      <td>0.393870</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>20</td>
-      <td>0</td>
-      <td>SK는 그룹 8개 관계사가 한국 최초로 ‘RE100’에 가입한다고 1일 밝혔다.\n...</td>
-      <td>02100101.20201101130118001.txt</td>
-      <td>G-지배구조</td>
-      <td>{'E-기후변화': 0.03785571833286824, 'E-환경영향': 0.01...</td>
-      <td>0.316108</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>20</td>
-      <td>1</td>
-      <td>SK 8개사가 신청서를 제출하면 더 클라이밋 그룹의 검토를 거친 후 가입이 최종 확...</td>
-      <td>02100101.20201101130118001.txt</td>
-      <td>S-소비자</td>
-      <td>{'E-기후변화': 0.10284557588551027, 'E-환경영향': 0.03...</td>
-      <td>0.269355</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>160582</th>
-      <td>1090535</td>
-      <td>1</td>
-      <td>업종별로 하락한 업종은 운수창고(-1.22%), 운수장비(-1.12%), 전기전자(...</td>
-      <td>02100851.20220228093428001.txt</td>
-      <td>S-소비자</td>
-      <td>{'E-기후변화': 0.00907623428840548, 'E-환경영향': 0.00...</td>
-      <td>0.367147</td>
-    </tr>
-    <tr>
-      <th>160583</th>
-      <td>1090566</td>
-      <td>0</td>
-      <td>[회사채 미매각 현황]\n회사채 시장에 미매각이 속출하고 있다. 현재 연 1.25%...</td>
-      <td>02100851.20220228103653001.txt</td>
-      <td>S-소비자</td>
-      <td>{'E-기후변화': 0.005465546001302883, 'E-환경영향': 0.0...</td>
-      <td>0.221578</td>
-    </tr>
-    <tr>
-      <th>160584</th>
-      <td>1090566</td>
-      <td>1</td>
-      <td>하지만 가뜩이나 악화된 회사채 시장 분위기에 사고 소식까지 전해지면서 아무도 수요예...</td>
-      <td>02100851.20220228103653001.txt</td>
-      <td>S-소비자</td>
-      <td>{'E-기후변화': 0.003758780272562501, 'E-환경영향': 0.0...</td>
-      <td>0.161850</td>
-    </tr>
-    <tr>
-      <th>160585</th>
-      <td>1090566</td>
-      <td>2</td>
-      <td>이에 채권시장에서 자금을 운용하는 각 증권사들의 부담이 커지고 있다. 대부분이 총액...</td>
-      <td>02100851.20220228103653001.txt</td>
-      <td>S-소비자</td>
-      <td>{'E-기후변화': 0.012670146350806367, 'E-환경영향': 0.0...</td>
-      <td>0.286236</td>
-    </tr>
-    <tr>
-      <th>160586</th>
-      <td>1090615</td>
-      <td>0</td>
-      <td>[사진=아주경제 DB]\n우크라이나와 러시아가 협상 테이블을 마련한다는 소식에 국내...</td>
-      <td>02100851.20220228154344001.txt</td>
-      <td>S-소비자</td>
-      <td>{'E-기후변화': 0.004790073608287765, 'E-환경영향': 0.0...</td>
-      <td>0.234709</td>
-    </tr>
-  </tbody>
-</table>
-<p>160587 rows × 7 columns</p>
-</div></div></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">code_info_available</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;econ_news_code_info_available_20220905.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
-<span class="n">code_info_available</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">codes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;035720&#39;</span><span class="p">,</span> <span class="s1">&#39;051910&#39;</span><span class="p">,</span> <span class="s1">&#39;207940&#39;</span><span class="p">,</span> <span class="s1">&#39;009830&#39;</span><span class="p">]</span>
+<span class="n">selected</span> <span class="o">=</span> <span class="n">code_info_available</span><span class="p">[</span><span class="n">code_info_available</span><span class="p">[</span><span class="s1">&#39;codes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">codes</span><span class="p">)]</span>
+<span class="n">selected</span>
 </pre></div>
 </div>
 </div>
@@ -1841,37 +1560,37 @@ INFO:ekorpkit.base:No method defined to call
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>02100101.20200101040200001.txt</td>
-      <td>000660</td>
+      <th>21</th>
+      <td>02100101.20200102040158002.txt</td>
+      <td>035720</td>
       <td>40</td>
       <td>2</td>
     </tr>
     <tr>
-      <th>1</th>
-      <td>02100101.20200101040200001.txt</td>
-      <td>005930</td>
-      <td>40</td>
-      <td>2</td>
+      <th>36</th>
+      <td>02100101.20200102080234001.txt</td>
+      <td>051910</td>
+      <td>96</td>
+      <td>10</td>
     </tr>
     <tr>
-      <th>2</th>
-      <td>02100101.20200101040200002.txt</td>
-      <td>005930</td>
-      <td>40</td>
-      <td>2</td>
+      <th>41</th>
+      <td>02100101.20200102080234001.txt</td>
+      <td>035720</td>
+      <td>96</td>
+      <td>10</td>
     </tr>
     <tr>
-      <th>3</th>
-      <td>02100101.20200101040200002.txt</td>
-      <td>066570</td>
-      <td>40</td>
-      <td>2</td>
+      <th>73</th>
+      <td>02100101.20200103000814001.txt</td>
+      <td>207940</td>
+      <td>47</td>
+      <td>3</td>
     </tr>
     <tr>
-      <th>4</th>
-      <td>02100101.20200101040202001.txt</td>
-      <td>000270</td>
+      <th>151</th>
+      <td>02100101.20200108092412001.txt</td>
+      <td>207940</td>
       <td>40</td>
       <td>2</td>
     </tr>
@@ -1883,30 +1602,30 @@ INFO:ekorpkit.base:No method defined to call
       <td>...</td>
     </tr>
     <tr>
-      <th>198598</th>
-      <td>02100851.20220531150108001.txt</td>
-      <td>032640</td>
+      <th>198534</th>
+      <td>02100851.20220527101334001.txt</td>
+      <td>051910</td>
+      <td>40</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>198538</th>
+      <td>02100851.20220527154429001.txt</td>
+      <td>207940</td>
+      <td>61</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>198592</th>
+      <td>02100851.20220531091955001.txt</td>
+      <td>051910</td>
       <td>47</td>
       <td>3</td>
     </tr>
     <tr>
-      <th>198599</th>
-      <td>02100851.20220531150108001.txt</td>
-      <td>017670</td>
-      <td>47</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>198600</th>
-      <td>02100851.20220531150108001.txt</td>
-      <td>030200</td>
-      <td>47</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>198601</th>
-      <td>02100851.20220531154303001.txt</td>
-      <td>006400</td>
+      <th>198596</th>
+      <td>02100851.20220531112630001.txt</td>
+      <td>009830</td>
       <td>40</td>
       <td>2</td>
     </tr>
@@ -1919,8 +1638,236 @@ INFO:ekorpkit.base:No method defined to call
     </tr>
   </tbody>
 </table>
-<p>198603 rows × 4 columns</p>
+<p>18675 rows × 4 columns</p>
 </div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">selected_category_preds</span> <span class="o">=</span> <span class="n">category_preds_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">selected</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;filename&#39;</span><span class="p">)</span>
+<span class="n">selected_polarity_preds</span> <span class="o">=</span> <span class="n">polarity_preds_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">selected</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;filename&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">selected_category_preds</span> <span class="o">=</span> <span class="n">selected_category_preds</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">selected_polarity_preds</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+        <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;pred_labels&quot;</span><span class="p">:</span> <span class="s2">&quot;polarity_preds&quot;</span><span class="p">}</span>
+    <span class="p">)[[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;chunk_id&#39;</span><span class="p">,</span> <span class="s1">&#39;codes&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_preds&#39;</span><span class="p">]],</span>
+    <span class="n">on</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;chunk_id&#39;</span><span class="p">,</span> <span class="s1">&#39;codes&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">selected_category_preds</span> <span class="o">=</span> <span class="n">selected_category_preds</span><span class="p">[</span><span class="n">selected_category_preds</span><span class="o">.</span><span class="n">polarity_preds</span> <span class="o">!=</span> <span class="s1">&#39;Neutral&#39;</span><span class="p">]</span>
+<span class="n">selected_polarity_preds</span> <span class="o">=</span> <span class="n">selected_polarity_preds</span><span class="p">[</span><span class="n">selected_polarity_preds</span><span class="o">.</span><span class="n">pred_labels</span> <span class="o">!=</span> <span class="s1">&#39;Neutral&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">selected_category_preds</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>chunk_id</th>
+      <th>text</th>
+      <th>filename</th>
+      <th>pred_labels</th>
+      <th>raw_preds</th>
+      <th>pred_probs</th>
+      <th>codes</th>
+      <th>len</th>
+      <th>num_codes</th>
+      <th>polarity_preds</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>46470</th>
+      <td>1090194</td>
+      <td>0</td>
+      <td>KB금융지주 신임 사외이사 후보인 최재홍 강릉원주대 멀티미디어공학과 교수. [사진=...</td>
+      <td>02100851.20220224155144001.txt</td>
+      <td>G-지배구조</td>
+      <td>{'E-기후변화': 0.0013807213841885606, 'E-환경영향': 0....</td>
+      <td>0.638696</td>
+      <td>035720</td>
+      <td>40</td>
+      <td>2</td>
+      <td>Negative</td>
+    </tr>
+    <tr>
+      <th>46471</th>
+      <td>1090194</td>
+      <td>1</td>
+      <td>최 후보는 3단계로 운영되는 KB금융지주 '사추위'의 엄격한 사외이사 후보 추천 프...</td>
+      <td>02100851.20220224155144001.txt</td>
+      <td>G-지배구조</td>
+      <td>{'E-기후변화': 0.0010913496344655172, 'E-환경영향': 0....</td>
+      <td>0.472998</td>
+      <td>035720</td>
+      <td>40</td>
+      <td>2</td>
+      <td>Positive</td>
+    </tr>
+    <tr>
+      <th>46475</th>
+      <td>1090506</td>
+      <td>0</td>
+      <td>왼쪽 위부터 시계방향으로 KB금융, 신한금융, 하나금융, 우리금융. [사진=각 사]...</td>
+      <td>02100851.20220228050135001.txt</td>
+      <td>G-지배구조</td>
+      <td>{'E-기후변화': 0.001021931625316696, 'E-환경영향': 0.0...</td>
+      <td>0.462396</td>
+      <td>035720</td>
+      <td>40</td>
+      <td>2</td>
+      <td>Positive</td>
+    </tr>
+    <tr>
+      <th>46477</th>
+      <td>1090506</td>
+      <td>2</td>
+      <td>우리금융은 3월 정기 주총에서 ESG 전문 여성 변호사를 사외이사로 영입할 예정이다...</td>
+      <td>02100851.20220228050135001.txt</td>
+      <td>G-지배구조</td>
+      <td>{'E-기후변화': 0.0009028980666769455, 'E-환경영향': 0....</td>
+      <td>0.425499</td>
+      <td>035720</td>
+      <td>40</td>
+      <td>2</td>
+      <td>Positive</td>
+    </tr>
+    <tr>
+      <th>46478</th>
+      <td>1090506</td>
+      <td>3</td>
+      <td>금융지주 가운데 가장 많은 사외이사(12명)를 보유한 신한금융의 경우 대부분이 경제...</td>
+      <td>02100851.20220228050135001.txt</td>
+      <td>G-지배구조</td>
+      <td>{'E-기후변화': 0.00200496373839086, 'E-환경영향': 0.00...</td>
+      <td>0.944045</td>
+      <td>035720</td>
+      <td>40</td>
+      <td>2</td>
+      <td>Positive</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rb_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;model/rubrix&#39;</span><span class="p">)</span>
+<span class="n">rb_cfg</span><span class="o">.</span><span class="n">auto</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">rb</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">rb_cfg</span><span class="p">)</span>
+<span class="n">rb</span><span class="o">.</span><span class="n">get_workspace</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+INFO:ekorpkit.base:setting environment variable CACHED_PATH_CACHE_ROOT to /workspace/.cache/cached_path
+INFO:ekorpkit.base:setting environment variable KMP_DUPLICATE_LIB_OK to TRUE
+INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;esgml&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">meta_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;chunk_id&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="s1">&#39;codes&#39;</span><span class="p">,</span> <span class="s1">&#39;num_codes&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_preds&#39;</span><span class="p">]</span>
+<span class="n">category_records</span> <span class="o">=</span> <span class="n">rb</span><span class="o">.</span><span class="n">create_records_from_cv_preds</span><span class="p">(</span>
+    <span class="n">selected_category_preds</span><span class="p">,</span>
+    <span class="n">meta_columns</span><span class="o">=</span><span class="n">meta_columns</span><span class="p">,</span>
+    <span class="n">prediction_agent</span><span class="o">=</span><span class="s2">&quot;ekonelectra-base&quot;</span>
+<span class="p">)</span>
+<span class="n">category_records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TextClassificationRecord(text=&#39;지난 10월 25일 故 이건희 삼성그룹 회장이 별세하면서 삼성그룹주 주가가 요동치고 있다. 천문학적인 상속세 마련을 위해 삼성그룹 지배구조에 변화가 이뤄질 수 있다는 관측 때문이다.\n故 이건희 회장이 보유한 삼성전자, 삼성SDS, 삼성물산, 삼성생명 등 주식 가치는 18조원이 넘는 것으로 알려졌다. 부인 홍라희 전 리움미술관 관장과 이재용 삼성그룹 부회장 등 자녀들이 내야 하는 상속세만 10조원이 넘을 것으로 추정된다. 액수가 워낙 크다 보니 5년간 분할 납부하는 연부연납제도를 활용한다고 해도 상속세 신고·납부 기한인 2021년 4월까지 내야 할 첫해 상속세만 1조8000억원이 넘는다.\n결국 상속세 납부를 위해 총수 일가가 보유한 일부 삼성 계열사 지분을 처분하는 것이 불가피할 전망이다. 여기에 재원 마련을 위한 배당 확대 가능성과 이른바 ‘삼성생명법’으로 불리는 보험업법 개정안까지 얽혀 있어 계열사마다 복잡한 셈법이 작용할 것으로 예상된다. 시장에서는 벌써부터 이재용 부회장의 지분이 높은 계열사를 중심으로 주가가 강세를 나타내는 움직임을 보이고 있다. 삼성그룹의 지배구조 개편 시나리오별 주가 향방을 점쳐본다.\n▶‘이재용 체제’ 강화 움직임\n▷전면적인 지배구조 개편 가능성은 희박\n먼저 삼성 총수 일가가 납부해야 할 상속세를 들여다볼 필요가 있다. 故 이건희 회장의 지분 상속 문제는 총수 일가의 지배구조는 물론 삼성그룹 사업구조와도 밀접하게 맞물려 있다.&#39;, inputs={&#39;text&#39;: &#39;지난 10월 25일 故 이건희 삼성그룹 회장이 별세하면서 삼성그룹주 주가가 요동치고 있다. 천문학적인 상속세 마련을 위해 삼성그룹 지배구조에 변화가 이뤄질 수 있다는 관측 때문이다.\n故 이건희 회장이 보유한 삼성전자, 삼성SDS, 삼성물산, 삼성생명 등 주식 가치는 18조원이 넘는 것으로 알려졌다. 부인 홍라희 전 리움미술관 관장과 이재용 삼성그룹 부회장 등 자녀들이 내야 하는 상속세만 10조원이 넘을 것으로 추정된다. 액수가 워낙 크다 보니 5년간 분할 납부하는 연부연납제도를 활용한다고 해도 상속세 신고·납부 기한인 2021년 4월까지 내야 할 첫해 상속세만 1조8000억원이 넘는다.\n결국 상속세 납부를 위해 총수 일가가 보유한 일부 삼성 계열사 지분을 처분하는 것이 불가피할 전망이다. 여기에 재원 마련을 위한 배당 확대 가능성과 이른바 ‘삼성생명법’으로 불리는 보험업법 개정안까지 얽혀 있어 계열사마다 복잡한 셈법이 작용할 것으로 예상된다. 시장에서는 벌써부터 이재용 부회장의 지분이 높은 계열사를 중심으로 주가가 강세를 나타내는 움직임을 보이고 있다. 삼성그룹의 지배구조 개편 시나리오별 주가 향방을 점쳐본다.\n▶‘이재용 체제’ 강화 움직임\n▷전면적인 지배구조 개편 가능성은 희박\n먼저 삼성 총수 일가가 납부해야 할 상속세를 들여다볼 필요가 있다. 故 이건희 회장의 지분 상속 문제는 총수 일가의 지배구조는 물론 삼성그룹 사업구조와도 밀접하게 맞물려 있다.&#39;}, prediction=[(&#39;E-기후변화&#39;, 0.000977778226698302), (&#39;E-환경영향&#39;, 0.0009417470597143389), (&#39;E-환경혁신&#39;, 0.0012780994727015953), (&#39;G-기업윤리/불공정/소송&#39;, 0.017537753614771317), (&#39;G-지배구조&#39;, 0.46723321235772747), (&#39;S-고용&#39;, 0.004175689859563079), (&#39;S-기업(공급망)동반성장/상생&#39;, 0.0015103125334617502), (&#39;S-사회공헌&#39;, 0.0011744614247291812), (&#39;S-소비자&#39;, 0.002442110228841302), (&#39;S-재해/안전관리&#39;, 0.0010086221579924967)], prediction_agent=&#39;ekonelectra-base&#39;, annotation=None, annotation_agent=None, multi_label=False, explanation=None, id=None, metadata={&#39;id&#39;: 226, &#39;chunk_id&#39;: 0, &#39;filename&#39;: &#39;02100101.20201102114419001.txt&#39;, &#39;codes&#39;: &#39;207940&#39;, &#39;num_codes&#39;: 3, &#39;polarity_preds&#39;: &#39;Negative&#39;}, status=&#39;Default&#39;, event_timestamp=None, metrics=None, search_keywords=None)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">meta_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;chunk_id&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="s1">&#39;codes&#39;</span><span class="p">,</span> <span class="s1">&#39;num_codes&#39;</span><span class="p">]</span>
+<span class="n">polarity_records</span> <span class="o">=</span> <span class="n">rb</span><span class="o">.</span><span class="n">create_records_from_cv_preds</span><span class="p">(</span>
+    <span class="n">selected_polarity_preds</span><span class="p">,</span>
+    <span class="n">meta_columns</span><span class="o">=</span><span class="n">meta_columns</span><span class="p">,</span>
+    <span class="n">prediction_agent</span><span class="o">=</span><span class="s2">&quot;ekonelectra-base&quot;</span>
+<span class="p">)</span>
+<span class="n">polarity_records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TextClassificationRecord(text=&#39;지난 10월 25일 故 이건희 삼성그룹 회장이 별세하면서 삼성그룹주 주가가 요동치고 있다. 천문학적인 상속세 마련을 위해 삼성그룹 지배구조에 변화가 이뤄질 수 있다는 관측 때문이다.\n故 이건희 회장이 보유한 삼성전자, 삼성SDS, 삼성물산, 삼성생명 등 주식 가치는 18조원이 넘는 것으로 알려졌다. 부인 홍라희 전 리움미술관 관장과 이재용 삼성그룹 부회장 등 자녀들이 내야 하는 상속세만 10조원이 넘을 것으로 추정된다. 액수가 워낙 크다 보니 5년간 분할 납부하는 연부연납제도를 활용한다고 해도 상속세 신고·납부 기한인 2021년 4월까지 내야 할 첫해 상속세만 1조8000억원이 넘는다.\n결국 상속세 납부를 위해 총수 일가가 보유한 일부 삼성 계열사 지분을 처분하는 것이 불가피할 전망이다. 여기에 재원 마련을 위한 배당 확대 가능성과 이른바 ‘삼성생명법’으로 불리는 보험업법 개정안까지 얽혀 있어 계열사마다 복잡한 셈법이 작용할 것으로 예상된다. 시장에서는 벌써부터 이재용 부회장의 지분이 높은 계열사를 중심으로 주가가 강세를 나타내는 움직임을 보이고 있다. 삼성그룹의 지배구조 개편 시나리오별 주가 향방을 점쳐본다.\n▶‘이재용 체제’ 강화 움직임\n▷전면적인 지배구조 개편 가능성은 희박\n먼저 삼성 총수 일가가 납부해야 할 상속세를 들여다볼 필요가 있다. 故 이건희 회장의 지분 상속 문제는 총수 일가의 지배구조는 물론 삼성그룹 사업구조와도 밀접하게 맞물려 있다.&#39;, inputs={&#39;text&#39;: &#39;지난 10월 25일 故 이건희 삼성그룹 회장이 별세하면서 삼성그룹주 주가가 요동치고 있다. 천문학적인 상속세 마련을 위해 삼성그룹 지배구조에 변화가 이뤄질 수 있다는 관측 때문이다.\n故 이건희 회장이 보유한 삼성전자, 삼성SDS, 삼성물산, 삼성생명 등 주식 가치는 18조원이 넘는 것으로 알려졌다. 부인 홍라희 전 리움미술관 관장과 이재용 삼성그룹 부회장 등 자녀들이 내야 하는 상속세만 10조원이 넘을 것으로 추정된다. 액수가 워낙 크다 보니 5년간 분할 납부하는 연부연납제도를 활용한다고 해도 상속세 신고·납부 기한인 2021년 4월까지 내야 할 첫해 상속세만 1조8000억원이 넘는다.\n결국 상속세 납부를 위해 총수 일가가 보유한 일부 삼성 계열사 지분을 처분하는 것이 불가피할 전망이다. 여기에 재원 마련을 위한 배당 확대 가능성과 이른바 ‘삼성생명법’으로 불리는 보험업법 개정안까지 얽혀 있어 계열사마다 복잡한 셈법이 작용할 것으로 예상된다. 시장에서는 벌써부터 이재용 부회장의 지분이 높은 계열사를 중심으로 주가가 강세를 나타내는 움직임을 보이고 있다. 삼성그룹의 지배구조 개편 시나리오별 주가 향방을 점쳐본다.\n▶‘이재용 체제’ 강화 움직임\n▷전면적인 지배구조 개편 가능성은 희박\n먼저 삼성 총수 일가가 납부해야 할 상속세를 들여다볼 필요가 있다. 故 이건희 회장의 지분 상속 문제는 총수 일가의 지배구조는 물론 삼성그룹 사업구조와도 밀접하게 맞물려 있다.&#39;}, prediction=[(&#39;Negative&#39;, 0.3544959825168774), (&#39;Neutral&#39;, 0.1439800856751984), (&#39;Positive&#39;, 0.021316067016847247)], prediction_agent=&#39;ekonelectra-base&#39;, annotation=None, annotation_agent=None, multi_label=False, explanation=None, id=None, metadata={&#39;id&#39;: 226, &#39;chunk_id&#39;: 0, &#39;filename&#39;: &#39;02100101.20201102114419001.txt&#39;, &#39;codes&#39;: &#39;207940&#39;, &#39;num_codes&#39;: 3}, status=&#39;Default&#39;, event_timestamp=None, metrics=None, search_keywords=None)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rb</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">category_records</span><span class="p">,</span> <span class="s2">&quot;esg_category_prediction_check&quot;</span><span class="p">)</span>
+<span class="n">rb</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">polarity_records</span><span class="p">,</span> <span class="s2">&quot;esg_polarity_prediction_check&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "cf38dc66b9af49f188510591f870ff19", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>15341 records logged to http://ekorpkit-book:6900/datasets/esgml/esg_category_prediction_check
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "7f4bb231c17440d9a3df2c1f42cfc786", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13809 records logged to http://ekorpkit-book:6900/datasets/esgml/esg_polarity_prediction_check
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># rb.delete(&quot;esg_category_prediction_check&quot;)</span>
+<span class="c1"># rb.delete(&quot;esg_category_prediction_check&quot;)</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1962,7 +1909,7 @@ INFO:ekorpkit.base:No method defined to call
     <a class='right-next' id="next-link" href="../cointax/index.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">ESG</p>
+        <p class="prev-next-title">Taxation on Cryptocurrency</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
