@@ -961,6 +961,16 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#install-or-upgrade-of-ekorpkit">
+   Install or upgrade of ekorpkit
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prepare-an-environment">
+   Prepare an environment
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#building-cointax-polarity-dataset">
    Building
    <code class="docutils literal notranslate">
@@ -1023,6 +1033,16 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#install-or-upgrade-of-ekorpkit">
+   Install or upgrade of ekorpkit
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prepare-an-environment">
+   Prepare an environment
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#building-cointax-polarity-dataset">
    Building
    <code class="docutils literal notranslate">
@@ -1077,6 +1097,21 @@ title="Print to PDF"
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="improving-classification-datasets">
 <h1>Improving classification datasets<a class="headerlink" href="#improving-classification-datasets" title="Permalink to this headline">#</a></h1>
+<div class="section" id="install-or-upgrade-of-ekorpkit">
+<h2>Install or upgrade of ekorpkit<a class="headerlink" href="#install-or-upgrade-of-ekorpkit" title="Permalink to this headline">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Install ekorpkit package first.</p>
+<p>Set logging level to Warning, if you don’t want to see verbose logging.</p>
+<p>If you run this notebook in Colab, set Hardware accelerator to GPU.</p>
+</div>
+<div class="toggle docutils container">
+<p>!pip install -U –pre ekorpkit
+exit()</p>
+</div>
+</div>
+<div class="section" id="prepare-an-environment">
+<h2>Prepare an environment<a class="headerlink" href="#prepare-an-environment" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_format=&#39;retina&#39;
@@ -1092,7 +1127,7 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.38+26.g3d56094.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.38+40.geb12c43.dirty
 is notebook? True
 is colab? False
 environment variables:
@@ -1113,6 +1148,7 @@ environment variables:
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/cointax&quot;</span>
 </pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -1292,6 +1328,11 @@ INFO:ekorpkit.base:Using batcher with minibatch size: 3
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+INFO:ekorpkit.base:setting environment variable CACHED_PATH_CACHE_ROOT to /workspace/.cache/cached_path
+INFO:ekorpkit.base:setting environment variable KMP_DUPLICATE_LIB_OK to TRUE
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;긍정&#39;, &#39;부정 &#39;]
 </pre></div>
 </div>
@@ -1299,7 +1340,7 @@ INFO:ekorpkit.base:Using batcher with minibatch size: 3
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1330,11 +1371,11 @@ INFO:ekorpkit.base:Using batcher with minibatch size: 3
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>445</td>
+      <th>713</th>
+      <td>379</td>
+      <td>소득이 있으면 과세하여야된다</td>
       <td>긍정</td>
-      <td>긍정</td>
-      <td>train</td>
+      <td>dev</td>
     </tr>
   </tbody>
 </table>
@@ -1357,80 +1398,38 @@ INFO:ekorpkit.base:Using batcher with minibatch size: 3
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_seq_length</span> <span class="o">=</span> <span class="mi">256</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">train_batch_size</span> <span class="o">=</span> <span class="mi">32</span>
 <span class="n">model_cfg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">eval_batch_size</span> <span class="o">=</span> <span class="mi">32</span>
-<span class="n">model_cfg</span><span class="o">.</span><span class="n">_method_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;eval&#39;</span><span class="p">]</span>
-<span class="c1"># model_cfg.model.eval.visualize.plot.confusion_matrix.include_values = False</span>
-<span class="c1"># model_cfg.model.eval.visualize.plot.confusion_matrix.include_percentages = False</span>
-<span class="c1"># model_cfg.model.eval.visualize.plot.figure.figsize = (12,10)</span>
+<span class="c1"># model_cfg._method_ = [&#39;train&#39;, &#39;eval&#39;]</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">_method_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;eval&#39;</span><span class="p">]</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="o">.</span><span class="n">visualize</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">model_cfg</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Calling train
-Some weights of the model checkpoint at entelecheia/ekonelectra-base-discriminator were not used when initializing ElectraForSequenceClassification: [&#39;discriminator_predictions.dense_prediction.weight&#39;, &#39;discriminator_predictions.dense_prediction.bias&#39;, &#39;discriminator_predictions.dense.weight&#39;, &#39;discriminator_predictions.dense.bias&#39;]
-- This IS expected if you are initializing ElectraForSequenceClassification from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
-- This IS NOT expected if you are initializing ElectraForSequenceClassification from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
-Some weights of ElectraForSequenceClassification were not initialized from the model checkpoint at entelecheia/ekonelectra-base-discriminator and are newly initialized: [&#39;classifier.dense.bias&#39;, &#39;classifier.dense.weight&#39;, &#39;classifier.out_proj.bias&#39;, &#39;classifier.out_proj.weight&#39;]
-You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Calling eval
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "763d286b9f57466db5492c8b5ce28e09", "version_major": 2, "version_minor": 0}
+{"model_id": "f02bb003b6984bd4967fe1fe11e21174", "version_major": 2, "version_minor": 0}
 </script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "ab94755807f042f4b81046be42da8c4d", "version_major": 2, "version_minor": 0}
-</script><div class="output text_html">Finishing last run (ID:3astcrhk) before initializing another...</div><div class="output text_html">Waiting for W&B process to finish... <strong style="color:green">(success).</strong></div><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_major": 2, "version_minor": 0}
-</script><div class="output text_html">Synced <strong style="color:#cdcd00">chocolate-disco-32</strong>: <a href="https://wandb.ai/entelecheia/ekorpkit-book-cointax_polarity_kr/runs/3astcrhk" target="_blank">https://wandb.ai/entelecheia/ekorpkit-book-cointax_polarity_kr/runs/3astcrhk</a><br/>Synced 5 W&B file(s), 1 media file(s), 1 artifact file(s) and 0 other file(s)</div><div class="output text_html">Find logs at: <code>/workspace/projects/ekorpkit-book/outputs/cointax_polarity_kr/ekonelectra-base/wandb/run-20220906_100306-3astcrhk/logs</code></div><div class="output text_html">Successfully finished last run (ID:3astcrhk). Initializing new run:<br/></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
-To disable this warning, you can either:
-	- Avoid using `tokenizers` before the fork if possible
-	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
-</pre></div>
-</div>
-<div class="output text_html">Tracking run with wandb version 0.13.2</div><div class="output text_html">Run data is saved locally in <code>/workspace/projects/ekorpkit-book/outputs/cointax_polarity_kr_improved/ekonelectra-base/wandb/run-20220906_105541-22qmhbl6</code></div><div class="output text_html">Syncing run <strong><a href="https://wandb.ai/entelecheia/ekorpkit-book-cointax_polarity_kr_improved/runs/22qmhbl6" target="_blank">northern-paper-1</a></strong> to <a href="https://wandb.ai/entelecheia/ekorpkit-book-cointax_polarity_kr_improved" target="_blank">Weights & Biases</a> (<a href="https://wandb.me/run" target="_blank">docs</a>)<br/></div><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "345d13a8a5b94da3aa7d5bd443449b30", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "1342b7b007be40d989ea321ae92b30a4", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "8cb42331809843688b500c35b7bae73b", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "c8890553efec435ea9c18b38f38d6ec6", "version_major": 2, "version_minor": 0}
-</script><div class="output text_html">Finishing last run (ID:22qmhbl6) before initializing another...</div><div class="output text_html">Waiting for W&B process to finish... <strong style="color:green">(success).</strong></div><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "", "version_major": 2, "version_minor": 0}
-</script><div class="output text_html"><style>
-    table.wandb td:nth-child(1) { padding: 0 10px; text-align: left ; width: auto;} td:nth-child(2) {text-align: left ; width: 100%}
-    .wandb-row { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; width: 100% }
-    .wandb-col { display: flex; flex-direction: column; flex-basis: 100%; flex: 1; padding: 10px; }
-    </style>
-<div class="wandb-row"><div class="wandb-col"><h3>Run history:</h3><br/><table class="wandb"><tr><td>acc</td><td>▁█</td></tr><tr><td>eval_loss</td><td>█▁</td></tr><tr><td>fn</td><td>█▁</td></tr><tr><td>fp</td><td>▁▁</td></tr><tr><td>global_step</td><td>▁█</td></tr><tr><td>mcc</td><td>▁█</td></tr><tr><td>tn</td><td>▁▁</td></tr><tr><td>tp</td><td>▁█</td></tr><tr><td>train_loss</td><td>█▁</td></tr></table><br/></div><div class="wandb-col"><h3>Run summary:</h3><br/><table class="wandb"><tr><td>acc</td><td>0.72414</td></tr><tr><td>eval_loss</td><td>0.53416</td></tr><tr><td>fn</td><td>16</td></tr><tr><td>fp</td><td>0</td></tr><tr><td>global_step</td><td>32</td></tr><tr><td>mcc</td><td>0.33461</td></tr><tr><td>tn</td><td>39</td></tr><tr><td>tp</td><td>3</td></tr><tr><td>train_loss</td><td>0.5657</td></tr></table><br/></div></div></div><div class="output text_html">Synced <strong style="color:#cdcd00">northern-paper-1</strong>: <a href="https://wandb.ai/entelecheia/ekorpkit-book-cointax_polarity_kr_improved/runs/22qmhbl6" target="_blank">https://wandb.ai/entelecheia/ekorpkit-book-cointax_polarity_kr_improved/runs/22qmhbl6</a><br/>Synced 4 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)</div><div class="output text_html">Find logs at: <code>/workspace/projects/ekorpkit-book/outputs/cointax_polarity_kr_improved/ekonelectra-base/wandb/run-20220906_105541-22qmhbl6/logs</code></div><div class="output text_html">Successfully finished last run (ID:22qmhbl6). Initializing new run:<br/></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
-To disable this warning, you can either:
-	- Avoid using `tokenizers` before the fork if possible
-	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
-</pre></div>
-</div>
-<div class="output text_html">Tracking run with wandb version 0.13.2</div><div class="output text_html">Run data is saved locally in <code>/workspace/projects/ekorpkit-book/outputs/cointax_polarity_kr_improved/ekonelectra-base/wandb/run-20220906_105602-12dicm7k</code></div><div class="output text_html">Syncing run <strong><a href="https://wandb.ai/entelecheia/ekorpkit-book-cointax_polarity_kr_improved/runs/12dicm7k" target="_blank">iconic-fire-2</a></strong> to <a href="https://wandb.ai/entelecheia/ekorpkit-book-cointax_polarity_kr_improved" target="_blank">Weights & Biases</a> (<a href="https://wandb.me/run" target="_blank">docs</a>)<br/></div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Calling eval
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "db50afbe7af14d18ae08a82eaba5279f", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "81e0b9b5d9d94f8fa0fda6810bd5bfe2", "version_major": 2, "version_minor": 0}
-</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy:  0.7913669064748201
-Precison:  0.8264672472548277
-Recall:  0.7913669064748201
-F1 Score:  0.7612586420571019
+{"model_id": "353f537e7a904c20b1a4c996cfe25126", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy:  0.7202797202797203
+Precison:  0.7680942606315742
+Recall:  0.7202797202797203
+F1 Score:  0.6484819528297789
 Model Report: 
 ___________________________________________________
               precision    recall  f1-score   support
 
-          긍정       0.77      0.99      0.86        93
-         부정        0.95      0.39      0.55        46
+          긍정       0.71      0.99      0.83        96
+         부정        0.89      0.17      0.29        47
 
-    accuracy                           0.79       139
-   macro avg       0.86      0.69      0.71       139
-weighted avg       0.83      0.79      0.76       139
+    accuracy                           0.72       143
+   macro avg       0.80      0.58      0.56       143
+weighted avg       0.77      0.72      0.65       143
 </pre></div>
 </div>
-<img alt="../../../_images/coin_dataset_11_32.png" src="../../../_images/coin_dataset_11_32.png" />
+<img alt="../../../_images/coin_dataset_13_4.png" src="../../../_images/coin_dataset_13_4.png" />
 </div>
 </div>
 <div class="cell tag_hide-output docutils container">
