@@ -1,0 +1,1577 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Getting Started with Bloom &#8212; eKorpkit Tutorials</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/ekorpkit.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="AI Art (Text-to-Image)" href="../aiart/index.html" />
+    <link rel="prev" title="What is BLOOM?" href="lecture02-bloom.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-FN4GFT8HP8"></script>
+<script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){ dataLayer.push(arguments); }
+                    gtag('js', new Date());
+                    gtag('config', 'G-FN4GFT8HP8');
+                </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../_static/ekorpkit.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">eKorpkit Tutorials</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    eKonomic Research Python Toolkit
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Basics
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/index.html">
+   Getting started
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/install.html">
+     Installation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/usage.html">
+     Usage
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/features/index.html">
+   Key features
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/easy_config.html">
+     Easy Configuration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/no_boiler.html">
+     No Boilerplate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/workflows.html">
+     Workflows
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/share.html">
+     Sharable and Reproducible
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/plug.html">
+     Pluggable Architece
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tutorials
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/config/index.html">
+   Configuring ekorpkit
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/config/eKonf.html">
+     Using eKonf class
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/datasets/index.html">
+   Datasets
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/corpus.html">
+     Build and Load Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/datasets/dataset.html">
+     Build and Load Datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/pipeline.html">
+     Corpus task pipelines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/models/index.html">
+   Models
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/models/automl/index.html">
+     Auto ML
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/embeddings/index.html">
+     Word Embeddings
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/embeddings/word2vec_basics.html">
+       Word2Vec Basics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/embeddings/eval_vectors.html">
+       Evaluate pretrained embeddings
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/ngram/index.html">
+     N-Grams
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram.html">
+       N-Grams
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram_for_lexicons.html">
+       N-Gram model for ngram lexicon features
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram_for_words.html">
+       N-Gram model for unigram lexicon features
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/sentiment/index.html">
+     Sentiment Analyers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/lbsa_en.html">
+       Lexicon-based Sentiment Analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/financial_phrasebank_lm.html">
+       Evaluate LM with financial phrasebank
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/sentiment.html">
+       LM Dictionary vs. finbert vs. T5
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/models/transformers/index.html">
+     Transformers
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/art/index.html">
+     AI Art (Text-to-Image)
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/art/disco.html">
+       Disco Diffusion
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/art/dalle-mini.html">
+       DALL·E Mini
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/pipelines/index.html">
+   Pipelines
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/pipelines/pipeline.html">
+     Instantiating pipeline
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/preprocessors/index.html">
+   Preprocessors
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+  <label for="toctree-checkbox-11">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/normalizer/index.html">
+     Normalizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+    <label for="toctree-checkbox-12">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/normalizer/normalizer.html">
+       Normalizers
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/segmenter/index.html">
+     Segmenters
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+    <label for="toctree-checkbox-13">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/segmenter/segmenter.html">
+       Segmenters
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/tokenizer/index.html">
+     Tokenizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/>
+    <label for="toctree-checkbox-14">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/tokenizer/mecab.html">
+       Mecab Tokenizer
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/visualizers/index.html">
+   Visualizers
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/>
+  <label for="toctree-checkbox-15">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/visualizers/plot.html">
+     Plots
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../tutorials/workflow/index.html">
+   Workflows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Datasets
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../corpus/ekorpkot_corpus.html">
+   The eKorpkit Corpus
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Use Cases
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/fomc/index.html">
+   FOMC
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/>
+  <label for="toctree-checkbox-16">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/02_FOMC_numerical_data.html">
+     Preparing Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/03_FOMC_corpus.html">
+     Preparing Textual Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/04_FOMC_EDA_numericals.html">
+     EDA on Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/05_FOMC_features.html">
+     Visualizing Features
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/06_FOMC_AutoML.html">
+     Checking Baseline with AutoML
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/07_FOMC_sentiments.html">
+     Predicting Sentiments of FOMC Corpus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/08_FOMC_EDA_sentiments.html">
+     EDA on Sentiment Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/09_FOMC_AutoML_with_tones.html">
+     Predicting the next decisions with tones
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../usecases/bok/index.html">
+   Bank of Korea
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/edgar/index.html">
+   EDGAR
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" type="checkbox"/>
+  <label for="toctree-checkbox-17">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/edgar/predict_edgar.html">
+     Prediciting Sentiments
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/esg/index.html">
+   ESG
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" type="checkbox"/>
+  <label for="toctree-checkbox-18">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/snorkel-polarity.html">
+     Preparing polarity classification datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/rubrix.html">
+     Improving classification datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/classifiers.html">
+     Training Classifiers for ESG Ratings
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/econ_news_corpus.html">
+     Building
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       econ_news_kr
+      </span>
+     </code>
+     corpus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/predict_news.html">
+     Predicting ESG Categories and Polarities
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/cointax/index.html">
+   Taxation on Cryptocurrency
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/>
+  <label for="toctree-checkbox-19">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/cointax/coin_dataset.html">
+     Improving classification datasets
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Research
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../research/esg_topics/analyst.html">
+   ESG Topic Analysis
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Lectures
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../intro_nlp/index.html">
+   Introduction to NLP
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" type="checkbox"/>
+  <label for="toctree-checkbox-20">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lecture01.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lecture02-ekorpkit.html">
+     Getting started with ekorpkit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lecture02-research.html">
+     Research Applications
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   Deep Learning for NLP
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" type="checkbox"/>
+  <label for="toctree-checkbox-21">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture01.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture02-ekorpkit.html">
+     Getting started with ekorpkit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture02-zero.html">
+     Zero Shot, Prompt, and Search Strategies
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture02-bloom.html">
+     What is BLOOM?
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Getting Started with Bloom
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../aiart/index.html">
+   AI Art (Text-to-Image)
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" type="checkbox"/>
+  <label for="toctree-checkbox-22">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/lecture01.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/project-themes.html">
+     Project Themes - A Brave New World
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/lecture02-dalle1.html">
+     DALL·E 1
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ds/index.html">
+   Data Science for Economics and Finance
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about/index.html">
+   References
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/entelecheia/ekorpkit-book/main?urlpath=tree/ekorpkit-book/docs/lectures/deep_nlp/lecture03-bloom.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://colab.research.google.com/github/entelecheia/ekorpkit-book/blob/main/ekorpkit-book/docs/lectures/deep_nlp/lecture03-bloom.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Colab"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../../_static/images/logo_colab.png">
+  </span>
+<span class="headerbtn__text-container">Colab</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/entelecheia/ekorpkit-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/entelecheia/ekorpkit-book/issues/new?title=Issue%20on%20page%20%2Fdocs/lectures/deep_nlp/lecture03-bloom.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../../_sources/docs/lectures/deep_nlp/lecture03-bloom.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#transparency-openness-and-inclusivity">
+   Transparency, openness, and inclusivity
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bloom-architecture">
+   BLOOM Architecture
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pre-trained-bloom-checkpoints">
+   Pre-trained BLOOM checkpoints
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#download-checkpoints">
+     Download checkpoints
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bloom-local-inference">
+   Bloom local inference
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#greedy-search">
+     Greedy Search
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#beam-search">
+     Beam Search
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sampling-top-k-top-p">
+     Sampling Top-k + Top-p
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bloom-api-inference">
+   Bloom api inference
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Greedy Search
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id2">
+     Beam Search
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id3">
+     Sampling Top-k + Top-p
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bloom-examples">
+   Bloom Examples
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Getting Started with Bloom</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#transparency-openness-and-inclusivity">
+   Transparency, openness, and inclusivity
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bloom-architecture">
+   BLOOM Architecture
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pre-trained-bloom-checkpoints">
+   Pre-trained BLOOM checkpoints
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#download-checkpoints">
+     Download checkpoints
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bloom-local-inference">
+   Bloom local inference
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#greedy-search">
+     Greedy Search
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#beam-search">
+     Beam Search
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sampling-top-k-top-p">
+     Sampling Top-k + Top-p
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bloom-api-inference">
+   Bloom api inference
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Greedy Search
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id2">
+     Beam Search
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id3">
+     Sampling Top-k + Top-p
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bloom-examples">
+   Bloom Examples
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="getting-started-with-bloom">
+<h1>Getting Started with Bloom<a class="headerlink" href="#getting-started-with-bloom" title="Permalink to this headline">#</a></h1>
+<p><img alt="bloom" src="../../../_images/entelecheia_BLOOM.png" /></p>
+<div class="section" id="transparency-openness-and-inclusivity">
+<h2>Transparency, openness, and inclusivity<a class="headerlink" href="#transparency-openness-and-inclusivity" title="Permalink to this headline">#</a></h2>
+<p>While most major LLMs have been trained exclusively on English text, BLOOM’s training corpus includes 46 natural languages and 13 programming languages. This makes it useful for the many regions where English is not the main language.</p>
+<p>BLOOM is also a break from the de facto reliance on big tech to train models. One of the main problems of LLMs is the prohibitive costs of training and tuning them. This hurdle has made 100-billion-parameter LLMs the exclusive domain of big tech companies with deep pockets. Recent years have seen AI labs gravitate toward big tech to gain access to subsidized cloud compute resources and fund their research.</p>
+<p>The BLOOM research team has been completely transparent about the entire process of training the model. They have published the dataset, the meeting notes, discussions, and code, as well as the logs and technical details of training the model.</p>
+</div>
+<div class="section" id="bloom-architecture">
+<h2>BLOOM Architecture<a class="headerlink" href="#bloom-architecture" title="Permalink to this headline">#</a></h2>
+<p>BLOOM is a causal model language, which means that it was trained as a next-token predictor. This apparently simple strategy of predicting the next token in a sentence, based on a set of preceding tokens, has shown to capture certain degree of reasoning abilities for large language models (arXiv:2205.11916). This enables BLOOM and similar models to connect multiple concepts in a sentence and manage to solve non-trivial problems such as arithmetic, translation, and programming with fair accuracy. BLOOM uses a Transformer architecture composed of an input embeddings layer, 70 Transformer blocks, and an output language-modeling layer, as shown in the figure below. Each Transformer block has a self-attention layer and a multi-layer perceptron layer, with input and post-attention layer norms.</p>
+<p>To predict the next token in a sentence using BLOOM, we simply need to sequentially pass the input tokens (in the form of embeddings) through each of 70 BLOOM blocks. Given that this is a sequential operation, we can load into RAM only one block at a time to avoid memory overflow. Similarly, the word embeddings and output language-modeling layer can be loaded on-demand from disk.</p>
+<p><img alt="" src="../../../_images/bloom_architecture.png" /></p>
+</div>
+<div class="section" id="pre-trained-bloom-checkpoints">
+<h2>Pre-trained BLOOM checkpoints<a class="headerlink" href="#pre-trained-bloom-checkpoints" title="Permalink to this headline">#</a></h2>
+<p>From BigScience repository (<a class="reference external" href="https://huggingface.co/bigscience">https://huggingface.co/bigscience</a>), you can find various version of models.</p>
+<p><img alt="" src="../../../_images/bloom-models.png" /></p>
+<div class="section" id="download-checkpoints">
+<h3>Download checkpoints<a class="headerlink" href="#download-checkpoints" title="Permalink to this headline">#</a></h3>
+<p>cf) The original bloom model is very big with a size of about 350GB.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install transformers 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoModel</span><span class="p">,</span> <span class="n">AutoTokenizer</span>
+
+<span class="n">model_path</span> <span class="o">=</span> <span class="s2">&quot;/workspace/data/tbts/archive/models/bloom/bloom&quot;</span> <span class="c1"># replace with your local folder path</span>
+<span class="n">model_uri</span> <span class="o">=</span> <span class="s2">&quot;bigscience/bloom&quot;</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_uri</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_uri</span><span class="p">)</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+
+<span class="o">!</span>ls <span class="nv">$model_path</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Check file list and disk usage</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_path</span> <span class="o">=</span> <span class="s2">&quot;/workspace/data/tbts/archive/models/bloom&quot;</span> <span class="c1"># replace with your local folder path</span>
+
+<span class="o">!</span>du -h <span class="nv">$model_path</span> -d <span class="m">2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>657G	/workspace/data/tbts/archive/models/bloom/bloom
+6.5G	/workspace/data/tbts/archive/models/bloom/bloom-1b3
+664G	/workspace/data/tbts/archive/models/bloom
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="bloom-local-inference">
+<h2>Bloom local inference<a class="headerlink" href="#bloom-local-inference" title="Permalink to this headline">#</a></h2>
+<p>Load Bloom model and tokenizer.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">pipeline</span>
+
+<span class="n">model_uri</span> <span class="o">=</span> <span class="s2">&quot;bigscience/bloom-1b3&quot;</span>
+
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">pipeline</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_uri</span><span class="p">,</span> <span class="n">task</span><span class="o">=</span><span class="s2">&quot;text-generation&quot;</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>Inference function for bloom models</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">infer_local</span><span class="p">(</span>
+    <span class="n">prompt</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+    <span class="n">top_k</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">top_p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">repetition_penalty</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">do_sample</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">num_return_sequences</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">num_beams</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">no_repeat_ngram_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">early_stopping</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">return_full_text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">pipe</span><span class="p">(</span>
+        <span class="n">prompt</span><span class="p">,</span>
+        <span class="n">temperature</span><span class="o">=</span><span class="n">temperature</span><span class="p">,</span>  <span class="c1"># 0 to 1</span>
+        <span class="n">top_k</span><span class="o">=</span><span class="n">top_k</span><span class="p">,</span>
+        <span class="n">top_p</span><span class="o">=</span><span class="n">top_p</span><span class="p">,</span>  <span class="c1"># None, 0-1</span>
+        <span class="n">max_new_tokens</span><span class="o">=</span><span class="n">max_new_tokens</span><span class="p">,</span>  <span class="c1"># up to 2047 theoretically</span>
+        <span class="n">return_full_text</span><span class="o">=</span><span class="n">return_full_text</span><span class="p">,</span>  <span class="c1"># include prompt or not.</span>
+        <span class="n">repetition_penalty</span><span class="o">=</span><span class="n">repetition_penalty</span><span class="p">,</span>  <span class="c1"># None, 0-100 (penalty for repeat tokens.</span>
+        <span class="n">do_sample</span><span class="o">=</span><span class="n">do_sample</span><span class="p">,</span>  <span class="c1"># True: use sampling, False: Greedy decoding.</span>
+        <span class="n">num_return_sequences</span><span class="o">=</span><span class="n">num_return_sequences</span><span class="p">,</span>
+        <span class="n">num_beams</span><span class="o">=</span><span class="n">num_beams</span><span class="p">,</span>
+        <span class="n">no_repeat_ngram_size</span><span class="o">=</span><span class="n">no_repeat_ngram_size</span><span class="p">,</span>
+        <span class="n">early_stopping</span><span class="o">=</span><span class="n">early_stopping</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prompt</span> <span class="o">=</span> <span class="s2">&quot;Bloom is a large language model&quot;</span>
+<span class="n">result_length</span> <span class="o">=</span> <span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">result_length</span></code>: the size of the response (in tokens) we get for the prompt from the model.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inputs</span></code>:  the embedding representation of prompt, encoded for use specifically by PyTorch.</p></li>
+</ul>
+<div class="section" id="greedy-search">
+<h3>Greedy Search<a class="headerlink" href="#greedy-search" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">infer_local</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="n">result_length</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&#39;generated_text&#39;: &#39;Bloom is a large language model that is used to predict the probability of a word given its context. The model is trained on a large corpus of text and is used to predict the probability of a word given its context. The model is trained on a large corpus of text and is used to predict the probability of a word given its context. The model is trained on a large corpus of text and is used to predict the probability of a word given its context. The model is trained on a large corpus of text and is used to&#39;}]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="beam-search">
+<h3>Beam Search<a class="headerlink" href="#beam-search" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">infer_local</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="n">result_length</span><span class="p">,</span> <span class="n">num_beams</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">no_repeat_ngram_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">early_stopping</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&#39;generated_text&#39;: &#39;Bloom is a large language model that is used to predict the probability of a word given its context. The model is trained on a corpus of about 1.5 million words. It is based on the idea that words that occur frequently in a text are likely to be important. For example, the word &quot;apple&quot; occurs in the corpus about 10 times, while the words &quot;banana&quot; and &quot;orange&quot; occur about 20 times each. This model has been shown to perform well in many NLP tasks, such as machine translation,&#39;}]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="sampling-top-k-top-p">
+<h3>Sampling Top-k + Top-p<a class="headerlink" href="#sampling-top-k-top-p" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">infer_local</span><span class="p">(</span>
+    <span class="n">prompt</span><span class="p">,</span> 
+    <span class="n">temperature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+    <span class="n">max_new_tokens</span><span class="o">=</span><span class="n">result_length</span><span class="p">,</span> 
+    <span class="n">do_sample</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">top_k</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">top_p</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&#39;generated_text&#39;: &#39;Bloom is a large language model with the support of the most recent work on neural machine translation (Collobert et al., 2011; Dörfler et al., 2015; Le et al., 2015; Mikolov et al., 2014; Rusu et al., 2014). We apply a variant of the language model used for the MT task. In particular, we use a neural recurrent language model (Nirbakhsh et al., 2015) that is specifically tuned for language model generation, and trained with the GloVe&#39;}]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="bloom-api-inference">
+<h2>Bloom api inference<a class="headerlink" href="#bloom-api-inference" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">notebook_login</span>
+<span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">HfFolder</span>
+
+<span class="c1">#enter your API key, you can make one for free on HF</span>
+<span class="n">notebook_login</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Login successful
+Your token has been saved to /root/.huggingface/token
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">InferenceApi</span>
+
+<span class="n">model_uri</span> <span class="o">=</span> <span class="s2">&quot;bigscience/bloom&quot;</span>
+
+<span class="n">inference</span> <span class="o">=</span> <span class="n">InferenceApi</span><span class="p">(</span><span class="n">model_uri</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">HfFolder</span><span class="o">.</span><span class="n">get_token</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">infer_api</span><span class="p">(</span>
+    <span class="n">prompt</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+    <span class="n">top_k</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">top_p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">repetition_penalty</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">do_sample</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">num_return_sequences</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">num_beams</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">no_repeat_ngram_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">early_stopping</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">return_full_text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">top_k</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">top_k</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">top_k</span>
+    <span class="n">top_p</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">num_beams</span> <span class="k">else</span> <span class="n">top_p</span>
+    <span class="n">num_beams</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">num_beams</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">num_beams</span>
+    <span class="n">no_repeat_ngram_size</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">num_beams</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">no_repeat_ngram_size</span>
+    <span class="n">early_stopping</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">num_beams</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">num_beams</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;max_new_tokens&quot;</span><span class="p">:</span> <span class="n">max_new_tokens</span><span class="p">,</span>
+        <span class="s2">&quot;top_k&quot;</span><span class="p">:</span> <span class="n">top_k</span><span class="p">,</span>
+        <span class="s2">&quot;top_p&quot;</span><span class="p">:</span> <span class="n">top_p</span><span class="p">,</span>
+        <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="n">temperature</span><span class="p">,</span>
+        <span class="s2">&quot;do_sample&quot;</span><span class="p">:</span> <span class="n">do_sample</span><span class="p">,</span>
+        <span class="s2">&quot;early_stopping&quot;</span><span class="p">:</span><span class="n">early_stopping</span><span class="p">,</span>
+        <span class="s2">&quot;no_repeat_ngram_size&quot;</span><span class="p">:</span><span class="n">no_repeat_ngram_size</span><span class="p">,</span>
+        <span class="s2">&quot;num_beams&quot;</span><span class="p">:</span><span class="n">num_beams</span><span class="p">,</span>
+        <span class="s2">&quot;return_full_text&quot;</span><span class="p">:</span><span class="n">return_full_text</span><span class="p">,</span>
+        <span class="s2">&quot;repetition_penalty&quot;</span><span class="p">:</span> <span class="n">repetition_penalty</span><span class="p">,</span>
+        <span class="s2">&quot;seed&quot;</span><span class="p">:</span> <span class="n">seed</span><span class="p">,</span>
+    <span class="p">}</span>
+    
+    <span class="n">response</span> <span class="o">=</span> <span class="n">inference</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id1">
+<h3>Greedy Search<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">infer_api</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="n">result_length</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&#39;generated_text&#39;: &#39;Bloom is a large language model that is trained on a large corpus of text. It is used to generate a vector representation of a word, which is then used to predict the next word in a sentence. The vector representation of a word is called a word embedding. The word embedding is a vector of real numbers, and the length of the vector is the same for all words. The word embedding is used to predict the next word in a sentence. The word embedding is trained on a large corpus of text, and the word embedding&#39;}]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="id2">
+<h3>Beam Search<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">infer_api</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="n">result_length</span><span class="p">,</span> <span class="n">num_beams</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">no_repeat_ngram_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">early_stopping</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&#39;generated_text&#39;: &#39;Bloom is a large language model that is trained on a large corpus of text. It is a language model that is trained on a large corpus of text. It is a language model that is trained on a large corpus of text. It is a language model that is trained on a large corpus of text. It is a language model that is trained on a large corpus of text. It is a language model that is trained on a large corpus of text. It is a language model that is trained on a large corpus of text.&#39;}]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>Sampling Top-k + Top-p<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">infer</span><span class="p">(</span>
+    <span class="n">prompt</span><span class="p">,</span> 
+    <span class="n">temperature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+    <span class="n">max_new_tokens</span><span class="o">=</span><span class="n">result_length</span><span class="p">,</span> 
+    <span class="n">do_sample</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">top_k</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">top_p</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&#39;generated_text&#39;: &#39;Bloom is a large language model. It consists of millions of individual language model tokens, each with its own set of parameters that define the probability of each word in a sentence. A probability of 0.0 for a word implies that that word is never going to appear in a sentence, while a probability of 1.0 implies that that word will always be in a sentence. The goal is to learn these parameters in order to accurately predict the next word based on the previous word(s) in the sentence. To help train this&#39;}]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prompt</span> <span class="o">=</span> <span class="s2">&quot;One of the hottest areas of investing in recent years has been ESG: &quot;</span>
+<span class="n">prompt</span> <span class="o">+=</span> <span class="s2">&quot;the use of environmental, social, and governance criteria to evaluate possible investments&quot;</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">infer</span><span class="p">(</span>
+    <span class="n">prompt</span><span class="p">,</span> 
+    <span class="n">temperature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+    <span class="n">max_new_tokens</span><span class="o">=</span><span class="n">result_length</span><span class="p">,</span> 
+    <span class="n">do_sample</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">top_k</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">top_p</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;generated_text&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>One of the hottest areas of investing in recent years has been ESG: the use of environmental, social, and governance criteria to evaluate possible investments.
+While environmental factors have long been a consideration, both socially responsible investing and corporate social responsibility have become an integral part of mainstream investing.
+So, what does this mean for investors who believe strongly in the importance of ESG criteria to investment decisions?
+The key point to remember is that every investment decision has to be made at the individual level, using the specific strategy for selecting investments. There are a number of ESG managers, ranging from the highly specialized, to those offering ESG at no
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="bloom-examples">
+<h2>Bloom Examples<a class="headerlink" href="#bloom-examples" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+<span class="kn">from</span> <span class="nn">ekorpkit.models.bloom.demo</span> <span class="kn">import</span> <span class="n">BloomDemo</span>
+
+
+<span class="n">demo</span> <span class="o">=</span> <span class="n">BloomDemo</span><span class="p">()</span>
+<span class="n">demo</span><span class="o">.</span><span class="n">init_model</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "9815c6178e164ffaa0d42881fed66c88", "version_major": 2, "version_minor": 0}
+</script></div>
+</div>
+</div>
+</div>
+
+
+<script type="application/vnd.jupyter.widget-state+json">
+{"state": {"0007e9ef13d64435a75f9ac6baf4f7ec": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_52dd93b0f73148be98d6bfe30a5c49f7", "style": "IPY_MODEL_2bef10f1307844249f6fe69227fe439f", "value": " 90.4k/90.4k [00:00&lt;00:00, 168kB/s]"}}, "00a7c42a61df467a92483ea845628ae2": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "02db1ddc2903487bbbcf8229e9b4da75": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_dc18576ac2ee4714b9bb6b0d58aeed0f", "style": "IPY_MODEL_811e0ba515ab4314950653ab21ed86c8", "value": " 126M/6.70G [00:24&lt;05:25, 21.7MB/s]"}}, "03828c87c2f445878aad8aaf0964224f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "049186ed42d94cfe9a7259ecdff50c88": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_4ce93d47236b4a778e8168f75866a860", "IPY_MODEL_6ccba48aae174dddada6d3bbe431b6a3", "IPY_MODEL_cfe813ce480e4f469a62c14b96e89986"], "layout": "IPY_MODEL_333be306be054df7bb2a6d85167baa86"}}, "05684f84900b4906bd835c876abb2ac7": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "05736c4dadc141689a2ea96b3fd2965c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "084d59ca166f4d4ea4b932d2c67511d1": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_bc2e5daa20574ff58930ab6b6c66d794", "IPY_MODEL_8f0c818fc47344f2b5b3dd21947326fa", "IPY_MODEL_291b907abb214588869d83f77b7537f9"], "layout": "IPY_MODEL_a8b3d2f7817f46989ced9490d1c5797c"}}, "0bea8bd7773a42ef83790a816646c3d4": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "128116ff10b54f3da1d7efe51b5761f8": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "15c551d72799491e8939cc994b71e6c6": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "167669b5ae6946faafcb0c7b21f7a5a8": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "18696da9728247e6bd7aefc3e72d86af": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "1c8ae7a46d274d6a95c4d214088690dc": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "1df7c60eb4604fb7bb14346d9d60683c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_03828c87c2f445878aad8aaf0964224f", "style": "IPY_MODEL_a6b11f5b49b940f08891432429cb3dcf", "value": " 66.1M/6.70G [00:41&lt;05:13, 22.8MB/s]"}}, "1eb10cd78d6446c89adf2d6c9fc3ed64": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_71840e3772a94814a92a57b90fff3369", "max": 222, "style": "IPY_MODEL_5eed3475a56c42b98c0d46e232a99380", "value": 222}}, "1f6dfe0e65b942c7b56ee594b330da41": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "25082bbdae6a43a1944a2ceb4d2622e2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "255d5d5edc3043528274d02a54ea8af2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "291b907abb214588869d83f77b7537f9": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_91c6ee085d264b9fa554696b38a7472f", "style": "IPY_MODEL_7fcf8a50dbdf48008e1eff1fd20ef855", "value": " 5.60G/6.70G [04:40&lt;00:52, 22.6MB/s]"}}, "2a1554d16332402ab2982e2d8d40cf15": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "2a50915ea521406a82b481ff38b79ed2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "2b585b55541d4a98b64c3a34fd79ef1c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "2bbdd28d441d4f188016d533d7a08fcc": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "2be2c2727f5548878d959e91088794a2": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "2bef10f1307844249f6fe69227fe439f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "2d485f0538c349968b2124d251d4b36b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "301e42092c914581b521408397a3c6a3": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_4d66e54331864d66a05ba48da6000b93", "IPY_MODEL_edbc9575a03b428c823e9c470d3476ba", "IPY_MODEL_9a4df43081d945d0b8ed196466ae20de"], "layout": "IPY_MODEL_a36dee72bf3b437384c43dfbe3a78d05"}}, "333be306be054df7bb2a6d85167baa86": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "336e4205258e45829195d6929d005e6f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_e082002ae99143ad968b7392caaa0acf", "IPY_MODEL_82cc5b0e38074d9784f5b374d3c16995", "IPY_MODEL_ed20ea0e358040118f63dbac0660ab2b"], "layout": "IPY_MODEL_634c8b26689042a680bf890439d92ffc"}}, "3429865c957744f89de78a0103376043": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "35ab56c8cf124e1ea388aeb6a6bf611f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "39d3192269ef43149e465862dbbf266c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "3a7141f32d84495a94f8dadcbcf397c0": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "3b2dcc3f31294f9fa0193ccd6c3bf62a": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "3b7ce4c8bcce45b3beb219203c4181f6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "3c74373db3654201970d43d6fc541c71": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "3e665fdbf3ca4e8aa2031b71b3236eb2": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "417dc907625b489484bfeac514b6b16e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "42e736027b794134acbdcbdac02e838c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "431186b9bd95428993ebbfb6c0015a34": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "435581952245497396ab61acf3ac7330": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "4547fc46ddbd4db48c50b1fa721aedc3": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_8c1813f121f04b58b15d7ca349edafee", "IPY_MODEL_785b9d9a6efe4bd6b1a842b029fbfe3f", "IPY_MODEL_02db1ddc2903487bbbcf8229e9b4da75"], "layout": "IPY_MODEL_ee5b4f1ef575494e93edc912fa6087a6"}}, "4791a19a20b444ac98c98a6285544140": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "49b10eddcd014a06bc40da4f180882f7": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "4ba6b340d83944ad99e7ffcea3f0cda1": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "4ba976e8eb3e43daab628a92e91357fc": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "4c51149cd9dc4fe4a31bba5f51acb10d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "4ce93d47236b4a778e8168f75866a860": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_cf3b8bb52cb24d87980bcc4fe1e1f74c", "style": "IPY_MODEL_e3614906cbd04988acba01ace74dbad4", "value": "Downloading special_tokens_map.json: 100%"}}, "4d66e54331864d66a05ba48da6000b93": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_05684f84900b4906bd835c876abb2ac7", "style": "IPY_MODEL_431186b9bd95428993ebbfb6c0015a34", "value": "Downloading pytorch_model.bin.index.json: 100%"}}, "4f593f8d13994e54aa25d0d1fd94f112": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_f64b1db0e00b409d923876ad0669e0a7", "IPY_MODEL_6ef446e236c248688ead223ce0adf2bf", "IPY_MODEL_f39b73a8cc194f2f8edeca3a18e53055"], "layout": "IPY_MODEL_9a6bd9f7048c4eec9bf2c4a321082565"}}, "503caa3f560241cba7bef4b198fafa7f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_4ba6b340d83944ad99e7ffcea3f0cda1", "style": "IPY_MODEL_3429865c957744f89de78a0103376043", "value": "Downloading: 100%"}}, "51300b7926f84680be028dd41e31d0ee": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "514ad3a52b684430aa006d48392daa27": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_cacbab415473486f9cbc3bbb9e0340d3", "IPY_MODEL_b2e288c05ea44480b086e9cb3488fc24", "IPY_MODEL_b101bae982d744d9974bf2612da12a02"], "layout": "IPY_MODEL_fbda30ec61cc42ac9da3240ac9b070a6"}}, "52dd93b0f73148be98d6bfe30a5c49f7": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "52f16151dfcb456c825cb3dae442d5ad": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_42e736027b794134acbdcbdac02e838c", "style": "IPY_MODEL_72ea378ae6c9452a82938c6d9ddf2160", "value": "Downloading: 100%"}}, "54d82726a2924d948c54b144e2a7d89c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "5774ac0228ca4a32b1575071b093f650": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "57b5f0bd8e8941fc9dc925ead9198d98": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_789e1e25688445a982f1a69cc941bd74", "max": 92568, "style": "IPY_MODEL_989c282496904f628e3cdaea7595fa70", "value": 92568}}, "588738651d714523932552dc8332e1fd": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_75308d7b88284f6b978a0982a287b203", "style": "IPY_MODEL_8eb4582896c34c1f96406c860ba7bc14", "value": " 99.7M/6.70G [06:51&lt;05:14, 22.5MB/s]"}}, "5b33285cce0e49df9a7a7fe197871513": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_8433364da70740adac53b59954dab93e", "style": "IPY_MODEL_417dc907625b489484bfeac514b6b16e", "value": "Downloading pytorch_model_00001-of-00072.bin:   1%"}}, "5bffd62e9df74bc092e0000412567f8e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_8c80a319e3304a11b77eba302b51a42f", "IPY_MODEL_c811e8bf2d074cb38762b2593b0f38a8", "IPY_MODEL_0007e9ef13d64435a75f9ac6baf4f7ec"], "layout": "IPY_MODEL_7cb653e50ef84102adc221a3433189d9"}}, "5e3dd821bef34f69b90df0ab3966f883": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_bc670f08059e4214831a7695ad5ee4bb", "style": "IPY_MODEL_632f60a0742647349a9c5295d101a10b", "value": "Downloading tokenizer_config.json: 100%"}}, "5e757c41f48f479db278668a5ed0d9dc": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "5ee9585d203a4871924e1f9e3f9d710d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_52f16151dfcb456c825cb3dae442d5ad", "IPY_MODEL_57b5f0bd8e8941fc9dc925ead9198d98", "IPY_MODEL_c7c614834f8149bea48ba010897358ab"], "layout": "IPY_MODEL_639a65d9264a448fb7a742e6919c5b7c"}}, "5eed3475a56c42b98c0d46e232a99380": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "614ddb6fd7af407d939448a6baeb3b25": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "632f60a0742647349a9c5295d101a10b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "634c8b26689042a680bf890439d92ffc": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "639a65d9264a448fb7a742e6919c5b7c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "68febe5ca93b496eb1131f602520e885": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_5b33285cce0e49df9a7a7fe197871513", "IPY_MODEL_e3255c2cb1a74bddae1b0954a8a87e77", "IPY_MODEL_1df7c60eb4604fb7bb14346d9d60683c"], "layout": "IPY_MODEL_15c551d72799491e8939cc994b71e6c6"}}, "6a16627ddbe84047af82a82eab0d6725": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_bc353301f82949ba9ee3a1f27529e039", "style": "IPY_MODEL_f9e325431df049be855ba5cbfd61b4e0", "value": " 68.3M/6.70G [00:20&lt;05:30, 21.5MB/s]"}}, "6a4d9c306b394bc693943a46fbb135fd": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "6b0feb496e914d45b94e4153862da161": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_d594c19ddc194b7cb92f50a569636d04", "style": "IPY_MODEL_f7c0ff48b0054f44b1f73b23b42929ba", "value": " 163M/6.70G [00:22&lt;05:06, 22.9MB/s]"}}, "6ccba48aae174dddada6d3bbe431b6a3": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_49b10eddcd014a06bc40da4f180882f7", "max": 85, "style": "IPY_MODEL_3b7ce4c8bcce45b3beb219203c4181f6", "value": 85}}, "6ea9ede1f0504343b1b88002739dcaef": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "6ef446e236c248688ead223ce0adf2bf": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_fc093097005f4262895b079a6be2db8c", "max": 63701, "style": "IPY_MODEL_d2b0d2cdef5e42a0a7f274a419045f96", "value": 63701}}, "717cb4a2b94d43cb946e1067404bf633": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_98a813c72978467bb876ec0685d166d9", "IPY_MODEL_c971eec8a5b24bc488e6f8f29fb38605", "IPY_MODEL_6a16627ddbe84047af82a82eab0d6725"], "layout": "IPY_MODEL_6ea9ede1f0504343b1b88002739dcaef"}}, "71840e3772a94814a92a57b90fff3369": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "72ea378ae6c9452a82938c6d9ddf2160": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "75308d7b88284f6b978a0982a287b203": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "75e0f19b3abf49049d0098fc5eb8fa42": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "75e9db04d1434a899673066bc893c973": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_8fc16263fdf742ab8015d982f086a22a", "style": "IPY_MODEL_e78f7cfd5e6b4393a4bd52bfd91c0cd9", "value": " 90.4k/90.4k [00:00&lt;00:00, 105kB/s]"}}, "785b9d9a6efe4bd6b1a842b029fbfe3f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_18696da9728247e6bd7aefc3e72d86af", "max": 7193290147, "style": "IPY_MODEL_d1abad7f75af411bad0fc7324a2d6313", "value": 132189184}}, "789e1e25688445a982f1a69cc941bd74": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "78c17d0ea69b48ed925e8b0ab59df178": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_3c74373db3654201970d43d6fc541c71", "style": "IPY_MODEL_2a50915ea521406a82b481ff38b79ed2", "value": "Downloading pytorch_model_00001-of-00072.bin:   2%"}}, "7be14acfbe8a4e4b81de9eedae5e5e99": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_5e3dd821bef34f69b90df0ab3966f883", "IPY_MODEL_1eb10cd78d6446c89adf2d6c9fc3ed64", "IPY_MODEL_f635c00a05d746c0a37c2a22608d9cc6"], "layout": "IPY_MODEL_e57cd74666e44d098e983319170f76bd"}}, "7c429975848b42009dceefe5400b89a1": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_98565f41b47a48d48b86ccbe5f6bb8c8", "style": "IPY_MODEL_eaaaf93a61d24042b3276e763a5300ff", "value": " 568/568 [00:00&lt;00:00, 34.8kB/s]"}}, "7cb653e50ef84102adc221a3433189d9": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "7fcf8a50dbdf48008e1eff1fd20ef855": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "811e0ba515ab4314950653ab21ed86c8": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "82405802a6074a5c9b114c70f4374bb6": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "82cc5b0e38074d9784f5b374d3c16995": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "danger", "layout": "IPY_MODEL_6a4d9c306b394bc693943a46fbb135fd", "max": 7193290147, "style": "IPY_MODEL_54d82726a2924d948c54b144e2a7d89c", "value": 162958336}}, "8433364da70740adac53b59954dab93e": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "84bbee6cec4e462f9a51693f444fa955": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "854766c3110046039efc97d1547ace58": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_4ba976e8eb3e43daab628a92e91357fc", "max": 568, "style": "IPY_MODEL_9c85c520b62845418536863b5aa57d2c", "value": 568}}, "872c8c776b4e420ebdc557e58464e409": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "8a4fc71df7b44b7db78de0f7c004320c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "8a73e87f6df34d52a43059a01f5eab5e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_c3b874aab18445a3b7b5595a5f7df6ed", "IPY_MODEL_854766c3110046039efc97d1547ace58", "IPY_MODEL_cdb9f43738324248abdf8e80482ff4b6"], "layout": "IPY_MODEL_be3dfb25663d46be8058ecf949556b85"}}, "8c1813f121f04b58b15d7ca349edafee": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_167669b5ae6946faafcb0c7b21f7a5a8", "style": "IPY_MODEL_3a7141f32d84495a94f8dadcbcf397c0", "value": "Downloading pytorch_model_00001-of-00072.bin:   2%"}}, "8c5e043b598b41c2a47bd8a185bcbe63": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "8c80a319e3304a11b77eba302b51a42f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_de4f934014d4475e9659b82105920e86", "style": "IPY_MODEL_255d5d5edc3043528274d02a54ea8af2", "value": "Downloading: 100%"}}, "8d8e2b7af99f476088de10969cf5afa6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_dab8bd0e54804ed2964e03e0bf7f46c6", "IPY_MODEL_df0cd099621b4155aa66a9c6feae656b", "IPY_MODEL_7c429975848b42009dceefe5400b89a1"], "layout": "IPY_MODEL_da0e46cf6bdf417caef090bb59812a8b"}}, "8eb4582896c34c1f96406c860ba7bc14": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "8ec28a8cdc0a4263b3f285d669deeeaa": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "8f0c818fc47344f2b5b3dd21947326fa": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_da94f3c500be4999bedd1d4c7837b62e", "max": 7193290147, "style": "IPY_MODEL_84bbee6cec4e462f9a51693f444fa955", "value": 6009051136}}, "8fc16263fdf742ab8015d982f086a22a": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "90e058b83f694cb7b1e430cb8ba60772": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_78c17d0ea69b48ed925e8b0ab59df178", "IPY_MODEL_eed1232419904990b3b5d1bfc6deab8c", "IPY_MODEL_6b0feb496e914d45b94e4153862da161"], "layout": "IPY_MODEL_39d3192269ef43149e465862dbbf266c"}}, "9150c0dc08e04954baf0040ede597b6d": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "91c6ee085d264b9fa554696b38a7472f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "93c798fed06e436490ef522bc32a9272": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "93e15dbd1f824745b228f881d62d7a03": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_503caa3f560241cba7bef4b198fafa7f", "IPY_MODEL_ca1f05a69c0f49dda95cc749f53f2f94", "IPY_MODEL_75e9db04d1434a899673066bc893c973"], "layout": "IPY_MODEL_2a1554d16332402ab2982e2d8d40cf15"}}, "9620386e3a4048199e1d1e0bf649e693": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "98565f41b47a48d48b86ccbe5f6bb8c8": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "989c282496904f628e3cdaea7595fa70": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "98a813c72978467bb876ec0685d166d9": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_daebae1f915644c1b0918d8eae1e673e", "style": "IPY_MODEL_1f6dfe0e65b942c7b56ee594b330da41", "value": "Downloading pytorch_model_00001-of-00072.bin:   1%"}}, "9a4df43081d945d0b8ed196466ae20de": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_82405802a6074a5c9b114c70f4374bb6", "style": "IPY_MODEL_2b585b55541d4a98b64c3a34fd79ef1c", "value": " 62.2k/62.2k [00:00&lt;00:00, 109kB/s]"}}, "9a6bd9f7048c4eec9bf2c4a321082565": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "9c85c520b62845418536863b5aa57d2c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "9ea66902cae045e78d0b5d8d5597bdf3": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "a36dee72bf3b437384c43dfbe3a78d05": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "a6b11f5b49b940f08891432429cb3dcf": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "a8b3d2f7817f46989ced9490d1c5797c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "a9fedff0b2204873b7de765d0fc19d34": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "ab7a7b2fd97f46f4815a46fef04e6c2c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "ac689d6f6112494da1eea57204942b52": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "b101bae982d744d9974bf2612da12a02": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_ac689d6f6112494da1eea57204942b52", "style": "IPY_MODEL_51300b7926f84680be028dd41e31d0ee", "value": " 13.8M/13.8M [00:00&lt;00:00, 56.9MB/s]"}}, "b2e288c05ea44480b086e9cb3488fc24": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_3b2dcc3f31294f9fa0193ccd6c3bf62a", "max": 14500438, "style": "IPY_MODEL_df35d7e00b2841e38c5498f42ba5e78b", "value": 14500438}}, "bc2e5daa20574ff58930ab6b6c66d794": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_435581952245497396ab61acf3ac7330", "style": "IPY_MODEL_05736c4dadc141689a2ea96b3fd2965c", "value": "Downloading pytorch_model_00001-of-00072.bin:  84%"}}, "bc353301f82949ba9ee3a1f27529e039": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "bc670f08059e4214831a7695ad5ee4bb": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "be3dfb25663d46be8058ecf949556b85": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "be5f2bc864f548faa89218da3650c474": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "be98cf4db0714332ae57f2165695579d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "c3b874aab18445a3b7b5595a5f7df6ed": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_d47c5aca05e54e45b1a6fd792a1d24b0", "style": "IPY_MODEL_2bbdd28d441d4f188016d533d7a08fcc", "value": "Downloading config.json: 100%"}}, "c6bfab214f48415c9816cdce63f5e5ee": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "c7c614834f8149bea48ba010897358ab": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_128116ff10b54f3da1d7efe51b5761f8", "style": "IPY_MODEL_f743ab34fe314b8a9d4e6d590e645b26", "value": " 90.4k/90.4k [00:00&lt;00:00, 74.8kB/s]"}}, "c811e8bf2d074cb38762b2593b0f38a8": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_9150c0dc08e04954baf0040ede597b6d", "max": 92568, "style": "IPY_MODEL_0bea8bd7773a42ef83790a816646c3d4", "value": 92568}}, "c971eec8a5b24bc488e6f8f29fb38605": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_5e757c41f48f479db278668a5ed0d9dc", "max": 7193290147, "style": "IPY_MODEL_93c798fed06e436490ef522bc32a9272", "value": 71576576}}, "ca1f05a69c0f49dda95cc749f53f2f94": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_2be2c2727f5548878d959e91088794a2", "max": 92568, "style": "IPY_MODEL_be98cf4db0714332ae57f2165695579d", "value": 92568}}, "ca35e145455e4b99874830dde49c3f4d": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "cacbab415473486f9cbc3bbb9e0340d3": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_9620386e3a4048199e1d1e0bf649e693", "style": "IPY_MODEL_8c5e043b598b41c2a47bd8a185bcbe63", "value": "Downloading tokenizer.json: 100%"}}, "cb01b78953724b4cbd32792c0da1ffc8": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "danger", "layout": "IPY_MODEL_4791a19a20b444ac98c98a6285544140", "max": 7193290147, "style": "IPY_MODEL_25082bbdae6a43a1944a2ceb4d2622e2", "value": 104550400}}, "cdaf8c71f2644559a38d7afec3348f94": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_f948765b124545db83e20e2c9b0db6e6", "IPY_MODEL_cb01b78953724b4cbd32792c0da1ffc8", "IPY_MODEL_588738651d714523932552dc8332e1fd"], "layout": "IPY_MODEL_dc3e54c07ecd4b4f981c8e830c1ecddb"}}, "cdb9f43738324248abdf8e80482ff4b6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_e14d1c1e1cd84341a78a11a6a1b0d69e", "style": "IPY_MODEL_8a4fc71df7b44b7db78de0f7c004320c", "value": " 568/568 [00:00&lt;00:00, 31.1kB/s]"}}, "cf3b8bb52cb24d87980bcc4fe1e1f74c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "cfe813ce480e4f469a62c14b96e89986": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_eecd2659a30d481f82dc59d4cfb82a37", "style": "IPY_MODEL_1c8ae7a46d274d6a95c4d214088690dc", "value": " 85.0/85.0 [00:00&lt;00:00, 5.44kB/s]"}}, "d1abad7f75af411bad0fc7324a2d6313": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "d2b0d2cdef5e42a0a7f274a419045f96": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "d47c5aca05e54e45b1a6fd792a1d24b0": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "d594c19ddc194b7cb92f50a569636d04": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "da0e46cf6bdf417caef090bb59812a8b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "da94f3c500be4999bedd1d4c7837b62e": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "dab8bd0e54804ed2964e03e0bf7f46c6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_00a7c42a61df467a92483ea845628ae2", "style": "IPY_MODEL_c6bfab214f48415c9816cdce63f5e5ee", "value": "Downloading config.json: 100%"}}, "dac79f9c9db844e2b5c0b4ee2b74afb5": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "daebae1f915644c1b0918d8eae1e673e": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "dc18576ac2ee4714b9bb6b0d58aeed0f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "dc3e54c07ecd4b4f981c8e830c1ecddb": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "de2a95e8d7d947cfa68d33014981b7d9": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "de4f934014d4475e9659b82105920e86": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "df0cd099621b4155aa66a9c6feae656b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_dac79f9c9db844e2b5c0b4ee2b74afb5", "max": 568, "style": "IPY_MODEL_2d485f0538c349968b2124d251d4b36b", "value": 568}}, "df35d7e00b2841e38c5498f42ba5e78b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "e082002ae99143ad968b7392caaa0acf": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_614ddb6fd7af407d939448a6baeb3b25", "style": "IPY_MODEL_ab7a7b2fd97f46f4815a46fef04e6c2c", "value": "Downloading pytorch_model_00001-of-00072.bin:   2%"}}, "e14d1c1e1cd84341a78a11a6a1b0d69e": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "e3255c2cb1a74bddae1b0954a8a87e77": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "danger", "layout": "IPY_MODEL_be5f2bc864f548faa89218da3650c474", "max": 7193290147, "style": "IPY_MODEL_9ea66902cae045e78d0b5d8d5597bdf3", "value": 69310464}}, "e3614906cbd04988acba01ace74dbad4": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "e57cd74666e44d098e983319170f76bd": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "e62e0f07f4c14418a0cd162c477be7c5": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "e78f7cfd5e6b4393a4bd52bfd91c0cd9": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "eaaaf93a61d24042b3276e763a5300ff": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "ed20ea0e358040118f63dbac0660ab2b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_872c8c776b4e420ebdc557e58464e409", "style": "IPY_MODEL_8ec28a8cdc0a4263b3f285d669deeeaa", "value": " 155M/6.70G [03:22&lt;08:30, 13.8MB/s]"}}, "edbc9575a03b428c823e9c470d3476ba": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_5774ac0228ca4a32b1575071b093f650", "max": 63701, "style": "IPY_MODEL_fe1cf438a485476ea4e9322ddefcfa43", "value": 63701}}, "ee5b4f1ef575494e93edc912fa6087a6": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "eecd2659a30d481f82dc59d4cfb82a37": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "eed1232419904990b3b5d1bfc6deab8c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"layout": "IPY_MODEL_3e665fdbf3ca4e8aa2031b71b3236eb2", "max": 7193290147, "style": "IPY_MODEL_4c51149cd9dc4fe4a31bba5f51acb10d", "value": 170480640}}, "efceec34a7b24ee6b82c48f34196a79c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "f39b73a8cc194f2f8edeca3a18e53055": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_ca35e145455e4b99874830dde49c3f4d", "style": "IPY_MODEL_f840e1e8da7c4d3da371faa9d459d4d8", "value": " 62.2k/62.2k [00:00&lt;00:00, 160kB/s]"}}, "f635c00a05d746c0a37c2a22608d9cc6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_de2a95e8d7d947cfa68d33014981b7d9", "style": "IPY_MODEL_a9fedff0b2204873b7de765d0fc19d34", "value": " 222/222 [00:00&lt;00:00, 13.1kB/s]"}}, "f64b1db0e00b409d923876ad0669e0a7": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_e62e0f07f4c14418a0cd162c477be7c5", "style": "IPY_MODEL_35ab56c8cf124e1ea388aeb6a6bf611f", "value": "Downloading pytorch_model.bin.index.json: 100%"}}, "f743ab34fe314b8a9d4e6d590e645b26": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "f7c0ff48b0054f44b1f73b23b42929ba": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "f840e1e8da7c4d3da371faa9d459d4d8": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "f948765b124545db83e20e2c9b0db6e6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_efceec34a7b24ee6b82c48f34196a79c", "style": "IPY_MODEL_75e0f19b3abf49049d0098fc5eb8fa42", "value": "Downloading pytorch_model_00001-of-00072.bin:   1%"}}, "f9e325431df049be855ba5cbfd61b4e0": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "fbda30ec61cc42ac9da3240ac9b070a6": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "fc093097005f4262895b079a6be2db8c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "fe1cf438a485476ea4e9322ddefcfa43": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}}, "version_major": 2, "version_minor": 0}
+</script>
+
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./docs/lectures/deep_nlp"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="lecture02-bloom.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">What is BLOOM?</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../aiart/index.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">AI Art (Text-to-Image)</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Young Joon Lee<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
