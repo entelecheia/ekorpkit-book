@@ -23,6 +23,7 @@ docker run -it --rm \
   --publish $RUBRIX_HOST_PORT:6900 \
   --publish $DOCKER_SSH_PORT:22 \
   --volume $HOST_HF_HOME:/root/.cache/huggingface \
+  --volume $PWD/.huggingface:/root/.huggingface \
   --volume $HOST_WORKSPACE_ROOT:$EKORPKIT_WORKSPACE_ROOT \
   --volume $PWD/scripts/rubrix/.users.yaml:$RUBRIX_LOCAL_AUTH_USERS_DB_FILE \
   --volume $PWD/scripts/zsh/.spaceshiprc.zsh:/root/.spaceshiprc.zsh \

@@ -78,4 +78,6 @@ ENV VARIABLE_NAME="app"
 RUN mkdir -p /root/.ssh
 COPY ./scripts/ssh/authorized_keys /root/.ssh/authorized_keys
 
+RUN git config --global credential.helper store
+
 CMD ["/bin/zsh"]
