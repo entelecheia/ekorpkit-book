@@ -50,8 +50,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -1002,6 +1000,77 @@ title="Print to PDF"
      Motivation
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#stopwords-stemming-lemmatization">
+     Stopwords, stemming, lemmatization
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#stopwords">
+       Stopwords
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#stemming-and-lemmatization">
+       Stemming and Lemmatization
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-processing">
+     Data Processing
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#singular-value-decomposition-svd">
+     Singular Value Decomposition (SVD)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Non-negative Matrix Factorization (NMF)
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#nmf-applications">
+       NMF Applications
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#nmf-from-sklearn">
+       NMF from sklearn
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#nmf-in-summary">
+       NMF in summary
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#truncated-svd">
+     Truncated SVD
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#shortcomings-of-classical-algorithms-for-decomposition">
+       Shortcomings of classical algorithms for decomposition:
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#advantages-of-randomized-algorithms">
+       Advantages of randomized algorithms:
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#timing-comparison">
+       Timing comparison
+      </a>
+     </li>
+    </ul>
+   </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -1099,6 +1168,77 @@ title="Print to PDF"
     <a class="reference internal nav-link" href="#motivation">
      Motivation
     </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#stopwords-stemming-lemmatization">
+     Stopwords, stemming, lemmatization
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#stopwords">
+       Stopwords
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#stemming-and-lemmatization">
+       Stemming and Lemmatization
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-processing">
+     Data Processing
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#singular-value-decomposition-svd">
+     Singular Value Decomposition (SVD)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Non-negative Matrix Factorization (NMF)
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#nmf-applications">
+       NMF Applications
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#nmf-from-sklearn">
+       NMF from sklearn
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#nmf-in-summary">
+       NMF in summary
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#truncated-svd">
+     Truncated SVD
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#shortcomings-of-classical-algorithms-for-decomposition">
+       Shortcomings of classical algorithms for decomposition:
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#advantages-of-randomized-algorithms">
+       Advantages of randomized algorithms:
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#timing-comparison">
+       Timing comparison
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
@@ -1226,6 +1366,474 @@ source: <a class="reference external" href="http://player.slideplayer.com/15/452
 <h3>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">#</a></h3>
 <p>Consider the most extreme case - reconstructing the matrix using an outer product of two vectors. Clearly, in most cases we won’t be able to reconstruct the matrix exactly. But if we had one vector with the relative frequency of each vocabulary word out of the total word count, and one with the average number of words per document, then that outer product would be as close as we can get.</p>
 <p>Now consider increasing that matrices to two columns and two rows. The optimal decomposition would now be to cluster the documents into two groups, each of which has as different a distribution of words as possible to each other, but as similar as possible amongst the documents in the cluster. We will call those two groups “topics”. And we would cluster the words into two groups, based on those which most frequently appear in each of the topics.</p>
+<p>We’ll take a dataset of documents in several different categories, and find topics (consisting of groups of words) for them.  Knowing the actual categories helps us evaluate if the topics we find make sense.</p>
+<p>We will try this with two different matrix factorizations: <strong>Singular Value Decomposition (SVD)</strong> and <strong>Non-negative Matrix Factorization (NMF)</strong></p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://scikit-learn.org/stable/datasets/twenty_newsgroups.html">Data source</a>: Newsgroups are discussion groups on Usenet, which was popular in the 80s and 90s before the web really took off.  This dataset includes 18,000 newsgroups posts with 20 topics.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_format=&#39;retina&#39;
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">nltk</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_20newsgroups</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">decomposition</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">linalg</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;stopwords&#39;</span><span class="p">)</span>
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;wordnet&#39;</span><span class="p">)</span>
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;omw-1.4&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[nltk_data] Downloading package stopwords to /root/nltk_data...
+[nltk_data]   Package stopwords is already up-to-date!
+[nltk_data] Downloading package wordnet to /root/nltk_data...
+[nltk_data]   Package wordnet is already up-to-date!
+[nltk_data] Downloading package omw-1.4 to /root/nltk_data...
+[nltk_data]   Package omw-1.4 is already up-to-date!
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;alt.atheism&#39;</span><span class="p">,</span> <span class="s1">&#39;talk.religion.misc&#39;</span><span class="p">,</span> <span class="s1">&#39;comp.graphics&#39;</span><span class="p">,</span> <span class="s1">&#39;sci.space&#39;</span><span class="p">]</span>
+<span class="n">remove</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;headers&#39;</span><span class="p">,</span> <span class="s1">&#39;footers&#39;</span><span class="p">,</span> <span class="s1">&#39;quotes&#39;</span><span class="p">)</span>
+<span class="n">newsgroups_train</span> <span class="o">=</span> <span class="n">fetch_20newsgroups</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">categories</span><span class="o">=</span><span class="n">categories</span><span class="p">,</span> <span class="n">remove</span><span class="o">=</span><span class="n">remove</span><span class="p">)</span>
+<span class="n">newsgroups_test</span> <span class="o">=</span> <span class="n">fetch_20newsgroups</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="n">categories</span><span class="o">=</span><span class="n">categories</span><span class="p">,</span> <span class="n">remove</span><span class="o">=</span><span class="n">remove</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">newsgroups_train</span><span class="o">.</span><span class="n">filenames</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">newsgroups_train</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>((2034,), (2034,))
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s look at some of the data.  Can you guess which category these messages are in?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">newsgroups_train</span><span class="o">.</span><span class="n">data</span><span class="p">[:</span><span class="mi">2</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hi,
+
+I&#39;ve noticed that if you only save a model (with all your mapping planes
+positioned carefully) to a .3DS file that when you reload it after restarting
+3DS, they are given a default position and orientation.  But if you save
+to a .PRJ file their positions/orientation are preserved.  Does anyone
+know why this information is not stored in the .3DS file?  Nothing is
+explicitly said in the manual about saving texture rules in the .PRJ file. 
+I&#39;d like to be able to read the texture rule information, does anyone have 
+the format for the .PRJ file?
+
+Is the .CEL file format available from somewhere?
+
+Rych
+
+
+Seems to be, barring evidence to the contrary, that Koresh was simply
+another deranged fanatic who thought it neccessary to take a whole bunch of
+folks with him, children and all, to satisfy his delusional mania. Jim
+Jones, circa 1993.
+
+
+Nope - fruitcakes like Koresh have been demonstrating such evil corruption
+for centuries.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">newsgroups_train</span><span class="o">.</span><span class="n">target_names</span><span class="p">)[</span><span class="n">newsgroups_train</span><span class="o">.</span><span class="n">target</span><span class="p">[:</span><span class="mi">3</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;comp.graphics&#39;, &#39;talk.religion.misc&#39;, &#39;sci.space&#39;], dtype=&#39;&lt;U18&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The target attribute is the integer index of the category.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">newsgroups_train</span><span class="o">.</span><span class="n">target</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 3, 2, 0, 2, 0, 2, 1, 2, 1])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_topics</span><span class="p">,</span> <span class="n">num_top_words</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="stopwords-stemming-lemmatization">
+<h3>Stopwords, stemming, lemmatization<a class="headerlink" href="#stopwords-stemming-lemmatization" title="Permalink to this headline">#</a></h3>
+<div class="section" id="stopwords">
+<h4>Stopwords<a class="headerlink" href="#stopwords" title="Permalink to this headline">#</a></h4>
+<p>From <a class="reference external" href="https://nlp.stanford.edu/IR-book/html/htmledition/dropping-common-terms-stop-words-1.html">Intro to Information Retrieval</a>:</p>
+<p><em>Some extremely common words which would appear to be of little value in helping select documents matching a user need are excluded from the vocabulary entirely. These words are called stop words.</em></p>
+<p><em>The general trend in IR systems over time has been from standard use of quite large stop lists (200-300 terms) to very small stop lists (7-12 terms) to no stop list whatsoever. Web search engines generally do not use stop lists.</em></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>
+
+<span class="n">STOPWORDS</span> <span class="o">=</span> <span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s1">&#39;english&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">STOPWORDS</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">STOPWORDS</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>179
+[&#39;i&#39;, &#39;me&#39;, &#39;my&#39;, &#39;myself&#39;, &#39;we&#39;, &#39;our&#39;, &#39;ours&#39;, &#39;ourselves&#39;, &#39;you&#39;, &quot;you&#39;re&quot;]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[nltk_data] Downloading package stopwords to /root/nltk_data...
+[nltk_data]   Package stopwords is already up-to-date!
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="stemming-and-lemmatization">
+<h4>Stemming and Lemmatization<a class="headerlink" href="#stemming-and-lemmatization" title="Permalink to this headline">#</a></h4>
+<p>from <a class="reference external" href="https://nlp.stanford.edu/IR-book/html/htmledition/stemming-and-lemmatization-1.html">Information Retrieval</a> textbook:</p>
+<p>Are the below words the same?</p>
+<p><em>organize, organizes, and organizing</em></p>
+<p><em>democracy, democratic, and democratization</em></p>
+<p>Stemming and Lemmatization both generate the root form of the words.</p>
+<p>Lemmatization uses the rules about a language.  The resulting tokens are all actual words</p>
+<p>“Stemming is the poor-man’s lemmatization.” (Noah Smith, 2011) Stemming is a crude heuristic that chops the ends off of words.  The resulting tokens may not be actual words. Stemming is faster.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nltk</span> <span class="kn">import</span> <span class="n">stem</span>
+
+<span class="n">wnl</span> <span class="o">=</span> <span class="n">stem</span><span class="o">.</span><span class="n">WordNetLemmatizer</span><span class="p">()</span>
+<span class="n">porter</span> <span class="o">=</span> <span class="n">stem</span><span class="o">.</span><span class="n">porter</span><span class="o">.</span><span class="n">PorterStemmer</span><span class="p">()</span>
+
+<span class="n">word_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;feet&#39;</span><span class="p">,</span> <span class="s1">&#39;foot&#39;</span><span class="p">,</span> <span class="s1">&#39;foots&#39;</span><span class="p">,</span> <span class="s1">&#39;footing&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">wnl</span><span class="o">.</span><span class="n">lemmatize</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">word_list</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;foot&#39;, &#39;foot&#39;, &#39;foot&#39;, &#39;footing&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">porter</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">word_list</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;feet&#39;, &#39;foot&#39;, &#39;foot&#39;, &#39;foot&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="data-processing">
+<h3>Data Processing<a class="headerlink" href="#data-processing" title="Permalink to this headline">#</a></h3>
+<p>Next, scikit learn has a method that will extract all the word counts for us.  In the next lesson, we’ll learn how to write our own version of CountVectorizer, to see what’s happening underneath the hood.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">CountVectorizer</span><span class="p">,</span> <span class="n">TfidfVectorizer</span>
+
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">stop_words</span><span class="o">=</span><span class="s1">&#39;english&#39;</span><span class="p">)</span> <span class="c1">#, tokenizer=LemmaTokenizer())</span>
+
+<span class="n">vectors</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">newsgroups_train</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span> <span class="c1"># (documents, vocab)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">newsgroups_train</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="n">vectors</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2034 (2034, 26576)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vocab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+<span class="n">vocab</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(26576,)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vocab</span><span class="p">[</span><span class="mi">11000</span><span class="p">:</span><span class="mi">11020</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;gehrels3&#39;, &#39;geisler&#39;, &#39;geleden&#39;, &#39;gelegenheid&#39;, &#39;gelling&#39;, &#39;gem&#39;,
+       &#39;gemini&#39;, &#39;gems&#39;, &#39;gems_&#39;, &#39;gen&#39;, &#39;gender&#39;, &#39;gene&#39;, &#39;geneologies&#39;,
+       &#39;general&#39;, &#39;general_&#39;, &#39;generale&#39;, &#39;generality&#39;, &#39;generalization&#39;,
+       &#39;generalizations&#39;, &#39;generalize&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="singular-value-decomposition-svd">
+<h3>Singular Value Decomposition (SVD)<a class="headerlink" href="#singular-value-decomposition-svd" title="Permalink to this headline">#</a></h3>
+<p>We would clearly expect that the words that appear most frequently in one topic would appear less frequently in the other - otherwise that word wouldn’t make a good choice to separate out the two topics. Therefore, we expect the topics to be <strong>orthogonal</strong>.</p>
+<p>The SVD algorithm factorizes a matrix into one matrix with <strong>orthogonal columns</strong> and one with <strong>orthogonal rows</strong> (along with a diagonal matrix, which contains the <strong>relative importance</strong> of each factor).</p>
+<p>SVD is an <strong>exact decomposition</strong>, since the matrices it creates are big enough to fully cover the original matrix. SVD is extremely widely used in linear algebra, and specifically in data science, including:</p>
+<ul class="simple">
+<li><p>semantic analysis</p></li>
+<li><p>collaborative filtering/recommendations (<a class="reference external" href="https://datajobs.com/data-science-repo/Recommender-Systems-%5BNetflix%5D.pdf">winning entry for Netflix Prize</a>)</p></li>
+<li><p>calculate Moore-Penrose pseudoinverse</p></li>
+<li><p>data compression</p></li>
+<li><p>principal component analysis</p></li>
+</ul>
+<p><img alt="" src="../../../_images/svd_fb.png" />
+(source: <a class="reference external" href="https://research.fb.com/fast-randomized-svd/">Facebook Research: Fast Randomized SVD</a>)</p>
+<p>Latent Semantic Analysis (LSA) uses SVD.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span> 
+<span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">Vh</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 26min 9s, sys: 32min 14s, total: 58min 23s
+Wall time: 28.2 s
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">Vh</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2034, 2034) (2034,) (2034, 26576)
+</pre></div>
+</div>
+</div>
+</div>
+<p>What can we say about the singular values s?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/lecture03-topic_42_0.png" src="../../../_images/lecture03-topic_42_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">s</span><span class="p">[:</span><span class="mi">10</span><span class="p">]);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/lecture03-topic_43_0.png" src="../../../_images/lecture03-topic_43_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_top_words</span><span class="o">=</span><span class="mi">8</span>
+
+<span class="k">def</span> <span class="nf">show_topics</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="n">top_words</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="p">[</span><span class="n">vocab</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">t</span><span class="p">)[:</span><span class="o">-</span><span class="n">num_top_words</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="n">topic_words</span> <span class="o">=</span> <span class="p">([</span><span class="n">top_words</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">a</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">[</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">topic_words</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">show_topics</span><span class="p">(</span><span class="n">Vh</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;critus ditto propagandist surname galacticentric kindergarten surreal imaginative&#39;,
+ &#39;jpeg gif file color quality image jfif format&#39;,
+ &#39;graphics edu pub mail 128 3d ray ftp&#39;,
+ &#39;jesus god matthew people atheists atheism does graphics&#39;,
+ &#39;image data processing analysis software available tools display&#39;,
+ &#39;god atheists atheism religious believe religion argument true&#39;,
+ &#39;space nasa lunar mars probe moon missions probes&#39;,
+ &#39;image probe surface lunar mars probes moon orbit&#39;,
+ &#39;argument fallacy conclusion example true ad argumentum premises&#39;,
+ &#39;space larson image theory universe physical nasa material&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We get topics that match the kinds of clusters we would expect! This is despite the fact that this is an <strong>unsupervised algorithm</strong> - which is to say, we never actually told the algorithm how our documents are grouped.</p>
+</div>
+<div class="section" id="id1">
+<h3>Non-negative Matrix Factorization (NMF)<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
+<p>Rather than constraining our factors to be <em>orthogonal</em>, another idea would to constrain them to be <em>non-negative</em>. NMF is a factorization of a non-negative data set <span class="math notranslate nohighlight">\(V\)</span>: $<span class="math notranslate nohighlight">\( V = W H\)</span><span class="math notranslate nohighlight">\( into non-negative matrices \)</span>W,; H$. Often positive factors will be <strong>more easily interpretable</strong> (and this is the reason behind NMF’s popularity).</p>
+<p>Nonnegative matrix factorization (NMF) is a non-exact factorization that factors into one skinny positive matrix and one short positive matrix.  NMF is NP-hard and non-unique.  There are a number of variations on it, created by adding different constraints.</p>
+<p><img alt="" src="../../../_images/nmf_doc.png" /></p>
+<p>(source: <a class="reference external" href="http://perso.telecom-paristech.fr/~essid/teach/NMF_tutorial_ICME-2014.pdf">NMF Tutorial</a>)</p>
+<div class="section" id="nmf-applications">
+<h4>NMF Applications<a class="headerlink" href="#nmf-applications" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p><a class="reference external" href="http://scikit-learn.org/stable/auto_examples/decomposition/plot_faces_decomposition.html#sphx-glr-auto-examples-decomposition-plot-faces-decomposition-py">Face Decompositions</a></p></li>
+<li><p><a class="reference external" href="http://www.quuxlabs.com/blog/2010/09/matrix-factorization-a-simple-tutorial-and-implementation-in-python/">Collaborative Filtering, eg movie recommendations</a></p></li>
+<li><p><a class="reference external" href="https://pdfs.semanticscholar.org/cc88/0b24791349df39c5d9b8c352911a0417df34.pdf">Audio source separation</a></p></li>
+<li><p><a class="reference external" href="http://ieeexplore.ieee.org/document/1532909/">Chemistry</a></p></li>
+<li><p><a class="reference external" href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-015-0485-4">Bioinformatics</a> and <a class="reference external" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2623306/">Gene Expression</a></p></li>
+<li><p>Topic Modeling</p></li>
+</ul>
+</div>
+<div class="section" id="nmf-from-sklearn">
+<h4>NMF from sklearn<a class="headerlink" href="#nmf-from-sklearn" title="Permalink to this headline">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">vectors</span><span class="o">.</span><span class="n">shape</span>
+<span class="n">d</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># num topics</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">decomposition</span><span class="o">.</span><span class="n">NMF</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">W1</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vectors</span><span class="p">))</span>
+<span class="n">H1</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">components_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3min 18s, sys: 3min 11s, total: 6min 30s
+Wall time: 3.26 s
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">show_topics</span><span class="p">(</span><span class="n">H1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;jpeg image gif file color images format quality&#39;,
+ &#39;edu graphics pub mail 128 ray ftp send&#39;,
+ &#39;space launch satellite nasa commercial satellites year market&#39;,
+ &#39;jesus god people matthew atheists does atheism said&#39;,
+ &#39;image data available software processing ftp edu analysis&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="nmf-in-summary">
+<h4>NMF in summary<a class="headerlink" href="#nmf-in-summary" title="Permalink to this headline">#</a></h4>
+<p>Benefits: Fast and easy to use!</p>
+<p>Downsides: took years of research and expertise to create</p>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>For NMF, matrix needs to be at least as tall as it is wide, or we get an error with fit_transform</p></li>
+<li><p>Can use df_min in CountVectorizer to only look at words that were in at least k of the split texts</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="truncated-svd">
+<h3>Truncated SVD<a class="headerlink" href="#truncated-svd" title="Permalink to this headline">#</a></h3>
+<p>We saved a lot of time when we calculated NMF by only calculating the subset of columns we were interested in. Is there a way to get this benefit with SVD? Yes there is! It’s called truncated SVD.  We are just interested in the vectors corresponding to the <strong>largest</strong> singular values.</p>
+<div class="section" id="shortcomings-of-classical-algorithms-for-decomposition">
+<h4>Shortcomings of classical algorithms for decomposition:<a class="headerlink" href="#shortcomings-of-classical-algorithms-for-decomposition" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p>Matrices are “stupendously big”</p></li>
+<li><p>Data are often <strong>missing or inaccurate</strong>.  Why spend extra computational resources when imprecision of input limits precision of the output?</p></li>
+<li><p><strong>Data transfer</strong> now plays a major role in time of algorithms.  Techniques the require fewer passes over the data may be substantially faster, even if they require more flops (flops = floating point operations).</p></li>
+<li><p>Important to take advantage of <strong>GPUs</strong>.</p></li>
+</ul>
+</div>
+<div class="section" id="advantages-of-randomized-algorithms">
+<h4>Advantages of randomized algorithms:<a class="headerlink" href="#advantages-of-randomized-algorithms" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p>inherently stable</p></li>
+<li><p>performance guarantees do not depend on subtle spectral properties</p></li>
+<li><p>needed matrix-vector products can be done in parallel</p></li>
+</ul>
+<p>(source: <a class="reference external" href="https://arxiv.org/abs/0909.4061">Halko</a>)</p>
+</div>
+<div class="section" id="timing-comparison">
+<h4>Timing comparison<a class="headerlink" href="#timing-comparison" title="Permalink to this headline">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span> 
+<span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 26min 22s, sys: 42min 54s, total: 1h 9min 17s
+Wall time: 33.7 s
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span> 
+<span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">decomposition</span><span class="o">.</span><span class="n">randomized_svd</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 40s, sys: 4min 4s, total: 5min 44s
+Wall time: 4.33 s
+</pre></div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="section" id="document-clustering">
@@ -1319,7 +1927,7 @@ Done. Reconstruction error: 1.23163e-07
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/lecture03-topic_21_0.png" src="../../../_images/lecture03-topic_21_0.png" />
+<img alt="../../../_images/lecture03-topic_65_0.png" src="../../../_images/lecture03-topic_65_0.png" />
 </div>
 </div>
 </div>
