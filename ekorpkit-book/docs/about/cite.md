@@ -1,6 +1,6 @@
 # Citation
 
-If you use this library, please cite: {cite}`lee_2022_6497226,lee_2022_ekorpkit`
+If you use this library, please cite {cite}`lee_2022_6497226` or {cite}`lee_2022_ekorpkit`.
 
 ```tex
 @software{lee_2022_6497226,
