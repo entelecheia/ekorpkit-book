@@ -51,8 +51,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Taxation on Cryptocurrency" href="../cointax/index.html" />
@@ -1019,6 +1017,11 @@ title="Print to PDF"
    Build a corpus
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-a-corpus">
+   Load a corpus
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -1058,6 +1061,11 @@ title="Print to PDF"
    Build a corpus
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-a-corpus">
+   Load a corpus
+  </a>
+ </li>
 </ul>
 
                         </nav>
@@ -1086,7 +1094,7 @@ title="Print to PDF"
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># %config InlineBackend.figure_format=&#39;retina&#39;s</span>
 <span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
 
-<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;WARNING&quot;</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;version:&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is notebook?&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_notebook</span><span class="p">())</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is colab?&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">())</span>
@@ -1116,7 +1124,271 @@ environment variables:
 </section>
 <section id="build-a-corpus">
 <h2>Build a corpus<a class="headerlink" href="#build-a-corpus" title="Permalink to this headline">#</a></h2>
-<div class="cell tag_hide-cell docutils container">
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>!ekorpkit \
+    dir.workspace=/workspace \
+    verbose=true \
+    print_config=false \
+    num_workers=200 \
+    cmd=fetch_builtin_corpus \
+    +corpus/builtin=joco \
+    corpus.builtin.io.force.summarize=true \
+    corpus.builtin.io.force.preprocess=true \
+    corpus.builtin.io.force.build=true \
+    corpus.builtin.io.force.download=false
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;category&#39;: &#39;formal&#39;,
+ &#39;column_info&#39;: {&#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;,
+                             &#39;merge_meta_on&#39;: &#39;id&#39;,
+                             &#39;text&#39;: &#39;text&#39;,
+                             &#39;timestamp&#39;: None},
+                 &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;},
+                 &#39;datetime&#39;: {&#39;columns&#39;: None,
+                              &#39;format&#39;: None,
+                              &#39;rcParams&#39;: None},
+                 &#39;meta&#39;: {&#39;First_Year&#39;: &#39;int&#39;,
+                          &#39;Index&#39;: &#39;str&#39;,
+                          &#39;Last_Year&#39;: &#39;int&#39;,
+                          &#39;Organisation&#39;: &#39;str&#39;,
+                          &#39;Report_Type&#39;: &#39;str&#39;,
+                          &#39;filename&#39;: &#39;str&#39;,
+                          &#39;id&#39;: &#39;int&#39;},
+                 &#39;segment_separator&#39;: &#39;\\n\\n&#39;,
+                 &#39;sentence_separator&#39;: &#39;\\n&#39;,
+                 &#39;timestamp&#39;: {&#39;format&#39;: None, &#39;key&#39;: None, &#39;rcParams&#39;: None}},
+ &#39;data_files&#39;: {&#39;train&#39;: &#39;joco-train.parquet&#39;},
+ &#39;data_files_modified&#39;: &#39;2022-09-14 08:21:40&#39;,
+ &#39;description&#39;: &#39;JOCo is a corpus of annual reports and corporate social &#39;
+                &#39;responsibility reports of American, British and German &#39;
+                &#39;enterprises.&#39;,
+ &#39;fullname&#39;: &#39;Jena Organization Corpus (JOCo)&#39;,
+ &#39;homepage&#39;: &#39;https://www.orga.uni-jena.de/en/corp&#39;,
+ &#39;info_updated&#39;: &#39;2022-09-14 08:22:42&#39;,
+ &#39;lang&#39;: &#39;en&#39;,
+ &#39;license&#39;: &#39;All users of JOCo must apply for a license in order to receive a &#39;
+            &#39;copy.&#39;,
+ &#39;meta_files&#39;: {&#39;train&#39;: &#39;meta-joco-train.parquet&#39;},
+ &#39;meta_files_modified&#39;: &#39;2022-09-14 08:19:50&#39;,
+ &#39;name&#39;: &#39;joco&#39;,
+ &#39;num_bytes_before_processing&#39;: 1808773909,
+ &#39;num_docs&#39;: 5198,
+ &#39;num_docs_before_processing&#39;: 5556,
+ &#39;num_segments&#39;: 5533,
+ &#39;num_sents&#39;: 8063370,
+ &#39;num_words&#39;: 269354712,
+ &#39;size_in_bytes&#39;: 1774617006,
+ &#39;size_in_human_bytes&#39;: &#39;1.65 GiB&#39;,
+ &#39;splits&#39;: {&#39;train&#39;: {&#39;data_file&#39;: &#39;joco-train.parquet&#39;,
+                      &#39;dataset_name&#39;: &#39;joco&#39;,
+                      &#39;human_bytes&#39;: &#39;1.65 GiB&#39;,
+                      &#39;human_bytes_wospc&#39;: &#39;1.39 GiB&#39;,
+                      &#39;meta_file&#39;: &#39;meta-joco-train.parquet&#39;,
+                      &#39;name&#39;: &#39;train&#39;,
+                      &#39;num_bytes&#39;: 1774617006,
+                      &#39;num_bytes_before_processing&#39;: 1808773909,
+                      &#39;num_bytes_max&#39;: 2496447,
+                      &#39;num_bytes_median&#39;: 287173.5,
+                      &#39;num_bytes_min&#39;: 19,
+                      &#39;num_bytes_wospc&#39;: 1496898089,
+                      &#39;num_docs&#39;: 5198,
+                      &#39;num_docs_before_processing&#39;: 5556,
+                      &#39;num_segments&#39;: 5533,
+                      &#39;num_segments_median&#39;: 1.0,
+                      &#39;num_sents&#39;: 8063370,
+                      &#39;num_sents_median&#39;: 1108.5,
+                      &#39;num_words&#39;: 269354712,
+                      &#39;num_words_max&#39;: 404772,
+                      &#39;num_words_median&#39;: 43459.5,
+                      &#39;num_words_min&#39;: 2}},
+ &#39;version&#39;: &#39;1.0.0&#39;}
+documents/NASDAQ_100/Yahoo/Yahoo_2009.txt: 100%|█| 5277/5277 [00:20&lt;00:00, 255.6
+{&#39;filename&#39;: &#39;documents/DowJones/Goldman_Sachs/Goldman_Sachs_2012_CSR.txt&#39;, &#39;text&#39;: &#39;OUR IMPACT DRIVES GLOBAL PROGRESS Selected Highlights from 2012 ESG Report This document highlights our environmental efforts and key awards and rankings during 2012.  For additional information related to our approach to sustainabilityincluding specific examples of our work on behalf of clientsplease visit the current version of our full Environmental,  Social and Governance Impact Report.  www, gs, com/esg-impact \nSAN FRANCISCO SALT LAKE CITY NEW JERSEY NEW YORK CITY BRAZIL LONDON GERMANY JOHANNESBURG INDIA BEIJING TOKYO \nSelected Highlights from 2012 ESG Report \nOUR IMPACT DRIVES GLOBAL PROGRESS \nwww, goldmansachs, com/esg-impact \nEnvironmental overview A healthy environment is the foundation of economic progress and contributes to the well-being of all people.  At Goldman Sachs,  we recognize our responsibility to help find market solutions that improve the environment.  Our commitment to environmental sustainability takes many forms.  It includes providing financing for clean technology companies,  working collaboratively with the public and private sectors to address infrastructure challenges,  and partnering with non-governmental organizations to conduct research on environmental and energy issues.  In 2005,  Goldman Sachs established the Environmental Policy Framework.  Under the Framework we committed to deploy our peoplecapital and ideas to help find effective market-based solutions to environmental issues.  Our Environmental Markets Group coordinates and oversees our Framework,  while respective business units implement the commitments and contribute to environmental progress.  The Board reviews the Framework and the Corporate Governance,  Nominating and Public Responsibilities Committee of the Board reviews environmental,  social and governance issues affecting the firm,  including through the periodic review of the ESG Report.  We put our environmental policies into practice and continue to deliver on our commitments across three areas: \t \t \t \nOur core businesses Our operations Our thought leadership \nTo read a more detailed summary of our environmental policies,  practices and initiatives,  please visit www, gs, com/environment.  \nSelected Highlights from 2012 ESG Report \nOUR IMPACT DRIVES GLOBAL PROGRESS \nwww, goldmansachs, com/esg-impact \nOur Business Initiatives Clean Energy \n n 2012,  we extended our longstanding commitment to clean energy by establishing a $40 billion target to finance and invest in companies that promote clean technology alternatives over the next decade.  Despite a challenging global market environment that was particularly difficult for clean energy,  we continued to identify opportunities to meet this goal.  In 2012,  we financed nearly $2 billion and co-invested more than $430 million in the sector.  We served as financial advisor on clean energy transactions valued at more than $11 billion.  Since 2006,  we have financed more than $26 billion and co-invested more than $43 billion toward clean technology companies globally.  Recent transactions include the following examples.  \nCLEAN ENERGY AND ENVIRONMENTALLY BENEFICIAL FINANCING ACTIVITY (CUMULATIVE $ IN BN) \nCLEAN ENERGY AND ENVIRONMENTALLY BENEFICIAL INVESTMENT TOTALS (CUMULATIVE $ IN BN) \nDistributed solar In December 2012,  we were the lead underwriter on SolarCity is initial public offering,  helping to raise $106 million.  The initial public offering was the first for a distributed solar generation company and the first renewable energy company initial public offering in six months.  Earlier in the year,  we provided financing to the company to help fund the purchase of inventory.  SolarCity has expanded to serve more than 50000 customers in 14 states,  including more than 300 schools and government agencies,  as well as all four branches of the U.S.  military.  \nTransmission In July 2012,  the firm helped raise $98 million in debt financing for Citizens Energy Corporation to purchase a 30-year,  50 percent leasehold interest in a portion of a high-voltage transmission line.  The line is being built by San Diego Gas &amp; Electric and will link clean energy sources in Imperial Valley to load centers in San Diego and reduce transmission congestion.  Citizens has committed to use 50 percent of its profits to assist with the energy needs of low-income and senior homes in the region,  and has begun a program to install rooftop solar panels on homes to reduce electric bills by up to 50 percent.  \nAdvanced biofuels and feedstock We served as lead underwriter on the $75 million initial public offering for Ceres in early 2012.  The company develops nextgeneration seeds for the production of high-yielding,  dedicated energy crops that can enable large-scale sustainable feedstock for biofuel producers.  Proceeds from the transaction are being used to grow the business via further commercialization of existing products,  support increased sales and marketing and fund next-generation research and development.  \nElectric vehicles In September 2012,  we were the sole manager in the $225 million follow-on equity offering for Tesla Motors,  the Palo Alto,  Californiamanufacturer of high-performance fully electric vehicles and advanced electric vehicle powertrain components.  This was the second capital markets transaction we led for the company since advising on its initial public offering in 2010.  Strong demand from investors led to a significant oversubscription for the offering,  demonstrating the broad interest from both new and existing investors in the electric vehicle sector.  \nSelected Highlights from 2012 ESG Report \nOUR IMPACT DRIVES GLOBAL PROGRESS \nwww, goldmansachs, com/esg-impact \nOur Business Initiatives For more information on our financing and advisory initiatives,  click here.  For details about our investments toward a low-carbon future,  click here.  \nWater Infrastructure \nExtreme weather,  inadequate water infrastructure systems and growing demand have made water needs more acute.  While increasingly constrained government funding has made meeting the infrastructure needs challenging,  we are committed to helping communities meet their capital needs to address these challenges.  For example,  last November,  the firm helped finance an innovative public-private partnership between the city of Rialto,  Table Rock Capital,  Union Labor Life Insurance Company and Veolia Water on a 30-year concession to manage Rialto is water and wastewater systems.  A portion of the proceeds will be used to upgrade the water systems,  reduce water loss from leakage and improve operations.  \nCatastrophe-Linked Securities \nWe develop and place catastrophe-linked securities that help our clients mitigate financial risk,  including from extreme weather events.  For example,  in April 2012,  we helped Citizens Property Insurance Corporation,  a state-owned insurer of last resort for Florida homeowners,  transfer $750 million in risk of loss from hurricanes to capital market investors in the form of a catastrophe risklinked security known as Everglades Re.  The firm has placed several such weather risk-linked transactions and was recognized by Environmental Finance as the \&#39;Best Dealer in Catastrophe Risk Management&quot; in 2012.  \nESG Research \nOur GS SUSTAIN research team continues to expand its analysis of companies,  further helping clients identify environmental,  social and governance outperformers and structural leaders.  In May 2012,  GS SUSTAIN announced a major expansion of its analysis to nearly 1400 mid-to-large-sized companies globally,  following the collection and analysis of nearly 100000 ESG data points from publicly available sources.  From its inception in June 2007 through the end of 2012,  the GS SUSTAIN Focus List has outperformed the MSCI All Country World Index (ACWI) global equity benchmark by more than 40 percent.  \nGoldman Sachs Asset Management \nGoldman Sachs Asset Management (GSAM) is committed to responsible and sustainable investing and the formal integration of environmental,  social and governance principles into investment strategies and client solutions across our investment platform globally,  where applicable.  The foundation of our approach to responsible and sustainable investing is built on our core philosophy of serving our clients\&#39; investment goals and adhering strictly to our fiduciary duty as an asset manager.  At GSAM,  we believe responsible and sustainable investing extends beyond the evaluation of quantitative factors and traditional fundamental analysis.  Where material,  it should include the analysis of an entity is impact on its stakeholders,  the environment and society.  We recognize that these ESG factors can affect investment performance,  expose potential investment risks,  and provide an indication of management excellence and leadership.  Please see our GSAM Citizenship website and read our GSAM Statement on Responsible and Sustainable Investing for further information.  \nEnvironmental Risk Management \nWe approach the management of environmental and social risks with the same care and discipline as any other business risk.  As part of this commitment,  we believe it is important to take the environmental and social impacts and practices of our clients and potential clients into consideration as we make business selection decisions.  Our Environmental Markets Group assists business teams by providing guidance on environmental matters,  doing independent reviews as appropriate and identifying mitigants and positive engagement opportunities with clients to reduce risk.  In 2012,  262 transactions were reviewed by the Environmental Markets Group and 526 new employees received environmental,  social and governance training.  For more information,  please see our Business Selection and Environmental Advisory process.  \nSelected Highlights from 2012 ESG Report \nOUR IMPACT DRIVES GLOBAL PROGRESS \nwww, goldmansachs, com/esg-impact \nOur OPERATIONAL IMPACT CARBON FOOTPRINT REDUCTION 2012 TARGET: REDUCE ABSOLUTE SCOPE 1 &amp; 2 OFFICE EMISSIONS BY 7% BELOW 2005 BASELINE \nGROWTH IN LEED-CERTIFIED REAL ESTATE AS A % OF TOTAL REAL ESTATE LEED-CERTIFIED (SF-MILLIONS) \n\t This year we reduced the carbon footprint from our offices by 19 percent — well exceeding our initial target to reduce the footprint from our offices by seven percent from a 2005 baseline by 2012.  We accomplished this entirely by deploying our global Carbon Reduction Framework,  which challenges us to design,  construct and operate our facilities and technology as efficiently as possible.  Recognizing the impact of our data center emissions,  in 2012 we went beyond our initial target by reducing the carbon footprint from both our offices and data centers by 10 percent from a 2005 baseline.  We achieved this additional reduction with the purchase of a balanced mix of high-quality,  credible Gold Standard and Voluntary Carbon Standard offsets that support the growth of renewable energy markets where we operate.  We have committed to be carbon neutral across our facilities by 2020.  \t O  ur owned and leased LEED-Certified real estate now totals over 5 million square feet,  making us one of the world is largest owners and tenants of LEED-Certified commercial real estate under the new construction and commercial interiors rating systems.  For more information,  see our Operational Impact page.  \nOur Thought Leadership \tIn 2012,  through The Center for Environmental Markets,  we made progress on our existing partnerships and entered into new partnerships with non-governmental organizations (NGOs).  Areas of focus include water,  energy efficiency,  clean energy policy and the role of shale energy.  For more information,  please see The Center for Environmental Markets.  \tWe continue to host,  sponsor and participate in major conferences — attended by policy makers,  NGOs and educators,  as well as Goldman Sachs clients,  investors and employees.  In February 2013,  we hosted a summit on Water: Emerging Risks &amp; Opportunitiesin partnership with the World Resources Institute and General Electric.  \nLEARN MORE Learn more about our commitment to the environment &gt; \nSelected Highlights from 2012 ESG Report \nOUR IMPACT DRIVES GLOBAL PROGRESS \nwww, goldmansachs, com/esg-impact \nENVIRONMENTAL Awards and Rankings January 2013 \n1 Public Markets — Lead Managers 2 M&amp;A and VC/ PE — Financial Advisors \nRanked 13 Top company ranked in financial sector \nListed on the North America Index \nListed \nCarbon Disclosure Project \n2012 CDP Global 500 Carbon Disclosure Leadership Index 2012 CDP S&amp;P 500 Carbon Disclosure Leadership Index \nListed \nBloomberg New Energy Finance — Clean Energy &amp; Energy Smart Technologies League Tables \nDow Jones Sustainability Index \nMaplecroft Climate Index — CII Leaders: Top 100 Companies \nBloomberg — World is Greenest Banks \nNewsweek Green Rankings \nEnvironmental Finance — 2012 Annual Awards Catastrophe Risk Management Deal of the Year — Everglades Re cat bond Best Dealer (Structurer/Arranger) in Catastrophe Risk Management — Global \nSelected Highlights from 2012 ESG Report \nOUR IMPACT DRIVES GLOBAL PROGRESS \nwww, goldmansachs, com/esg-impact \nENVIRONMENTAL INDICATORS Performance Indicators Global Facilities Reported Revenues ($M) Rentable Square Feet (ft2) LEED-Certified (ft2) Full-time Occupants (FTO  FTE+FTC) Total Direct and Intermediate Energy Consumption (MWh) Total Direct Energy Consumption (MWh) Natural Gas Fuel Oil Total Intermediate Energy Consumption (MWh) Purchased Electricity Purchased Steam Gross Greenhouse Gas (GHG) Emissions (tCO2e) Scope 1  Direct (tCO2e) Natural Gas Fuel Oil HFC Refrigerants Scope 2  Required Indirect (tCO2e) Purchased Electricity Purchased Steam Total Gross Scope 1 &amp; 2 (tCO2e) Office Scope 1 &amp; 2 Data Center Scope 1 &amp; 2 Scope 3 Business Travel  Optional Indirect (tCO2e) Commercial Air Charter Air Rail / Bus Ferry Car External GHG Emissions Reductions (tCO2e) Gold Standard Offsets (tCO2e) Verified Carbon Standard (VCS) Offsets (tCO2e) Total Verified Carbon Offsets (tCO2e) Reduction Against Scope 1 &amp; 2 Reduction Against Scope 3 Green-E Certified Renewable Energy Certificates (RECs) (MWh) Reduction Against Scope 1 &amp; 2 (tCO2e) Net GHG Emissions (metric tons CO2e) Total Net Scope 1 &amp; 2 (tCO2e) Normalized GHG Emissions Net Revenue (tCO2/$M) Rentable Square Feet (kg CO2e/RSF) Full-Time Occupants (tCO2/FTO) Total Water Consumption (m3) Total Business Waste (metric tons) Recycled Material Landfilled Material Waste to Energy e-Waste (metric tons) Total Construction Waste (metric tons) Recycled Material Landfilled Material Total Paper Consumption (million sheets) New Fibers (FSC/SFI) Post-Consumer Recycled New Fibers \nAbsolute Trend \n2012 Absolute Normalized \n2011 Absolute Normalized \nNote 1: 2005 and 2010 emissions were adjusted in 2012 from the originally reported emissions to reflect the impact of materially significant acquisitions.  \nSelected Highlights from 2012 ESG Report \nOUR IMPACT DRIVES GLOBAL PROGRESS \nwww, goldmansachs, com/esg-impact \nBUSINESS Awards and Rankings December 2012 \nBest Equity Arranger Best Investment Bank \nBest Foreign Investment Bank in China Best Foreign Investment Bank in Malaysia Best Foreign Investment Bank in Korea \nAsia Money: Deals of the Year Awards \nThe Banker: Top 1000 Banks 20 overall June 2012 \nEuromoney: Awards for Excellence \nFinanceAsia: Country Awards \nFinanceAsia: Annual Achievement Awards Best FIG House April 2012 \nNamed Best M&amp;A House in the Middle East \nJMoney: Annual Awards \nEuromoney: Regional and Country Awards for Excellence Best Global M&amp;A House Best Global Emerging Markets Equity House EMEA Awards: Best M&amp;A House in Russia Best M&amp;A House in Central Eastern Europe Best M&amp;A House in Africa Best M&amp;A House in the Nordic and Baltics Best Investment Bank in Ireland Best Investment Bank in Belgium Best Investment Bank in Sweden Best Investment Bank in Norway Best Equity House in the Nordic and Baltics Asia Awards: Best M&amp;A House in Asia Best M&amp;A House in Hong Kong Best M&amp;A House in Australia \nInternational Financing Review: Annual Awards Best EMEA Equity House Best Structured Equity House \nInternational Financing Review Asia:  2012 Annual Awards Bank of the Year \nSelected Highlights from 2012 ESG Report \nOUR IMPACT DRIVES GLOBAL PROGRESS \nwww, goldmansachs, com/esg-impact \nEMPLOYER OF CHOICE Awards and Rankings July 2012 \nRanked 2 on this list for the second year in a row \nRecipient of the Golden Key — Employer of the Year Award for the work that we do for individuals with disabilities \nChronicle of Philanthropy: 10 Companies That Gave the Most Cash in 2011 January 2013 \nFORTUNE: 100 Best Companies to Work For Listed Included on the list every year since its inception \nFORTUNE: World is Most Admired Companies Ranked 34 March 2013 \n2 overall in Megabanks category \nUtah Governor is Committee on Employment of People With Disabilities: Annual Awards \nTargetJobs: National Graduate Recruitment Awards Named one of the \&#39;Most Popular Graduate Recruiters in Investing and Investment Banking&quot; September 2012 \nUniversum: World is Most Attractive Employers — Global Top 50 Ranked 10 among business students \nSelected Highlights from 2012 ESG Report \nOUR IMPACT DRIVES GLOBAL PROGRESS \nwww, goldmansachs, com/esg-impact \nDIVERSITY Awards and Rankings 2013 \nRecipient of \&#39;Cause of the Year — Women is Corporate Leadership Award&quot; — International Category \nAsia Society: Best In Class Employers of Asian Pacific American Professionals \nAWARE: Gender Equality Awards \nHuman Rights Campaign (HRC):  Corporate Equality Award \nStonewall: Workplace Equality Index Ranked 13 overall Ranked 1 among investment bank entrants \nRecipient of Corporate Equality Award and in 2013 Received 100 percent on Corporate Equality Index  (ninth consecutive year) \nWorking Mother: Best Companies for Multicultural Women \nBusiness in the Community:  Race for Opportunity Awards \nListed September 2012 \nRecipient of the \&#39;Leadership Award&quot; for the firm is STEP Leadership Development Programme in EMEA \nWorking Mother: 100 Best Companies for Women Listed \nMETRICS Goldman Sachs U.S.  Workforce Demographics Data as of 08-31-2012 \nAmerican Indian/ Alaskan Native \nHispanic or Latino \nTwo or more Races \nNative Hawaiian  or Other Pacific Islander \nFemales \nWhite \nAsian \nBlack or African American \nOfficials &amp; Managers \nProfessionals \nAll others \nTotal \nSource: Goldman Sachs 2012 Equal Employment Opportunity (EEO-1) reports.  \&#39;All other&quot; is a combination of the following EEO-1 job categories: technicians,  sales workers,  office and clerical,  craft workers (skilled),  operatives (semi-skilled),  laborers and service workers.  &#39;, &#39;split&#39;: &#39;train&#39;}
+                                            filename  ...  split
+0  documents/DowJones/Goldman_Sachs/Goldman_Sachs...  ...  train
+1  documents/DowJones/Goldman_Sachs/Goldman_Sachs...  ...  train
+2  documents/DowJones/Goldman_Sachs/Goldman_Sachs...  ...  train
+3  documents/DowJones/Goldman_Sachs/Goldman_Sachs...  ...  train
+4  documents/DowJones/Goldman_Sachs/Goldman_Sachs...  ...  train
+
+[5 rows x 3 columns]
+(5277, 3)
+                                       filename  ... Report_Type
+5272  documents/NASDAQ_100/Yahoo/Yahoo_2007.txt  ...          AR
+5273  documents/NASDAQ_100/Yahoo/Yahoo_2006.txt  ...          AR
+5274  documents/NASDAQ_100/Yahoo/Yahoo_2012.txt  ...          AR
+5275  documents/NASDAQ_100/Yahoo/Yahoo_2008.txt  ...          AR
+5276  documents/NASDAQ_100/Yahoo/Yahoo_2009.txt  ...          AR
+
+[5 rows x 9 columns]
+   id                                           filename  ... Last_Year Report_Type
+0   0  documents/DowJones/Goldman_Sachs/Goldman_Sachs...  ...      2012         CSR
+1   1  documents/DowJones/Goldman_Sachs/Goldman_Sachs...  ...      2008          AR
+2   2  documents/DowJones/Goldman_Sachs/Goldman_Sachs...  ...      2009          AR
+3   3  documents/DowJones/Goldman_Sachs/Goldman_Sachs...  ...      2013         CSR
+4   4  documents/DowJones/Goldman_Sachs/Goldman_Sachs...  ...      2008         CSR
+
+[5 rows x 10 columns]
+apply len_bytes to num_bytes: 100%|███████████| 196/196 [00:23&lt;00:00,  8.50it/s]
+apply len_sents to num_sents: 100%|███████████| 196/196 [00:03&lt;00:00, 54.66it/s]
+Normalizing column: text: 100%|███████████████| 196/196 [00:17&lt;00:00, 10.99it/s]
+Calculating length: 100%|█████████████████████| 196/196 [00:03&lt;00:00, 54.37it/s]
+----------------------------------------------------------------------------------------------------
+
+text: 
+SIMON SUSTAINABILITY REPORT 2015 
+TABLE OF CONTENTS 
+ABOUT THIS REPORT 
+About this Report 
+Letter from Our CEO 
+About Simon 
+Stakeholder Engagement &amp; Materiality 
+Sustainability Framework 
+Sustainability Goals 
+Focus Areas 
+ Properties 
+Energy 
+Water 
+Waste 
+ Customers 
+ Communities 
+ Employees 
+Sustainability Governance 
+Recognition 
+Global Reporting Initiative Content Index 
+Assurance Statement 
+We are proud to present Simon is Sustainability Report 2015 providing updates on Simon is ongoing sustainability efforts and achievements. This report includes information from Simon properties in the U.S. which include MallsSimon Premium Outlets, ® and The Mills. ® 
+Reporting Period and Guidelines The information disclosed in this report is based on 2014 data for the year ending on December 31, 2014. The scope of this report is focused on properties directly managed and owned by Simon in the U.S. This report contains Standard Disclosures from the Global Reporting Initiative (GRI) Guidelines ...
+
+----------------------------------------------------------------------------------------------------
+text: 
+are born of 
+Properties 
+ANNUAL REPORT 2002 
+EBITDA 
+EBIT 
+EBT 
+Consolidated earnings 
+Total assets 
+Shareholders&#39; equity 
+Equity ratio 
+Capitalization ratio 
+Current ratio 
+Financing (capital buildup) 
+Revenues 
+Equity ratio 
+Capitalization ratio 
+Current ratio 
+Financing (capital buildup) 
+Shareholders&#39; equity Total assets Fixed assets Total assets Current assets Total assets Equity Debt 
+IMPRINT 
+Concept &amp; Design Kirchhoff Consult AG Hamburg, Germany Printed by Offizin Paul Hartung Hamburg, Germany 
+Properties are born of 
+Visions Success based on 
+Assets TAG combines visions and assets in its core business segments, Residential Properties, Commercial Properties and Special-Purpose Properties. Our existing assets, our return- and cash-flow-oriented growth fueled by both organic expansion and acquisitions and our experienced management team make us one of the prime companies in the property market and on the stock exchange. 
+Preface 
+Management 
+TAG Group 
+Bau-Verein zu Hamburg AG 
+J...
+
+----------------------------------------------------------------------------------------------------
+apply len_bytes to num_bytes: 100%|███████████| 200/200 [00:02&lt;00:00, 79.39it/s]
+apply len_wospc to num_bytes_wospc: 100%|█████| 200/200 [00:03&lt;00:00, 59.95it/s]
+apply len_words to num_words: 100%|███████████| 200/200 [00:03&lt;00:00, 62.02it/s]
+apply len_sents to num_sents: 100%|███████████| 200/200 [00:03&lt;00:00, 55.29it/s]
+apply len_segments to num_segments: 100%|█████| 200/200 [00:03&lt;00:00, 50.19it/s]
+{&#39;category&#39;: &#39;formal&#39;,
+ &#39;column_info&#39;: {&#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;,
+                             &#39;merge_meta_on&#39;: &#39;id&#39;,
+                             &#39;text&#39;: &#39;text&#39;,
+                             &#39;timestamp&#39;: None},
+                 &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;},
+                 &#39;datetime&#39;: {&#39;columns&#39;: None,
+                              &#39;format&#39;: None,
+                              &#39;rcParams&#39;: None},
+                 &#39;meta&#39;: {&#39;First_Year&#39;: &#39;int&#39;,
+                          &#39;Index&#39;: &#39;str&#39;,
+                          &#39;Last_Year&#39;: &#39;int&#39;,
+                          &#39;Organisation&#39;: &#39;str&#39;,
+                          &#39;Report_Type&#39;: &#39;str&#39;,
+                          &#39;filename&#39;: &#39;str&#39;,
+                          &#39;id&#39;: &#39;int&#39;},
+                 &#39;segment_separator&#39;: &#39;\\n\\n&#39;,
+                 &#39;sentence_separator&#39;: &#39;\\n&#39;,
+                 &#39;timestamp&#39;: {&#39;format&#39;: None, &#39;key&#39;: None, &#39;rcParams&#39;: None}},
+ &#39;data_files&#39;: {&#39;train&#39;: &#39;joco-train.parquet&#39;},
+ &#39;data_files_modified&#39;: &#39;2022-09-14 08:38:43&#39;,
+ &#39;description&#39;: &#39;JOCo is a corpus of annual reports and corporate social &#39;
+                &#39;responsibility reports of American, British and German &#39;
+                &#39;enterprises.&#39;,
+ &#39;fullname&#39;: &#39;Jena Organization Corpus (JOCo)&#39;,
+ &#39;homepage&#39;: &#39;https://www.orga.uni-jena.de/en/corp&#39;,
+ &#39;info_updated&#39;: &#39;2022-09-14 08:39:52&#39;,
+ &#39;lang&#39;: &#39;en&#39;,
+ &#39;license&#39;: &#39;All users of JOCo must apply for a license in order to receive a &#39;
+            &#39;copy.&#39;,
+ &#39;meta_files&#39;: {&#39;train&#39;: &#39;meta-joco-train.parquet&#39;},
+ &#39;meta_files_modified&#39;: &#39;2022-09-14 08:36:52&#39;,
+ &#39;name&#39;: &#39;joco&#39;,
+ &#39;num_bytes_before_processing&#39;: 1808773909,
+ &#39;num_docs&#39;: 5198,
+ &#39;num_docs_before_processing&#39;: 5277,
+ &#39;num_segments&#39;: 5533,
+ &#39;num_sents&#39;: 8063370,
+ &#39;num_words&#39;: 269354712,
+ &#39;size_in_bytes&#39;: 1774617006,
+ &#39;size_in_human_bytes&#39;: &#39;1.65 GiB&#39;,
+ &#39;splits&#39;: {&#39;train&#39;: {&#39;data_file&#39;: &#39;joco-train.parquet&#39;,
+                      &#39;dataset_name&#39;: &#39;joco&#39;,
+                      &#39;human_bytes&#39;: &#39;1.65 GiB&#39;,
+                      &#39;human_bytes_wospc&#39;: &#39;1.39 GiB&#39;,
+                      &#39;meta_file&#39;: &#39;meta-joco-train.parquet&#39;,
+                      &#39;name&#39;: &#39;train&#39;,
+                      &#39;num_bytes&#39;: 1774617006,
+                      &#39;num_bytes_before_processing&#39;: 1808773909,
+                      &#39;num_bytes_max&#39;: 2496447,
+                      &#39;num_bytes_median&#39;: 287173.5,
+                      &#39;num_bytes_min&#39;: 19,
+                      &#39;num_bytes_wospc&#39;: 1496898089,
+                      &#39;num_docs&#39;: 5198,
+                      &#39;num_docs_before_processing&#39;: 5277,
+                      &#39;num_segments&#39;: 5533,
+                      &#39;num_segments_median&#39;: 1.0,
+                      &#39;num_sents&#39;: 8063370,
+                      &#39;num_sents_median&#39;: 1108.5,
+                      &#39;num_words&#39;: 269354712,
+                      &#39;num_words_max&#39;: 404772,
+                      &#39;num_words_median&#39;: 43459.5,
+                      &#39;num_words_min&#39;: 2}},
+ &#39;version&#39;: &#39;1.0.0&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="load-a-corpus">
+<h2>Load a corpus<a class="headerlink" href="#load-a-corpus" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corpus_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;corpus&quot;</span><span class="p">)</span>
+<span class="n">corpus_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;joco&quot;</span>
+<span class="n">corpus_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">joco</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">corpus_cfg</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">joco</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Corpus : joco
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/esg_en&quot;</span>
 </pre></div>
