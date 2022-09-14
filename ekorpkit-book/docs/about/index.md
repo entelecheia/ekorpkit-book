@@ -13,6 +13,6 @@
 - [fugashi](https://github.com/polm/fugashi)
 - [hanja](https://github.com/suminb/hanja)
 
-## References
+## Bibliography
 ```{bibliography}
 ```
