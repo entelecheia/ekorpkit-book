@@ -1,5 +1,9 @@
 # References
 
+## Bibliography
+```{bibliography}
+```
+
 ## Repositories
 
 - [Hydra](https://hydra.cc)
@@ -12,7 +16,3 @@
 - [kss](https://github.com/hyunwoongko/kss)
 - [fugashi](https://github.com/polm/fugashi)
 - [hanja](https://github.com/suminb/hanja)
-
-## Bibliography
-```{bibliography}
-```
