@@ -51,8 +51,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="AI Art (Text-to-Image)" href="../aiart/index.html" />
@@ -987,12 +985,36 @@ title="Print to PDF"
     </ul>
   </div>
 </div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
 
     </div>
 </div>
 
 <!-- Table of contents -->
 <div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-do-we-need-transformers">
+   Why do we need transformers?
+  </a>
+ </li>
+</ul>
+
+    </nav>
 </div>
     </div>
     <div class="article row">
@@ -1004,6 +1026,19 @@ title="Print to PDF"
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-do-we-need-transformers">
+   Why do we need transformers?
+  </a>
+ </li>
+</ul>
+
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -1027,7 +1062,26 @@ title="Print to PDF"
 <p>In 2020, Google Brain asks “will they be as effective on images?”</p>
 <ul class="simple">
 <li><p>The paper “An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale” <span id="id2">[<a class="reference internal" href="../../about/index.html#id7" title="Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly, and others. An image is worth 16x16 words: transformers for image recognition at scale. arXiv preprint arXiv:2010.11929, 2020.">Dosovitskiy <em>et al.</em>, 2020</a>]</span> was published in 2020.</p></li>
+<li><p>The model is able to perform well on many Computer Vision tasks, including image classification and object detection.</p></li>
 </ul>
+<p>At the beginning of 2021, Facebook researchers published a new version of the Transformers model, called TimeSformer.</p>
+<ul class="simple">
+<li><p>The paper “Is space-time attention all you need for video understanding?” <span id="id3">[<a class="reference internal" href="../../about/index.html#id8" title="Gedas Bertasius, Heng Wang, and Lorenzo Torresani. Is space-time attention all you need for video understanding? In ICML, volume 2, 4. 2021.">Bertasius <em>et al.</em>, 2021</a>]</span> was published in 2021.</p></li>
+</ul>
+<section id="why-do-we-need-transformers">
+<h2>Why do we need transformers?<a class="headerlink" href="#why-do-we-need-transformers" title="Permalink to this headline">#</a></h2>
+<p>What are the problems with the previous models?</p>
+<ul class="simple">
+<li><p>The previous models were based on Recurrent Neural Networks (RNNs).</p></li>
+<li><p>RNNs are able to process sequences of data, such as text or audio.</p></li>
+<li><p>One of the main problems is its sequential operation.</p></li>
+<li><p>The model needs to process the input sequentially, which means that it needs to process the first word, then the second word, and so on.</p></li>
+<li><p>This sequential operation makes it difficult to parallelize the model.</p></li>
+<li><p>There are also other problems such as gradient explosion, inability to detect dependencies between distant words in the same sentence, and so on.</p></li>
+</ul>
+<p>For example, to translate a sentence from English to Italian, with this type of networks, the first word of the sentence to be translated was passed into an encoder together with an initial state, and the next state was then passed into a second encoder with the second word of the sentence, and so on until the last word. The resulting state from the last encoder is then passed to a decoder that returns as output both the first translated word and a subsequent state, which is passed to another decoder, and so on.</p>
+<p><img alt="" src="../../../_images/problem-rnn.gif" /></p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
