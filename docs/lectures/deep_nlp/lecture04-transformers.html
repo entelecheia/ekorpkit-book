@@ -1080,6 +1080,16 @@ title="Print to PDF"
    TimeSformers
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#multimodal-machine-learning">
+   Multimodal Machine Learning
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#vatt-transformers-for-multimodal-self-supervised-learning">
+   VATT: Transformers for Multimodal Self-Supervised Learning
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -1168,6 +1178,16 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#timesformers">
    TimeSformers
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#multimodal-machine-learning">
+   Multimodal Machine Learning
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#vatt-transformers-for-multimodal-self-supervised-learning">
+   VATT: Transformers for Multimodal Self-Supervised Learning
   </a>
  </li>
 </ul>
@@ -1406,6 +1426,59 @@ title="Print to PDF"
 </section>
 <section id="timesformers">
 <h2>TimeSformers<a class="headerlink" href="#timesformers" title="Permalink to this headline">#</a></h2>
+<p>In 2021 Facebook researchers tried to apply this architecture to video as well.</p>
+<ul class="simple">
+<li><p>The idea is to divide the video into frames and then apply the same procedure as for images.</p></li>
+<li><p>There is only one small detail that makes them different from Vision Transformers.</p></li>
+<li><p>You have to take into account the temporal dimension of the video besides the spatial dimension.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/timesformer-video.gif" /></p>
+<p>The authors have suggested several new attention mechanisms, from those that focus exclusively on space, used primarily as a reference point, to those that compute attention axially, scattered, or jointly between space and time.</p>
+<p><img alt="" src="../../../_images/timesformer-architecture.gif" /></p>
+<p><img alt="" src="../../../_images/timesformer-attentions.jpeg" /></p>
+<ul class="simple">
+<li><p>The method that has achieved the best results is Divided Space-Time Attention.</p></li>
+<li><p>It consists, given a frame at instant t and one of its patches as a query, to compute the spatial attention over the whole frame and then the temporal attention in the same patch of the query but in the previous and next frame.</p></li>
+<li><p>Why does this approach work so well?</p></li>
+<li><p>The reason is that it learns more separate features than other approaches and is, therefore, better able to understand videos from different categories.</p></li>
+</ul>
+<p>We can see this in the following visualization where each video is represented by a point in space and its colour represents the category it belongs to.</p>
+<p><img alt="" src="../../../_images/timesformer-divide.jpeg" /></p>
+<ul class="simple">
+<li><p>The authors ound that the higher the resolution the better the accuracy of the model, up to a point.</p></li>
+<li><p>As for the number of frames, again as the number of frames increases, the accuracy also increases.</p></li>
+<li><p>It was not possible to make tests with a higher number of frames than that shown in the graph and therefore potentially the accuracy could still improve.</p></li>
+<li><p>The upper limit of this improvement is not yet known.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/timesformer-resolution.jpeg" /></p>
+<p>In Vision Transformers it is known that a larger training dataset often results in better accuracy. This was also checked by the authors on TimeSformers and again, as the number of training videos considered increases, the accuracy also increases.</p>
+<p><img alt="" src="../../../_images/timesformer-dataset.jpeg" /></p>
+<p>Transformers have just landed in the world of computer vision and seem to be more than determined to replace traditional convolutional networks or at least carve out an important role for themselves in this area.</p>
+<ul class="simple">
+<li><p>Transformers are a powerful architecture that has revolutionized the field of Natural Language Processing.</p></li>
+<li><p>They have been able to achieve impressive results in various tasks.</p></li>
+<li><p>They have also been applied to other areas such as computer vision.</p></li>
+<li><p>The results obtained are very promising and it is likely that they will continue to improve in the future.</p></li>
+</ul>
+</section>
+<section id="multimodal-machine-learning">
+<h2>Multimodal Machine Learning<a class="headerlink" href="#multimodal-machine-learning" title="Permalink to this headline">#</a></h2>
+<p>Having now a single architecture capable of working with different types of data, we can now start to think about how to combine them.</p>
+<ul class="simple">
+<li><p>This is called multimodal machine learning.</p></li>
+<li><p>People are able to combine information from several sources to draw their own inferences.</p></li>
+<li><p>They simultaneously receive data by observing the world around them with their eyes, but also by smelling its scents, listening to its sounds or touching its shapes.</p></li>
+<li><p>This is why we are able to understand the world around us.</p></li>
+<li><p>We can now try to replicate this ability in machines.</p></li>
+<li><p>The problem lies in treating all the different inputs in the same way without losing information.</p></li>
+<li><p>Trnasformers are a good candidate for this task.</p></li>
+<li><p>They are able to process different types of data and combine them in a single architecture.</p></li>
+</ul>
+</section>
+<section id="vatt-transformers-for-multimodal-self-supervised-learning">
+<h2>VATT: Transformers for Multimodal Self-Supervised Learning<a class="headerlink" href="#vatt-transformers-for-multimodal-self-supervised-learning" title="Permalink to this headline">#</a></h2>
+<p>One of the most important applications of Transformers in the field of Multimodal Machine Learning is VATT <span id="id6">[<a class="reference internal" href="../../about/index.html#id11" title="Hassan Akbari, Liangzhe Yuan, Rui Qian, Wei-Hong Chuang, Shih-Fu Chang, Yin Cui, and Boqing Gong. Vatt: transformers for multimodal self-supervised learning from raw video, audio and text. Advances in Neural Information Processing Systems, 34:24206–24221, 2021.">Akbari <em>et al.</em>, 2021</a>]</span>.</p>
+<p><img alt="" src="../../../_images/vatt.gif" /></p>
 </section>
 </section>
 
