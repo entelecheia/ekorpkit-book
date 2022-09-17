@@ -1016,6 +1016,23 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#attention-is-all-you-need">
    Attention is all you need?
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-do-we-implement-this-attention-mechanism">
+     How do we implement this attention mechanism?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#multi-head-attention">
+     Multi-head attention
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tranformer-architecture">
+   Tranformer Architecture
+  </a>
  </li>
 </ul>
 
@@ -1044,6 +1061,23 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#attention-is-all-you-need">
    Attention is all you need?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-do-we-implement-this-attention-mechanism">
+     How do we implement this attention mechanism?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#multi-head-attention">
+     Multi-head attention
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tranformer-architecture">
+   Tranformer Architecture
   </a>
  </li>
 </ul>
@@ -1108,6 +1142,59 @@ title="Print to PDF"
 <li><p>If you were to ask yourself, “What did I give to the dog?”</p></li>
 <li><p>The attention mechanism would focus on the words “food.”</p></li>
 </ul>
+<section id="how-do-we-implement-this-attention-mechanism">
+<h3>How do we implement this attention mechanism?<a class="headerlink" href="#how-do-we-implement-this-attention-mechanism" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>To understand the computation of attention we can draw parallels to the world of databases.</p></li>
+<li><p>When we do a search in the database we submit a query (Q) and we search among the available data for one or more keys that satisfy the query.</p></li>
+<li><p>The keys are the words in the sentence and the query is the word we want to focus on.</p></li>
+<li><p>The result of the search is the value of the key that satisfies the query.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/attention-calculate.gif" /></p>
+<ul class="simple">
+<li><p>We begin by looking at the sentence on which to compute attention as a set of vectors.</p></li>
+<li><p>Each word, via a word embedding mechanism, is encoded into a vector K.</p></li>
+<li><p>These vectors are the keys to search for with respect to a query.</p></li>
+<li><p>A query is a vector Q that represents the word we want to focus on.</p></li>
+<li><p>The query could be a word from the same sentence (self-attention) or a word from another sentence (cross-attention).</p></li>
+<li><p>When then compute the similarity between the query Q and each of the available keys K.</p></li>
+<li><p>The similarity is computed by multiplying the query Q by the transpose of the keys K.</p></li>
+<li><p>The result of this operation is a vector of scores that represent the similarity between the query and each of the keys.</p></li>
+<li><p>The scores are then normalized to obtain a probability distribution by applying the softmax function.</p></li>
+<li><p>The result of the softmax function is a vector of probabilities that represent the attention weights.</p></li>
+<li><p>The attention weights are then multiplied by the sentence vector, which is a vector of the same dimension as the keys, where each value represents the word in the sentence.</p></li>
+<li><p>The result of this operation is a vector that represents the context of the word we want to focus on.</p></li>
+<li><p>The context vector C is a vector of the same dimensionality as the keys K, where each element is a weighted sum of the keys K.</p></li>
+<li><p>The context vector C is then passed to a linear layer, which is a fully connected layer, to obtain the final result of the attention mechanism.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/attention-focus.jpeg" /></p>
+<ul class="simple">
+<li><p>Each vector represents a word in the sentence.</p></li>
+<li><p>The word we want to focus on is represented by the vector Q.</p></li>
+<li><p>We then compute the similarity between the vector Q and each of the vectors in the sentence.</p></li>
+<li><p>The similarity is computed by multiplying the vector Q by the vector of each word in the sentence.</p></li>
+<li><p>The result of the multiplication is a scalar value that represents the similarity between the vector Q and the vector of the word in the sentence.</p></li>
+<li><p>The scalar value is then passed through a softmax function, which normalizes the values between 0 and 1.</p></li>
+<li><p>The result of the softmax function is the attention vector.</p></li>
+<li><p>The attention vector is a vector of the same size as the sentence, where each value represents the attention that should be given to each word in the sentence.</p></li>
+<li><p>The attention vector is then multiplied by the sentence vector, which is a vector of the same size as the sentence, where each value represents the word in the sentence.</p></li>
+<li><p>The result of the multiplication is a vector of the same size as the sentence, where each value represents the weighted sum of the words in the sentence.</p></li>
+<li><p>The weighted sum is then passed through a linear layer, which is a fully connected layer, to obtain the final result.</p></li>
+</ul>
+</section>
+<section id="multi-head-attention">
+<h3>Multi-head attention<a class="headerlink" href="#multi-head-attention" title="Permalink to this headline">#</a></h3>
+<p>This mechanism would be sufficient if we wanted to focus on a single word. However, we want to focus on from several points of view.</p>
+<ul class="simple">
+<li><p>With a simliar mechanism, we can use multiple keys to focus on different words in the sentence.</p></li>
+<li><p>The results are then concatenated to obtain a single, summarized vector of all the attention mechanisms.</p></li>
+<li><p>This mechanism is called multi-head attention.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/attention-multihead.jpeg" /></p>
+</section>
+</section>
+<section id="tranformer-architecture">
+<h2>Tranformer Architecture<a class="headerlink" href="#tranformer-architecture" title="Permalink to this headline">#</a></h2>
 </section>
 </section>
 
