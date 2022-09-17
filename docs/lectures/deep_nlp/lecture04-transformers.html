@@ -51,6 +51,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="AI Art (Text-to-Image)" href="../aiart/index.html" />
@@ -1034,6 +1036,23 @@ title="Print to PDF"
    Tranformer Architecture
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#problems-with-the-transformer-architecture">
+   Problems with the Transformer architecture
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#attention-is-not-all-you-need">
+   Attention Is Not All You Need
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#so-why-are-transformers-so-powerful">
+     So why are transformers so powerful?
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
 
     </nav>
@@ -1079,6 +1098,23 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#tranformer-architecture">
    Tranformer Architecture
   </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#problems-with-the-transformer-architecture">
+   Problems with the Transformer architecture
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#attention-is-not-all-you-need">
+   Attention Is Not All You Need
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#so-why-are-transformers-so-powerful">
+     So why are transformers so powerful?
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -1195,6 +1231,70 @@ title="Print to PDF"
 </section>
 <section id="tranformer-architecture">
 <h2>Tranformer Architecture<a class="headerlink" href="#tranformer-architecture" title="Permalink to this headline">#</a></h2>
+<p>The Transformer architecture is composed of two main components: the encoder and the decoder.</p>
+<p><img alt="" src="../../../_images/transformer-architecture.gif" /></p>
+<p>Consider a transformer model that is trained to translate a sentence from English to Italian.</p>
+<ul class="simple">
+<li><p>The encoder is responsible for encoding the input sentence into a vector.</p></li>
+<li><p>The encoder takes as input a sentence in English and returns a vector.</p></li>
+<li><p>Unlike the RNN, the encoder does not need to process the sentence sequentially.</p></li>
+<li><p>Before passing the sentence to the encoder, the sentence is first tokenized into words.</p></li>
+<li><p>Each word is then passed through a word embedding mechanism to obtain a vector.</p></li>
+<li><p>Before proceeding with the attention computation, the vectors are combined with a positional encoding vector.</p></li>
+<li><p>The positional encoding vector is a vector of the same size as the word embedding vector, where each value represents the position of the word in the sentence based on sine and cosine functions.</p></li>
+<li><p>This is important because the order of the words in the sentence is more than relevant and this information is required to understand the meaning of the sentence.</p></li>
+<li><p>The result of the addition is then passed to the multi-head attention mechanism.</p></li>
+<li><p>The result is normalized and passed to a feed-forward neural network.</p></li>
+<li><p>The encoding can be repeated multiple times to obtain a more detailed representation of the sentence.</p></li>
+</ul>
+<ul class="simple">
+<li><p>The decoder is responsible for decoding the vector into a sentence in Italian.</p></li>
+<li><p>The decoder takes as input the output of the encoder and returns a sentence in Italian.</p></li>
+<li><p>Assume that we have already translated the first two words and we want to predict the third word of the sentence in Italian.</p></li>
+<li><p>The decoder takes as input the first two words of the sentence in Italian and the output of the encoder.</p></li>
+<li><p>The positional encoding and multi-head attention mechanisms are applied to the first two words of the sentence in Italian.</p></li>
+<li><p>The result is then concatenated with the output of the encoder.</p></li>
+<li><p>The attention is recalculated on the concatenated vector.</p></li>
+<li><p>The result is normalized and passed to a feed-forward neural network.</p></li>
+<li><p>The result will be a vector of potential candidates for the third word of the sentence in Italian.</p></li>
+<li><p>In the next iteration, the decoder will take as input the first three words of the sentence in Italian and the output of the encoder.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/transformer-best.jpeg" /></p>
+</section>
+<section id="problems-with-the-transformer-architecture">
+<h2>Problems with the Transformer architecture<a class="headerlink" href="#problems-with-the-transformer-architecture" title="Permalink to this headline">#</a></h2>
+<p><img alt="" src="../../../_images/transformer-problem.gif" /></p>
+<p>The Transformer architecture is a very powerful architecture, but it has some problems.</p>
+<ul class="simple">
+<li><p>One of its strengths is also its weakness, the calculation of attention is very expensive.</p></li>
+<li><p>The attention mechanism is very expensive because it requires a lot of computation.</p></li>
+<li><p>In order to calculate the attention of each word with respect to all the others I have to perform <span class="math notranslate nohighlight">\(N^2\)</span> calculations.</p></li>
+<li><p>Graphically you can imagine a matrix that has to be filled with the attention values of each word compared to any other word.</p></li>
+<li><p>Optionally and usually on the decoder, it is possible to calculate the masked attention to avoid the calculation of the attention of a word with respect to the following words.</p></li>
+<li><p>The masked attention is a mechanism that allows you to calculate the attention of a word with respect to the previous words.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/transformer-N2.gif" /></p>
+</section>
+<section id="attention-is-not-all-you-need">
+<h2>Attention Is Not All You Need<a class="headerlink" href="#attention-is-not-all-you-need" title="Permalink to this headline">#</a></h2>
+<p>In March 2021, Google researchers published a paper titled, “Attention Is Not All You Need” <span id="id4">[<a class="reference internal" href="../../about/index.html#id9" title="Yihe Dong, Jean-Baptiste Cordonnier, and Andreas Loukas. Attention is not all you need: pure attention loses rank doubly exponentially with depth. In International Conference on Machine Learning, 2793–2803. PMLR, 2021.">Dong <em>et al.</em>, 2021</a>]</span>.</p>
+<ul class="simple">
+<li><p>The researchers conducted experiments analyzing the behaviour of the self-attention mechanism conducted without any of the other components of the transformers.</p></li>
+<li><p>They found that it converges to a rank 1 matrix with a doubly exponential rate.</p></li>
+<li><p>This means that this mechanism, by itself, is practically useless.</p></li>
+</ul>
+<section id="so-why-are-transformers-so-powerful">
+<h3>So why are transformers so powerful?<a class="headerlink" href="#so-why-are-transformers-so-powerful" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>The researchers found that the self-attention mechanism is not the only component that makes transformers so powerful.</p></li>
+<li><p>It is due to a tug of war between the self-attention mechanism that tends to reduce the rank of the matrix and two other components of transformers, skip connections and MLP.</p></li>
+<li><p>The skip connections allow the model to diversify the distribution of paths avoiding all the same path.</p></li>
+<li><p>This drastically reduces the probability of the model converging to a rank 1 matrix.</p></li>
+<li><p>The MLP instead manages to increase the rank of the matrix due to the non-linearity of the activation function.</p></li>
+<li><p>Therefore, attention is not all you need, but it is necessary to have skip connections and MLP to make transformers powerful.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/transformer-tug-of-war.jpeg" /></p>
+</section>
 </section>
 </section>
 
