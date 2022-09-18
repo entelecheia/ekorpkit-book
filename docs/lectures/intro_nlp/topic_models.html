@@ -1421,7 +1421,7 @@ This allows to manipulate some topics to be placed at a specific topic number.</
 <p>If you run this notebook in Colab, set Hardware accelerator to GPU.</p>
 </div>
 <div class="toggle docutils container">
-<p>!pip install -U –pre ekorpkit</p>
+<p>!pip install -U –pre ekorpkit[topic]</p>
 <p>exit()</p>
 </div>
 <div class="cell docutils container">
@@ -1453,38 +1453,6 @@ environment variables:
  &#39;EKORPKIT_WORKSPACE_ROOT&#39;: &#39;/workspace&#39;,
  &#39;KMP_DUPLICATE_LIB_OK&#39;: &#39;TRUE&#39;,
  &#39;NUM_WORKERS&#39;: 230}
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corpus_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;corpus&#39;</span><span class="p">,</span> <span class="n">overrides</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;project=esgml&quot;</span><span class="p">])</span>
-<span class="n">corpus_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;us_equities_news&#39;</span>
-<span class="n">corpus_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="c1"># corpus = eKonf.instantiate(corpus_cfg)</span>
-<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;pipeline&quot;</span><span class="p">,</span> <span class="n">overrides</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;project=esgml&quot;</span><span class="p">])</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">corpus</span> <span class="o">=</span> <span class="n">corpus_cfg</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">_pipeline_</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sampling&quot;</span><span class="p">]</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">sampling</span><span class="o">.</span><span class="n">sample_size_per_group</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">sampling</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">sampling</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="s2">&quot;us_equities_news_sampled.parquet&quot;</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:instantiating ekorpkit.pipelines.pipe.pipeline...
-INFO:ekorpkit.base:instantiating ekorpkit.pipelines.data.Data...
-INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function sampling at 0x7efee81b75e0&gt;)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       id                                               text  split
-0  251155  Investing com Asian stock markets were broadly...  train
-1  270611  Solid execution product diversity and strong b...  train
-2  237917  Chip name Micron Technology Inc NASDAQ MU is h...  train
-3  406989  June is typically a boring month for gold and ...  train
-4  231535  A prudent investment decision involves buying ...  train
 </pre></div>
 </div>
 </div>
@@ -1568,7 +1536,7 @@ INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function sampling at 0x7
 <li><p>Blei, D.M., Ng, A.Y., &amp;Jordan, M.I. (2003).Latent dirichlet allocation.Journal of machine Learning research, 3(Jan), 993 - 1022.</p></li>
 <li><p>Newman, D., Asuncion, A., Smyth, P., &amp;Welling, M. (2009).Distributed algorithms for topic models.Journal of Machine Learning Research, 10(Aug), 1801 - 1828.</p></li>
 </ul>
-<div class="cell docutils container">
+<div class="cell tag_hide-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tomotopy</span> <span class="k">as</span> <span class="nn">tp</span>
 
@@ -1662,7 +1630,7 @@ Iteration: 900	Log-likelihood: -8.207522882978928
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mdl</span><span class="o">.</span><span class="n">k</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Topic #</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
@@ -1949,7 +1917,7 @@ Removed Top words:  year compani stock earn zack quarter market share expect mil
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s train the model</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">):</span>
@@ -2111,7 +2079,7 @@ Iteration: 1000, LL per word: -8.046
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyLDAvis</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="n">prepared_data</span><span class="p">)</span>
 </pre></div>
