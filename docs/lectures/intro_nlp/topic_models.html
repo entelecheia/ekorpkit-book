@@ -51,8 +51,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Deep Learning for NLP" href="../deep_nlp/index.html" />
@@ -1024,6 +1022,41 @@ title="Print to PDF"
    Getting Started
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#performance-of-tomotopy">
+   Performance of tomotopy
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#model-save-and-load">
+   Model Save and Load
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#documents-in-the-model-and-out-of-the-model">
+   Documents in the Model and out of the Model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#inference-for-unseen-documents">
+   Inference for Unseen Documents
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#corpus-and-transform">
+   Corpus and transform
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#parallel-sampling-algorithms">
+   Parallel Sampling Algorithms
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pining-topics-using-word-priors">
+   Pining Topics using Word Priors
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -1051,6 +1084,41 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#getting-started">
    Getting Started
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#performance-of-tomotopy">
+   Performance of tomotopy
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#model-save-and-load">
+   Model Save and Load
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#documents-in-the-model-and-out-of-the-model">
+   Documents in the Model and out of the Model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#inference-for-unseen-documents">
+   Inference for Unseen Documents
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#corpus-and-transform">
+   Corpus and transform
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#parallel-sampling-algorithms">
+   Parallel Sampling Algorithms
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pining-topics-using-word-priors">
+   Pining Topics using Word Priors
   </a>
  </li>
 </ul>
@@ -1126,6 +1194,164 @@ But, since most of modern Intel or AMD CPUs provide SIMD instruction set, the SI
     <span class="nb">print</span><span class="p">(</span><span class="n">mdl</span><span class="o">.</span><span class="n">get_topic_words</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
 
 <span class="n">mdl</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="performance-of-tomotopy">
+<h2>Performance of tomotopy<a class="headerlink" href="#performance-of-tomotopy" title="Permalink to this headline">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">tomotopy</span></code> uses Collapsed Gibbs-Sampling(CGS) to infer the distribution of topics and the distribution of words.
+Generally CGS converges more slowly than Variational Bayes(VB) that <a class="reference external" href="https://radimrehurek.com/gensim/models/ldamodel.html"><code class="docutils literal notranslate"><span class="pre">gensim's</span> <span class="pre">LdaModel</span></code></a> uses, but its iteration can be computed much faster.
+In addition, <code class="docutils literal notranslate"><span class="pre">tomotopy</span></code> can take advantage of multicore CPUs with a SIMD instruction set, which can result in faster iterations.</p>
+<p>Following chart shows the comparison of LDA model’s running time between <code class="docutils literal notranslate"><span class="pre">tomotopy</span></code> and <code class="docutils literal notranslate"><span class="pre">gensim</span></code>.
+The input data consists of 1000 random documents from English Wikipedia with 1,506,966 words (about 10.1 MB).
+<code class="docutils literal notranslate"><span class="pre">tomotopy</span></code> trains 200 iterations and <code class="docutils literal notranslate"><span class="pre">gensim</span></code> trains 10 iterations.</p>
+<p><img alt="" src="../../../_images/tmt_i5.png" /></p>
+</section>
+<section id="model-save-and-load">
+<h2>Model Save and Load<a class="headerlink" href="#model-save-and-load" title="Permalink to this headline">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">tomotopy</span></code> provides <code class="docutils literal notranslate"><span class="pre">save</span></code> and <code class="docutils literal notranslate"><span class="pre">load</span></code> method for each topic model class,
+so you can save the model into the file whenever you want, and re-load it from the file.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tomotopy</span> <span class="k">as</span> <span class="nn">tp</span>
+
+<span class="n">mdl</span> <span class="o">=</span> <span class="n">tp</span><span class="o">.</span><span class="n">HDPModel</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;sample.txt&#39;</span><span class="p">):</span>
+    <span class="n">mdl</span><span class="o">.</span><span class="n">add_doc</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
+    <span class="n">mdl</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Iteration: </span><span class="si">{}</span><span class="se">\t</span><span class="s1">Log-likelihood: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">mdl</span><span class="o">.</span><span class="n">ll_per_word</span><span class="p">))</span>
+
+<span class="c1"># save into file</span>
+<span class="n">mdl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;sample_hdp_model.bin&#39;</span><span class="p">)</span>
+
+<span class="c1"># load from file</span>
+<span class="n">mdl</span> <span class="o">=</span> <span class="n">tp</span><span class="o">.</span><span class="n">HDPModel</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;sample_hdp_model.bin&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mdl</span><span class="o">.</span><span class="n">k</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">mdl</span><span class="o">.</span><span class="n">is_live_topic</span><span class="p">(</span><span class="n">k</span><span class="p">):</span> <span class="k">continue</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Top 10 words of topic #</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">mdl</span><span class="o">.</span><span class="n">get_topic_words</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
+
+<span class="c1"># the saved model is HDP model, </span>
+<span class="c1"># so when you load it by LDA model, it will raise an exception</span>
+<span class="n">mdl</span> <span class="o">=</span> <span class="n">tp</span><span class="o">.</span><span class="n">LDAModel</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;sample_hdp_model.bin&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When you load the model from a file, a model type in the file should match the class of methods.</p>
+</section>
+<section id="documents-in-the-model-and-out-of-the-model">
+<h2>Documents in the Model and out of the Model<a class="headerlink" href="#documents-in-the-model-and-out-of-the-model" title="Permalink to this headline">#</a></h2>
+<p>We can use Topic Model for two major purposes.
+The basic one is to discover topics from a set of documents as a result of trained model,
+and the more advanced one is to infer topic distributions for unseen documents by using trained model.</p>
+<p>We named the document in the former purpose (used for model training) as <strong>document in the model</strong>,
+and the document in the later purpose (unseen document during training) as <strong>document out of the model</strong>.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">tomotopy</span></code>, these two different kinds of document are generated differently.
+A <strong>document in the model</strong> can be created by <code class="docutils literal notranslate"><span class="pre">tomotopy.LDAModel.add_doc</span></code> method.
+<code class="docutils literal notranslate"><span class="pre">add_doc</span></code> can be called before <code class="docutils literal notranslate"><span class="pre">tomotopy.LDAModel.train</span></code> starts.
+In other words, after <code class="docutils literal notranslate"><span class="pre">train</span></code> called, <code class="docutils literal notranslate"><span class="pre">add_doc</span></code> cannot add a document into the model because the set of document used for training has become fixed.</p>
+<p>To acquire the instance of the created document, you should use <code class="docutils literal notranslate"><span class="pre">tomotopy.LDAModel.docs</span></code> like:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mdl</span> <span class="o">=</span> <span class="n">tp</span><span class="o">.</span><span class="n">LDAModel</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">idx</span> <span class="o">=</span> <span class="n">mdl</span><span class="o">.</span><span class="n">add_doc</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span> <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Failed to add doc&quot;</span><span class="p">)</span>
+<span class="n">doc_inst</span> <span class="o">=</span> <span class="n">mdl</span><span class="o">.</span><span class="n">docs</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+<span class="c1"># doc_inst is an instance of the added document</span>
+</pre></div>
+</div>
+<p>A <strong>document out of the model</strong> is generated by <code class="docutils literal notranslate"><span class="pre">tomotopy.LDAModel.make_doc</span></code> method. <code class="docutils literal notranslate"><span class="pre">make_doc</span></code> can be called only after <code class="docutils literal notranslate"><span class="pre">train</span></code> starts.
+If you use <code class="docutils literal notranslate"><span class="pre">make_doc</span></code> before the set of document used for training has become fixed, you may get wrong results.
+Since <code class="docutils literal notranslate"><span class="pre">make_doc</span></code> returns the instance directly, you can use its return value for other manipulations.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mdl</span> <span class="o">=</span> <span class="n">tp</span><span class="o">.</span><span class="n">LDAModel</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="c1"># add_doc ...</span>
+<span class="n">mdl</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">doc_inst</span> <span class="o">=</span> <span class="n">mdl</span><span class="o">.</span><span class="n">make_doc</span><span class="p">(</span><span class="n">unseen_doc</span><span class="p">)</span> <span class="c1"># doc_inst is an instance of the unseen document</span>
+</pre></div>
+</div>
+</section>
+<section id="inference-for-unseen-documents">
+<h2>Inference for Unseen Documents<a class="headerlink" href="#inference-for-unseen-documents" title="Permalink to this headline">#</a></h2>
+<p>If a new document is created by <code class="docutils literal notranslate"><span class="pre">tomotopy.LDAModel.make_doc</span></code>, its topic distribution can be inferred by the model.
+Inference for unseen document should be performed using <code class="docutils literal notranslate"><span class="pre">tomotopy.LDAModel.infer</span></code> method.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mdl</span> <span class="o">=</span> <span class="n">tp</span><span class="o">.</span><span class="n">LDAModel</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="c1"># add_doc ...</span>
+<span class="n">mdl</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">doc_inst</span> <span class="o">=</span> <span class="n">mdl</span><span class="o">.</span><span class="n">make_doc</span><span class="p">(</span><span class="n">unseen_doc</span><span class="p">)</span>
+<span class="n">topic_dist</span><span class="p">,</span> <span class="n">ll</span> <span class="o">=</span> <span class="n">mdl</span><span class="o">.</span><span class="n">infer</span><span class="p">(</span><span class="n">doc_inst</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Topic Distribution for Unseen Docs: &quot;</span><span class="p">,</span> <span class="n">topic_dist</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Log-likelihood of inference: &quot;</span><span class="p">,</span> <span class="n">ll</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">infer</span></code> method can infer only one instance of <code class="docutils literal notranslate"><span class="pre">tomotopy.Document</span></code> or a <code class="docutils literal notranslate"><span class="pre">list</span></code> of instances of <code class="docutils literal notranslate"><span class="pre">tomotopy.Document</span></code>.
+See more at <code class="docutils literal notranslate"><span class="pre">tomotopy.LDAModel.infer</span></code>.</p>
+</section>
+<section id="corpus-and-transform">
+<h2>Corpus and transform<a class="headerlink" href="#corpus-and-transform" title="Permalink to this headline">#</a></h2>
+<p>Every topic model in <code class="docutils literal notranslate"><span class="pre">tomotopy</span></code> has its own internal document type.
+A document can be created and added into suitable for each model through each model’s <code class="docutils literal notranslate"><span class="pre">add_doc</span></code> method.
+However, trying to add the same list of documents to different models becomes quite inconvenient,
+because <code class="docutils literal notranslate"><span class="pre">add_doc</span></code> should be called for the same list of documents to each different model.
+Thus, <code class="docutils literal notranslate"><span class="pre">tomotopy</span></code> provides <code class="docutils literal notranslate"><span class="pre">tomotopy.utils.Corpus</span></code> class that holds a list of documents.
+<code class="docutils literal notranslate"><span class="pre">tomotopy.utils.Corpus</span></code> can be inserted into any model by passing as argument <code class="docutils literal notranslate"><span class="pre">corpus</span></code> to <code class="docutils literal notranslate"><span class="pre">__init__</span></code> or <code class="docutils literal notranslate"><span class="pre">add_corpus</span></code> method of each model.
+So, inserting <code class="docutils literal notranslate"><span class="pre">tomotopy.utils.Corpus</span></code> just has the same effect to inserting documents the corpus holds.</p>
+<p>Some topic models requires different data for its documents.
+For example, <code class="docutils literal notranslate"><span class="pre">tomotopy.DMRModel</span></code> requires argument <code class="docutils literal notranslate"><span class="pre">metadata</span></code> in <code class="docutils literal notranslate"><span class="pre">str</span></code> type,
+but <code class="docutils literal notranslate"><span class="pre">tomotopy.PLDAModel</span></code> requires argument <code class="docutils literal notranslate"><span class="pre">labels</span></code> in <code class="docutils literal notranslate"><span class="pre">List[str]</span></code> type.
+Since <code class="docutils literal notranslate"><span class="pre">tomotopy.utils.Corpus</span></code> holds an independent set of documents rather than being tied to a specific topic model,
+data types required by a topic model may be inconsistent when a corpus is added into that topic model.
+In this case, miscellaneous data can be transformed to be fitted target topic model using argument <code class="docutils literal notranslate"><span class="pre">transform</span></code>.</p>
+<p>See more details in the following code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tomotopy</span> <span class="kn">import</span> <span class="n">DMRModel</span>
+<span class="kn">from</span> <span class="nn">tomotopy.utils</span> <span class="kn">import</span> <span class="n">Corpus</span>
+
+<span class="n">corpus</span> <span class="o">=</span> <span class="n">Corpus</span><span class="p">()</span>
+<span class="n">corpus</span><span class="o">.</span><span class="n">add_doc</span><span class="p">(</span><span class="s2">&quot;a b c d e&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span> <span class="n">a_data</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">corpus</span><span class="o">.</span><span class="n">add_doc</span><span class="p">(</span><span class="s2">&quot;e f g h i&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span> <span class="n">a_data</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">corpus</span><span class="o">.</span><span class="n">add_doc</span><span class="p">(</span><span class="s2">&quot;i j k l m&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span> <span class="n">a_data</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">DMRModel</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add_corpus</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span> 
+<span class="c1"># You lose `a_data` field in `corpus`, </span>
+<span class="c1"># and `metadata` that `DMRModel` requires is filled with the default value, empty str.</span>
+
+<span class="k">assert</span> <span class="n">model</span><span class="o">.</span><span class="n">docs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">metadata</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+<span class="k">assert</span> <span class="n">model</span><span class="o">.</span><span class="n">docs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">metadata</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+<span class="k">assert</span> <span class="n">model</span><span class="o">.</span><span class="n">docs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">metadata</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+
+<span class="k">def</span> <span class="nf">transform_a_data_to_metadata</span><span class="p">(</span><span class="n">misc</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;metadata&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">misc</span><span class="p">[</span><span class="s1">&#39;a_data&#39;</span><span class="p">])}</span>
+<span class="c1"># this function transforms `a_data` to `metadata`</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">DMRModel</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add_corpus</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform_a_data_to_metadata</span><span class="p">)</span>
+<span class="c1"># Now docs in `model` has non-default `metadata`, that generated from `a_data` field.</span>
+
+<span class="k">assert</span> <span class="n">model</span><span class="o">.</span><span class="n">docs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">metadata</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span>
+<span class="k">assert</span> <span class="n">model</span><span class="o">.</span><span class="n">docs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">metadata</span> <span class="o">==</span> <span class="s1">&#39;2&#39;</span>
+<span class="k">assert</span> <span class="n">model</span><span class="o">.</span><span class="n">docs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">metadata</span> <span class="o">==</span> <span class="s1">&#39;3&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="parallel-sampling-algorithms">
+<h2>Parallel Sampling Algorithms<a class="headerlink" href="#parallel-sampling-algorithms" title="Permalink to this headline">#</a></h2>
+<p>Since version 0.5.0, <code class="docutils literal notranslate"><span class="pre">tomotopy</span></code> allows you to choose a parallelism algorithm.
+The algorithm provided in versions prior to 0.4.2 is <code class="docutils literal notranslate"><span class="pre">COPY_MERGE</span></code>, which is provided for all topic models.
+The new algorithm <code class="docutils literal notranslate"><span class="pre">PARTITION</span></code>, available since 0.5.0, makes training generally faster and more memory-efficient, but it is available at not all topic models.</p>
+<p>The following chart shows the speed difference between the two algorithms based on the number of topics.</p>
+<p><img alt="" src="../../../_images/algo_comp.png" /></p>
+</section>
+<section id="pining-topics-using-word-priors">
+<h2>Pining Topics using Word Priors<a class="headerlink" href="#pining-topics-using-word-priors" title="Permalink to this headline">#</a></h2>
+<p>Since version 0.6.0, a new method <code class="docutils literal notranslate"><span class="pre">tomotopy.LDAModel.set_word_prior</span></code> has been added. It allows you to control word prior for each topic.
+For example, we can set the weight of the word ‘church’ to 1.0 in topic 0, and the weight to 0.1 in the rest of the topics by following codes.
+This means that the probability that the word ‘church’ is assigned to topic 0 is 10 times higher than the probability of being assigned to another topic.
+Therefore, most of ‘church’ is assigned to topic 0, so topic 0 contains many words related to ‘church’.
+This allows to manipulate some topics to be placed at a specific topic number.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tomotopy</span> <span class="k">as</span> <span class="nn">tp</span>
+<span class="n">mdl</span> <span class="o">=</span> <span class="n">tp</span><span class="o">.</span><span class="n">LDAModel</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="c1"># add documents into `mdl`</span>
+
+<span class="c1"># setting word prior</span>
+<span class="n">mdl</span><span class="o">.</span><span class="n">set_word_prior</span><span class="p">(</span><span class="s1">&#39;church&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.0</span> <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.1</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)])</span>
 </pre></div>
 </div>
 </section>
