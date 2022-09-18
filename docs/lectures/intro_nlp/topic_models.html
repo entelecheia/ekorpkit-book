@@ -51,6 +51,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Deep Learning for NLP" href="../deep_nlp/index.html" />
@@ -1057,6 +1059,33 @@ title="Print to PDF"
    Pining Topics using Word Priors
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#examples">
+   Examples
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#install-or-upgrade-of-ekorpkit">
+   Install or upgrade of ekorpkit
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#load-a-dataset">
+     Load a dataset
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#lda-basics">
+     LDA Basics
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#lda-visualization">
+     LDA Visualization
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
 
     </nav>
@@ -1121,6 +1150,33 @@ title="Print to PDF"
    Pining Topics using Word Priors
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#examples">
+   Examples
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#install-or-upgrade-of-ekorpkit">
+   Install or upgrade of ekorpkit
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#load-a-dataset">
+     Load a dataset
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#lda-basics">
+     LDA Basics
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#lda-visualization">
+     LDA Visualization
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
 
                         </nav>
@@ -1134,7 +1190,7 @@ title="Print to PDF"
   <section class="tex2jax_ignore mathjax_ignore" id="topic-models-jupyter-book-badge">
 <h1>Topic Models <a class="reference external" href="https://entelecheia.github.io/ekorpkit-book/"><img alt="Jupyter Book Badge" src="https://jupyterbook.org/badge.svg" /></a><a class="headerlink" href="#topic-models-jupyter-book-badge" title="Permalink to this headline">#</a></h1>
 <p><a class="reference external" href="https://github.com/bab2min/tomotopy"><img alt="tomoto" src="../../../_images/tomoto.png" /></a></p>
-<p><span id="id1">[<a class="reference internal" href="../../about/index.html#id13" title="Minchul Lee. Bab2min/tomotopy: 0.12.3. July 2022. URL: https://doi.org/10.5281/zenodo.6868418, doi:10.5281/zenodo.6868418.">Lee, 2022</a>]</span></p>
+<p>Package tomotopy <span id="id1">[<a class="reference internal" href="../../about/index.html#id13" title="Minchul Lee. Bab2min/tomotopy: 0.12.3. July 2022. URL: https://doi.org/10.5281/zenodo.6868418, doi:10.5281/zenodo.6868418.">Lee, 2022</a>]</span></p>
 <section id="what-is-tomotopy">
 <h2>What is tomotopy?<a class="headerlink" href="#what-is-tomotopy" title="Permalink to this headline">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">tomotopy</span></code> is a Python extension of <code class="docutils literal notranslate"><span class="pre">tomoto</span></code> (Topic Modeling Tool) which is a Gibbs-sampling based topic model library written in C++.
@@ -1355,6 +1411,603 @@ This allows to manipulate some topics to be placed at a specific topic number.</
 <span class="n">mdl</span><span class="o">.</span><span class="n">set_word_prior</span><span class="p">(</span><span class="s1">&#39;church&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.0</span> <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.1</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)])</span>
 </pre></div>
 </div>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">#</a></h2>
+</section>
+<section id="install-or-upgrade-of-ekorpkit">
+<h2>Install or upgrade of ekorpkit<a class="headerlink" href="#install-or-upgrade-of-ekorpkit" title="Permalink to this headline">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Install ekorpkit package first.</p>
+<p>Set logging level to Warning, if you don’t want to see verbose logging.</p>
+<p>If you run this notebook in Colab, set Hardware accelerator to GPU.</p>
+</div>
+<div class="toggle docutils container">
+<p>!pip install -U –pre ekorpkit</p>
+<p>exit()</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+
+<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;WARNING&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;version:&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is notebook?&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_notebook</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is colab?&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;environment variables:&quot;</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">env</span><span class="p">()</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span>
+
+<span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/topic_models&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.39+5.g6b58da9
+is notebook? True
+is colab? False
+environment variables:
+{&#39;CUDA_DEVICE_ORDER&#39;: None,
+ &#39;CUDA_VISIBLE_DEVICES&#39;: None,
+ &#39;EKORPKIT_CONFIG_DIR&#39;: &#39;/workspace/projects/ekorpkit-book/config&#39;,
+ &#39;EKORPKIT_DATA_DIR&#39;: None,
+ &#39;EKORPKIT_LOG_LEVEL&#39;: &#39;WARNING&#39;,
+ &#39;EKORPKIT_PROJECT&#39;: &#39;ekorpkit-book&#39;,
+ &#39;EKORPKIT_WORKSPACE_ROOT&#39;: &#39;/workspace&#39;,
+ &#39;KMP_DUPLICATE_LIB_OK&#39;: &#39;TRUE&#39;,
+ &#39;NUM_WORKERS&#39;: 230}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corpus_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;corpus&#39;</span><span class="p">,</span> <span class="n">overrides</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;project=esgml&quot;</span><span class="p">])</span>
+<span class="n">corpus_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;us_equities_news&#39;</span>
+<span class="n">corpus_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="c1"># corpus = eKonf.instantiate(corpus_cfg)</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;pipeline&quot;</span><span class="p">,</span> <span class="n">overrides</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;project=esgml&quot;</span><span class="p">])</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">corpus</span> <span class="o">=</span> <span class="n">corpus_cfg</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">_pipeline_</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sampling&quot;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">sampling</span><span class="o">.</span><span class="n">sample_size_per_group</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">sampling</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">sampling</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="s2">&quot;us_equities_news_sampled.parquet&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:instantiating ekorpkit.pipelines.pipe.pipeline...
+INFO:ekorpkit.base:instantiating ekorpkit.pipelines.data.Data...
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function sampling at 0x7efee81b75e0&gt;)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       id                                               text  split
+0  251155  Investing com Asian stock markets were broadly...  train
+1  270611  Solid execution product diversity and strong b...  train
+2  237917  Chip name Micron Technology Inc NASDAQ MU is h...  train
+3  406989  June is typically a boring month for gold and ...  train
+4  231535  A prudent investment decision involves buying ...  train
+</pre></div>
+</div>
+</div>
+</div>
+<section id="load-a-dataset">
+<h3>Load a dataset<a class="headerlink" href="#load-a-dataset" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/entelecheia/ekorpkit-book/raw/main/assets/data/us_equities_news_sampled.zip&#39;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;us_equities_news_sampled.parquet&quot;</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">cached_path</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>text</th>
+      <th>split</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>251155</td>
+      <td>Investing com Asian stock markets were broadly...</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>270611</td>
+      <td>Solid execution product diversity and strong b...</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>237917</td>
+      <td>Chip name Micron Technology Inc NASDAQ MU is h...</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>406989</td>
+      <td>June is typically a boring month for gold and ...</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>231535</td>
+      <td>A prudent investment decision involves buying ...</td>
+      <td>train</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="lda-basics">
+<h3>LDA Basics<a class="headerlink" href="#lda-basics" title="Permalink to this headline">#</a></h3>
+<p>LDA class provides Latent Dirichlet Allocation(LDA) topic model and its implementation is based on following papers:</p>
+<ul class="simple">
+<li><p>Blei, D.M., Ng, A.Y., &amp;Jordan, M.I. (2003).Latent dirichlet allocation.Journal of machine Learning research, 3(Jan), 993 - 1022.</p></li>
+<li><p>Newman, D., Asuncion, A., Smyth, P., &amp;Welling, M. (2009).Distributed algorithms for topic models.Journal of Machine Learning Research, 10(Aug), 1801 - 1828.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tomotopy</span> <span class="k">as</span> <span class="nn">tp</span>
+
+<span class="n">save_path</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;lda_basic.mdl&quot;</span><span class="p">)</span>
+<span class="n">mdl</span> <span class="o">=</span> <span class="n">tp</span><span class="o">.</span><span class="n">LDAModel</span><span class="p">(</span><span class="n">tw</span><span class="o">=</span><span class="n">tp</span><span class="o">.</span><span class="n">TermWeight</span><span class="o">.</span><span class="n">ONE</span><span class="p">,</span> <span class="n">min_cf</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">rm_top</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]):</span>
+    <span class="n">ch</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">mdl</span><span class="o">.</span><span class="n">add_doc</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
+<span class="n">mdl</span><span class="o">.</span><span class="n">burn_in</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">mdl</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Num docs:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">mdl</span><span class="o">.</span><span class="n">docs</span><span class="p">),</span> <span class="s1">&#39;, Vocab size:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">mdl</span><span class="o">.</span><span class="n">used_vocabs</span><span class="p">),</span> <span class="s1">&#39;, Num words:&#39;</span><span class="p">,</span> <span class="n">mdl</span><span class="o">.</span><span class="n">num_words</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Removed top words:&#39;</span><span class="p">,</span> <span class="n">mdl</span><span class="o">.</span><span class="n">removed_top_words</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">):</span>
+    <span class="n">mdl</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Iteration: </span><span class="si">{}</span><span class="se">\t</span><span class="s1">Log-likelihood: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">mdl</span><span class="o">.</span><span class="n">ll_per_word</span><span class="p">))</span>
+
+<span class="n">mdl</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+<span class="n">mdl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Num docs: 22098 , Vocab size: 57681 , Num words: 11216361
+Removed top words: [&#39;the&#39;, &#39;to&#39;, &#39;of&#39;, &#39;and&#39;, &#39;in&#39;]
+Iteration: 0	Log-likelihood: -8.310562901610025
+Iteration: 100	Log-likelihood: -8.266379166823173
+Iteration: 200	Log-likelihood: -8.249079422671398
+Iteration: 300	Log-likelihood: -8.234771446920387
+Iteration: 400	Log-likelihood: -8.229122603357679
+Iteration: 500	Log-likelihood: -8.223622848932184
+Iteration: 600	Log-likelihood: -8.22001981586702
+Iteration: 700	Log-likelihood: -8.220164232504388
+Iteration: 800	Log-likelihood: -8.214119530347634
+Iteration: 900	Log-likelihood: -8.207522882978928
+&lt;Basic Info&gt;
+| LDAModel (current version: 0.12.3)
+| 22098 docs, 11216361 words
+| Total Vocabs: 128352, Used Vocabs: 57681
+| Entropy of words: 7.85406
+| Entropy of term-weighted words: 7.85406
+| Removed Vocabs: the to of and in
+|
+&lt;Training Info&gt;
+| Iterations: 1000, Burn-in steps: 100
+| Optimization Interval: 10
+| Log-likelihood per word: -8.20752
+|
+&lt;Initial Parameters&gt;
+| tw: TermWeight.ONE
+| min_cf: 3 (minimum collection frequency of words)
+| min_df: 0 (minimum document frequency of words)
+| rm_top: 5 (the number of top words to be removed)
+| k: 20 (the number of topics between 1 ~ 32767)
+| alpha: [0.1] (hyperparameter of Dirichlet distribution for document-topic, given as a single `float` in case of symmetric prior and as a list with length `k` of `float` in case of asymmetric prior.)
+| eta: 0.01 (hyperparameter of Dirichlet distribution for topic-word)
+| seed: 1495571789 (random seed)
+| trained in version 0.12.3
+|
+&lt;Parameters&gt;
+| alpha (Dirichlet prior on the per-document topic distributions)
+|  [0.0458566  0.1386956  0.05798944 0.09173854 0.11660527 0.01820273
+|   0.0602277  0.11931805 0.13841131 0.01932807 0.21369949 0.04940439
+|   0.0776258  0.07703414 0.06907631 0.05780613 0.14706294 0.06013599
+|   0.1130297  0.07722862]
+| eta (Dirichlet prior on the per-topic word distribution)
+|  0.01
+|
+&lt;Topics&gt;
+| #0 (468266) : earnings a Zacks is quarter
+| #1 (705522) : a said s its for
+| #2 (343384) : a is The on for
+| #3 (416515) : a is for its s
+| #4 (772445) : S on a 0 1
+| #5 (124743) : a for is with options
+| #6 (279768) : 0 at or 1 was
+| #7 (748744) : a said on that s
+| #8 (964464) : year quarter million 1 from
+| #9 (286321) : is or a Zacks for
+| #10 (1472295) : a that is it for
+| #11 (355143) : a for with is s
+| #12 (325693) : Apple a s NASDAQ its
+| #13 (370363) : s sales its a company
+| #14 (399654) : a is The dividend has
+| #15 (483989) : a is has for stock
+| #16 (1169834) : Zacks a has company s
+| #17 (353188) : oil a is for The
+| #18 (501193) : a China S U for
+| #19 (674837) : a The is for on
+|
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mdl</span><span class="o">.</span><span class="n">k</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Topic #</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="n">mdl</span><span class="o">.</span><span class="n">get_topic_words</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">prob</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Topic #0
+		earnings	0.03124929964542389
+		a	0.028039269149303436
+		Zacks	0.02219722606241703
+		is	0.020621005445718765
+		quarter	0.018191618844866753
+		for	0.017067573964595795
+		Earnings	0.015026379376649857
+		ESP	0.014128423295915127
+		an	0.013452290557324886
+		that	0.012859341688454151
+Topic #1
+		a	0.026198897510766983
+		said	0.025242939591407776
+		s	0.019541189074516296
+		its	0.015248588286340237
+		for	0.011897781863808632
+		on	0.011563551612198353
+		it	0.010953155346214771
+		percent	0.00960773415863514
+		as	0.008685766719281673
+		company	0.008452088572084904
+Topic #2
+		a	0.030532576143741608
+		is	0.016013480722904205
+		The	0.015097678638994694
+		on	0.012399696744978428
+		for	0.011318178847432137
+		at	0.010512854903936386
+		it	0.008428314700722694
+		day	0.007102582603693008
+		Tesla	0.007090953178703785
+		stock	0.006995012052357197
+Topic #3
+		a	0.01793372444808483
+		is	0.016452036798000336
+		for	0.012529638595879078
+		its	0.012028549797832966
+		s	0.011740843765437603
+		with	0.010846556164324284
+		technology	0.009976244531571865
+		NASDAQ	0.009379253722727299
+		will	0.009110728278756142
+		The	0.008410641923546791
+Topic #4
+		S	0.019718732684850693
+		on	0.019661812111735344
+		a	0.01943672075867653
+		0	0.017082324251532555
+		1	0.016551939770579338
+		percent	0.014398054219782352
+		s	0.013101842254400253
+		The	0.012660715728998184
+		U	0.01251065544784069
+		after	0.010465435683727264
+Topic #5
+		a	0.028191950172185898
+		for	0.021664651110768318
+		is	0.014714432880282402
+		with	0.011219375766813755
+		options	0.010716661810874939
+		his	0.008673887699842453
+		that	0.008546214550733566
+		volatility	0.007253522053360939
+		on	0.007054032292217016
+		as	0.006343849468976259
+Topic #6
+		0	0.03876658156514168
+		at	0.02934960648417473
+		or	0.02234751358628273
+		1	0.021844562143087387
+		was	0.01921565644443035
+		which	0.015937551856040955
+		NASDAQ	0.014646284282207489
+		The	0.01412549801170826
+		on	0.014075559563934803
+		Inc	0.013850836083292961
+Topic #7
+		a	0.026682842522859573
+		said	0.01741178147494793
+		on	0.015312546864151955
+		that	0.013975335285067558
+		s	0.012738214805722237
+		The	0.011103400960564613
+		for	0.010098491795361042
+		was	0.00858111772686243
+		by	0.008440990000963211
+		U	0.008267499506473541
+Topic #8
+		year	0.03777458146214485
+		quarter	0.02896769717335701
+		million	0.028481706976890564
+		1	0.01698167622089386
+		from	0.015365163795650005
+		2	0.012678230181336403
+		billion	0.012417101301252842
+		a	0.012012973427772522
+		3	0.011970488354563713
+		over	0.011747700162231922
+Topic #9
+		is	0.026326481252908707
+		or	0.02442336454987526
+		a	0.022607386112213135
+		Zacks	0.020143095403909683
+		for	0.015291192568838596
+		stocks	0.014799728989601135
+		that	0.013360192067921162
+		are	0.012704906985163689
+		investment	0.011826545000076294
+		Research	0.010195302776992321
+Topic #10
+		a	0.026791885495185852
+		that	0.023886676877737045
+		is	0.020946161821484566
+		it	0.012942749075591564
+		for	0.011327537707984447
+		we	0.011231127195060253
+		s	0.011211437173187733
+		are	0.011083795689046383
+		I	0.010176045820116997
+		be	0.009823672473430634
+Topic #11
+		a	0.020864764228463173
+		for	0.020766371861100197
+		with	0.015346375294029713
+		is	0.013524716719985008
+		s	0.011478163301944733
+		The	0.010997447185218334
+		from	0.007882636971771717
+		on	0.007497502025216818
+		that	0.006727233063429594
+		Boeing	0.006626029498875141
+Topic #12
+		Apple	0.02030530944466591
+		a	0.01906707137823105
+		s	0.017792053520679474
+		NASDAQ	0.015772251412272453
+		its	0.01572321355342865
+		is	0.013062838464975357
+		for	0.012008496560156345
+		on	0.01025841198861599
+		company	0.009939656592905521
+		The	0.009550408460199833
+Topic #13
+		s	0.021421290934085846
+		sales	0.01631803810596466
+		its	0.01597566343843937
+		a	0.015387967228889465
+		company	0.014013081789016724
+		on	0.0105489082634449
+		is	0.010017824359238148
+		has	0.0078099193051457405
+		for	0.007408237084746361
+		The	0.0072761401534080505
+Topic #14
+		a	0.023136673495173454
+		is	0.012710190378129482
+		The	0.012222971767187119
+		dividend	0.010886242613196373
+		has	0.010031736455857754
+		fund	0.008607557974755764
+		as	0.008360200561583042
+		with	0.008185301907360554
+		its	0.007902964949607849
+		ETF	0.007413247134536505
+Topic #15
+		a	0.0332772321999073
+		is	0.022882360965013504
+		has	0.016356931999325752
+		for	0.01582656055688858
+		stock	0.015669718384742737
+		this	0.012685603462159634
+		that	0.012254289351403713
+		s	0.012019027024507523
+		Zacks	0.011170845478773117
+		earnings	0.010324726812541485
+Topic #16
+		Zacks	0.022936400026082993
+		a	0.020220259204506874
+		has	0.016317356377840042
+		company	0.016230208799242973
+		s	0.013876333832740784
+		The	0.013500397093594074
+		for	0.01269469689577818
+		Rank	0.01241616252809763
+		is	0.010008460842072964
+		growth	0.009430031292140484
+Topic #17
+		oil	0.019801318645477295
+		a	0.018382295966148376
+		is	0.01412523165345192
+		for	0.012624233961105347
+		The	0.011699890717864037
+		production	0.010812296532094479
+		gas	0.010303483344614506
+		Energy	0.010145186446607113
+		energy	0.008825100027024746
+		from	0.008525466546416283
+Topic #18
+		a	0.019231945276260376
+		China	0.018903110176324844
+		S	0.015108540654182434
+		U	0.013544078916311264
+		for	0.011517252773046494
+		s	0.01038326695561409
+		is	0.009811291471123695
+		on	0.00963989831507206
+		as	0.00934892799705267
+		The	0.008886564522981644
+Topic #19
+		a	0.02060071751475334
+		The	0.01461031660437584
+		is	0.01301425788551569
+		for	0.011943803168833256
+		on	0.011200555600225925
+		s	0.010091605596244335
+		as	0.009640030562877655
+		1	0.009573404677212238
+		at	0.008796103298664093
+		that	0.008279383182525635
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="lda-visualization">
+<h3>LDA Visualization<a class="headerlink" href="#lda-visualization" title="Permalink to this headline">#</a></h3>
+<p>This example shows how to perform a Latent Dirichlet Allocation using tomotopy and visualize the result.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tomotopy</span> <span class="k">as</span> <span class="nn">tp</span>
+<span class="kn">import</span> <span class="nn">nltk</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pyLDAvis</span>
+<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">porter_stemmer</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">PorterStemmer</span><span class="p">()</span><span class="o">.</span><span class="n">stem</span>
+<span class="n">english_stops</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">porter_stemmer</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s1">&#39;english&#39;</span><span class="p">))</span>
+<span class="n">pat</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;^[a-z]{2,}$&#39;</span><span class="p">)</span>
+<span class="n">corpus</span> <span class="o">=</span> <span class="n">tp</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">Corpus</span><span class="p">(</span>
+    <span class="n">tokenizer</span><span class="o">=</span><span class="n">tp</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">SimpleTokenizer</span><span class="p">(</span><span class="n">porter_stemmer</span><span class="p">),</span> 
+    <span class="n">stopwords</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">english_stops</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">pat</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">corpus</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+<span class="c1"># save preprocessed corpus for reuse</span>
+<span class="n">save_path</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;preprocessed_corpus.cps&quot;</span><span class="p">)</span>
+<span class="n">corpus</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mdl</span> <span class="o">=</span> <span class="n">tp</span><span class="o">.</span><span class="n">LDAModel</span><span class="p">(</span><span class="n">min_df</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">rm_top</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">corpus</span><span class="o">=</span><span class="n">corpus</span><span class="p">)</span>
+<span class="n">mdl</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Num docs:</span><span class="si">{}</span><span class="s1">, Num Vocabs:</span><span class="si">{}</span><span class="s1">, Total Words:</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="nb">len</span><span class="p">(</span><span class="n">mdl</span><span class="o">.</span><span class="n">docs</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">mdl</span><span class="o">.</span><span class="n">used_vocabs</span><span class="p">),</span> <span class="n">mdl</span><span class="o">.</span><span class="n">num_words</span>
+<span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Removed Top words: &#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">mdl</span><span class="o">.</span><span class="n">removed_top_words</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Num docs:22098, Num Vocabs:20231, Total Words:5861553
+Removed Top words:  year compani stock earn zack quarter market share expect million report said nyse estim growth price billion rank also trade nasdaq revenu invest investor new inc last rate industri like sale buy per increas month time current one consensu percent
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s train the model</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Iteration: </span><span class="si">{:04}</span><span class="s1">, LL per word: </span><span class="si">{:.4}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">mdl</span><span class="o">.</span><span class="n">ll_per_word</span><span class="p">))</span>
+    <span class="n">mdl</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Iteration: </span><span class="si">{:04}</span><span class="s1">, LL per word: </span><span class="si">{:.4}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">mdl</span><span class="o">.</span><span class="n">ll_per_word</span><span class="p">))</span>
+
+<span class="n">mdl</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iteration: 0000, LL per word: -11.76
+Iteration: 0020, LL per word: -8.53
+Iteration: 0040, LL per word: -8.273
+Iteration: 0060, LL per word: -8.196
+Iteration: 0080, LL per word: -8.154
+Iteration: 0100, LL per word: -8.133
+Iteration: 0120, LL per word: -8.117
+Iteration: 0140, LL per word: -8.105
+Iteration: 0160, LL per word: -8.097
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">topic_term_dists</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">mdl</span><span class="o">.</span><span class="n">get_topic_word_dist</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mdl</span><span class="o">.</span><span class="n">k</span><span class="p">)])</span>
+<span class="n">doc_topic_dists</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">doc</span><span class="o">.</span><span class="n">get_topic_dist</span><span class="p">()</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">mdl</span><span class="o">.</span><span class="n">docs</span><span class="p">])</span>
+<span class="n">doc_topic_dists</span> <span class="o">/=</span> <span class="n">doc_topic_dists</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">doc_lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">words</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">mdl</span><span class="o">.</span><span class="n">docs</span><span class="p">])</span>
+<span class="n">vocab</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">mdl</span><span class="o">.</span><span class="n">used_vocabs</span><span class="p">)</span>
+<span class="n">term_frequency</span> <span class="o">=</span> <span class="n">mdl</span><span class="o">.</span><span class="n">used_vocab_freq</span>
+
+<span class="n">prepared_data</span> <span class="o">=</span> <span class="n">pyLDAvis</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span>
+    <span class="n">topic_term_dists</span><span class="p">,</span> 
+    <span class="n">doc_topic_dists</span><span class="p">,</span> 
+    <span class="n">doc_lengths</span><span class="p">,</span> 
+    <span class="n">vocab</span><span class="p">,</span> 
+    <span class="n">term_frequency</span><span class="p">,</span>
+    <span class="n">start_index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="c1"># tomotopy starts topic ids with 0, pyLDAvis with 1</span>
+    <span class="n">sort_topics</span><span class="o">=</span><span class="kc">False</span> <span class="c1"># IMPORTANT: otherwise the topic_ids between pyLDAvis and tomotopy are not matching!</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyLDAvis</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="n">prepared_data</span><span class="p">)</span>
+<span class="n">pyLDAvis</span><span class="o">.</span><span class="n">save_html</span><span class="p">(</span><span class="n">prepared_data</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;lda_basic.html&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 </section>
 </section>
 
