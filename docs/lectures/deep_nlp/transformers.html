@@ -1,0 +1,1585 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Transformers &#8212; eKorpkit Tutorials</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/ekorpkit.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="AI Art (Text-to-Image)" href="../aiart/index.html" />
+    <link rel="prev" title="Bloom Examples" href="bloom_apps.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-FN4GFT8HP8"></script>
+<script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){ dataLayer.push(arguments); }
+                    gtag('js', new Date());
+                    gtag('config', 'G-FN4GFT8HP8');
+                </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../_static/ekorpkit.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">eKorpkit Tutorials</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    eKonomic Research Python Toolkit
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Basics
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/index.html">
+   Getting started
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/install.html">
+     Installation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/usage.html">
+     Usage
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/features/index.html">
+   Key features
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/easy_config.html">
+     Easy Configuration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/no_boiler.html">
+     No Boilerplate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/workflows.html">
+     Workflows
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/share.html">
+     Sharable and Reproducible
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/plug.html">
+     Pluggable Architece
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tutorials
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/config/index.html">
+   Configuring ekorpkit
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/config/eKonf.html">
+     Using eKonf class
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/datasets/index.html">
+   Datasets
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/corpus.html">
+     Build and Load Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/datasets/dataset.html">
+     Build and Load Datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/pipeline.html">
+     Corpus task pipelines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/models/index.html">
+   Models
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/models/automl/index.html">
+     Auto ML
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/embeddings/index.html">
+     Word Embeddings
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/embeddings/word2vec_basics.html">
+       Word2Vec Basics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/embeddings/eval_vectors.html">
+       Evaluate pretrained embeddings
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/ngram/index.html">
+     N-Grams
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram.html">
+       N-Grams
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram_for_lexicons.html">
+       N-Gram model for ngram lexicon features
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram_for_words.html">
+       N-Gram model for unigram lexicon features
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/sentiment/index.html">
+     Sentiment Analyers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/lbsa_en.html">
+       Lexicon-based Sentiment Analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/financial_phrasebank_lm.html">
+       Evaluate LM with financial phrasebank
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/sentiment.html">
+       LM Dictionary vs. finbert vs. T5
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/models/transformers/index.html">
+     Transformers
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/art/index.html">
+     AI Art (Text-to-Image)
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/art/disco.html">
+       Disco Diffusion
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/art/dalle-mini.html">
+       DALL·E Mini
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/pipelines/index.html">
+   Pipelines
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/pipelines/pipeline.html">
+     Instantiating pipeline
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/preprocessors/index.html">
+   Preprocessors
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+  <label for="toctree-checkbox-11">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/normalizer/index.html">
+     Normalizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+    <label for="toctree-checkbox-12">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/normalizer/normalizer.html">
+       Normalizers
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/segmenter/index.html">
+     Segmenters
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+    <label for="toctree-checkbox-13">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/segmenter/segmenter.html">
+       Segmenters
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/tokenizer/index.html">
+     Tokenizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/>
+    <label for="toctree-checkbox-14">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/tokenizer/mecab.html">
+       Mecab Tokenizer
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/visualizers/index.html">
+   Visualizers
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/>
+  <label for="toctree-checkbox-15">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/visualizers/plot.html">
+     Plots
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../tutorials/workflow/index.html">
+   Workflows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Datasets
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../corpus/ekorpkot_corpus.html">
+   The eKorpkit Corpus
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Use Cases
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/fomc/index.html">
+   FOMC
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/>
+  <label for="toctree-checkbox-16">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/02_FOMC_numerical_data.html">
+     Preparing Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/03_FOMC_corpus.html">
+     Preparing Textual Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/04_FOMC_EDA_numericals.html">
+     EDA on Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/05_FOMC_features.html">
+     Visualizing Features
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/06_FOMC_AutoML.html">
+     Checking Baseline with AutoML
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/07_FOMC_sentiments.html">
+     Predicting Sentiments of FOMC Corpus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/08_FOMC_EDA_sentiments.html">
+     EDA on Sentiment Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/09_FOMC_AutoML_with_tones.html">
+     Predicting the next decisions with tones
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../usecases/bok/index.html">
+   Bank of Korea
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/edgar/index.html">
+   EDGAR
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" type="checkbox"/>
+  <label for="toctree-checkbox-17">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/edgar/predict_edgar.html">
+     Prediciting Sentiments
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/esg/index.html">
+   ESG
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" type="checkbox"/>
+  <label for="toctree-checkbox-18">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/snorkel-polarity.html">
+     Preparing polarity classification datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/rubrix.html">
+     Improving classification datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/classifiers.html">
+     Training Classifiers for ESG Ratings
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/econ_news_corpus.html">
+     Building
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       econ_news_kr
+      </span>
+     </code>
+     corpus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/predict_news.html">
+     Predicting ESG Categories and Polarities
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/esg-en/index.html">
+   ESG (English)
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/>
+  <label for="toctree-checkbox-19">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg-en/esg_corpus.html">
+     Building
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       JOCo
+      </span>
+     </code>
+     corpus
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/cointax/index.html">
+   Taxation on Cryptocurrency
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" type="checkbox"/>
+  <label for="toctree-checkbox-20">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/cointax/coin_dataset.html">
+     Improving classification datasets
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Research
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../research/esg_topics/analyst.html">
+   ESG Topic Analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../research/esg_topics/rethink_esg.html">
+   Rethinking ESG
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Lectures
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../intro_nlp/index.html">
+   Introduction to NLP
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" type="checkbox"/>
+  <label for="toctree-checkbox-21">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lecture01.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lecture02-ekorpkit.html">
+     Getting started with ekorpkit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lecture02-research.html">
+     Research Applications
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lecture03-topic.html">
+     Topic Modeling
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   Deep Learning for NLP
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" type="checkbox"/>
+  <label for="toctree-checkbox-22">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="intro.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="ekorpkit.html">
+     Getting started with ekorpkit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="zeroshot.html">
+     Zero Shot, Prompt, and Search Strategies
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="bloom.html">
+     What is BLOOM?
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="bloom_apps.html">
+     Bloom Examples
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Transformers
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../aiart/index.html">
+   AI Art (Text-to-Image)
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" type="checkbox"/>
+  <label for="toctree-checkbox-23">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/lecture01.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/project-themes.html">
+     Project Themes - A Brave New World
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/lecture02-dalle1.html">
+     DALL·E 1
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ds/index.html">
+   Data Science for Economics and Finance
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about/index.html">
+   References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about/cite.html">
+   Citation
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/entelecheia/ekorpkit-book/main?urlpath=tree/ekorpkit-book/docs/lectures/deep_nlp/transformers.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://colab.research.google.com/github/entelecheia/ekorpkit-book/blob/main/ekorpkit-book/docs/lectures/deep_nlp/transformers.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Colab"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../../_static/images/logo_colab.png">
+  </span>
+<span class="headerbtn__text-container">Colab</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/entelecheia/ekorpkit-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/entelecheia/ekorpkit-book/issues/new?title=Issue%20on%20page%20%2Fdocs/lectures/deep_nlp/transformers.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../../_sources/docs/lectures/deep_nlp/transformers.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-do-we-need-transformers">
+   Why do we need transformers?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#attention-is-all-you-need">
+   Attention is all you need?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-do-we-implement-this-attention-mechanism">
+     How do we implement this attention mechanism?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#multi-head-attention">
+     Multi-head attention
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tranformer-architecture">
+   Tranformer Architecture
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#problems-with-the-transformer-architecture">
+   Problems with the Transformer architecture
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#attention-is-not-all-you-need">
+   Attention Is Not All You Need
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#so-why-are-transformers-so-powerful">
+     So why are transformers so powerful?
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#vision-transformers">
+   Vision Transformers
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-to-input-images-into-a-transformer">
+     How to input images into a transformer?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#vision-transformer-architecture">
+     Vision Transformer Architecture
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#transformer-in-transformer">
+   Transformer in Transformer
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#timesformers">
+   TimeSformers
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#multimodal-machine-learning">
+   Multimodal Machine Learning
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#vatt-transformers-for-multimodal-self-supervised-learning">
+   VATT: Transformers for Multimodal Self-Supervised Learning
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gato-a-generalist-agent">
+   GATO: A Generalist Agent
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Transformers</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-do-we-need-transformers">
+   Why do we need transformers?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#attention-is-all-you-need">
+   Attention is all you need?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-do-we-implement-this-attention-mechanism">
+     How do we implement this attention mechanism?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#multi-head-attention">
+     Multi-head attention
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tranformer-architecture">
+   Tranformer Architecture
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#problems-with-the-transformer-architecture">
+   Problems with the Transformer architecture
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#attention-is-not-all-you-need">
+   Attention Is Not All You Need
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#so-why-are-transformers-so-powerful">
+     So why are transformers so powerful?
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#vision-transformers">
+   Vision Transformers
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-to-input-images-into-a-transformer">
+     How to input images into a transformer?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#vision-transformer-architecture">
+     Vision Transformer Architecture
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#transformer-in-transformer">
+   Transformer in Transformer
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#timesformers">
+   TimeSformers
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#multimodal-machine-learning">
+   Multimodal Machine Learning
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#vatt-transformers-for-multimodal-self-supervised-learning">
+   VATT: Transformers for Multimodal Self-Supervised Learning
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gato-a-generalist-agent">
+   GATO: A Generalist Agent
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="transformers">
+<h1>Transformers<a class="headerlink" href="#transformers" title="Permalink to this headline">#</a></h1>
+<p><a class="reference external" href="https://www.topbots.com/transformers-timesformers-and-attention/">On Transformers, TimeSformers, And Attention</a></p>
+<p><img alt="" src="../../../_images/entelecheia_transformers.png" /></p>
+<p>Transformers are a very powerful Deep Learning model that has been able to become a standard in many Natural Language Processing tasks and is poised to revolutionize the field of Computer Vision as well.</p>
+<ul class="simple">
+<li><p>Google Brain published the paper “Attention Is All You Need” in 2017 <span id="id1">[<a class="reference internal" href="../../about/index.html#id5" title="Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. Attention is all you need. Advances in neural information processing systems, 2017.">Vaswani <em>et al.</em>, 2017</a>]</span>.</p></li>
+<li><p>The paper introduced the Transformer model, which is a deep learning model that is able to perform well on many NLP tasks.</p></li>
+<li><p>The model is based on the idea of attention, which is a way of focusing on certain parts of the input.</p></li>
+<li><p>The model is able to perform well on many NLP tasks, including machine translation, summarization, and question answering.</p></li>
+<li><p>The model is also able to perform well on many other tasks, including image classification and speech recognition.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/transformers-history.jpeg" /></p>
+<p>In 2020, Google Brain asks “will they be as effective on images?”</p>
+<ul class="simple">
+<li><p>The paper “An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale” <span id="id2">[<a class="reference internal" href="../../about/index.html#id7" title="Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly, and others. An image is worth 16x16 words: transformers for image recognition at scale. arXiv preprint arXiv:2010.11929, 2020.">Dosovitskiy <em>et al.</em>, 2020</a>]</span> was published in 2020.</p></li>
+<li><p>The model is able to perform well on many Computer Vision tasks, including image classification and object detection.</p></li>
+</ul>
+<p>At the beginning of 2021, Facebook researchers published a new version of the Transformers model, called TimeSformer.</p>
+<ul class="simple">
+<li><p>The paper “Is space-time attention all you need for video understanding?” <span id="id3">[<a class="reference internal" href="../../about/index.html#id8" title="Gedas Bertasius, Heng Wang, and Lorenzo Torresani. Is space-time attention all you need for video understanding? In ICML, volume 2, 4. 2021.">Bertasius <em>et al.</em>, 2021</a>]</span> was published in 2021.</p></li>
+</ul>
+<section id="why-do-we-need-transformers">
+<h2>Why do we need transformers?<a class="headerlink" href="#why-do-we-need-transformers" title="Permalink to this headline">#</a></h2>
+<p>What are the problems with the previous models?</p>
+<ul class="simple">
+<li><p>The previous models were based on Recurrent Neural Networks (RNNs).</p></li>
+<li><p>RNNs are able to process sequences of data, such as text or audio.</p></li>
+<li><p>One of the main problems is its sequential operation.</p></li>
+<li><p>The model needs to process the input sequentially, which means that it needs to process the first word, then the second word, and so on.</p></li>
+<li><p>This sequential operation makes it difficult to parallelize the model.</p></li>
+<li><p>There are also other problems such as gradient explosion, inability to detect dependencies between distant words in the same sentence, and so on.</p></li>
+</ul>
+<p>For example, to translate a sentence from English to Italian, with this type of networks, the first word of the sentence to be translated was passed into an encoder together with an initial state, and the next state was then passed into a second encoder with the second word of the sentence, and so on until the last word. The resulting state from the last encoder is then passed to a decoder that returns as output both the first translated word and a subsequent state, which is passed to another decoder, and so on.</p>
+<p><img alt="" src="../../../_images/problem-rnn.gif" /></p>
+</section>
+<section id="attention-is-all-you-need">
+<h2>Attention is all you need?<a class="headerlink" href="#attention-is-all-you-need" title="Permalink to this headline">#</a></h2>
+<p>Is there a mechanism that we can compute in a parallelized manner that allows us to extract the information we need from the sentence?</p>
+<p><img alt="" src="../../../_images/attention.gif" /></p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">I</span> <span class="pre">gave</span> <span class="pre">my</span> <span class="pre">dog</span> <span class="pre">Charlie</span> <span class="pre">some</span> <span class="pre">food.</span></code></p>
+</div></blockquote>
+<ul class="simple">
+<li><p>Focusing on the word “gave,” what other words in the sentence should we pay attention on to add context to the word “gave”?</p></li>
+<li><p>You might ask yourself, “Who gave the food to the dog?”</p></li>
+<li><p>In this case, the attention mechanism would focus on the words “I.”</p></li>
+<li><p>If you were to ask yourself, “To whom did I give the food?”</p></li>
+<li><p>The attention mechanism would focus on the words “dog” and “Charlie.”</p></li>
+<li><p>If you were to ask yourself, “What did I give to the dog?”</p></li>
+<li><p>The attention mechanism would focus on the words “food.”</p></li>
+</ul>
+<section id="how-do-we-implement-this-attention-mechanism">
+<h3>How do we implement this attention mechanism?<a class="headerlink" href="#how-do-we-implement-this-attention-mechanism" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>To understand the computation of attention we can draw parallels to the world of databases.</p></li>
+<li><p>When we do a search in the database we submit a query (Q) and we search among the available data for one or more keys that satisfy the query.</p></li>
+<li><p>The keys are the words in the sentence and the query is the word we want to focus on.</p></li>
+<li><p>The result of the search is the value of the key that satisfies the query.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/attention-calculate.gif" /></p>
+<ul class="simple">
+<li><p>We begin by looking at the sentence on which to compute attention as a set of vectors.</p></li>
+<li><p>Each word, via a word embedding mechanism, is encoded into a vector K.</p></li>
+<li><p>These vectors are the keys to search for with respect to a query.</p></li>
+<li><p>A query is a vector Q that represents the word we want to focus on.</p></li>
+<li><p>The query could be a word from the same sentence (self-attention) or a word from another sentence (cross-attention).</p></li>
+<li><p>When then compute the similarity between the query Q and each of the available keys K.</p></li>
+<li><p>The similarity is computed by multiplying the query Q by the transpose of the keys K.</p></li>
+<li><p>The result of this operation is a vector of scores that represent the similarity between the query and each of the keys.</p></li>
+<li><p>The scores are then normalized to obtain a probability distribution by applying the softmax function.</p></li>
+<li><p>The result of the softmax function is a vector of probabilities that represent the attention weights.</p></li>
+<li><p>The attention weights are then multiplied by the sentence vector, which is a vector of the same dimension as the keys, where each value represents the word in the sentence.</p></li>
+<li><p>The result of this operation is a vector that represents the context of the word we want to focus on.</p></li>
+<li><p>The context vector C is a vector of the same dimensionality as the keys K, where each element is a weighted sum of the keys K.</p></li>
+<li><p>The context vector C is then passed to a linear layer, which is a fully connected layer, to obtain the final result of the attention mechanism.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/attention-focus.jpeg" /></p>
+<ul class="simple">
+<li><p>Each vector represents a word in the sentence.</p></li>
+<li><p>The word we want to focus on is represented by the vector Q.</p></li>
+<li><p>We then compute the similarity between the vector Q and each of the vectors in the sentence.</p></li>
+<li><p>The similarity is computed by multiplying the vector Q by the vector of each word in the sentence.</p></li>
+<li><p>The result of the multiplication is a scalar value that represents the similarity between the vector Q and the vector of the word in the sentence.</p></li>
+<li><p>The scalar value is then passed through a softmax function, which normalizes the values between 0 and 1.</p></li>
+<li><p>The result of the softmax function is the attention vector.</p></li>
+<li><p>The attention vector is a vector of the same size as the sentence, where each value represents the attention that should be given to each word in the sentence.</p></li>
+<li><p>The attention vector is then multiplied by the sentence vector, which is a vector of the same size as the sentence, where each value represents the word in the sentence.</p></li>
+<li><p>The result of the multiplication is a vector of the same size as the sentence, where each value represents the weighted sum of the words in the sentence.</p></li>
+<li><p>The weighted sum is then passed through a linear layer, which is a fully connected layer, to obtain the final result.</p></li>
+</ul>
+</section>
+<section id="multi-head-attention">
+<h3>Multi-head attention<a class="headerlink" href="#multi-head-attention" title="Permalink to this headline">#</a></h3>
+<p>This mechanism would be sufficient if we wanted to focus on a single word. However, we want to focus on from several points of view.</p>
+<ul class="simple">
+<li><p>With a simliar mechanism, we can use multiple keys to focus on different words in the sentence.</p></li>
+<li><p>The results are then concatenated to obtain a single, summarized vector of all the attention mechanisms.</p></li>
+<li><p>This mechanism is called multi-head attention.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/attention-multihead.jpeg" /></p>
+</section>
+</section>
+<section id="tranformer-architecture">
+<h2>Tranformer Architecture<a class="headerlink" href="#tranformer-architecture" title="Permalink to this headline">#</a></h2>
+<p>The Transformer architecture is composed of two main components: the encoder and the decoder.</p>
+<p><img alt="" src="../../../_images/transformer-architecture.gif" /></p>
+<p>Consider a transformer model that is trained to translate a sentence from English to Italian.</p>
+<ul class="simple">
+<li><p>The encoder is responsible for encoding the input sentence into a vector.</p></li>
+<li><p>The encoder takes as input a sentence in English and returns a vector.</p></li>
+<li><p>Unlike the RNN, the encoder does not need to process the sentence sequentially.</p></li>
+<li><p>Before passing the sentence to the encoder, the sentence is first tokenized into words.</p></li>
+<li><p>Each word is then passed through a word embedding mechanism to obtain a vector.</p></li>
+<li><p>Before proceeding with the attention computation, the vectors are combined with a positional encoding vector.</p></li>
+<li><p>The positional encoding vector is a vector of the same size as the word embedding vector, where each value represents the position of the word in the sentence based on sine and cosine functions.</p></li>
+<li><p>This is important because the order of the words in the sentence is more than relevant and this information is required to understand the meaning of the sentence.</p></li>
+<li><p>The result of the addition is then passed to the multi-head attention mechanism.</p></li>
+<li><p>The result is normalized and passed to a feed-forward neural network.</p></li>
+<li><p>The encoding can be repeated multiple times to obtain a more detailed representation of the sentence.</p></li>
+</ul>
+<ul class="simple">
+<li><p>The decoder is responsible for decoding the vector into a sentence in Italian.</p></li>
+<li><p>The decoder takes as input the output of the encoder and returns a sentence in Italian.</p></li>
+<li><p>Assume that we have already translated the first two words and we want to predict the third word of the sentence in Italian.</p></li>
+<li><p>The decoder takes as input the first two words of the sentence in Italian and the output of the encoder.</p></li>
+<li><p>The positional encoding and multi-head attention mechanisms are applied to the first two words of the sentence in Italian.</p></li>
+<li><p>The result is then concatenated with the output of the encoder.</p></li>
+<li><p>The attention is recalculated on the concatenated vector.</p></li>
+<li><p>The result is normalized and passed to a feed-forward neural network.</p></li>
+<li><p>The result will be a vector of potential candidates for the third word of the sentence in Italian.</p></li>
+<li><p>In the next iteration, the decoder will take as input the first three words of the sentence in Italian and the output of the encoder.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/transformer-best.jpeg" /></p>
+</section>
+<section id="problems-with-the-transformer-architecture">
+<h2>Problems with the Transformer architecture<a class="headerlink" href="#problems-with-the-transformer-architecture" title="Permalink to this headline">#</a></h2>
+<p><img alt="" src="../../../_images/transformer-problem.gif" /></p>
+<p>The Transformer architecture is a very powerful architecture, but it has some problems.</p>
+<ul class="simple">
+<li><p>One of its strengths is also its weakness, the calculation of attention is very expensive.</p></li>
+<li><p>The attention mechanism is very expensive because it requires a lot of computation.</p></li>
+<li><p>In order to calculate the attention of each word with respect to all the others I have to perform <span class="math notranslate nohighlight">\(N^2\)</span> calculations.</p></li>
+<li><p>Graphically you can imagine a matrix that has to be filled with the attention values of each word compared to any other word.</p></li>
+<li><p>Optionally and usually on the decoder, it is possible to calculate the masked attention to avoid the calculation of the attention of a word with respect to the following words.</p></li>
+<li><p>The masked attention is a mechanism that allows you to calculate the attention of a word with respect to the previous words.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/transformer-N2.gif" /></p>
+</section>
+<section id="attention-is-not-all-you-need">
+<h2>Attention Is Not All You Need<a class="headerlink" href="#attention-is-not-all-you-need" title="Permalink to this headline">#</a></h2>
+<p>In March 2021, Google researchers published a paper titled, “Attention Is Not All You Need” <span id="id4">[<a class="reference internal" href="../../about/index.html#id9" title="Yihe Dong, Jean-Baptiste Cordonnier, and Andreas Loukas. Attention is not all you need: pure attention loses rank doubly exponentially with depth. In International Conference on Machine Learning, 2793–2803. PMLR, 2021.">Dong <em>et al.</em>, 2021</a>]</span>.</p>
+<ul class="simple">
+<li><p>The researchers conducted experiments analyzing the behaviour of the self-attention mechanism conducted without any of the other components of the transformers.</p></li>
+<li><p>They found that it converges to a rank 1 matrix with a doubly exponential rate.</p></li>
+<li><p>This means that this mechanism, by itself, is practically useless.</p></li>
+</ul>
+<section id="so-why-are-transformers-so-powerful">
+<h3>So why are transformers so powerful?<a class="headerlink" href="#so-why-are-transformers-so-powerful" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>The researchers found that the self-attention mechanism is not the only component that makes transformers so powerful.</p></li>
+<li><p>It is due to a tug of war between the self-attention mechanism that tends to reduce the rank of the matrix and two other components of transformers, skip connections and MLP.</p></li>
+<li><p>The skip connections allow the model to diversify the distribution of paths avoiding all the same path.</p></li>
+<li><p>This drastically reduces the probability of the model converging to a rank 1 matrix.</p></li>
+<li><p>The MLP instead manages to increase the rank of the matrix due to the non-linearity of the activation function.</p></li>
+<li><p>Therefore, attention is not all you need, but it is necessary to have skip connections and MLP to make transformers powerful.</p></li>
+<li><p>The transformer architecture manages to use the self-attention mechanism to its advantage to achieve impressive results.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/transformer-tug-of-war.jpeg" /></p>
+</section>
+</section>
+<section id="vision-transformers">
+<h2>Vision Transformers<a class="headerlink" href="#vision-transformers" title="Permalink to this headline">#</a></h2>
+<p>“If Transformers have been found to be so effective in the field of Natural Language Processing, how will they perform with images?”</p>
+<p><img alt="" src="../../../_images/vit.jpeg" /></p>
+<p>If we consider a picture of a dog standing in front of a wall, we can imagine that the dog is the main subject of the picture and the wall is the background.</p>
+<ul class="simple">
+<li><p>This is because we are focusing on the dominant subject of the picture.</p></li>
+<li><p>This is the same concept that we use to understand the meaning of a sentence.</p></li>
+<li><p>This is exactly what the self-attention mechanism applied to images does.</p></li>
+</ul>
+<section id="how-to-input-images-into-a-transformer">
+<h3>How to input images into a transformer?<a class="headerlink" href="#how-to-input-images-into-a-transformer" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>A first solution would be to use all the pixels of the image and pass them to the transformer.</p></li>
+<li><p>This solution is not very efficient because it would require a lot of computation.</p></li>
+<li><p>The calculation of attention has a complexity equal to <span class="math notranslate nohighlight">\(O(N^2)\)</span>, where <span class="math notranslate nohighlight">\(N\)</span> is the number of pixels.</p></li>
+<li><p>This means that the calculation of attention would require <span class="math notranslate nohighlight">\(O(N^4)\)</span> calculations.</p></li>
+<li><p>This is not a viable solution because it would require a lot of computation.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/vit-pixels.gif" /></p>
+<p>The solution is simple.</p>
+<ul class="simple">
+<li><p>The image is divided into patches.</p></li>
+<li><p>Each patch is converted into a vector using a linear projection.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/vit-projection.gif" /></p>
+</section>
+<section id="vision-transformer-architecture">
+<h3>Vision Transformer Architecture<a class="headerlink" href="#vision-transformer-architecture" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Vectors obtained from a linear projection are then coupled with positional encoding vectors.</p></li>
+<li><p>The result is then passed to a classic transformer architecture.</p></li>
+<li><p>The result is a vector that represents the image.</p></li>
+<li><p>The vector is then passed to a classifier to obtain the final result.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/vit-architecture.gif" /></p>
+</section>
+</section>
+<section id="transformer-in-transformer">
+<h2>Transformer in Transformer<a class="headerlink" href="#transformer-in-transformer" title="Permalink to this headline">#</a></h2>
+<p>In the transition from patch to vector, any kind of information about the position of pixels in the patch is lost. Is it possible to find a better way to get the vectors to submit to the transformer?</p>
+<p>The authors of Transformer in Transformer (TnT) <span id="id5">[<a class="reference internal" href="../../about/index.html#id10" title="Kai Han, An Xiao, Enhua Wu, Jianyuan Guo, Chunjing Xu, and Yunhe Wang. Transformer in transformer. Advances in Neural Information Processing Systems, 34:15908–15919, 2021.">Han <em>et al.</em>, 2021</a>]</span> point out because the arrangement of pixels within a portion of the image to be analyzed is certain information we would not want to lose in order to make a quality prediction.</p>
+<ul class="simple">
+<li><p>Their proposal is then to take each individual patch (pxp) of the image, which are themselves images on 3 RGB channels, and transform it into a c-channel tensor.</p></li>
+<li><p>This tensor is then divided into <span class="math notranslate nohighlight">\(p^\prime\)</span> parts with <span class="math notranslate nohighlight">\(p^\prime&lt;p\)</span>, in the example <span class="math notranslate nohighlight">\(p^\prime=4\)</span>.</p></li>
+<li><p>This yields <span class="math notranslate nohighlight">\(p’\)</span> vectors in <span class="math notranslate nohighlight">\(c\)</span> dimensions.</p></li>
+<li><p>These vectors now contain information about the arrangement of pixels within the patch.</p></li>
+<li><p>They are then concatenated and linearly projected in order to make them the same size as the vector obtained from the linear projection of the original patch and combined with it.</p></li>
+<li><p>By doing this the authors have managed to further improve performance on various computer vision tasks.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/tnt.gif" /></p>
+<p><img alt="" src="../../../_images/tnt-architecture.gif" /></p>
+</section>
+<section id="timesformers">
+<h2>TimeSformers<a class="headerlink" href="#timesformers" title="Permalink to this headline">#</a></h2>
+<p>In 2021 Facebook researchers tried to apply this architecture to video as well.</p>
+<ul class="simple">
+<li><p>The idea is to divide the video into frames and then apply the same procedure as for images.</p></li>
+<li><p>There is only one small detail that makes them different from Vision Transformers.</p></li>
+<li><p>You have to take into account the temporal dimension of the video besides the spatial dimension.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/timesformer-video.gif" /></p>
+<p>The authors have suggested several new attention mechanisms, from those that focus exclusively on space, used primarily as a reference point, to those that compute attention axially, scattered, or jointly between space and time.</p>
+<p><img alt="" src="../../../_images/timesformer-architecture.gif" /></p>
+<p><img alt="" src="../../../_images/timesformer-attentions.jpeg" /></p>
+<ul class="simple">
+<li><p>The method that has achieved the best results is Divided Space-Time Attention.</p></li>
+<li><p>It consists, given a frame at instant t and one of its patches as a query, to compute the spatial attention over the whole frame and then the temporal attention in the same patch of the query but in the previous and next frame.</p></li>
+<li><p>Why does this approach work so well?</p></li>
+<li><p>The reason is that it learns more separate features than other approaches and is, therefore, better able to understand videos from different categories.</p></li>
+</ul>
+<p>We can see this in the following visualization where each video is represented by a point in space and its colour represents the category it belongs to.</p>
+<p><img alt="" src="../../../_images/timesformer-divide.jpeg" /></p>
+<ul class="simple">
+<li><p>The authors ound that the higher the resolution the better the accuracy of the model, up to a point.</p></li>
+<li><p>As for the number of frames, again as the number of frames increases, the accuracy also increases.</p></li>
+<li><p>It was not possible to make tests with a higher number of frames than that shown in the graph and therefore potentially the accuracy could still improve.</p></li>
+<li><p>The upper limit of this improvement is not yet known.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/timesformer-resolution.jpeg" /></p>
+<p>In Vision Transformers it is known that a larger training dataset often results in better accuracy. This was also checked by the authors on TimeSformers and again, as the number of training videos considered increases, the accuracy also increases.</p>
+<p><img alt="" src="../../../_images/timesformer-dataset.jpeg" /></p>
+<p>Transformers have just landed in the world of computer vision and seem to be more than determined to replace traditional convolutional networks or at least carve out an important role for themselves in this area.</p>
+<ul class="simple">
+<li><p>Transformers are a powerful architecture that has revolutionized the field of Natural Language Processing.</p></li>
+<li><p>They have been able to achieve impressive results in various tasks.</p></li>
+<li><p>They have also been applied to other areas such as computer vision.</p></li>
+<li><p>The results obtained are very promising and it is likely that they will continue to improve in the future.</p></li>
+</ul>
+</section>
+<section id="multimodal-machine-learning">
+<h2>Multimodal Machine Learning<a class="headerlink" href="#multimodal-machine-learning" title="Permalink to this headline">#</a></h2>
+<p>Having now a single architecture capable of working with different types of data, we can now start to think about how to combine them.</p>
+<ul class="simple">
+<li><p>This is called multimodal machine learning.</p></li>
+<li><p>People are able to combine information from several sources to draw their own inferences.</p></li>
+<li><p>They simultaneously receive data by observing the world around them with their eyes, but also by smelling its scents, listening to its sounds or touching its shapes.</p></li>
+<li><p>This is why we are able to understand the world around us.</p></li>
+<li><p>We can now try to replicate this ability in machines.</p></li>
+<li><p>The problem lies in treating all the different inputs in the same way without losing information.</p></li>
+<li><p>Trnasformers are a good candidate for this task.</p></li>
+<li><p>They are able to process different types of data and combine them in a single architecture.</p></li>
+</ul>
+</section>
+<section id="vatt-transformers-for-multimodal-self-supervised-learning">
+<h2>VATT: Transformers for Multimodal Self-Supervised Learning<a class="headerlink" href="#vatt-transformers-for-multimodal-self-supervised-learning" title="Permalink to this headline">#</a></h2>
+<p>One of the most important applications of Transformers in the field of Multimodal Machine Learning is VATT <span id="id6">[<a class="reference internal" href="../../about/index.html#id11" title="Hassan Akbari, Liangzhe Yuan, Rui Qian, Wei-Hong Chuang, Shih-Fu Chang, Yin Cui, and Boqing Gong. Vatt: transformers for multimodal self-supervised learning from raw video, audio and text. Advances in Neural Information Processing Systems, 34:24206–24221, 2021.">Akbari <em>et al.</em>, 2021</a>]</span>.</p>
+<p><img alt="" src="../../../_images/vatt.gif" /></p>
+<p>The proposed architecture is composed of a single Transformer Encoder on which three distinct forward calls are made.</p>
+<ul class="simple">
+<li><p>One call for each type of input data is always transformed into a sequence of tokens.</p></li>
+<li><p>The transformer takes these sequences as input and returns three distinct sets of features.</p></li>
+<li><p>Then the features are given in input to a contrastive estimation block that calculates a single loss and performs the backward.</p></li>
+<li><p>In this way the loss is the result of the error committed on all the three types of data considered.</p></li>
+<li><p>Therefore the model, between the epochs, will learn to reduce it by managing better the information coming from all the three different sources.</p></li>
+<li><p>VATT represents the culmination of what Multimodal Machine Learning had been trying to achieve for years, a single model that handles completely different types of data together.</p></li>
+</ul>
+</section>
+<section id="gato-a-generalist-agent">
+<h2>GATO: A Generalist Agent<a class="headerlink" href="#gato-a-generalist-agent" title="Permalink to this headline">#</a></h2>
+<p>Is it possible to realize a neural network capable of receiving inputs of different types and then being able to perform different tasks?</p>
+<ul class="simple">
+<li><p>This is the question that the authors of GATO <span id="id7">[<a class="reference internal" href="../../about/index.html#id12" title="Scott Reed, Konrad Zolna, Emilio Parisotto, Sergio Gomez Colmenarejo, Alexander Novikov, Gabriel Barth-Maron, Mai Gimenez, Yury Sulsky, Jackie Kay, Jost Tobias Springenberg, and others. A generalist agent. arXiv preprint arXiv:2205.06175, 2022.">Reed <em>et al.</em>, 2022</a>]</span> have tried to answer.</p></li>
+<li><p>GATO is a multi-modal, multi-task, multi-embodiment generalist that represents one of the most impressive achievements in this field today.</p></li>
+<li><p>How does it work?</p></li>
+<li><p>GATO is composed of a single Transformer Encoder that receives as input a sequence of tokens representing the different types of data.</p></li>
+<li><p>Thanks to this unification of inputs and to the Transformer architecture, GATO is able to learn to combine the different types of data and to perform different tasks, achieving an unprecedented level of generalisation.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/gato.gif" /></p>
+<p><img alt="" src="../../../_images/gato-examples.gif" /></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./docs/lectures/deep_nlp"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="bloom_apps.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Bloom Examples</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../aiart/index.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">AI Art (Text-to-Image)</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Young Joon Lee<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
