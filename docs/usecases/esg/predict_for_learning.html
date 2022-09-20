@@ -1050,8 +1050,8 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#check-and-label-predictions">
-   Check and label predictions
+  <a class="reference internal nav-link" href="#import-data-to-labelstudio">
+   Import data to labelstudio
   </a>
  </li>
 </ul>
@@ -1099,8 +1099,8 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#check-and-label-predictions">
-   Check and label predictions
+  <a class="reference internal nav-link" href="#import-data-to-labelstudio">
+   Import data to labelstudio
   </a>
  </li>
 </ul>
@@ -1126,6 +1126,8 @@ title="Print to PDF"
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is colab?&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">())</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;environment variables:&quot;</span><span class="p">)</span>
 <span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">env</span><span class="p">()</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span>
+
+<span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/econ_news_kr/news_slice/&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -1133,7 +1135,7 @@ title="Print to PDF"
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Setting cuda device to [&#39;A100-SXM4-40GB (id:0)&#39;]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.39.post0.dev3
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.39.post0.dev6
 is notebook? True
 is colab? False
 environment variables:
@@ -1146,13 +1148,6 @@ environment variables:
  &#39;EKORPKIT_WORKSPACE_ROOT&#39;: &#39;/workspace&#39;,
  &#39;KMP_DUPLICATE_LIB_OK&#39;: &#39;TRUE&#39;,
  &#39;NUM_WORKERS&#39;: 230}
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell tag_hide-cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/econ_news_kr/news_slice/&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -1821,8 +1816,8 @@ INFO:ekorpkit.base:No method defined to call
 </div></div></div>
 </div>
 </section>
-<section id="check-and-label-predictions">
-<h2>Check and label predictions<a class="headerlink" href="#check-and-label-predictions" title="Permalink to this headline">#</a></h2>
+<section id="import-data-to-labelstudio">
+<h2>Import data to labelstudio<a class="headerlink" href="#import-data-to-labelstudio" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">polarity_preds_df</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;esg_news_polarities_20220911-preds.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
@@ -1838,206 +1833,129 @@ INFO:ekorpkit.base:No method defined to call
         <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;pred_labels&quot;</span><span class="p">:</span> <span class="s2">&quot;category_preds&quot;</span><span class="p">}</span>
     <span class="p">)[[</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="s1">&#39;chunk_id&#39;</span><span class="p">,</span> <span class="s1">&#39;codes&#39;</span><span class="p">,</span> <span class="s1">&#39;category_preds&#39;</span><span class="p">]],</span>
     <span class="n">on</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="s1">&#39;chunk_id&#39;</span><span class="p">,</span> <span class="s1">&#39;codes&#39;</span><span class="p">]</span>
-<span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;raw_preds&#39;</span><span class="p">])</span>
 <span class="n">category_data</span> <span class="o">=</span> <span class="n">category_preds_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
     <span class="n">polarity_preds_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
         <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;pred_labels&quot;</span><span class="p">:</span> <span class="s2">&quot;polarity_preds&quot;</span><span class="p">}</span>
     <span class="p">)[[</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="s1">&#39;chunk_id&#39;</span><span class="p">,</span> <span class="s1">&#39;codes&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_preds&#39;</span><span class="p">]],</span>
     <span class="n">on</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="s1">&#39;chunk_id&#39;</span><span class="p">,</span> <span class="s1">&#39;codes&#39;</span><span class="p">]</span>
-<span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;raw_preds&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">polarity_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;io/fetcher=labelstudio&quot;</span><span class="p">)</span>
+<span class="n">ls</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>filename</th>
-      <th>chunk_id</th>
-      <th>text</th>
-      <th>codes</th>
-      <th>pred_labels</th>
-      <th>raw_preds</th>
-      <th>pred_probs</th>
-      <th>category_preds</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>02100101.20200101040202001.txt</td>
-      <td>0</td>
-      <td>◆ 2020 경제기상도 / 업종별 전망 (자동차) ◆ 지난해 국내 자동차 시장은 ...</td>
-      <td>000270</td>
-      <td>Negative</td>
-      <td>{'Negative': 0.7176131255652116, 'Neutral': 0....</td>
-      <td>0.717613</td>
-      <td>S-고용</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>02100101.20200101040206003.txt</td>
-      <td>0</td>
-      <td>◆ 2020 경제기상도 / 업종별 전망 (유통) ◆ 2020년은 국내 대표 온·오...</td>
-      <td>139480</td>
-      <td>Neutral</td>
-      <td>{'Negative': 0.10040160872807403, 'Neutral': 0...</td>
-      <td>0.825504</td>
-      <td>S-소비자</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>02100101.20200101060214001.txt</td>
-      <td>0</td>
-      <td>[Pulse로 배우는 영작문-762] 'Pulse로 배우는 영작문'으로 영문 뉴스...</td>
-      <td>005380</td>
-      <td>Neutral</td>
-      <td>{'Negative': 0.0037782006863330193, 'Neutral':...</td>
-      <td>0.126036</td>
-      <td>S-소비자</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>02100101.20200101183234001.txt</td>
-      <td>0</td>
-      <td>제네시스의 첫 번째 스포츠유틸리티차량(SUV) 모델인 GV80가 역동적이면서 우아...</td>
-      <td>005380</td>
-      <td>Neutral</td>
-      <td>{'Negative': 0.004793474197983883, 'Neutral': ...</td>
-      <td>0.271877</td>
-      <td>S-소비자</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>02100101.20200101184423001.txt</td>
-      <td>0</td>
-      <td>◆ 2020 유통대전 ① ◆ 유통기업 '빅(Big)2' 롯데쇼핑과 이마트의 새 수...</td>
-      <td>139480</td>
-      <td>Neutral</td>
-      <td>{'Negative': 0.04042127580526832, 'Neutral': 0...</td>
-      <td>0.910178</td>
-      <td>S-고용</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+INFO:ekorpkit.base:setting environment variable CACHED_PATH_CACHE_ROOT to /workspace/.cache/cached_path
+INFO:ekorpkit.base:setting environment variable KMP_DUPLICATE_LIB_OK to TRUE
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">category_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">label_config</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">&lt;View&gt;</span>
+<span class="s2">  &lt;Header value=&quot;Choose text sentiment:&quot;/&gt;</span>
+<span class="s2">  &lt;Text name=&quot;text&quot; value=&quot;$text&quot;/&gt;</span>
+<span class="s2">  &lt;Choices name=&quot;sentiment&quot; toName=&quot;text&quot; choice=&quot;single&quot; showInline=&quot;true&quot;&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;Positive&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;Negative&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;Neutral&quot;/&gt;</span>
+<span class="s2">  &lt;/Choices&gt;</span>
+<span class="s2">&lt;/View&gt;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">label_config</span>
+<span class="n">project</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">create_project</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;ESG Polarity Classification (Sep 2022)&quot;</span><span class="p">,</span> <span class="n">label_config</span><span class="o">=</span><span class="n">label_config</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">project</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="n">project</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>filename</th>
-      <th>chunk_id</th>
-      <th>text</th>
-      <th>codes</th>
-      <th>pred_labels</th>
-      <th>raw_preds</th>
-      <th>pred_probs</th>
-      <th>polarity_preds</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>02100101.20200101040202001.txt</td>
-      <td>0</td>
-      <td>◆ 2020 경제기상도 / 업종별 전망 (자동차) ◆ 지난해 국내 자동차 시장은 ...</td>
-      <td>000270</td>
-      <td>S-고용</td>
-      <td>{'E-기후변화': 0.0009680093370073509, 'E-환경영향': 0....</td>
-      <td>0.978488</td>
-      <td>Negative</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>02100101.20200101040206003.txt</td>
-      <td>0</td>
-      <td>◆ 2020 경제기상도 / 업종별 전망 (유통) ◆ 2020년은 국내 대표 온·오...</td>
-      <td>139480</td>
-      <td>S-소비자</td>
-      <td>{'E-기후변화': 0.009491884712973625, 'E-환경영향': 0.0...</td>
-      <td>0.559892</td>
-      <td>Neutral</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>02100101.20200101060214001.txt</td>
-      <td>0</td>
-      <td>[Pulse로 배우는 영작문-762] 'Pulse로 배우는 영작문'으로 영문 뉴스...</td>
-      <td>005380</td>
-      <td>S-소비자</td>
-      <td>{'E-기후변화': 0.0020281172916497754, 'E-환경영향': 0....</td>
-      <td>0.223181</td>
-      <td>Neutral</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>02100101.20200101183234001.txt</td>
-      <td>0</td>
-      <td>제네시스의 첫 번째 스포츠유틸리티차량(SUV) 모델인 GV80가 역동적이면서 우아...</td>
-      <td>005380</td>
-      <td>S-소비자</td>
-      <td>{'E-기후변화': 0.0021683870775909236, 'E-환경영향': 0....</td>
-      <td>0.330156</td>
-      <td>Neutral</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>02100101.20200101184423001.txt</td>
-      <td>0</td>
-      <td>◆ 2020 유통대전 ① ◆ 유통기업 '빅(Big)2' 롯데쇼핑과 이마트의 새 수...</td>
-      <td>139480</td>
-      <td>S-고용</td>
-      <td>{'E-기후변화': 0.0011167951859010247, 'E-환경영향': 0....</td>
-      <td>0.952751</td>
-      <td>Neutral</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5 ESG Polarity Classification (Sep 2022)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">polarity_data</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">)</span>
+<span class="n">ls</span><span class="o">.</span><span class="n">import_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">project_id</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;task_count&#39;: 137890,
+ &#39;annotation_count&#39;: 0,
+ &#39;prediction_count&#39;: 0,
+ &#39;duration&#39;: 46.494067430496216,
+ &#39;file_upload_ids&#39;: [],
+ &#39;could_be_tasks_list&#39;: False,
+ &#39;found_formats&#39;: [],
+ &#39;data_columns&#39;: []}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">label_config</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">&lt;View&gt;</span>
+<span class="s2">  &lt;Header value=&quot;Choose ESG topic clas:&quot;/&gt;</span>
+<span class="s2">  &lt;Text name=&quot;text&quot; value=&quot;$text&quot;/&gt;</span>
+<span class="s2">  &lt;Choices name=&quot;sentiment&quot; toName=&quot;text&quot; choice=&quot;single&quot; showInline=&quot;true&quot;&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;E-기후변화&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;E-환경영향&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;E-환경혁신&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;S-재해/안전관리&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;S-고용&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;S-기업(공급망)동반성장/상생&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;S-사회공헌&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;S-소비자&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;G-지배구조&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;G-기업윤리/불공정/소송&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;UNKNOWN&quot;/&gt;</span>
+<span class="s2">  &lt;/Choices&gt;</span>
+<span class="s2">&lt;/View&gt;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">label_config</span>
+<span class="n">project</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">create_project</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;ESG Topic Classification (Sep 2022)&quot;</span><span class="p">,</span> <span class="n">label_config</span><span class="o">=</span><span class="n">label_config</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">project</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="n">project</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6 ESG Topic Classification (Sep 2022)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">category_data</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">)</span>
+<span class="n">ls</span><span class="o">.</span><span class="n">import_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">project_id</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;task_count&#39;: 137890,
+ &#39;annotation_count&#39;: 0,
+ &#39;prediction_count&#39;: 0,
+ &#39;duration&#39;: 30.0275616645813,
+ &#39;file_upload_ids&#39;: [],
+ &#39;could_be_tasks_list&#39;: False,
+ &#39;found_formats&#39;: [],
+ &#39;data_columns&#39;: []}
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 </section>

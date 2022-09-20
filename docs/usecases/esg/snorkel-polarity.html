@@ -1134,14 +1134,14 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:IPython version: (6, 9, 0), client: jupyter_client
-INFO:ekorpkit.base:Google Colab not detected.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.utils.notebook:shell type: ZMQInteractiveShell
+INFO:ekorpkit.utils.notebook:Google Colab not detected.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.35+11.gf4a3a1c.dirty
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.39.post0.dev6
 is notebook? True
 is colab? False
-evironment varialbles:
+environment variables:
 {&#39;CUDA_DEVICE_ORDER&#39;: None,
  &#39;CUDA_VISIBLE_DEVICES&#39;: None,
  &#39;EKORPKIT_CONFIG_DIR&#39;: &#39;/workspace/projects/ekorpkit-book/config&#39;,
@@ -1168,18 +1168,35 @@ evironment varialbles:
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;io/fetcher=labelstudio&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;esg_polarity_labels&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">project_id</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">ls</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
-INFO:ekorpkit.base:IPython version: (6, 9, 0), client: jupyter_client
-INFO:ekorpkit.io.fetch.base:/workspace/.tmp/fetcher/esg_polarity_labels/esg_polarity_labels.parquet already exists. skipping..
-INFO:ekorpkit.io.file:Processing [1] files from [&#39;/workspace/.tmp/fetcher/esg_polarity_labels/esg_polarity_labels.parquet&#39;]
-INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/.tmp/fetcher/esg_polarity_labels/esg_polarity_labels.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from /workspace/.tmp/fetcher/esg_polarity_labels/esg_polarity_labels.parquet
+INFO:ekorpkit.utils.notebook:shell type: ZMQInteractiveShell
+INFO:ekorpkit.base:setting environment variable CACHED_PATH_CACHE_ROOT to /workspace/.cache/cached_path
+INFO:ekorpkit.base:setting environment variable KMP_DUPLICATE_LIB_OK to TRUE
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">json_path</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">download_export</span><span class="p">(</span><span class="n">project_id</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.fetch.labelstudio:fetching http://ekorpkit-labelstudio:8080/api/projects/2/export with {&#39;exportType&#39;: &#39;JSON&#39;} to /workspace/.tmp/fetcher/esg_polarity_labels/annotations.json
+INFO:ekorpkit.io.fetch.labelstudio:/workspace/.tmp/fetcher/esg_polarity_labels/annotations.json is downloaded
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ls</span><span class="o">.</span><span class="n">annotations_to_dataframe</span><span class="p">(</span><span class="n">json_path</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
