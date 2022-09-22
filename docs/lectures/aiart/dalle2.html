@@ -1118,6 +1118,31 @@ title="Print to PDF"
      DALL·E 2 technical details
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#dalle-2-technical-details-encoders">
+     DALL·E 2 technical details: encoders
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#dalle-2-technical-details-decoders">
+     DALL·E 2 technical details: decoders
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#dalle-2-technical-details-the-prior">
+     DALL·E 2 technical details: the prior
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#dalle-2-technical-details-training">
+     DALL·E 2 technical details: training
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-struggles-of-unclip">
+     The struggles of unCLIP
+    </a>
+   </li>
   </ul>
  </li>
 </ul>
@@ -1230,6 +1255,31 @@ title="Print to PDF"
      DALL·E 2 technical details
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#dalle-2-technical-details-encoders">
+     DALL·E 2 technical details: encoders
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#dalle-2-technical-details-decoders">
+     DALL·E 2 technical details: decoders
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#dalle-2-technical-details-the-prior">
+     DALL·E 2 technical details: the prior
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#dalle-2-technical-details-training">
+     DALL·E 2 technical details: training
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-struggles-of-unclip">
+     The struggles of unCLIP
+    </a>
+   </li>
   </ul>
  </li>
 </ul>
@@ -1244,6 +1294,7 @@ title="Print to PDF"
                 
   <section class="tex2jax_ignore mathjax_ignore" id="dalle-2">
 <h1>DALL·E 2<a class="headerlink" href="#dalle-2" title="Permalink to this headline">#</a></h1>
+<p><img alt="" src="../../../_images/dalle2.png" /></p>
 <section id="clip">
 <h2>CLIP<a class="headerlink" href="#clip" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
@@ -1465,6 +1516,140 @@ title="Print to PDF"
 </ul>
 <p>A high-level overview of DALL·E 2</p>
 <p><img alt="" src="../../../_images/dalle2-overview.png" /></p>
+</section>
+<section id="dalle-2-technical-details-encoders">
+<h3>DALL·E 2 technical details: encoders<a class="headerlink" href="#dalle-2-technical-details-encoders" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>The CLIP model uses a ViT-H/16 image encoder that consumes 256×256 resolution images and has a width of 1280 with 32 Transformer blocks (it’s deeper than the largest ViT-L from the original CLIP work).</p></li>
+<li><p>The text encoder is a Transformer with a causal attention mask, with a width of 1024 and 24 Transformer blocks (the original CLIP model had 12 transformer blocks).</p></li>
+</ul>
+</section>
+<section id="dalle-2-technical-details-decoders">
+<h3>DALL·E 2 technical details: decoders<a class="headerlink" href="#dalle-2-technical-details-decoders" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>The diffusion decoder is a modified GLIDE with 3.5B parameters.</p></li>
+<li><p>CLIP image embeddings are projected and added to the existing timestep embedding.</p></li>
+<li><p>CLIP embeddings are also projected into four extra tokens of context that are concatenated to the sequence of outputs from the GLIDE text encoder.</p></li>
+<li><p>The original GLIDE’s text conditioning pathway is retained because it could allow the diffusion model to learn aspects of natural language that CLIP fails to capture (yet, it helped little).</p></li>
+<li><p>During training, the CLIP embeddings are randomly set to zero 10% of the time, and the text caption was randomly dropped 50% of the time.</p></li>
+</ul>
+<ul class="simple">
+<li><p>The decoder generates a 64×64 pixel image, and then two upsampling diffusion models subsequently generate 256×256 and 1024×1024 images, the former with 700M parameters, and the latter with 300M parameters.</p></li>
+<li><p>To improve upsampling robustness, the conditioning images are slightly corrupted during training.</p></li>
+<li><p>For the first upsampling stage, gaussian blur was used, and for the second, a more diverse BSR degradation is used, which includes JPEG compression artifacts, camera sensor noise, bilinear and bicubic interpolations, Gaussian noise.</p></li>
+<li><p>The models are trained on random crops of images that are one-fourth the target size. Text conditioning is not used for the upsampling models.</p></li>
+</ul>
+</section>
+<section id="dalle-2-technical-details-the-prior">
+<h3>DALL·E 2 technical details: the prior<a class="headerlink" href="#dalle-2-technical-details-the-prior" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>The prior produces image embeddings from text descriptions. (Autoregressive (AR) prior and Diffusion prior with 1B parameters)</p></li>
+<li><p>In the AR prior, the CLIP image embedding is converted into a sequence of discrete codes and predicted autoregressively conditioned on the caption.</p></li>
+<li><p>In the diffusion prior the continuous embedding vector is directly modeled using a Gaussian diffusion model conditioned on the caption.</p></li>
+<li><p>In addition to the caption, the prior model can be conditioned on the CLIP text embedding since it is a deterministic function of the caption.</p></li>
+<li><p>To improve sample quality, the authors also enabled sampling using classifier-free guidance for both the AR and diffusion prior by randomly dropping this text conditioning information 10% of the time during training.</p></li>
+</ul>
+<p>AR prior</p>
+<ul class="simple">
+<li><p>For the AR prior, the dimensionality of the CLIP image embeddings was reduced by Principal Component Analysis (PCA).</p></li>
+<li><p>319 principal components out of 1024 keep more than 99% information.</p></li>
+<li><p>Each dimension is quantized into 1024 buckets.</p></li>
+<li><p>Authors condition the AR prior on the text caption and the CLIP text embedding by encoding them as a prefix to the sequence.</p></li>
+<li><p>Additionally, they prepend a token indicating the (quantized) dot product between the text embedding and image embedding.</p></li>
+<li><p>This allowed conditioning of the model on a higher dot product since higher text-image dot products correspond to captions that better describe the image.</p></li>
+<li><p>The dot product was sampled from the top half of the distribution.</p></li>
+<li><p>The resulting sequence is predicted using a Transformer model with a causal attention mask.</p></li>
+</ul>
+<p>Diffusion prior</p>
+<ul class="simple">
+<li><p>For the diffusion prior, a decoder-only Transformer with a causal attention mask is trained on a sequence consisting of:</p>
+<ul>
+<li><p>the encoded text</p></li>
+<li><p>the CLIP text embedding</p></li>
+<li><p>an embedding for the diffusion timestep</p></li>
+<li><p>the noised CLIP image embedding</p></li>
+<li><p>a final embedding whose output from the Transformer is used to predict the unnoised CLIP image embedding.</p></li>
+</ul>
+</li>
+<li><p>A dot product was not used to condition the diffusion prior.</p></li>
+<li><p>Instead, to improve quality during sampling time, two samples of an image embedding were generated, and the one with a higher dot product with a text embedding was selected.</p></li>
+<li><p>Diffusion prior outperforms the AR prior for comparable model size and reduced training compute. The diffusion prior also performs better than the AR prior in pairwise comparisons against GLIDE.</p></li>
+</ul>
+<p>AR vs Diffusion prior</p>
+<p><img alt="" src="../../../_images/dalle2-ar-diffusion.png" /></p>
+<p>Using different conditioning signals</p>
+<p><img alt="" src="../../../_images/dalle2-conditioning.png" /></p>
+</section>
+<section id="dalle-2-technical-details-training">
+<h3>DALL·E 2 technical details: training<a class="headerlink" href="#dalle-2-technical-details-training" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>When training the encoder, authors sampled from the CLIP and DALL-E datasets (approximately 650M images in total) with equal probability.</p></li>
+<li><p>When training the decoder, upsamplers, and prior, they used only the DALL-E dataset (approximately 250M images), as incorporating the noisier CLIP dataset while training the generative stack negatively impacted sample quality in their initial evaluations.</p></li>
+<li><p>The total model size seems to be: 632M? parameters (CLIP ViT-H/16 image encoder) + 340M? (CLIP text encoder) + 1B (Diffusion prior) + 3.5B (diffusion decoder) + 1B (two diffusion upsamplers) =~ 6.5B parameters.</p></li>
+</ul>
+<p>unCLIP applications</p>
+<p><img alt="" src="../../../_images/dalle2-applications.png" /></p>
+<ul class="simple">
+<li><p>Each image x can be encoded into a bipartite latent representation (zi, xT) that is sufficient for the decoder to produce an accurate reconstruction.</p></li>
+<li><p>The latent zi is a CLIP image embedding, and it describes the aspects of the image that are recognized by CLIP.</p></li>
+<li><p>The latent xT is obtained by applying DDIM (denoising diffusion implicit model) inversion to x using the decoder while conditioning on zi.</p></li>
+<li><p>In other words, it is a starting noise for the diffusion process when it generates the image x (or equivalently x0).</p></li>
+</ul>
+<p>Three interesting kinds of manipulations</p>
+<ul class="simple">
+<li><p>First, you can create image variations for the given bipartite latent representation (zi, xT) by sampling in the decoder using DDIM with η &gt; 0.</p></li>
+<li><p>With η = 0, the decoder becomes deterministic and will reconstruct the given image x.</p></li>
+<li><p>The larger the η parameter, the larger variations, and we can see what information was captured in the CLIP image embedding and present in all samples.</p></li>
+</ul>
+<p>Creating image variations</p>
+<p><img alt="" src="../../../_images/dalle2-variation.png" /></p>
+<ul class="simple">
+<li><p>Second, you can make interpolations between images x1 and x2.</p></li>
+<li><p>In order to do it, you have to take CLIP image embeddings zi1 and zi2, then apply slerp (Spherical Linear Interpolation) to obtain intermediate CLIP image representations.</p></li>
+<li><p>There are two options for the corresponding intermediate DDIM latent xTi:</p>
+<ol class="simple">
+<li><p>interpolate between xT1 and xT2 with slerp,</p></li>
+<li><p>fix the DDIM latent to a randomly-sampled value for all interpolates in thetrajectory (and you can generate an infinite number of trajectories this way). The following images were generated with the second option.</p></li>
+</ol>
+</li>
+</ul>
+<p>Images were generated with the second option</p>
+<p><img alt="" src="../../../_images/dalle2-interpolation.png" /></p>
+<ul class="simple">
+<li><p>Finally, the third thing is language-guided image manipulations or text diffs.</p></li>
+<li><p>In order to modify the image to reflect a new text description y, you first obtain its CLIP text embedding zt, as well as the CLIP text embedding zt0 of a caption describing the current image (which might be a dummy caption like “a photo” or an empty caption at all).</p></li>
+<li><p>Then you compute a text diff vector zd = norm(zt − zt0).</p></li>
+<li><p>Then you rotate between the image CLIP embedding zi and the text diff vector zd with slerp and generate images with the fixed base DDIM noise xT throughout the entire trajectory.</p></li>
+</ul>
+<ul class="simple">
+<li><p>“concept space” for text</p></li>
+</ul>
+<blockquote>
+<div><p>“woman”+“king”−“man”,</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>perform arithmetic using both text and images</p></li>
+</ul>
+<blockquote>
+<div><p>(image of victorian house)+“a modern house”−“a victorian house”</p>
+</div></blockquote>
+<p>Exploring text diffs</p>
+<p><img alt="" src="../../../_images/dalle2-text-diffs.png" /></p>
+<p>The case with typographic attacks</p>
+<p><img alt="" src="../../../_images/dalle2-typographic-attacks.png" /></p>
+</section>
+<section id="the-struggles-of-unclip">
+<h3>The struggles of unCLIP<a class="headerlink" href="#the-struggles-of-unclip" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>The struggles of unCLIP: attribute binding, text generation, and details in complex scenes.</p></li>
+<li><p>The first two problems are probably due to CLIP embeddings properties.</p></li>
+<li><p>The attribute binding problem might happen because the CLIP embedding itself does not explicitly bind attributes to objects, so the decoder mix up attributes and objects when generating an image.</p></li>
+<li><p>The text generation problem is probably because the CLIP embedding doesnot precisely encode the spelling information of a rendered text.</p></li>
+<li><p>The low details problem might emerge due to the decoder hierarchy producing an image at a base resolution of 64×64 and then upsampling it.</p></li>
+<li><p>So, with a higher base resolution, the problem might disappear (at the cost of additional training and inference compute).</p></li>
+</ul>
+<p>Another set of reconstructions for difficult binding problems</p>
+<p><img alt="" src="../../../_images/dalle2-difficult-binding.png" /></p>
 </section>
 </section>
 </section>
