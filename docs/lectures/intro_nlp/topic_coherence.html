@@ -1089,6 +1089,28 @@ title="Print to PDF"
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#understanding-pointwise-mutual-information">
+   Understanding Pointwise Mutual Information
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pmi">
+     PMI
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#normalized-pointwise-mutual-information">
+     Normalized Pointwise Mutual Information
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#understanding-cosine-similarity">
+   Understanding Cosine Similarity
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#topic-coherence-in-practice">
    Topic Coherence in Practice
   </a>
@@ -1165,6 +1187,28 @@ title="Print to PDF"
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#understanding-pointwise-mutual-information">
+   Understanding Pointwise Mutual Information
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pmi">
+     PMI
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#normalized-pointwise-mutual-information">
+     Normalized Pointwise Mutual Information
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#understanding-cosine-similarity">
+   Understanding Cosine Similarity
+  </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#topic-coherence-in-practice">
@@ -1337,6 +1381,50 @@ It consists of three components:</p>
 </ul>
 </section>
 </section>
+<section id="understanding-pointwise-mutual-information">
+<h2>Understanding Pointwise Mutual Information<a class="headerlink" href="#understanding-pointwise-mutual-information" title="Permalink to this headline">#</a></h2>
+<p>How to understand whether two (or more) words are related or form a concept?</p>
+<ul class="simple">
+<li><p>If some words appear together more often than we would expect by chance, then we can say that they are related.</p></li>
+<li><p>However, we need to be careful because some words may appear together more often than we would expect by chance just because they are very frequent words.</p></li>
+<li><p>For example, in the case of <code class="docutils literal notranslate"><span class="pre">New</span> <span class="pre">York</span></code>, the word <code class="docutils literal notranslate"><span class="pre">New</span></code> appears very frequently in the news, so it is likely to appear together with other words more often than we would expect by chance.</p></li>
+<li><p>How can we assess whether the cooccurrence of <code class="docutils literal notranslate"><span class="pre">New</span></code> and <code class="docutils literal notranslate"><span class="pre">York</span></code> is due to chance or due to a relationship between the two words?</p></li>
+</ul>
+<p>The pointwise mutual information (PMI) is a measure that can be used to assess whether two words are related or not. PMI quantifies the likelihood that two words appear together in a text, given that they appear separately in the text.</p>
+<section id="pmi">
+<h3>PMI<a class="headerlink" href="#pmi" title="Permalink to this headline">#</a></h3>
+<p>The PMI is a measure of the association between two words. It is defined as follows:</p>
+<div class="math notranslate nohighlight">
+\[ PMI(w_i, w_j) = log \frac{P(w_i, w_j)}{P(w_i)P(w_j)} \]</div>
+<p>where <span class="math notranslate nohighlight">\(P(w_i, w_j)\)</span> is the probability of the words <span class="math notranslate nohighlight">\(w_i\)</span> and <span class="math notranslate nohighlight">\(w_j\)</span> appearing together in the corpus, and <span class="math notranslate nohighlight">\(P(w_i)\)</span> and <span class="math notranslate nohighlight">\(P(w_j)\)</span> are the probabilities of the words <span class="math notranslate nohighlight">\(w_i\)</span> and <span class="math notranslate nohighlight">\(w_j\)</span> appearing individually in the corpus.</p>
+<p>When <span class="math notranslate nohighlight">\(w_i\)</span> and <span class="math notranslate nohighlight">\(w_j\)</span> are independent, <span class="math notranslate nohighlight">\(P(w_i, w_j) = P(w_i)P(w_j)\)</span>, and the PMI is zero.</p>
+<p>When <span class="math notranslate nohighlight">\(w_i\)</span> and <span class="math notranslate nohighlight">\(w_j\)</span> are dependent, <span class="math notranslate nohighlight">\(P(w_i, w_j) &gt; P(w_i)P(w_j)\)</span>, and the PMI is positive.</p>
+<p>When <span class="math notranslate nohighlight">\(w_i\)</span> and <span class="math notranslate nohighlight">\(w_j\)</span> are negatively dependent, <span class="math notranslate nohighlight">\(P(w_i, w_j) &lt; P(w_i)P(w_j)\)</span>, and the PMI is negative.</p>
+</section>
+<section id="normalized-pointwise-mutual-information">
+<h3>Normalized Pointwise Mutual Information<a class="headerlink" href="#normalized-pointwise-mutual-information" title="Permalink to this headline">#</a></h3>
+<p>The PMI is a good measure of the association between two words, but it has some limitations.</p>
+<p>For example, the PMI is not normalized, so it is difficult to compare the association between two words with different frequencies.</p>
+<p>The normalized pointwise mutual information (NPMI) is a normalized version of the PMI. It is defined as follows:</p>
+<div class="math notranslate nohighlight">
+\[ NPMI(w_i, w_j) = \frac{PMI(w_i, w_j)}{-log(P(w_i, w_j))} \]</div>
+</section>
+</section>
+<section id="understanding-cosine-similarity">
+<h2>Understanding Cosine Similarity<a class="headerlink" href="#understanding-cosine-similarity" title="Permalink to this headline">#</a></h2>
+<p>The cosine similarity is a measure of similarity between two vectors. It is defined as follows:</p>
+<div class="math notranslate nohighlight">
+\[ cos(\theta) = \frac{A \cdot B}{||A|| \cdot ||B||} \]</div>
+<p>where <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> are two vectors, and <span class="math notranslate nohighlight">\(\theta\)</span> is the angle between the two vectors.</p>
+<p>The cosine similarity is a number between -1 and 1.</p>
+<ul class="simple">
+<li><p>When the two vectors are identical, the cosine similarity is 1.</p></li>
+<li><p>When the two vectors are orthogonal, the cosine similarity is 0.</p></li>
+<li><p>When the two vectors are antipodal, the cosine similarity is -1.</p></li>
+<li><p>When the two vectors are similar, the cosine similarity is positive.</p></li>
+<li><p>When the two vectors are dissimilar, the cosine similarity is negative.</p></li>
+</ul>
+</section>
 <section id="topic-coherence-in-practice">
 <h2>Topic Coherence in Practice<a class="headerlink" href="#topic-coherence-in-practice" title="Permalink to this headline">#</a></h2>
 <p>Let’s evaluate some topics using the dataset <code class="docutils literal notranslate"><span class="pre">20newsgroups</span></code> as a reference corpus.</p>
@@ -1349,6 +1437,8 @@ It consists of three components:</p>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_20newsgroups</span>
+<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>
+<span class="kn">from</span> <span class="nn">nltk.collocations</span> <span class="kn">import</span> <span class="n">BigramCollocationFinder</span><span class="p">,</span> <span class="n">BigramAssocMeasures</span>
 <span class="kn">from</span> <span class="nn">gensim.models.coherencemodel</span> <span class="kn">import</span> <span class="n">CoherenceModel</span>
 <span class="kn">from</span> <span class="nn">gensim.corpora.dictionary</span> <span class="kn">import</span> <span class="n">Dictionary</span>
 </pre></div>
@@ -1362,9 +1452,110 @@ It consists of three components:</p>
 <span class="p">)</span>
 <span class="n">tokenizer</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;\w+&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
 <span class="n">texts</span> <span class="o">=</span> <span class="p">[</span><span class="n">tokenizer</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">]</span>
+<span class="n">stopwords</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s2">&quot;english&quot;</span><span class="p">))</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[[</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">t</span> <span class="k">if</span> <span class="n">w</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stopwords</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">finder</span> <span class="o">=</span> <span class="n">BigramCollocationFinder</span><span class="o">.</span><span class="n">from_words</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">texts</span><span class="p">[:</span><span class="mi">100</span><span class="p">],</span> <span class="p">[]))</span>
+<span class="n">bgm</span> <span class="o">=</span> <span class="n">BigramAssocMeasures</span><span class="p">()</span>
+<span class="n">score</span> <span class="o">=</span> <span class="n">bgm</span><span class="o">.</span><span class="n">mi_like</span>
+<span class="n">collocations</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">bigram</span><span class="p">):</span> <span class="n">pmi</span> <span class="k">for</span> <span class="n">bigram</span><span class="p">,</span> <span class="n">pmi</span> <span class="ow">in</span> <span class="n">finder</span><span class="o">.</span><span class="n">score_ngrams</span><span class="p">(</span><span class="n">score</span><span class="p">)}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Top 10 collocations</span>
+<span class="n">collocations</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="nb">sorted</span><span class="p">(</span><span class="n">collocations</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;bigram&quot;</span><span class="p">,</span> <span class="s2">&quot;score&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">collocations</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>bigram</th>
+      <th>score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>united_states</td>
+      <td>7.111111</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>et_al</td>
+      <td>5.142857</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>greatly_appreciated</td>
+      <td>3.000000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>hymenaeus_beta</td>
+      <td>3.000000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>proving_existence</td>
+      <td>3.000000</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>3d_studio</td>
+      <td>2.666667</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>mozumder_proving</td>
+      <td>2.250000</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>_equinox_iii</td>
+      <td>2.000000</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>alex_delvecchio</td>
+      <td>2.000000</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>annals_cirp</td>
+      <td>2.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1419,7 +1610,7 @@ It consists of three components:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/topic_coherence_29_0.png" src="../../../_images/topic_coherence_29_0.png" />
+<img alt="../../../_images/topic_coherence_35_0.png" src="../../../_images/topic_coherence_35_0.png" />
 </div>
 </div>
 </section>
