@@ -51,8 +51,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -758,7 +756,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../deep_nlp/bert.html">
-     BERT: Pre-training of Deep Bidirectional Transformers
+     BERT: Bidirectional Encoder Representations from Transformers
     </a>
    </li>
   </ul>
@@ -1235,6 +1233,7 @@ title="Print to PDF"
   <section class="tex2jax_ignore mathjax_ignore" id="topic-coherence-measures">
 <h1>Topic Coherence Measures<a class="headerlink" href="#topic-coherence-measures" title="Permalink to this headline">#</a></h1>
 <p>Topic coherence represents the overall topics’ interpretability and is used to assess the topics’ quality.</p>
+<p><img alt="" src="../../../_images/entelecheia_topic_coherence.png" /></p>
 <section id="topic-modeling">
 <h2>Topic Modeling<a class="headerlink" href="#topic-modeling" title="Permalink to this headline">#</a></h2>
 <p>Topic modeling aims to explain a collection of documents as a mixture of topics. Each topic is a distribution over words, and each document is a distribution over topics. The goal of topic modeling is to find the topics and their distributions over words and documents.</p>
@@ -1294,11 +1293,11 @@ It consists of three components:</p>
 </ul>
 <p>Different techniques will estimate these probabilities in different ways. For example, the probability <span class="math notranslate nohighlight">\(P_{bd}(w)\)</span> can be estimated by counting the number of documents that <span class="math notranslate nohighlight">\(w\)</span> appears and dividing it by the total number of documents in the corpus.</p>
 <div class="math notranslate nohighlight">
-\[ P_{bd}(w) = \frac{count(w)}{N} \]</div>
+\[ P_{bd}(w) = \frac{count(D_{w})}{N} \]</div>
 <p>The probability <span class="math notranslate nohighlight">\(P(w_1, w_2)\)</span> can be estimated by counting the number of documents that both <span class="math notranslate nohighlight">\(w_1\)</span> and <span class="math notranslate nohighlight">\(w_2\)</span> appear and dividing it by the total number of documents in the corpus.</p>
 <div class="math notranslate nohighlight">
-\[ P(w_1, w_2) = \frac{count(w_1, w_2)}{N} \]</div>
-<p>Another example is to use sentence-level probabilities. In this case, the probability <span class="math notranslate nohighlight">\(P_bs(w)\)</span> is estimated by counting the number of sentences that <span class="math notranslate nohighlight">\(w\)</span> appears and dividing it by the total number of sentences in the corpus.</p>
+\[ P(w_1, w_2) = \frac{count(D_{w_1, w_2})}{N} \]</div>
+<p>Another example is to use sentence-level probabilities. In this case, the probability <span class="math notranslate nohighlight">\(P_{bs}(w)\)</span> is estimated by counting the number of sentences that <span class="math notranslate nohighlight">\(w\)</span> appears and dividing it by the total number of sentences in the corpus.</p>
 <p>In case of <span class="math notranslate nohighlight">\(P_{sw}\)</span>, the probability is estimated by counting the number of sliding windows that <span class="math notranslate nohighlight">\(w\)</span> appears and dividing it by the total number of sliding windows in the corpus.</p>
 <p>These probabilities are the fundamental building blocks of the coherence metrics.</p>
 </section>
@@ -1331,7 +1330,7 @@ It consists of three components:</p>
 <h4>Indirect Confirmation Measure<a class="headerlink" href="#indirect-confirmation-measure" title="Permalink to this headline">#</a></h4>
 <p>The indirect confirmation measure is a more complex one. It computes a direct confirmation measure for each word in the subsets <span class="math notranslate nohighlight">\(W^{\prime}\)</span> with all other words in the subset <span class="math notranslate nohighlight">\(W\)</span>, yielding a vector of confirmation scores for each word in <span class="math notranslate nohighlight">\(W^{\prime}\)</span>.</p>
 <div class="math notranslate nohighlight">
-\[ \vec{v}_m(W^{\prime}) = \left\{\sum_{w \in W^{\prime}} CM(w_i, w_j)\right\}_{j=1,2, …, |W|} \]</div>
+\[ \vec{v}_m(W^{\prime}) = \left\{\sum_{w \in W^{\prime}} m(w_i, w_j)\right\}_{j=1,2, …, |W|} \]</div>
 <p>where <span class="math notranslate nohighlight">\(|W|\)</span> is the number of words in <span class="math notranslate nohighlight">\(W\)</span>.</p>
 <p>The same is done for the subset <span class="math notranslate nohighlight">\(W^*\)</span>.</p>
 <p>Then, the indirect confirmation measure is the similarity between the two vectors.</p>
