@@ -1,10 +1,9 @@
-# References
+# Bibliography
 
-## Bibliography
 ```{bibliography}
 ```
 
-## Repositories
+<!-- ## Repositories
 
 - [Hydra](https://hydra.cc)
 - [Hugging Face](https://huggingface.co)
@@ -15,4 +14,4 @@
 - [pynori](https://github.com/gritmind/python-nori)
 - [kss](https://github.com/hyunwoongko/kss)
 - [fugashi](https://github.com/polm/fugashi)
-- [hanja](https://github.com/suminb/hanja)
+- [hanja](https://github.com/suminb/hanja) -->
