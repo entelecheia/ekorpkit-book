@@ -1725,12 +1725,12 @@ title="Print to PDF"
 </ul>
 <p>Learning phase (training)</p>
 <ul class="simple">
-<li><p>Input: a set of known instances <span class="math notranslate nohighlight">\(x^(i)\)</span> with correct output class <span class="math notranslate nohighlight">\(c(x^{(i)} )\)</span>.</p></li>
+<li><p>Input: a set of known instances <span class="math notranslate nohighlight">\(x^{(i)}\)</span> with correct output class <span class="math notranslate nohighlight">\(c(x^{(i)} )\)</span>.</p></li>
 <li><p>Output: a model <span class="math notranslate nohighlight">\(X \to C\)</span> that maps any instance to its output class.</p></li>
 </ul>
 <p>Application phase (prediction)</p>
 <ul class="simple">
-<li><p>Input: a set of unknown instances <span class="math notranslate nohighlight">\(x^(i)\)</span> without output classes.</p></li>
+<li><p>Input: a set of unknown instances <span class="math notranslate nohighlight">\(x^{(i)}\)</span> without output classes.</p></li>
 <li><p>Output: the output class <span class="math notranslate nohighlight">\(c(x^{(i)} )\)</span> for each instance.</p></li>
 </ul>
 </section>
@@ -1947,7 +1947,8 @@ Training set balanced with random undersampling.</p></li>
 <h2>Lexicon-based Methods in Practice<a class="headerlink" href="#lexicon-based-methods-in-practice" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.models.metrics</span> <span class="kn">import</span> <span class="n">evaluate_classification_performance</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> install ekorpkit
+<span class="kn">from</span> <span class="nn">ekorpkit.models.metrics</span> <span class="kn">import</span> <span class="n">evaluate_classification_performance</span>
 </pre></div>
 </div>
 </div>
@@ -1959,28 +1960,24 @@ Training set balanced with random undersampling.</p></li>
 
 <span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">movie_reviews</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#review count:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">movie_reviews</span><span class="o">.</span><span class="n">fileids</span><span class="p">()))</span> <span class="c1">#영화 리뷰 문서의 id를 반환</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#samples of file ids:&#39;</span><span class="p">,</span> <span class="n">movie_reviews</span><span class="o">.</span><span class="n">fileids</span><span class="p">()[:</span><span class="mi">10</span><span class="p">])</span> <span class="c1">#id를 10개까지만 출력</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#categories of reviews:&#39;</span><span class="p">,</span> <span class="n">movie_reviews</span><span class="o">.</span><span class="n">categories</span><span class="p">())</span> <span class="c1"># label, 즉 긍정인지 부정인지에 대한 분류</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#num of &quot;neg&quot; reviews:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">movie_reviews</span><span class="o">.</span><span class="n">fileids</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="s1">&#39;neg&#39;</span><span class="p">)))</span> <span class="c1">#label이 부정인 문서들의 id를 반환</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#num of &quot;pos&quot; reviews:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">movie_reviews</span><span class="o">.</span><span class="n">fileids</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="s1">&#39;pos&#39;</span><span class="p">)))</span> <span class="c1">#label이 긍정인 문서들의 id를 반환</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#review count:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">movie_reviews</span><span class="o">.</span><span class="n">fileids</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#samples of file ids:&#39;</span><span class="p">,</span> <span class="n">movie_reviews</span><span class="o">.</span><span class="n">fileids</span><span class="p">()[:</span><span class="mi">10</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#categories of reviews:&#39;</span><span class="p">,</span> <span class="n">movie_reviews</span><span class="o">.</span><span class="n">categories</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#num of &quot;neg&quot; reviews:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">movie_reviews</span><span class="o">.</span><span class="n">fileids</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="s1">&#39;neg&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#num of &quot;pos&quot; reviews:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">movie_reviews</span><span class="o">.</span><span class="n">fileids</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="s1">&#39;pos&#39;</span><span class="p">)))</span>
 
-<span class="n">fileid</span> <span class="o">=</span> <span class="n">movie_reviews</span><span class="o">.</span><span class="n">fileids</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#첫번째 문서의 id를 반환</span>
+<span class="n">fileid</span> <span class="o">=</span> <span class="n">movie_reviews</span><span class="o">.</span><span class="n">fileids</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#id of the first review:&#39;</span><span class="p">,</span> <span class="n">fileid</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#part of the first review:&#39;</span><span class="p">,</span> <span class="n">movie_reviews</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span><span class="n">fileid</span><span class="p">)[:</span><span class="mi">500</span><span class="p">])</span> <span class="c1">#첫번째 문서의 내용을 500자까지만 출력</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#sentiment of the first review:&#39;</span><span class="p">,</span> <span class="n">movie_reviews</span><span class="o">.</span><span class="n">categories</span><span class="p">(</span><span class="n">fileid</span><span class="p">))</span> <span class="c1">#첫번째 문서의 감성</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#part of the first review:&#39;</span><span class="p">,</span> <span class="n">movie_reviews</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span><span class="n">fileid</span><span class="p">)[:</span><span class="mi">500</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#sentiment of the first review:&#39;</span><span class="p">,</span> <span class="n">movie_reviews</span><span class="o">.</span><span class="n">categories</span><span class="p">(</span><span class="n">fileid</span><span class="p">))</span>
 
-<span class="n">fileids</span> <span class="o">=</span> <span class="n">movie_reviews</span><span class="o">.</span><span class="n">fileids</span><span class="p">()</span> <span class="c1">#movie review data에서 file id를 가져옴</span>
-<span class="n">reviews</span> <span class="o">=</span> <span class="p">[</span><span class="n">movie_reviews</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span><span class="n">fileid</span><span class="p">)</span> <span class="k">for</span> <span class="n">fileid</span> <span class="ow">in</span> <span class="n">fileids</span><span class="p">]</span> <span class="c1">#file id를 이용해 raw text file을 가져옴</span>
+<span class="n">fileids</span> <span class="o">=</span> <span class="n">movie_reviews</span><span class="o">.</span><span class="n">fileids</span><span class="p">()</span>
+<span class="n">reviews</span> <span class="o">=</span> <span class="p">[</span><span class="n">movie_reviews</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span><span class="n">fileid</span><span class="p">)</span> <span class="k">for</span> <span class="n">fileid</span> <span class="ow">in</span> <span class="n">fileids</span><span class="p">]</span>
 <span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="n">movie_reviews</span><span class="o">.</span><span class="n">categories</span><span class="p">(</span><span class="n">fileid</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">fileid</span> <span class="ow">in</span> <span class="n">fileids</span><span class="p">]</span> 
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[nltk_data] Downloading package movie_reviews to /root/nltk_data...
-[nltk_data]   Unzipping corpora/movie_reviews.zip.
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>#review count: 2000
 #samples of file ids: [&#39;neg/cv000_29416.txt&#39;, &#39;neg/cv001_19502.txt&#39;, &#39;neg/cv002_17424.txt&#39;, &#39;neg/cv003_12683.txt&#39;, &#39;neg/cv004_12641.txt&#39;, &#39;neg/cv005_29357.txt&#39;, &#39;neg/cv006_17022.txt&#39;, &#39;neg/cv007_4992.txt&#39;, &#39;neg/cv008_29326.txt&#39;, &#39;neg/cv009_29417.txt&#39;]
 #categories of reviews: [&#39;neg&#39;, &#39;pos&#39;]
@@ -1995,6 +1992,10 @@ watch the movie and &quot; sorta &quot; find out . . .
 critique : a mind-fuck movie for the teen generation that touches on a very cool idea , but presents it in a very bad package . 
 which is what makes this review an even harder one to write , since i generally applaud films which attempt
 #sentiment of the first review: [&#39;neg&#39;]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[nltk_data] Downloading package movie_reviews to /root/nltk_data...
+[nltk_data]   Package movie_reviews is already up-to-date!
 </pre></div>
 </div>
 </div>
@@ -2145,6 +2146,7 @@ weighted avg       0.68      0.66      0.66      2000
 </div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[nltk_data] Downloading package vader_lexicon to /root/nltk_data...
+[nltk_data]   Package vader_lexicon is already up-to-date!
 </pre></div>
 </div>
 </div>
