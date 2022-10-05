@@ -51,8 +51,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Deep Learning for NLP" href="../deep_nlp/index.html" />
@@ -1106,7 +1106,44 @@ title="Print to PDF"
        The Distributional Hypothesis
       </a>
      </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#why-do-we-care-about-word-contexts">
+       Why do we care about word contexts?
+      </a>
+     </li>
     </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#two-ways-nlp-uses-context-for-semantics">
+     Two ways NLP uses context for semantics
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#distributional-similarity">
+   Distributional Similarity
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#basic-idea">
+     Basic idea
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how">
+     How?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-information-retrieval-perspective-the-term-document-matrix">
+     The Information Retrieval perspective: The Term-Document Matrix
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#term-document-matrix">
+     Term-Document Matrix
+    </a>
    </li>
   </ul>
  </li>
@@ -1171,7 +1208,44 @@ title="Print to PDF"
        The Distributional Hypothesis
       </a>
      </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#why-do-we-care-about-word-contexts">
+       Why do we care about word contexts?
+      </a>
+     </li>
     </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#two-ways-nlp-uses-context-for-semantics">
+     Two ways NLP uses context for semantics
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#distributional-similarity">
+   Distributional Similarity
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#basic-idea">
+     Basic idea
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how">
+     How?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-information-retrieval-perspective-the-term-document-matrix">
+     The Information Retrieval perspective: The Term-Document Matrix
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#term-document-matrix">
+     Term-Document Matrix
+    </a>
    </li>
   </ul>
  </li>
@@ -1312,6 +1386,93 @@ title="Print to PDF"
 <p>Words that occur in similar contexts have similar meanings.</p>
 </div></blockquote>
 </section>
+<section id="why-do-we-care-about-word-contexts">
+<h4>Why do we care about word contexts?<a class="headerlink" href="#why-do-we-care-about-word-contexts" title="Permalink to this headline">#</a></h4>
+<p>What is <code class="docutils literal notranslate"><span class="pre">tezgüino</span></code>?</p>
+<ul class="simple">
+<li><p>A bottle of <code class="docutils literal notranslate"><span class="pre">tezgüino</span></code> is on the table.</p></li>
+<li><p>Everybody likes <code class="docutils literal notranslate"><span class="pre">tezgüino</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Tezgüino</span></code> makes you drunk.</p></li>
+<li><p>We make <code class="docutils literal notranslate"><span class="pre">tezgüino</span></code> out of corn.</p></li>
+</ul>
+<p>We don’t know what <code class="docutils literal notranslate"><span class="pre">tezgüino</span></code> is, but we can guess that it is a drink because we understand these sentences.</p>
+<p>If we have the following sentences:</p>
+<ul class="simple">
+<li><p>A bottle of <code class="docutils literal notranslate"><span class="pre">wine</span></code> is on the table.</p></li>
+<li><p>There is a <code class="docutils literal notranslate"><span class="pre">beer</span></code> bottle on the table</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Beer</span></code> makes you drunk.</p></li>
+<li><p>We make <code class="docutils literal notranslate"><span class="pre">bourbon</span></code> out of corn.</p></li>
+<li><p>Everybody likes <code class="docutils literal notranslate"><span class="pre">chocolate</span></code></p></li>
+<li><p>Everybody likes <code class="docutils literal notranslate"><span class="pre">babies</span></code></p></li>
+</ul>
+<p>Could we guess that <code class="docutils literal notranslate"><span class="pre">tezgüino</span></code> is a drink like <code class="docutils literal notranslate"><span class="pre">wine</span></code> or <code class="docutils literal notranslate"><span class="pre">beer</span></code>?</p>
+<p>However, there are also red herrings:</p>
+<ul class="simple">
+<li><p>Everybody likes <code class="docutils literal notranslate"><span class="pre">babies</span></code></p></li>
+<li><p>Everybody likes <code class="docutils literal notranslate"><span class="pre">chocolate</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="two-ways-nlp-uses-context-for-semantics">
+<h3>Two ways NLP uses context for semantics<a class="headerlink" href="#two-ways-nlp-uses-context-for-semantics" title="Permalink to this headline">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Distributional</span> <span class="pre">similarity</span></code>: (vector-space semantics)</p>
+<ul class="simple">
+<li><p>Assume that words that occur in similar contexts have similar meanings.</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">of</span> <span class="pre">all</span> <span class="pre">contexts</span></code> in which a word occurs to measure the <code class="docutils literal notranslate"><span class="pre">similarity</span></code> between words.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">Word</span> <span class="pre">sense</span> <span class="pre">disambiguation</span></code>:</p>
+<ul class="simple">
+<li><p>Assume that if a word has multiple meanings, then it will occur in different contexts for each meaning.</p></li>
+<li><p>Use the context of a particular occurrence of a word to identify the <code class="docutils literal notranslate"><span class="pre">sense</span></code> of the word in that context.</p></li>
+</ul>
+</section>
+</section>
+<section id="distributional-similarity">
+<h2>Distributional Similarity<a class="headerlink" href="#distributional-similarity" title="Permalink to this headline">#</a></h2>
+<section id="basic-idea">
+<h3>Basic idea<a class="headerlink" href="#basic-idea" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Measure the semantic <code class="docutils literal notranslate"><span class="pre">similarities</span> <span class="pre">of</span> <span class="pre">words</span></code> by measuring the <code class="docutils literal notranslate"><span class="pre">similarity</span> <span class="pre">of</span> <span class="pre">their</span> <span class="pre">contexts</span></code> in which they occur</p></li>
+</ul>
+</section>
+<section id="how">
+<h3>How?<a class="headerlink" href="#how" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Represent words as <code class="docutils literal notranslate"><span class="pre">sparse</span> <span class="pre">vectors</span></code> such that:</p>
+<ul>
+<li><p>each <code class="docutils literal notranslate"><span class="pre">vector</span> <span class="pre">element</span></code> (dimension) represents a different <code class="docutils literal notranslate"><span class="pre">context</span></code></p></li>
+<li><p>the <code class="docutils literal notranslate"><span class="pre">value</span></code> of each element is the <code class="docutils literal notranslate"><span class="pre">frequency</span></code> of the context in which the word occurs, capturing how <code class="docutils literal notranslate"><span class="pre">strongly</span></code> the word is associated with that context</p></li>
+</ul>
+</li>
+<li><p>Compute the <code class="docutils literal notranslate"><span class="pre">semantic</span> <span class="pre">similarity</span> <span class="pre">of</span> <span class="pre">words</span></code> by measuring the <code class="docutils literal notranslate"><span class="pre">similarity</span> <span class="pre">of</span> <span class="pre">their</span> <span class="pre">context</span> <span class="pre">vectors</span></code></p></li>
+</ul>
+<p>Distributional similarities represent each word <span class="math notranslate nohighlight">\(w\)</span> as a vector <span class="math notranslate nohighlight">\(v_w\)</span> of context counts:</p>
+<div class="math notranslate nohighlight">
+\[w = (w_1 , \ldots , w_N ) \in R^N\]</div>
+<p>in a vector space <span class="math notranslate nohighlight">\(R^N\)</span> where <span class="math notranslate nohighlight">\(N\)</span> is the number of contexts.</p>
+<ul class="simple">
+<li><p>each dimension <span class="math notranslate nohighlight">\(i\)</span> represents a different context <span class="math notranslate nohighlight">\(c_i\)</span></p></li>
+<li><p>each element <span class="math notranslate nohighlight">\(v_{w,i}\)</span> captures how strongly <span class="math notranslate nohighlight">\(w\)</span> is associated with context <span class="math notranslate nohighlight">\(c_i\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(v_{w,i}\)</span> is the co-occurrence count of <span class="math notranslate nohighlight">\(w\)</span> and <span class="math notranslate nohighlight">\(c_i\)</span></p></li>
+</ul>
+</section>
+<section id="the-information-retrieval-perspective-the-term-document-matrix">
+<h3>The Information Retrieval perspective: The Term-Document Matrix<a class="headerlink" href="#the-information-retrieval-perspective-the-term-document-matrix" title="Permalink to this headline">#</a></h3>
+<p>In information retrieval, we search a collection of <span class="math notranslate nohighlight">\(N\)</span> documents for <span class="math notranslate nohighlight">\(M\)</span> terms:</p>
+<ul class="simple">
+<li><p>We can represent each <code class="docutils literal notranslate"><span class="pre">word</span></code> in the vocabulary <span class="math notranslate nohighlight">\(V\)</span> as an <span class="math notranslate nohighlight">\(N\)</span>-dimensional vector <span class="math notranslate nohighlight">\(v_w\)</span> where <span class="math notranslate nohighlight">\(v_{w,i}\)</span> is the <code class="docutils literal notranslate"><span class="pre">frequency</span></code> of the word <span class="math notranslate nohighlight">\(w\)</span> in document <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+<li><p>Conversely, we can represent each <code class="docutils literal notranslate"><span class="pre">document</span></code> as an <span class="math notranslate nohighlight">\(M\)</span>-dimensional vector <span class="math notranslate nohighlight">\(v_d\)</span> where <span class="math notranslate nohighlight">\(v_{d,j}\)</span> is the <code class="docutils literal notranslate"><span class="pre">frequency</span></code> of the term <span class="math notranslate nohighlight">\(t_j\)</span> in document <span class="math notranslate nohighlight">\(d\)</span>.</p></li>
+</ul>
+<p>Finding the <code class="docutils literal notranslate"><span class="pre">most</span> <span class="pre">relevant</span></code> documents for a query <span class="math notranslate nohighlight">\(q\)</span> is equivalent to finding the <code class="docutils literal notranslate"><span class="pre">most</span> <span class="pre">similar</span></code> documents to the query vector <span class="math notranslate nohighlight">\(v_q\)</span>.</p>
+<ul class="simple">
+<li><p>Queries are also documents, so we can use the same vector representation for queries and documents.</p></li>
+<li><p>Use the similarity of the query vector <span class="math notranslate nohighlight">\(v_q\)</span> to the document vectors <span class="math notranslate nohighlight">\(v_d\)</span> to rank the documents.</p></li>
+<li><p>Documents are similar to queries if they have similar terms.</p></li>
+</ul>
+</section>
+<section id="term-document-matrix">
+<h3>Term-Document Matrix<a class="headerlink" href="#term-document-matrix" title="Permalink to this headline">#</a></h3>
+<p><img alt="" src="../../../_images/213.png" /></p>
 </section>
 </section>
 </section>
