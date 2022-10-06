@@ -1193,6 +1193,11 @@ title="Print to PDF"
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tokens">
+     Tokens
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#goals-of-tokenization">
      Goals of Tokenization
     </a>
@@ -1200,6 +1205,60 @@ title="Print to PDF"
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#a-standard-tokenization-pipeline">
      A Standard Tokenization Pipeline
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#subword-tokenization-for-sequence-models">
+     Subword Tokenization for Sequence Models
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#segmenting-paragraphs-sentences">
+     Segmenting paragraphs/sentences
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pre-processing">
+     Pre-processing
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#capitalization">
+       Capitalization
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#punctuation">
+       Punctuation
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#numbers">
+       Numbers
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#drop-stopwords">
+       Drop Stopwords?
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#stemming-lemmatizing">
+       Stemming/lemmatizing
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bag-of-words-representation">
+   Bag-of-words representation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#counts-and-frequencies">
+     Counts and frequencies
     </a>
    </li>
   </ul>
@@ -1347,6 +1406,11 @@ title="Print to PDF"
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tokens">
+     Tokens
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#goals-of-tokenization">
      Goals of Tokenization
     </a>
@@ -1354,6 +1418,60 @@ title="Print to PDF"
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#a-standard-tokenization-pipeline">
      A Standard Tokenization Pipeline
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#subword-tokenization-for-sequence-models">
+     Subword Tokenization for Sequence Models
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#segmenting-paragraphs-sentences">
+     Segmenting paragraphs/sentences
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pre-processing">
+     Pre-processing
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#capitalization">
+       Capitalization
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#punctuation">
+       Punctuation
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#numbers">
+       Numbers
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#drop-stopwords">
+       Drop Stopwords?
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#stemming-lemmatizing">
+       Stemming/lemmatizing
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bag-of-words-representation">
+   Bag-of-words representation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#counts-and-frequencies">
+     Counts and frequencies
     </a>
    </li>
   </ul>
@@ -1799,6 +1917,19 @@ Such exceptions are called <code class="docutils literal notranslate"><span clas
 <li><p>A matrix, <span class="math notranslate nohighlight">\(X\)</span>, containing statistics about word/phrase frequencies in those documents.</p></li>
 </ul>
 </section>
+<section id="tokens">
+<h3>Tokens<a class="headerlink" href="#tokens" title="Permalink to this headline">#</a></h3>
+<p>The most basic unit of representation in a text.</p>
+<ul>
+<li><p>characters: documents as sequence of individual letters {h,e,l,l,o, ,w,o,r,l,d}</p></li>
+<li><p>words: split on white space {hello, world}</p></li>
+<li><p>n-grams: learn a vocabulary of phrases and tokenize those:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">“hellow</span> <span class="pre">world</span> <span class="pre">→</span> <span class="pre">hellow_world”</span></code></p>
+</div></blockquote>
+</li>
+</ul>
+</section>
 <section id="goals-of-tokenization">
 <h3>Goals of Tokenization<a class="headerlink" href="#goals-of-tokenization" title="Permalink to this headline">#</a></h3>
 <p>To summarize: A major goal of tokenization is to produce features that are</p>
@@ -1817,6 +1948,126 @@ Such exceptions are called <code class="docutils literal notranslate"><span clas
 <h3>A Standard Tokenization Pipeline<a class="headerlink" href="#a-standard-tokenization-pipeline" title="Permalink to this headline">#</a></h3>
 <p><img alt="" src="../../../_images/214.png" />
 (Source: NLTK Book, Chapter 3.)</p>
+</section>
+<section id="subword-tokenization-for-sequence-models">
+<h3>Subword Tokenization for Sequence Models<a class="headerlink" href="#subword-tokenization-for-sequence-models" title="Permalink to this headline">#</a></h3>
+<p>Modern transformer models (e.g. BERT, GPT) use subword tokenization:</p>
+<ul class="simple">
+<li><p>construct character-level n-grams</p></li>
+<li><p>whitespace treated the same as letters</p></li>
+<li><p>all letters to lowercase, but add a special character for the next letter being capitalized.</p></li>
+</ul>
+<p>e.g., BERT’s SentencePiece tokenizer:</p>
+<ul class="simple">
+<li><p>character-level byte-pair encoder</p></li>
+<li><p>learns character n-grams to breaks words like “playing” into “play” and “##ing”.</p></li>
+<li><p>have to fix a vocabulary size: e.g. BERT uses 30K.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/38.png" /></p>
+</section>
+<section id="segmenting-paragraphs-sentences">
+<h3>Segmenting paragraphs/sentences<a class="headerlink" href="#segmenting-paragraphs-sentences" title="Permalink to this headline">#</a></h3>
+<p>Many tasks should be done on sentences, rather than corpora as a whole.</p>
+<ul class="simple">
+<li><p>spaCy is a good (but not perfect) job of splitting sentences, while accounting for periods on abbreviations, etc.</p></li>
+<li><p>pySBD is a better option for splitting sentences.</p></li>
+</ul>
+<p>There isn’t a grammar-based paragraph tokenizer.</p>
+<ul class="simple">
+<li><p>most corpora have new paragraphs annotated.</p></li>
+<li><p>or use line breaks.</p></li>
+</ul>
+</section>
+<section id="pre-processing">
+<h3>Pre-processing<a class="headerlink" href="#pre-processing" title="Permalink to this headline">#</a></h3>
+<p>An important piece of the “art” of text analysis is deciding what data to throw out.</p>
+<ul class="simple">
+<li><p>Uninformative data add noise and reduce statistical precision.</p></li>
+<li><p>They are also computationally costly.</p></li>
+</ul>
+<p>Pre-processing choices can affect down-stream results, especially in unsupervised learning tasks (Denny and Spirling 2017).</p>
+<ul class="simple">
+<li><p>some features are more interpretable: “govenor has” / “has discretion” vs “govenor has discretion”.</p></li>
+</ul>
+<section id="capitalization">
+<h4>Capitalization<a class="headerlink" href="#capitalization" title="Permalink to this headline">#</a></h4>
+<p>Removing capitalization is a standard corpus normalization technique</p>
+<ul class="simple">
+<li><p>usually the capitalized/non-capitalized version of a word are equivalent – e.g. words showing up capitalized at beginning of sentence</p></li>
+<li><p>→ capitalization not informative.</p></li>
+</ul>
+<p>Also: what about “the first amendment” versus “the First Amendment”?</p>
+<ul class="simple">
+<li><p>Compromise: include capitalized version of words not at beginning of sentence.</p></li>
+</ul>
+<p>For some tasks, capitalization is important</p>
+<ul class="simple">
+<li><p>needed for sentence splitting, part-of-speech tagging, syntactic parsing, and semantic role labeling.</p></li>
+<li><p>For sequence data, e.g. language modeling – huggingface tokenizer takes out capitalization but then add a special “capitalized” token before the word.</p></li>
+</ul>
+</section>
+<section id="punctuation">
+<h4>Punctuation<a class="headerlink" href="#punctuation" title="Permalink to this headline">#</a></h4>
+<p><img alt="" src="../../../_images/43.png" />
+(Source: Chris Bail text data slides.)</p>
+<p>Inclusion of punctuation depends on your task:</p>
+<ul class="simple">
+<li><p>if you are vectorizing the document as a bag of words or bag of n-grams, punctuation won’t be needed.</p></li>
+<li><p>like capitalization, punctuation is needed for annotations (sentence splitting, parts of speech, syntax, roles, etc)</p>
+<ul>
+<li><p>also needed for language models.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="numbers">
+<h4>Numbers<a class="headerlink" href="#numbers" title="Permalink to this headline">#</a></h4>
+<p>for classification using bag of words:</p>
+<ul class="simple">
+<li><p>can drop numbers, or replace with special characters</p></li>
+</ul>
+<p>for language models:</p>
+<ul class="simple">
+<li><p>just treat them like letters.</p></li>
+<li><p>GPT-3 can solve math problems (but not well, this is an area of research)</p></li>
+</ul>
+</section>
+<section id="drop-stopwords">
+<h4>Drop Stopwords?<a class="headerlink" href="#drop-stopwords" title="Permalink to this headline">#</a></h4>
+<p><img alt="" src="../../../_images/53.png" /></p>
+<ul class="simple">
+<li><p>Stopwords are words that are so common that they don’t carry much information.</p></li>
+<li><p>can drop stopwords by themselves, but keep them as part of phrases.</p></li>
+<li><p>can filter out words and phrases using part-of-speech tags (later).</p></li>
+</ul>
+</section>
+<section id="stemming-lemmatizing">
+<h4>Stemming/lemmatizing<a class="headerlink" href="#stemming-lemmatizing" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p>Effective dimension reduction with little loss of information.</p></li>
+<li><p>Lemmatizer produces real words, but N-grams won’t make grammatical sense</p>
+<ul>
+<li><p>e.g., “I am running” → “I am run”</p></li>
+</ul>
+</li>
+</ul>
+<p><img alt="" src="../../../_images/62.png" /></p>
+</section>
+</section>
+</section>
+<section id="bag-of-words-representation">
+<h2>Bag-of-words representation<a class="headerlink" href="#bag-of-words-representation" title="Permalink to this headline">#</a></h2>
+<p>Say we want to convert a corpus <span class="math notranslate nohighlight">\(D\)</span> to a matrix <span class="math notranslate nohighlight">\(X\)</span>:</p>
+<ul class="simple">
+<li><p>In the <code class="docutils literal notranslate"><span class="pre">“bag-of-words”</span></code> representation, a row of <span class="math notranslate nohighlight">\(X\)</span> is just the frequency distribution over words in the document corresponding to that row.</p></li>
+</ul>
+<section id="counts-and-frequencies">
+<h3>Counts and frequencies<a class="headerlink" href="#counts-and-frequencies" title="Permalink to this headline">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Document</span> <span class="pre">counts</span></code>: number of documents where a token appears.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Term</span> <span class="pre">counts</span></code>: number of total appearances of a token in corpus.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Term</span> <span class="pre">frequency</span></code>:</p>
+<div class="math notranslate nohighlight">
+\[ \text{Term Frequency of } w \text{ in document } k = \frac{\text{Count of }w\text{ in document }k}{\text{Total tokens in document } k} \]</div>
 </section>
 </section>
 </section>
