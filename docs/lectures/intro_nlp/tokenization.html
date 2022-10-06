@@ -51,8 +51,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Vector Semantics and Representation" href="vectorization.html" />
@@ -1084,6 +1082,67 @@ title="Print to PDF"
    Why do we need tokenization?
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-do-we-identify-words-in-text">
+   How do we identify words in text?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#words-arent-just-defined-by-blanks">
+     Words aren’t just defined by blanks
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tokenization-standards">
+     Tokenization Standards
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#what-about-sentence-boundaries">
+     What about sentence boundaries?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#spelling-variants-typos-etc">
+     Spelling variants, typos, etc.
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-many-different-words-are-there-in-english">
+   How many different words are there in English?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#counting-words-tokens-vs-types">
+     Counting words: tokens vs. types
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#zipfs-law-the-long-tail">
+     Zipf’s law: the long tail
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#implications-of-zipfs-law-for-nlp">
+       Implications of Zipf’s Law for NLP
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#dealing-with-the-bad-and-the-ugly">
+       Dealing with the bad and the ugly
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-do-we-represent-words">
+   How do we represent words?
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -1116,6 +1175,67 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#why-do-we-need-tokenization">
    Why do we need tokenization?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-do-we-identify-words-in-text">
+   How do we identify words in text?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#words-arent-just-defined-by-blanks">
+     Words aren’t just defined by blanks
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tokenization-standards">
+     Tokenization Standards
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#what-about-sentence-boundaries">
+     What about sentence boundaries?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#spelling-variants-typos-etc">
+     Spelling variants, typos, etc.
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-many-different-words-are-there-in-english">
+   How many different words are there in English?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#counting-words-tokens-vs-types">
+     Counting words: tokens vs. types
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#zipfs-law-the-long-tail">
+     Zipf’s law: the long tail
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#implications-of-zipfs-law-for-nlp">
+       Implications of Zipf’s Law for NLP
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#dealing-with-the-bad-and-the-ugly">
+       Dealing with the bad and the ugly
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-do-we-represent-words">
+   How do we represent words?
   </a>
  </li>
 </ul>
@@ -1173,6 +1293,225 @@ title="Print to PDF"
 <li><p>The first step is to break down the sentence into smaller units that the machine can process.</p></li>
 <li><p>Tokenization determines how the input is represented to the model.</p></li>
 <li><p>This decision has a huge impact on the performance of the model.</p></li>
+</ul>
+</section>
+<section id="how-do-we-identify-words-in-text">
+<h2>How do we identify words in text?<a class="headerlink" href="#how-do-we-identify-words-in-text" title="Permalink to this headline">#</a></h2>
+<p>For a language like English, this seems like a simple task. We can simply split the text by spaces.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>A word is any sequence of alphabetical characters between whitespaces that’s not a punctuation mark?
+</pre></div>
+</div>
+<p>However, there are many cases where this is not true.</p>
+<ul class="simple">
+<li><p>What about contractions?</p>
+<ul>
+<li><p>“I’m” is a single word, but it is split into two tokens.</p></li>
+</ul>
+</li>
+<li><p>What about abbreviations?</p>
+<ul>
+<li><p>“U.S.” is a single word, but it is split into two tokens.</p></li>
+</ul>
+</li>
+<li><p>What about hyphenated words?</p>
+<ul>
+<li><p>“self-driving”, “R2-D2” are single words, but they are split into two tokens.</p></li>
+</ul>
+</li>
+<li><p>What about complex names?</p>
+<ul>
+<li><p>“New York” is a single word, but it is split into two tokens.</p></li>
+</ul>
+</li>
+<li><p>What about languages like Chinese that have no spaces between words?</p></li>
+</ul>
+<section id="words-arent-just-defined-by-blanks">
+<h3>Words aren’t just defined by blanks<a class="headerlink" href="#words-arent-just-defined-by-blanks" title="Permalink to this headline">#</a></h3>
+<p>Problem 1: Compounding</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>“ice cream”, “website”, “web site”, “New York-based”
+</pre></div>
+</div>
+<p>Problem 2: Other writing systems have no blanks</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Chinese: 我开始写⼩说 = 我 开始 写 ⼩说 (I start(ed) writing novel(s))
+</pre></div>
+</div>
+<p>Problem 3: Contractions and Clitics</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>English: “doesn’t” , “I’m” ,
+Italian: “dirglielo” = dir + gli(e) + lo (tell + him + it)
+</pre></div>
+</div>
+</section>
+<section id="tokenization-standards">
+<h3>Tokenization Standards<a class="headerlink" href="#tokenization-standards" title="Permalink to this headline">#</a></h3>
+<p>Any actual NLP system will assume a particular tokenization standard.</p>
+<ul class="simple">
+<li><p>NLP systems are usually trained on particular corpora (text datasets) that everybody uses.</p></li>
+<li><p>These corpora often define a de facto standard.</p></li>
+</ul>
+<p>Penn Treebank 3 standard:</p>
+<ul>
+<li><p>Input:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">&quot;The</span> <span class="pre">San</span> <span class="pre">Francisco-based</span> <span class="pre">restaurant,&quot;</span> <span class="pre">they</span> <span class="pre">said,</span> <span class="pre">&quot;doesn’t</span> <span class="pre">charge</span> <span class="pre">$10&quot;.</span></code></p>
+</div></blockquote>
+</li>
+<li><p>Output:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">“_</span> <span class="pre">The</span> <span class="pre">_</span> <span class="pre">San</span> <span class="pre">_</span> <span class="pre">Francisco-based</span> <span class="pre">_</span> <span class="pre">restaurant</span> <span class="pre">_</span> <span class="pre">,</span> <span class="pre">_”</span> <span class="pre">_</span> <span class="pre">they_</span> <span class="pre">said*</span> <span class="pre">,*</span> <span class="pre">&quot;_</span> <span class="pre">does</span> <span class="pre">_</span> <span class="pre">n’t</span> <span class="pre">_</span> <span class="pre">charge_</span> <span class="pre">$_</span> <span class="pre">10</span> <span class="pre">_</span> <span class="pre">&quot;</span> <span class="pre">_</span> <span class="pre">.</span> <span class="pre">_</span></code></p>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="what-about-sentence-boundaries">
+<h3>What about sentence boundaries?<a class="headerlink" href="#what-about-sentence-boundaries" title="Permalink to this headline">#</a></h3>
+<p>How can we identify that this is two sentences?</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Mr</span><span class="o">.</span> <span class="n">Smith</span> <span class="n">went</span> <span class="n">to</span> <span class="n">D</span><span class="o">.</span><span class="n">C</span><span class="o">.</span> <span class="n">Ms</span><span class="o">.</span> <span class="n">Xu</span> <span class="n">went</span> <span class="n">to</span> <span class="n">Chicago</span> <span class="n">instead</span><span class="o">.</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>We can use a period to identify the end of a sentence.</p></li>
+<li><p>However, this is not always true.</p></li>
+<li><p>Abbreviations, such as “Mr.”, “D.C.”, “Ms.”, “U.S.”, “etc.” can be followed by a period.</p></li>
+</ul>
+<p>How many sentences are in this text?</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;The San Francisco-based restaurant,&quot;</span> <span class="n">they</span> <span class="n">said</span><span class="p">,</span> <span class="s2">&quot;doesn’t charge $10&quot;</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Answer: just one, because the comma is not a sentence boundary.</p>
+<p>Similarly, we typically treat this also just as one sentence:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>They said: ”The San Francisco-based restaurant doesn’t charge $10&quot;.
+</pre></div>
+</div>
+</section>
+<section id="spelling-variants-typos-etc">
+<h3>Spelling variants, typos, etc.<a class="headerlink" href="#spelling-variants-typos-etc" title="Permalink to this headline">#</a></h3>
+<p>The same word can be written in different ways:</p>
+<ul class="simple">
+<li><p>with different <code class="docutils literal notranslate"><span class="pre">capitalizations</span></code>:</p>
+<ul>
+<li><p>lowercase “cat” (in standard running text)</p></li>
+<li><p>capitalized “Cat” (as first word in a sentence, or in titles/headlines),</p></li>
+<li><p>all-caps “CAT” (e.g. in headlines)</p></li>
+</ul>
+</li>
+<li><p>with different abbreviation or hyphenation styles:</p>
+<ul>
+<li><p>US-based, US based, U.S.-based, U.S. based</p></li>
+<li><p>US-EU relations, U.S./E.U. relations, …</p></li>
+</ul>
+</li>
+<li><p>with spelling variants (e.g. regional variants of English):</p>
+<ul>
+<li><p>labor vs labour, materialize vs materialise,</p></li>
+</ul>
+</li>
+<li><p>with typos (teh)</p></li>
+</ul>
+</section>
+</section>
+<section id="how-many-different-words-are-there-in-english">
+<h2>How many different words are there in English?<a class="headerlink" href="#how-many-different-words-are-there-in-english" title="Permalink to this headline">#</a></h2>
+<section id="counting-words-tokens-vs-types">
+<h3>Counting words: tokens vs. types<a class="headerlink" href="#counting-words-tokens-vs-types" title="Permalink to this headline">#</a></h3>
+<p>When counting words in text, we distinguish between word types and word tokens:</p>
+<ul>
+<li><p>The vocabulary of a language is the set of (unique) word types:</p>
+<blockquote>
+<div><p>V = {a, aardvark, …., zyzzva}</p>
+</div></blockquote>
+</li>
+<li><p>The tokens in a document include all occurrences of the word types in that document or corpus</p></li>
+<li><p>The frequency of a word (type) in a document<br />
+= the number of occurrences (tokens) of that type</p></li>
+</ul>
+<p>How large is the vocabulary of English (or any other language)?</p>
+<ul>
+<li><p>Vocabulary size = the number of distinct word types</p>
+<blockquote>
+<div><p>Google N-gram corpus: 1 trillion tokens, 13 million word types that appear 40+ times</p>
+</div></blockquote>
+</li>
+</ul>
+<p>If you count words in text, you will find that …</p>
+<ul class="simple">
+<li><p>a few words (mostly closed-class) are very frequent (the, be, to, of, and, a, in, that,…)</p></li>
+<li><p>most words (all open class) are very rare.</p></li>
+<li><p>even if you’ve read a lot of text, you will keep finding words you haven’t seen before.</p></li>
+</ul>
+</section>
+<section id="zipfs-law-the-long-tail">
+<h3>Zipf’s law: the long tail<a class="headerlink" href="#zipfs-law-the-long-tail" title="Permalink to this headline">#</a></h3>
+<p>In a natural language:</p>
+<ul class="simple">
+<li><p>A small number of events (e.g. words) occur with high frequency</p></li>
+<li><p>A large number of events occur with very low frequency</p></li>
+</ul>
+<p><img alt="" src="../../../_images/1.png" /></p>
+<section id="implications-of-zipfs-law-for-nlp">
+<h4>Implications of Zipf’s Law for NLP<a class="headerlink" href="#implications-of-zipfs-law-for-nlp" title="Permalink to this headline">#</a></h4>
+<p>The good:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Any</span> <span class="n">text</span> <span class="n">will</span> <span class="n">contain</span> <span class="n">a</span> <span class="n">number</span> <span class="n">of</span> <span class="n">words</span> <span class="n">that</span> <span class="n">are</span> <span class="n">very</span> <span class="n">common</span><span class="o">.</span>
+<span class="n">We</span> <span class="n">have</span> <span class="n">seen</span> <span class="n">these</span> <span class="n">words</span> <span class="n">often</span> <span class="n">enough</span> <span class="n">that</span> <span class="n">we</span> <span class="n">know</span> <span class="p">(</span><span class="n">almost</span><span class="p">)</span> <span class="n">everything</span> <span class="n">about</span> <span class="n">them</span><span class="o">.</span>
+<span class="n">These</span> <span class="n">words</span> <span class="n">will</span> <span class="n">help</span> <span class="n">us</span> <span class="n">get</span> <span class="n">at</span> <span class="n">the</span> <span class="n">structure</span> <span class="p">(</span><span class="ow">and</span> <span class="n">possibly</span> <span class="n">meaning</span><span class="p">)</span> <span class="n">of</span> <span class="n">this</span> <span class="n">text</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>The bad:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Any text will contain a number of words that are rare.
+We know something about these words, but haven’t seen them often enough to know everything about them.
+They may occur with a meaning or a part of speech we haven’t seen before.
+</pre></div>
+</div>
+<p>The ugly:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Any</span> <span class="n">text</span> <span class="n">will</span> <span class="n">contain</span> <span class="n">a</span> <span class="n">number</span> <span class="n">of</span> <span class="n">words</span> <span class="n">that</span> <span class="n">are</span> <span class="n">unknown</span> <span class="n">to</span> <span class="n">us</span><span class="o">.</span>
+<span class="n">We</span> <span class="n">have</span> <span class="n">never</span> <span class="n">seen</span> <span class="n">them</span> <span class="n">before</span><span class="p">,</span> <span class="n">but</span> <span class="n">we</span> <span class="n">still</span> <span class="n">need</span> <span class="n">to</span> <span class="n">get</span> <span class="n">at</span> <span class="n">the</span> <span class="n">structure</span> <span class="p">(</span><span class="ow">and</span> <span class="n">meaning</span><span class="p">)</span> <span class="n">of</span> <span class="n">these</span> <span class="n">texts</span><span class="o">.</span>
+</pre></div>
+</div>
+</section>
+<section id="dealing-with-the-bad-and-the-ugly">
+<h4>Dealing with the bad and the ugly<a class="headerlink" href="#dealing-with-the-bad-and-the-ugly" title="Permalink to this headline">#</a></h4>
+<p>NLP systems need to be able to generalize from the known to the unknown.</p>
+<p>There are two main strategies:</p>
+<ul class="simple">
+<li><p>Linguistic knowledge</p>
+<ul>
+<li><p>a finite set of grammatical rules is enough to generate an infinite number of languages</p></li>
+</ul>
+</li>
+<li><p>Machine learning or statistical methods</p>
+<ul>
+<li><p>learn representations of words from large amounts of data that often work well for unseen words</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+</section>
+<section id="how-do-we-represent-words">
+<h2>How do we represent words?<a class="headerlink" href="#how-do-we-represent-words" title="Permalink to this headline">#</a></h2>
+<p>Option 1: Words are atomic symbols</p>
+<ul>
+<li><p>Each (surface) word is a unique symbol</p></li>
+<li><p>Add some generalization rules to map different surface forms to the same symbol</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Normalization</span></code>: map all variants of the same word (form) to the same canonical variant</p>
+<blockquote>
+<div><p>e.g. lowercase everything, normalize spellings, perhaps spell-check)</p>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Lemmatization</span></code>: map each word to its lemma (esp. in English, the lemma is still a word in the language, but lemmatized text is no longer grammatical)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Stemming</span></code>: remove endings that differ among word forms (no guarantee that the resulting symbol is an actual word)</p></li>
+</ul>
+</li>
+</ul>
+<p>Option 2: Represent the structure of each word</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;books&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;book N pl&quot;</span> <span class="p">(</span><span class="ow">or</span> <span class="s2">&quot;book V 3rd sg&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>This requries a morphological analyzer</p></li>
+<li><p>The output is often a lemma (e.g. “book”) and morphological features (e.g. “N pl” for noun plural, “V 3rd sg” for verb 3rd person singular)</p></li>
+<li><p>This is particularly useful for languages with rich morphology (e.g. Turkish, Finnish, Hungarian, etc.)</p></li>
+<li><p>Less useful for languages with little morphology (e.g. English, German, etc.)</p></li>
 </ul>
 </section>
 </section>
