@@ -51,6 +51,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Vector Semantics and Representation" href="vectorization.html" />
@@ -1143,6 +1145,55 @@ title="Print to PDF"
    How do we represent words?
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-do-we-represent-unknown-words">
+   How do we represent unknown words?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-many-different-words-are-there">
+   How many different words are there?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#inflectional-morphology-in-english">
+     Inflectional morphology in English
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#derivational-morphology-in-english">
+     Derivational morphology in English
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#morphemes-stems-affixes">
+     Morphemes: stems, affixes
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id1">
+   Tokenization
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#input">
+     Input:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#output-tokens">
+     Output (tokens):
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#output-n-grams">
+     Output (n-grams):
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
 
     </nav>
@@ -1237,6 +1288,55 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#how-do-we-represent-words">
    How do we represent words?
   </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-do-we-represent-unknown-words">
+   How do we represent unknown words?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-many-different-words-are-there">
+   How many different words are there?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#inflectional-morphology-in-english">
+     Inflectional morphology in English
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#derivational-morphology-in-english">
+     Derivational morphology in English
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#morphemes-stems-affixes">
+     Morphemes: stems, affixes
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id1">
+   Tokenization
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#input">
+     Input:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#output-tokens">
+     Output (tokens):
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#output-n-grams">
+     Output (n-grams):
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -1431,6 +1531,14 @@ Italian: “dirglielo” = dir + gli(e) + lo (tell + him + it)
 <div><p>Google N-gram corpus: 1 trillion tokens, 13 million word types that appear 40+ times</p>
 </div></blockquote>
 </li>
+<li><p>You may have heard statements such as:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">adults</span> <span class="pre">know</span> <span class="pre">about</span> <span class="pre">30,000</span> <span class="pre">words</span></code></p>
+</div></blockquote>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">you</span> <span class="pre">need</span> <span class="pre">to</span> <span class="pre">know</span> <span class="pre">at</span> <span class="pre">least</span> <span class="pre">5,000</span> <span class="pre">words</span> <span class="pre">to</span> <span class="pre">be</span> <span class="pre">fluent</span></code></p>
+</div></blockquote>
+</li>
 </ul>
 <p>If you count words in text, you will find that …</p>
 <ul class="simple">
@@ -1513,6 +1621,164 @@ They may occur with a meaning or a part of speech we haven’t seen before.
 <li><p>This is particularly useful for languages with rich morphology (e.g. Turkish, Finnish, Hungarian, etc.)</p></li>
 <li><p>Less useful for languages with little morphology (e.g. English, German, etc.)</p></li>
 </ul>
+</section>
+<section id="how-do-we-represent-unknown-words">
+<h2>How do we represent unknown words?<a class="headerlink" href="#how-do-we-represent-unknown-words" title="Permalink to this headline">#</a></h2>
+<p>Many NLP systems assume a fixed vocabulary, but still have to handle out-of-vocabulary (OOV) words.</p>
+<p>Option 1: <code class="docutils literal notranslate"><span class="pre">the</span> <span class="pre">UNK</span> <span class="pre">token</span></code></p>
+<ul class="simple">
+<li><p>Replace all rare words (with a frequency at or below a given threshold, e.g. 2, 3, or 5) in your training data with an UNK token (UNK = “Unknown word”).</p></li>
+<li><p>Replace all unknown words that you come across after training (including rare training words) with the same UNK token</p></li>
+</ul>
+<p>Option 2: <code class="docutils literal notranslate"><span class="pre">substring-based</span> <span class="pre">representations</span></code></p>
+<ul class="simple">
+<li><p>Often used in neural models</p></li>
+<li><p>Represent (rare and unknown) words [“Champaign”] as sequences of characters [‘C’, ‘h’, ‘a’,…,’g’, ’n’] or substrings [“Ch”, “amp”, “ai”, “gn”]</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Byte</span> <span class="pre">Pair</span> <span class="pre">Encoding</span> <span class="pre">(BPE)</span></code>: learn which character sequences are common in the vocabulary of your language, and treat those common sequences as atomic units of your vocabulary</p></li>
+</ul>
+<p><strong>Which words appear in this text?</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Of course he wants to take the advanced course too. He already took two beginners’ courses.
+</pre></div>
+</div>
+<p>Actual text doesn’t consist of dictionary entries:</p>
+<ul class="simple">
+<li><p>wants is a form of want</p></li>
+<li><p>took is a form of take</p></li>
+<li><p>courses is a form of course</p></li>
+</ul>
+<p>Linguists distinguish between</p>
+<ul class="simple">
+<li><p><strong>the (surface) forms that occur in text</strong>: want, wants, beginners’, took,…</p></li>
+<li><p><strong>and the lemmas that are the uninflected forms of these words</strong>: want, beginner, take, …</p></li>
+</ul>
+<p>In NLP, we sometimes map words to lemmas (or simpler “stems”), but the raw data always consists of surface forms</p>
+</section>
+<section id="how-many-different-words-are-there">
+<h2>How many different words are there?<a class="headerlink" href="#how-many-different-words-are-there" title="Permalink to this headline">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Inflection</span></code> creates different forms of the same word:</p>
+<ul class="simple">
+<li><p>Verbs: to be, being, I am, you are, he is, I was,</p></li>
+<li><p>Nouns: one book, two books</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">Derivation</span></code> creates different words from the same lemma:</p>
+<ul class="simple">
+<li><p>grace ⇒ disgrace ⇒ disgraceful ⇒ disgracefully</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">Compounding</span></code> combines two words into a new word:</p>
+<ul class="simple">
+<li><p>cream ⇒ ice cream ⇒ ice cream cone ⇒ ice cream cone bakery</p></li>
+</ul>
+<p>Word formation is productive:</p>
+<ul class="simple">
+<li><p>New words are subject to all of these processes:
+Google ⇒ Googler, to google, to ungoogle, to misgoogle, googlification, ungooglification, googlified, Google Maps, Google Maps service,…</p></li>
+</ul>
+<section id="inflectional-morphology-in-english">
+<h3>Inflectional morphology in English<a class="headerlink" href="#inflectional-morphology-in-english" title="Permalink to this headline">#</a></h3>
+<p><strong>Verbs</strong>:</p>
+<ul class="simple">
+<li><p>Infinitive/present tense: walk, go</p></li>
+<li><p>3rd person singular present tense (s-form): walks, goes</p></li>
+<li><p>Simple past: walked, went</p></li>
+<li><p>Past participle (ed-form): walked, gone</p></li>
+<li><p>Present participle (ing-form): walking, going</p></li>
+</ul>
+<p><strong>Nouns</strong>:</p>
+<ul class="simple">
+<li><p>Common nouns inflect for number:
+singular (book) vs. plural (books)</p></li>
+<li><p>Personal pronouns inflect for person, number, gender, case:
+I saw him; he saw me; you saw her; we saw them; they saw us.</p></li>
+</ul>
+</section>
+<section id="derivational-morphology-in-english">
+<h3>Derivational morphology in English<a class="headerlink" href="#derivational-morphology-in-english" title="Permalink to this headline">#</a></h3>
+<p>Nominalization:</p>
+<ul class="simple">
+<li><p>V + -ation: computerization</p></li>
+<li><p>V+ -er: killer</p></li>
+<li><p>Adj + -ness: fuzziness</p></li>
+</ul>
+<p>Negation:</p>
+<ul class="simple">
+<li><p>un-: undo, unseen, …</p></li>
+<li><p>mis-: mistake,…</p></li>
+</ul>
+<p>Adjectivization:</p>
+<ul class="simple">
+<li><p>V+ -able: doable</p></li>
+<li><p>N + -al: national</p></li>
+</ul>
+</section>
+<section id="morphemes-stems-affixes">
+<h3>Morphemes: stems, affixes<a class="headerlink" href="#morphemes-stems-affixes" title="Permalink to this headline">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="n">dis</span><span class="o">-</span><span class="n">grace</span><span class="o">-</span><span class="n">ful</span><span class="o">-</span><span class="n">ly</span>
+<span class="n">prefix</span><span class="o">-</span><span class="n">stem</span><span class="o">-</span><span class="n">suffix</span><span class="o">-</span><span class="n">suffix</span>
+</pre></div>
+</div>
+<p>Many word forms consist of a <code class="docutils literal notranslate"><span class="pre">stem</span></code> plus a number of <code class="docutils literal notranslate"><span class="pre">affixes</span> <span class="pre">(prefixes</span> <span class="pre">or</span> <span class="pre">suffixes)</span></code></p>
+<ul class="simple">
+<li><p>Exceptions: Infixes are inserted inside the stem Circumfixes (German gesehen) surround the stem</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">Morphemes</span></code>: the smallest (meaningful/grammatical) parts of words.</p>
+<ul class="simple">
+<li><p>Stems (grace) are often <code class="docutils literal notranslate"><span class="pre">free</span> <span class="pre">morphemes</span></code>.
+Free morphemes can occur by themselves as words.</p></li>
+<li><p>Affixes (dis-, -ful, -ly) are usually <code class="docutils literal notranslate"><span class="pre">bound</span> <span class="pre">morphemes</span></code>.
+Bound morphemes have to combine with others to form words.</p></li>
+</ul>
+<p><strong>Morphemes and morphs</strong></p>
+<p>The same information (plural, past tense, …) is often expressed in different ways in the same language.</p>
+<ul class="simple">
+<li><p>One way may be more common than others, and exceptions may depend on specific words:</p>
+<ul>
+<li><p>Most plural nouns: add <strong>-s</strong> to singular: book-book<strong>s</strong>, but: box-box<strong>es</strong>, fly-fl<strong>ies</strong>, child-child<strong>ren</strong></p></li>
+<li><p>Most past tense verbs add <strong>-ed</strong> to infinitive: walk-walk<strong>ed</strong>, but: like-like<strong>d</strong>, leap-leap<strong>t</strong>
+Such exceptions are called <code class="docutils literal notranslate"><span class="pre">irregular</span> <span class="pre">word</span> <span class="pre">forms</span></code></p></li>
+</ul>
+</li>
+</ul>
+<p>Linguists say that there is <code class="docutils literal notranslate"><span class="pre">one</span> <span class="pre">underlying</span> <span class="pre">morpheme</span></code> (e.g. for plural nouns) that is “realized” as different “surface” forms (morphs) (e.g. -s/-es/-ren)</p>
+<ul class="simple">
+<li><p>Allomorphs: two different realizations (-s/-es/-ren) of the same underlying morpheme (plural)</p></li>
+</ul>
+<p><strong>“Surface”?</strong></p>
+<p>This terminology comes from Chomskyan Transformational Grammar.</p>
+<ul class="simple">
+<li><p>Dominant early approach in theoretical linguistics, superseded by other approaches (“minimalism”).</p></li>
+<li><p>Not computational, but has some historical influence on computational linguistics (e.g. Penn Treebank)</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">“Surface”</span></code> = standard English (Chinese, Hindi, etc.).</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">“Surface</span> <span class="pre">string”</span></code> = a written sequence of characters or words</p></li>
+</ul>
+<p>vs. <code class="docutils literal notranslate"><span class="pre">“Deep”/“Underlying”</span></code> structure/representation:</p>
+<ul class="simple">
+<li><p>A more abstract representation.</p></li>
+<li><p>Might be the same for different sentences/words with the same meaning.</p></li>
+</ul>
+</section>
+</section>
+<section id="id1">
+<h2>Tokenization<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
+<section id="input">
+<h3>Input:<a class="headerlink" href="#input" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>A set of documents (e.g. text files), <span class="math notranslate nohighlight">\(D\)</span></p></li>
+</ul>
+</section>
+<section id="output-tokens">
+<h3>Output (tokens):<a class="headerlink" href="#output-tokens" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>A sequence, <span class="math notranslate nohighlight">\(W\)</span> , containing a list of tokens – words or word pieces for use in natural language processing</p></li>
+</ul>
+</section>
+<section id="output-n-grams">
+<h3>Output (n-grams):<a class="headerlink" href="#output-n-grams" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>A matrix, <span class="math notranslate nohighlight">\(X\)</span>, containing statistics about word/phrase frequencies in those documents.</p></li>
+</ul>
+</section>
 </section>
 </section>
 
