@@ -51,8 +51,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="AI Art (Text-to-Image)" href="../aiart/index.html" />
@@ -1090,6 +1088,59 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tokenization-methods">
+   Tokenization Methods
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#word-white-space-tokenization">
+   Word (White Space) Tokenization
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#problems-with-word-tokenizer">
+     Problems with Word tokenizer
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#character-tokenization">
+   Character Tokenization
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#problems-with-character-tokenizer">
+     Problems with Character tokenizer
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#subword-tokenization">
+   Subword Tokenization
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-to-decide-which-subwords-to-use">
+     How to decide which subwords to use?
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#byte-pair-encoding-bpe">
+   Byte Pair Encoding (BPE)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#token-learning-from-dataset">
+     Token Learning from Dataset
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#references">
    References
   </a>
@@ -1127,6 +1178,59 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#why-do-we-need-tokenization">
    Why do we need tokenization?
   </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tokenization-methods">
+   Tokenization Methods
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#word-white-space-tokenization">
+   Word (White Space) Tokenization
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#problems-with-word-tokenizer">
+     Problems with Word tokenizer
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#character-tokenization">
+   Character Tokenization
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#problems-with-character-tokenizer">
+     Problems with Character tokenizer
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#subword-tokenization">
+   Subword Tokenization
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-to-decide-which-subwords-to-use">
+     How to decide which subwords to use?
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#byte-pair-encoding-bpe">
+   Byte Pair Encoding (BPE)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#token-learning-from-dataset">
+     Token Learning from Dataset
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#references">
@@ -1192,6 +1296,188 @@ title="Print to PDF"
 <li><p>Tokenization determines how the input is represented to the model.</p></li>
 <li><p>This decision has a huge impact on the performance of the model.</p></li>
 </ul>
+</section>
+<section id="tokenization-methods">
+<h2>Tokenization Methods<a class="headerlink" href="#tokenization-methods" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>Word-level tokenization: Split a sentence into words.</p></li>
+<li><p>Character-level tokenization: Split a sentence into characters.</p></li>
+<li><p>Subword-level tokenization: Split a sentence into subwords.</p></li>
+</ul>
+</section>
+<section id="word-white-space-tokenization">
+<h2>Word (White Space) Tokenization<a class="headerlink" href="#word-white-space-tokenization" title="Permalink to this headline">#</a></h2>
+<ul>
+<li><p>The simplest tokenization method is to split a sentence into words.</p></li>
+<li><p>This is also called white space tokenization.</p></li>
+<li><p>The sentence “I like to eat apples” can be tokenized into the list of tokens:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">[&quot;I&quot;,</span> <span class="pre">&quot;like&quot;,</span> <span class="pre">&quot;to&quot;,</span> <span class="pre">&quot;eat&quot;,</span> <span class="pre">&quot;apples&quot;]</span></code>.</p>
+</div></blockquote>
+</li>
+<li><p>This method is very fast and easy to implement.</p></li>
+<li><p>However, it has some limitations.</p></li>
+</ul>
+<section id="problems-with-word-tokenizer">
+<h3>Problems with Word tokenizer<a class="headerlink" href="#problems-with-word-tokenizer" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Out-of-vocabulary (OOV) words:</p>
+<ul>
+<li><p>The risk of missing words that are not in the vocabulary.</p></li>
+<li><p>The model will not recognize the variants of words that were not in the training set.</p></li>
+<li><p>For example, even though the words <code class="docutils literal notranslate"><span class="pre">pine</span></code> and <code class="docutils literal notranslate"><span class="pre">apple</span></code> exist in the training set, the model will not recognize the word <code class="docutils literal notranslate"><span class="pre">pineapple</span></code>.</p></li>
+</ul>
+</li>
+<li><p>Punctuation and abbreviations:</p>
+<ul>
+<li><p>The tokenizer will not recognize punctuation and abbreviations.</p></li>
+<li><p>For example, the word <code class="docutils literal notranslate"><span class="pre">don't</span></code> will be tokenized as <code class="docutils literal notranslate"><span class="pre">[&quot;do&quot;,</span> <span class="pre">&quot;n't&quot;]</span></code>.</p></li>
+</ul>
+</li>
+<li><p>Slang and informal language:</p>
+<ul>
+<li><p>The tokenizer will not recognize slang and informal language.</p></li>
+<li><p>For example, the word <code class="docutils literal notranslate"><span class="pre">gonna</span></code> will be tokenized as <code class="docutils literal notranslate"><span class="pre">[&quot;gon&quot;,</span> <span class="pre">&quot;na&quot;]</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tl;dr</span></code> will be tokenized as <code class="docutils literal notranslate"><span class="pre">[&quot;tl&quot;,</span> <span class="pre">&quot;;&quot;,</span> <span class="pre">&quot;dr&quot;]</span></code>.</p></li>
+</ul>
+</li>
+<li><p>What if language does not use spaces for separating words?</p>
+<ul>
+<li><p>Chinese, Japanese, and Korean do not use spaces to separate words.</p></li>
+<li><p>The tokenizer will not work for these languages.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="character-tokenization">
+<h2>Character Tokenization<a class="headerlink" href="#character-tokenization" title="Permalink to this headline">#</a></h2>
+<ul>
+<li><p>To solve the problems of word tokenization, we can split a sentence into characters.</p></li>
+<li><p>The sentence “I like to eat apples” can be tokenized into the list of tokens:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">[&quot;I&quot;,</span> <span class="pre">&quot;</span> <span class="pre">&quot;,</span> <span class="pre">&quot;l&quot;,</span> <span class="pre">&quot;i&quot;,</span> <span class="pre">&quot;k&quot;,</span> <span class="pre">&quot;e&quot;,</span> <span class="pre">&quot;</span> <span class="pre">&quot;,</span> <span class="pre">&quot;t&quot;,</span> <span class="pre">&quot;o&quot;,</span> <span class="pre">&quot;</span> <span class="pre">&quot;,</span> <span class="pre">&quot;e&quot;,</span> <span class="pre">&quot;a&quot;,</span> <span class="pre">&quot;t&quot;,</span> <span class="pre">&quot;</span> <span class="pre">&quot;,</span> <span class="pre">&quot;a&quot;,</span> <span class="pre">&quot;p&quot;,</span> <span class="pre">&quot;p&quot;,</span> <span class="pre">&quot;l&quot;,</span> <span class="pre">&quot;e&quot;,</span> <span class="pre">&quot;s&quot;]</span></code>.</p>
+</div></blockquote>
+</li>
+<li><p>However, this method has its own problems.</p></li>
+</ul>
+<section id="problems-with-character-tokenizer">
+<h3>Problems with Character tokenizer<a class="headerlink" href="#problems-with-character-tokenizer" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>The number of tokens is very large.</p>
+<ul>
+<li><p>This requires more computation and memory.</p></li>
+</ul>
+</li>
+<li><p>Limit the application of the model.</p>
+<ul>
+<li><p>Only certain types of models can be used.</p></li>
+<li><p>It is inefficient for the certain types of applications, such as NER.</p></li>
+</ul>
+</li>
+<li><p>It would be difficult to understand the relationship between the tokens.</p>
+<ul>
+<li><p>For example, the tokens <code class="docutils literal notranslate"><span class="pre">[&quot;a&quot;,</span> <span class="pre">&quot;p&quot;,</span> <span class="pre">&quot;p&quot;,</span> <span class="pre">&quot;l&quot;,</span> <span class="pre">&quot;e&quot;]</span></code> do not represent the word <code class="docutils literal notranslate"><span class="pre">apple</span></code>.</p></li>
+<li><p>The tokens <code class="docutils literal notranslate"><span class="pre">[&quot;a&quot;,</span> <span class="pre">&quot;p&quot;,</span> <span class="pre">&quot;p&quot;,</span> <span class="pre">&quot;l&quot;,</span> <span class="pre">&quot;e&quot;]</span></code> do not have any relationship with the tokens <code class="docutils literal notranslate"><span class="pre">[&quot;a&quot;,</span> <span class="pre">&quot;p&quot;,</span> <span class="pre">&quot;p&quot;,</span> <span class="pre">&quot;l&quot;,</span> <span class="pre">&quot;e&quot;,</span> <span class="pre">&quot;s&quot;]</span></code>.</p></li>
+</ul>
+</li>
+<li><p>Incorrect spelling could be generated.</p></li>
+</ul>
+</section>
+</section>
+<section id="subword-tokenization">
+<h2>Subword Tokenization<a class="headerlink" href="#subword-tokenization" title="Permalink to this headline">#</a></h2>
+<ul>
+<li><p>With character-level tokenization, we risk losing the semantic features of the words.</p></li>
+<li><p>With word-level tokenization, we have out-of-vocabulary (OOV) words or very large vocabulary sizes.</p></li>
+<li><p>To solve the problems of word tokenization and character tokenization, an algorithm should be able to:</p>
+<ul class="simple">
+<li><p>Retain the semantic features of the words.</p></li>
+<li><p>Tokenize any words without the need for a huge vocabulary.</p></li>
+</ul>
+</li>
+<li><p>Subword tokenization is a method that can solve these problems.</p></li>
+<li><p>For example, the sentence “I like to eat pineapples” can be tokenized into the list of tokens:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">[&quot;I&quot;,</span> <span class="pre">&quot;like&quot;,</span> <span class="pre">&quot;to&quot;,</span> <span class="pre">&quot;eat&quot;,</span> <span class="pre">&quot;pine&quot;,</span> <span class="pre">&quot;##app&quot;,</span> <span class="pre">&quot;##les&quot;]</span></code>.</p>
+</div></blockquote>
+</li>
+<li><p>The model only learns a few subwords that can be used to represent any word.</p></li>
+<li><p>This solves the problem of OOV words.</p></li>
+</ul>
+<section id="how-to-decide-which-subwords-to-use">
+<h3>How to decide which subwords to use?<a class="headerlink" href="#how-to-decide-which-subwords-to-use" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>There are several algorithms that can be used to decide which subwords to use.</p>
+<ul>
+<li><p>Byte Pair Encoding (BPE)</p></li>
+<li><p>Unigram Language Model</p></li>
+<li><p>Subword Sampling</p></li>
+<li><p>Byte-level BPE</p></li>
+<li><p>WordPiece</p></li>
+<li><p>SentencePiece</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="byte-pair-encoding-bpe">
+<h2>Byte Pair Encoding (BPE)<a class="headerlink" href="#byte-pair-encoding-bpe" title="Permalink to this headline">#</a></h2>
+<p>Sennrich et al. (2016) proposed a method called Byte Pair Encoding (BPE) to learn subword units.
+<span id="id1">[<a class="reference internal" href="../../about/index.html#id17" title="Rico Sennrich, Barry Haddow, and Alexandra Birch. Neural machine translation of rare words with subword units. In Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), 1715–1725. Berlin, Germany, August 2016. Association for Computational Linguistics. URL: https://aclanthology.org/P16-1162, doi:10.18653/v1/P16-1162.">Sennrich <em>et al.</em>, 2016</a>]</span></p>
+<ul class="simple">
+<li><p>Byte Pair Encoding algorithm is originally used for compressing text.</p></li>
+<li><p>It splits words into sequences of characters and iteratively combines the most frequent character pairs.</p></li>
+</ul>
+<section id="token-learning-from-dataset">
+<h3>Token Learning from Dataset<a class="headerlink" href="#token-learning-from-dataset" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Count the frequency of each word shown in the corpus.</p></li>
+<li><p>For each word, append a special stop token <code class="docutils literal notranslate"><span class="pre">&lt;/w&gt;</span></code> at the end of the word.</p></li>
+<li><p>Then, split the word into characters.</p></li>
+<li><p>Initially, the tokens of the word are all of its characters plus the additional <code class="docutils literal notranslate"><span class="pre">&lt;/w&gt;</span></code> token.</p></li>
+<li><p>For example, the tokens for word <code class="docutils literal notranslate"><span class="pre">low</span></code> are [<code class="docutils literal notranslate"><span class="pre">l</span></code>, <code class="docutils literal notranslate"><span class="pre">o</span></code>, <code class="docutils literal notranslate"><span class="pre">w</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;/w&gt;</span></code>] in order.</p></li>
+<li><p>So after counting all the words in the dataset, we will get a vocabulary for the tokenized word with its corresponding counts</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;l o w &lt;/w&gt;&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;l o w e r &lt;/w&gt;&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;n e w e s t &lt;/w&gt;&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;w i d e s t &lt;/w&gt;&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>In each iteration, count the frequency of each consecutive byte pair, find out the most frequent one, and merge the two byte pair tokens to one token.</p></li>
+<li><p>For the above example, in the first iteration of the merge, because byte pair <code class="docutils literal notranslate"><span class="pre">e</span></code> and <code class="docutils literal notranslate"><span class="pre">s</span></code> occurred 6 + 3 = 9 times which is the most frequent, merge these into a new token <code class="docutils literal notranslate"><span class="pre">es</span></code>.</p></li>
+<li><p>Note that token <code class="docutils literal notranslate"><span class="pre">s</span></code> is also gone in this particular example.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;l o w &lt;/w&gt;&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;l o w e r &lt;/w&gt;&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;n e w es t &lt;/w&gt;&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;w i d es t &lt;/w&gt;&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>In the second iteration of merge, token <code class="docutils literal notranslate"><span class="pre">es</span></code> and <code class="docutils literal notranslate"><span class="pre">t</span></code> occurred 6 + 3 = 9 times, which is the most frequent.</p></li>
+<li><p>Merge these to into a new token <code class="docutils literal notranslate"><span class="pre">est</span></code>.</p></li>
+<li><p>Note that token <code class="docutils literal notranslate"><span class="pre">es</span></code> and <code class="docutils literal notranslate"><span class="pre">t</span></code> are also gone.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;l o w &lt;/w&gt;&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;l o w e r &lt;/w&gt;&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;n e w est &lt;/w&gt;&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;w i d est &lt;/w&gt;&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>In the third iteration of the merge, token <code class="docutils literal notranslate"><span class="pre">est</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;/w&gt;</span></code> pair is the most frequent, etc.</p></li>
+<li><p>Do this until we have the desired number of tokens or reach the maximum number of iterations.</p></li>
+</ul>
+<p>Stop token <code class="docutils literal notranslate"><span class="pre">&lt;/w&gt;</span></code> is also important.</p>
+<ul class="simple">
+<li><p>Without <code class="docutils literal notranslate"><span class="pre">&lt;/w&gt;</span></code>, say if there is a token <code class="docutils literal notranslate"><span class="pre">st</span></code>, this token could be in the word <code class="docutils literal notranslate"><span class="pre">st</span> <span class="pre">ar</span></code>, or the wold <code class="docutils literal notranslate"><span class="pre">wide</span> <span class="pre">st</span></code>.</p></li>
+<li><p>Those two words are very different in meaning, but the token <code class="docutils literal notranslate"><span class="pre">st</span></code> is the same.</p></li>
+<li><p>With <code class="docutils literal notranslate"><span class="pre">&lt;/w&gt;</span></code>, if there is a token <code class="docutils literal notranslate"><span class="pre">st&lt;/w&gt;</span></code>, the model immediately know that it is the token for the wold <code class="docutils literal notranslate"><span class="pre">wide</span> <span class="pre">st&lt;/w&gt;</span></code> but not <code class="docutils literal notranslate"><span class="pre">st</span> <span class="pre">ar&lt;/w&gt;</span></code>.</p></li>
+</ul>
+<p>To summarize, the algorithm is as follows:</p>
+<ol class="simple">
+<li><p>Extract the words from the given dataset along with their count.</p></li>
+<li><p>Define the vocabulary size.</p></li>
+<li><p>Split the words into a character sequence.</p></li>
+<li><p>Add all the unique characters in our character sequence to the vocabulary.</p></li>
+<li><p>Select and merge the symbol pair that has a high frequency.</p></li>
+<li><p>Repeat step 5 until the vocabulary size is reached.</p></li>
+</ol>
+</section>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
