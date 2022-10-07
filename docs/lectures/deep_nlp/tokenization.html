@@ -1134,8 +1134,35 @@ title="Print to PDF"
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#token-learning-from-dataset">
-     Token Learning from Dataset
+    <a class="reference internal nav-link" href="#how-to-learn-subwords-from-data">
+     How to learn subwords from data?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bpe-in-practice">
+     BPE in Practice
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#encoding-and-decoding">
+     Encoding and Decoding
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#decoding">
+       Decoding
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#encoding">
+       Encoding
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bpe-encoding-and-decoding-in-practice">
+     BPE Encoding and Decoding in Practice
     </a>
    </li>
   </ul>
@@ -1226,8 +1253,35 @@ title="Print to PDF"
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#token-learning-from-dataset">
-     Token Learning from Dataset
+    <a class="reference internal nav-link" href="#how-to-learn-subwords-from-data">
+     How to learn subwords from data?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bpe-in-practice">
+     BPE in Practice
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#encoding-and-decoding">
+     Encoding and Decoding
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#decoding">
+       Decoding
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#encoding">
+       Encoding
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bpe-encoding-and-decoding-in-practice">
+     BPE Encoding and Decoding in Practice
     </a>
    </li>
   </ul>
@@ -1429,8 +1483,8 @@ title="Print to PDF"
 <li><p>Byte Pair Encoding algorithm is originally used for compressing text.</p></li>
 <li><p>It splits words into sequences of characters and iteratively combines the most frequent character pairs.</p></li>
 </ul>
-<section id="token-learning-from-dataset">
-<h3>Token Learning from Dataset<a class="headerlink" href="#token-learning-from-dataset" title="Permalink to this headline">#</a></h3>
+<section id="how-to-learn-subwords-from-data">
+<h3>How to learn subwords from data?<a class="headerlink" href="#how-to-learn-subwords-from-data" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Count the frequency of each word shown in the corpus.</p></li>
 <li><p>For each word, append a special stop token <code class="docutils literal notranslate"><span class="pre">&lt;/w&gt;</span></code> at the end of the word.</p></li>
@@ -1477,6 +1531,301 @@ title="Print to PDF"
 <li><p>Select and merge the symbol pair that has a high frequency.</p></li>
 <li><p>Repeat step 5 until the vocabulary size is reached.</p></li>
 </ol>
+</section>
+<section id="bpe-in-practice">
+<h3>BPE in Practice<a class="headerlink" href="#bpe-in-practice" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">collections</span>
+
+
+<span class="k">def</span> <span class="nf">get_vocab</span><span class="p">(</span><span class="n">texts</span><span class="p">):</span>
+    <span class="n">vocab</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+            <span class="n">vocab</span><span class="p">[</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">word</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; &lt;/w&gt;&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">vocab</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_stats</span><span class="p">(</span><span class="n">vocab</span><span class="p">):</span>
+    <span class="n">pairs</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">vocab</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">symbols</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">pairs</span><span class="p">[</span><span class="n">symbols</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">symbols</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">freq</span>
+    <span class="k">return</span> <span class="n">pairs</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">merge_vocab</span><span class="p">(</span><span class="n">pair</span><span class="p">,</span> <span class="n">v_in</span><span class="p">):</span>
+    <span class="n">v_out</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">bigram</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pair</span><span class="p">))</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(?&lt;!\S)&quot;</span> <span class="o">+</span> <span class="n">bigram</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;(?!\S)&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">v_in</span><span class="p">:</span>
+        <span class="n">w_out</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pair</span><span class="p">),</span> <span class="n">word</span><span class="p">)</span>
+        <span class="n">v_out</span><span class="p">[</span><span class="n">w_out</span><span class="p">]</span> <span class="o">=</span> <span class="n">v_in</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">v_out</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_tokens_from_vocab</span><span class="p">(</span><span class="n">vocab</span><span class="p">):</span>
+    <span class="n">tokens_frequencies</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">vocab_tokenization</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">vocab</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">word_tokens</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">word_tokens</span><span class="p">:</span>
+            <span class="n">tokens_frequencies</span><span class="p">[</span><span class="n">token</span><span class="p">]</span> <span class="o">+=</span> <span class="n">freq</span>
+        <span class="n">vocab_tokenization</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">word_tokens</span><span class="p">)]</span> <span class="o">=</span> <span class="n">word_tokens</span>
+    <span class="k">return</span> <span class="n">tokens_frequencies</span><span class="p">,</span> <span class="n">vocab_tokenization</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/entelecheia/ekorpkit-book/raw/main/assets/data/us_equities_news_sampled.zip&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;us_equities_news_sampled.parquet&quot;</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">cached_path</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">100</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Investing com Asian stock markets were broadly lower for a second day on Thursday as weak U S data o&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># vocab = {&#39;l o w &lt;/w&gt;&#39;: 5, &#39;l o w e r &lt;/w&gt;&#39;: 2, &#39;n e w e s t &lt;/w&gt;&#39;: 6, &#39;w i d e s t &lt;/w&gt;&#39;: 3}</span>
+<span class="n">vocab</span> <span class="o">=</span> <span class="n">get_vocab</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">1000</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tokens Before BPE&quot;</span><span class="p">)</span>
+<span class="n">tokens_frequencies</span><span class="p">,</span> <span class="n">vocab_tokenization</span> <span class="o">=</span> <span class="n">get_tokens_from_vocab</span><span class="p">(</span><span class="n">vocab</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;All tokens: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tokens_frequencies</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of tokens: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tokens_frequencies</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tokens Before BPE
+All tokens: dict_keys([&#39;I&#39;, &#39;n&#39;, &#39;v&#39;, &#39;e&#39;, &#39;s&#39;, &#39;t&#39;, &#39;i&#39;, &#39;g&#39;, &#39;&lt;/w&gt;&#39;, &#39;c&#39;, &#39;o&#39;, &#39;m&#39;, &#39;A&#39;, &#39;a&#39;, &#39;k&#39;, &#39;r&#39;, &#39;w&#39;, &#39;b&#39;, &#39;d&#39;, &#39;l&#39;, &#39;y&#39;, &#39;f&#39;, &#39;T&#39;, &#39;h&#39;, &#39;u&#39;, &#39;U&#39;, &#39;S&#39;, &#39;p&#39;, &#39;D&#39;, &#39;H&#39;, &#39;K&#39;, &#39;x&#39;, &#39;1&#39;, &#39;5&#39;, &#39;X&#39;, &#39;2&#39;, &#39;0&#39;, &#39;J&#39;, &#39;N&#39;, &#39;7&#39;, &#39;M&#39;, &#39;9&#39;, &#39;3&#39;, &#39;E&#39;, &#39;q&#39;, &#39;6&#39;, &#39;8&#39;, &#39;O&#39;, &#39;j&#39;, &#39;P&#39;, &#39;Y&#39;, &#39;C&#39;, &#39;4&#39;, &#39;L&#39;, &#39;B&#39;, &#39;R&#39;, &#39;z&#39;, &#39;F&#39;, &#39;G&#39;, &#39;Q&#39;, &#39;W&#39;, &#39;V&#39;, &#39;Z&#39;])
+Number of tokens: 63
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_merges</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">iter_to_print</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">num_merges</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_merges</span><span class="p">):</span>
+    <span class="n">pairs</span> <span class="o">=</span> <span class="n">get_stats</span><span class="p">(</span><span class="n">vocab</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">pairs</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="n">best</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">pairs</span><span class="o">.</span><span class="n">get</span><span class="p">)</span>
+    <span class="n">vocab</span> <span class="o">=</span> <span class="n">merge_vocab</span><span class="p">(</span><span class="n">best</span><span class="p">,</span> <span class="n">vocab</span><span class="p">)</span>
+    <span class="n">tokens_frequencies</span><span class="p">,</span> <span class="n">vocab_tokenization</span> <span class="o">=</span> <span class="n">get_tokens_from_vocab</span><span class="p">(</span><span class="n">vocab</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">iter_to_print</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Iter: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best pair: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">best</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;All tokens: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tokens_frequencies</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of tokens: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tokens_frequencies</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iter: 1
+Best pair: (&#39;p&#39;, &#39;o&#39;)
+All tokens: dict_keys([&#39;I&#39;, &#39;n&#39;, &#39;v&#39;, &#39;e&#39;, &#39;st&#39;, &#39;ing&lt;/w&gt;&#39;, &#39;com&#39;, &#39;&lt;/w&gt;&#39;, &#39;A&#39;, &#39;si&#39;, &#39;an&lt;/w&gt;&#39;, &#39;oc&#39;, &#39;k&lt;/w&gt;&#39;, &#39;m&#39;, &#39;ar&#39;, &#39;k&#39;, &#39;ts&lt;/w&gt;&#39;, &#39;w&#39;, &#39;er&#39;, &#39;e&lt;/w&gt;&#39;, &#39;b&#39;, &#39;ro&#39;, &#39;ad&#39;, &#39;ly&lt;/w&gt;&#39;, &#39;l&#39;, &#39;ow&#39;, &#39;er&lt;/w&gt;&#39;, &#39;for&lt;/w&gt;&#39;, &#39;a&lt;/w&gt;&#39;, &#39;s&#39;, &#39;ec&#39;, &#39;on&#39;, &#39;d&lt;/w&gt;&#39;, &#39;d&#39;, &#39;ay&lt;/w&gt;&#39;, &#39;on&lt;/w&gt;&#39;, &#39;Th&#39;, &#39;ur&#39;, &#39;as&lt;/w&gt;&#39;, &#39;a&#39;, &#39;U&#39;, &#39;S&#39;, &#39;at&#39;, &#39;ab&#39;, &#39;g&#39;, &#39;o&#39;, &#39;s&lt;/w&gt;&#39;, &#39;or&#39;, &#39;ers&lt;/w&gt;&#39;, &#39;ed&lt;/w&gt;&#39;, &#39;to&lt;/w&gt;&#39;, &#39;con&#39;, &#39;c&#39;, &#39;ov&#39;, &#39;the&lt;/w&gt;&#39;, &#39;lo&#39;, &#39;al&lt;/w&gt;&#39;, &#39;th&lt;/w&gt;&#39;, &#39;ou&#39;, &#39;t&#39;, &#39;wh&#39;, &#39;il&#39;, &#39;in&#39;, &#39;por&#39;, &#39;p&#39;, &#39;r&#39;, &#39;of&#39;, &#39;i&#39;, &#39;al&#39;, &#39;o&lt;/w&gt;&#39;, &#39;ig&#39;, &#39;h&#39;, &#39;D&#39;, &#39;tr&#39;, &#39;H&#39;, &#39;K&#39;, &#39;an&#39;, &#39;en&#39;, &#39;ex&#39;, &#39;u&#39;, &#39;1&lt;/w&gt;&#39;, &#39;5&#39;, &#39;5&lt;/w&gt;&#39;, &#39;X&#39;, &#39;2&#39;, &#39;0&#39;, &#39;0&lt;/w&gt;&#39;, &#39;di&#39;, &#39;J&#39;, &#39;N&#39;, &#39;sh&#39;, &#39;7&#39;, &#39;The&lt;/w&gt;&#39;, &#39;f&#39;, &#39;th&#39;, &#39;year&#39;, &#39;h&lt;/w&gt;&#39;, &#39;it&lt;/w&gt;&#39;, &#39;ear&#39;, &#39;li&#39;, &#39;in&lt;/w&gt;&#39;, &#39;as&#39;, &#39;of&lt;/w&gt;&#39;, &#39;es&#39;, &#39;M&#39;, &#39;is&lt;/w&gt;&#39;, &#39;and&lt;/w&gt;&#39;, &#39;et&lt;/w&gt;&#39;, &#39;ti&#39;, &#39;ve&lt;/w&gt;&#39;, &#39;y&lt;/w&gt;&#39;, &#39;un&#39;, &#39;om&#39;, &#39;ic&#39;, &#39;1&#39;, &#39;9&#39;, &#39;per&#39;, &#39;ter&lt;/w&gt;&#39;, &#39;3&#39;, &#39;em&#39;, &#39;E&#39;, &#39;x&#39;, &#39;ir&#39;, &#39;st&lt;/w&gt;&#39;, &#39;qu&#39;, &#39;ac&#39;, &#39;y&#39;, &#39;en&lt;/w&gt;&#39;, &#39;T&#39;, &#39;6&#39;, &#39;8&#39;, &#39;re&#39;, &#39;el&#39;, &#39;su&#39;, &#39;t&lt;/w&gt;&#39;, &#39;O&#39;, &#39;n&lt;/w&gt;&#39;, &#39;p&lt;/w&gt;&#39;, &#39;es&lt;/w&gt;&#39;, &#39;j&#39;, &#39;ol&#39;, &#39;that&lt;/w&gt;&#39;, &#39;P&#39;, &#39;Y&#39;, &#39;wi&#39;, &#39;pro&#39;, &#39;ing&#39;, &#39;C&#39;, &#39;ri&#39;, &#39;4&#39;, &#39;se&lt;/w&gt;&#39;, &#39;ati&#39;, &#39;L&#39;, &#39;l&lt;/w&gt;&#39;, &#39;2&lt;/w&gt;&#39;, &#39;ag&#39;, &#39;or&lt;/w&gt;&#39;, &#39;ks&lt;/w&gt;&#39;, &#39;B&#39;, &#39;R&#39;, &#39;comp&#39;, &#39;be&#39;, &#39;it&#39;, &#39;z&#39;, &#39;at&lt;/w&gt;&#39;, &#39;F&#39;, &#39;G&#39;, &#39;ent&lt;/w&gt;&#39;, &#39;po&#39;, &#39;Q&#39;, &#39;W&#39;, &#39;are&lt;/w&gt;&#39;, &#39;V&#39;, &#39;Z&#39;, &#39;q&#39;])
+Number of tokens: 175
+====================
+Iter: 2
+Best pair: (&#39;at&#39;, &#39;e&lt;/w&gt;&#39;)
+All tokens: dict_keys([&#39;I&#39;, &#39;n&#39;, &#39;v&#39;, &#39;e&#39;, &#39;st&#39;, &#39;ing&lt;/w&gt;&#39;, &#39;com&#39;, &#39;&lt;/w&gt;&#39;, &#39;A&#39;, &#39;si&#39;, &#39;an&lt;/w&gt;&#39;, &#39;oc&#39;, &#39;k&lt;/w&gt;&#39;, &#39;m&#39;, &#39;ar&#39;, &#39;k&#39;, &#39;ts&lt;/w&gt;&#39;, &#39;w&#39;, &#39;er&#39;, &#39;e&lt;/w&gt;&#39;, &#39;b&#39;, &#39;ro&#39;, &#39;ad&#39;, &#39;ly&lt;/w&gt;&#39;, &#39;l&#39;, &#39;ow&#39;, &#39;er&lt;/w&gt;&#39;, &#39;for&lt;/w&gt;&#39;, &#39;a&lt;/w&gt;&#39;, &#39;s&#39;, &#39;ec&#39;, &#39;on&#39;, &#39;d&lt;/w&gt;&#39;, &#39;d&#39;, &#39;ay&lt;/w&gt;&#39;, &#39;on&lt;/w&gt;&#39;, &#39;Th&#39;, &#39;ur&#39;, &#39;as&lt;/w&gt;&#39;, &#39;a&#39;, &#39;U&#39;, &#39;S&#39;, &#39;at&#39;, &#39;ab&#39;, &#39;g&#39;, &#39;o&#39;, &#39;s&lt;/w&gt;&#39;, &#39;or&#39;, &#39;ers&lt;/w&gt;&#39;, &#39;ed&lt;/w&gt;&#39;, &#39;to&lt;/w&gt;&#39;, &#39;con&#39;, &#39;c&#39;, &#39;ov&#39;, &#39;the&lt;/w&gt;&#39;, &#39;lo&#39;, &#39;al&lt;/w&gt;&#39;, &#39;th&lt;/w&gt;&#39;, &#39;ou&#39;, &#39;t&#39;, &#39;wh&#39;, &#39;il&#39;, &#39;in&#39;, &#39;por&#39;, &#39;ate&lt;/w&gt;&#39;, &#39;p&#39;, &#39;r&#39;, &#39;of&#39;, &#39;i&#39;, &#39;al&#39;, &#39;o&lt;/w&gt;&#39;, &#39;ig&#39;, &#39;h&#39;, &#39;D&#39;, &#39;tr&#39;, &#39;H&#39;, &#39;K&#39;, &#39;an&#39;, &#39;en&#39;, &#39;ex&#39;, &#39;u&#39;, &#39;1&lt;/w&gt;&#39;, &#39;5&#39;, &#39;5&lt;/w&gt;&#39;, &#39;X&#39;, &#39;2&#39;, &#39;0&#39;, &#39;0&lt;/w&gt;&#39;, &#39;di&#39;, &#39;J&#39;, &#39;N&#39;, &#39;sh&#39;, &#39;7&#39;, &#39;The&lt;/w&gt;&#39;, &#39;f&#39;, &#39;th&#39;, &#39;year&#39;, &#39;h&lt;/w&gt;&#39;, &#39;it&lt;/w&gt;&#39;, &#39;ear&#39;, &#39;li&#39;, &#39;in&lt;/w&gt;&#39;, &#39;as&#39;, &#39;of&lt;/w&gt;&#39;, &#39;es&#39;, &#39;M&#39;, &#39;is&lt;/w&gt;&#39;, &#39;and&lt;/w&gt;&#39;, &#39;et&lt;/w&gt;&#39;, &#39;ti&#39;, &#39;ve&lt;/w&gt;&#39;, &#39;y&lt;/w&gt;&#39;, &#39;un&#39;, &#39;om&#39;, &#39;ic&#39;, &#39;1&#39;, &#39;9&#39;, &#39;per&#39;, &#39;ter&lt;/w&gt;&#39;, &#39;3&#39;, &#39;em&#39;, &#39;E&#39;, &#39;x&#39;, &#39;ir&#39;, &#39;st&lt;/w&gt;&#39;, &#39;qu&#39;, &#39;ac&#39;, &#39;y&#39;, &#39;en&lt;/w&gt;&#39;, &#39;T&#39;, &#39;6&#39;, &#39;8&#39;, &#39;re&#39;, &#39;el&#39;, &#39;su&#39;, &#39;t&lt;/w&gt;&#39;, &#39;O&#39;, &#39;n&lt;/w&gt;&#39;, &#39;p&lt;/w&gt;&#39;, &#39;es&lt;/w&gt;&#39;, &#39;j&#39;, &#39;ol&#39;, &#39;that&lt;/w&gt;&#39;, &#39;P&#39;, &#39;Y&#39;, &#39;wi&#39;, &#39;pro&#39;, &#39;ing&#39;, &#39;C&#39;, &#39;ri&#39;, &#39;4&#39;, &#39;se&lt;/w&gt;&#39;, &#39;ati&#39;, &#39;L&#39;, &#39;l&lt;/w&gt;&#39;, &#39;2&lt;/w&gt;&#39;, &#39;ag&#39;, &#39;or&lt;/w&gt;&#39;, &#39;ks&lt;/w&gt;&#39;, &#39;B&#39;, &#39;R&#39;, &#39;comp&#39;, &#39;be&#39;, &#39;it&#39;, &#39;z&#39;, &#39;at&lt;/w&gt;&#39;, &#39;F&#39;, &#39;G&#39;, &#39;ent&lt;/w&gt;&#39;, &#39;po&#39;, &#39;Q&#39;, &#39;W&#39;, &#39;are&lt;/w&gt;&#39;, &#39;V&#39;, &#39;Z&#39;, &#39;q&#39;])
+Number of tokens: 176
+====================
+Iter: 999
+Best pair: (&#39;announc&#39;, &#39;ed&lt;/w&gt;&#39;)
+All tokens: dict_keys([&#39;Invest&#39;, &#39;ing&lt;/w&gt;&#39;, &#39;com&lt;/w&gt;&#39;, &#39;A&#39;, &#39;si&#39;, &#39;an&lt;/w&gt;&#39;, &#39;stock&lt;/w&gt;&#39;, &#39;markets&lt;/w&gt;&#39;, &#39;were&lt;/w&gt;&#39;, &#39;bro&#39;, &#39;ad&#39;, &#39;ly&lt;/w&gt;&#39;, &#39;lower&lt;/w&gt;&#39;, &#39;for&lt;/w&gt;&#39;, &#39;a&lt;/w&gt;&#39;, &#39;second&lt;/w&gt;&#39;, &#39;day&lt;/w&gt;&#39;, &#39;on&lt;/w&gt;&#39;, &#39;Thursday&lt;/w&gt;&#39;, &#39;as&lt;/w&gt;&#39;, &#39;we&#39;, &#39;ak&lt;/w&gt;&#39;, &#39;U&lt;/w&gt;&#39;, &#39;S&lt;/w&gt;&#39;, &#39;data&lt;/w&gt;&#39;, &#39;d&#39;, &#39;ur&#39;, &#39;able&lt;/w&gt;&#39;, &#39;g&#39;, &#39;oo&#39;, &#39;ds&lt;/w&gt;&#39;, &#39;or&#39;, &#39;ers&lt;/w&gt;&#39;, &#39;ded&lt;/w&gt;&#39;, &#39;to&lt;/w&gt;&#39;, &#39;con&#39;, &#39;cer&#39;, &#39;ns&lt;/w&gt;&#39;, &#39;over&lt;/w&gt;&#39;, &#39;the&lt;/w&gt;&#39;, &#39;global&lt;/w&gt;&#39;, &#39;growth&lt;/w&gt;&#39;, &#39;out&#39;, &#39;look&lt;/w&gt;&#39;, &#39;while&lt;/w&gt;&#39;, &#39;declin&#39;, &#39;cor&#39;, &#39;por&#39;, &#39;ate&lt;/w&gt;&#39;, &#39;prof&#39;, &#39;its&lt;/w&gt;&#39;, &#39;also&lt;/w&gt;&#39;, &#39;igh&#39;, &#39;ed&lt;/w&gt;&#39;, &#39;D&#39;, &#39;uring&lt;/w&gt;&#39;, &#39;l&#39;, &#39;trade&lt;/w&gt;&#39;, &#39;H&#39;, &#39;ong&lt;/w&gt;&#39;, &#39;K&#39;, &#39;s&lt;/w&gt;&#39;, &#39;an&#39;, &#39;g&lt;/w&gt;&#39;, &#39;S&#39;, &#39;en&#39;, &#39;In&#39;, &#39;ex&lt;/w&gt;&#39;, &#39;t&#39;, &#39;um&#39;, &#39;bl&#39;, &#39;1&lt;/w&gt;&#39;, &#39;5&#39;, &#39;5&lt;/w&gt;&#39;, &#39;Au&#39;, &#39;str&#39;, &#39;al&#39;, &#39;ia&lt;/w&gt;&#39;, &#39;X&lt;/w&gt;&#39;, &#39;20&#39;, &#39;0&lt;/w&gt;&#39;, &#39;di&#39;, &#39;pp&#39;, &#39;Jap&#39;, &#39;N&#39;, &#39;i&#39;, &#39;k&#39;, &#39;e&#39;, &#39;i&lt;/w&gt;&#39;, &#39;2&#39;, &#39;25&lt;/w&gt;&#39;, &#39;sh&#39;, &#39;7&lt;/w&gt;&#39;, &#39;The&lt;/w&gt;&#39;, &#39;c&#39;, &#39;ame&lt;/w&gt;&#39;, &#39;f&#39;, &#39;urther&lt;/w&gt;&#39;, &#39;off&lt;/w&gt;&#39;, &#39;one&lt;/w&gt;&#39;, &#39;year&lt;/w&gt;&#39;, &#39;clo&#39;, &#39;sing&lt;/w&gt;&#39;, &#39;high&lt;/w&gt;&#39;, &#39;h&#39;, &#39;it&lt;/w&gt;&#39;, &#39;ear&#39;, &#39;lier&lt;/w&gt;&#39;, &#39;in&lt;/w&gt;&#39;, &#39;week&lt;/w&gt;&#39;, &#39;investors&lt;/w&gt;&#39;, &#39;as&#39;, &#39;ahead&lt;/w&gt;&#39;, &#39;of&lt;/w&gt;&#39;, &#39;ese&lt;/w&gt;&#39;, &#39;fiscal&lt;/w&gt;&#39;, &#39;end&lt;/w&gt;&#39;, &#39;Mar&#39;, &#39;ch&lt;/w&gt;&#39;, &#39;is&lt;/w&gt;&#39;, &#39;fin&#39;, &#39;al&lt;/w&gt;&#39;, &#39;month&lt;/w&gt;&#39;, &#39;and&lt;/w&gt;&#39;, &#39;market&lt;/w&gt;&#39;, &#39;par&#39;, &#39;ti&#39;, &#39;ci&#39;, &#39;p&#39;, &#39;ts&lt;/w&gt;&#39;, &#39;have&lt;/w&gt;&#39;, &#39;expected&lt;/w&gt;&#39;, &#39;many&lt;/w&gt;&#39;, &#39;fun&#39;, &#39;oc&#39;, &#39;k&lt;/w&gt;&#39;, &#39;from&lt;/w&gt;&#39;, &#39;me&#39;, &#39;te&#39;, &#39;ic&lt;/w&gt;&#39;, &#39;1&#39;, &#39;9&lt;/w&gt;&#39;, &#39;r&#39;, &#39;ally&lt;/w&gt;&#39;, &#39;J&#39;, &#39;u&#39;, &#39;ary&lt;/w&gt;&#39;, &#39;peri&#39;, &#39;o&#39;, &#39;d&lt;/w&gt;&#39;, &#39;after&lt;/w&gt;&#39;, &#39;ed&#39;, &#39;ding&lt;/w&gt;&#39;, &#39;more&lt;/w&gt;&#39;, &#39;than&lt;/w&gt;&#39;, &#39;13&lt;/w&gt;&#39;, &#39;pr&#39;, &#39;il&lt;/w&gt;&#39;, &#39;Dec&#39;, &#39;ember&lt;/w&gt;&#39;, &#39;Ex&#39;, &#39;port&#39;, &#39;which&lt;/w&gt;&#39;, &#39;gained&lt;/w&gt;&#39;, &#39;shar&#39;, &#39;first&lt;/w&gt;&#39;, &#39;quarter&lt;/w&gt;&#39;, &#39;back&lt;/w&gt;&#39;, &#39;ak&#39;, &#39;y&#39;, &#39;en&lt;/w&gt;&#39;, &#39;ut&#39;, &#39;om&#39;, &#39;To&#39;, &#39;ot&#39;, &#39;is&#39;, &#39;s&#39;, &#39;ped&lt;/w&gt;&#39;, &#39;6&#39;, &#39;8&lt;/w&gt;&#39;, &#39;res&#39;, &#39;pec&#39;, &#39;tiv&#39;, &#39;ely&lt;/w&gt;&#39;, &#39;consum&#39;, &#39;er&lt;/w&gt;&#39;, &#39;elec&#39;, &#39;tr&#39;, &#39;on&#39;, &#39;ic&#39;, &#39;gi&#39;, &#39;ant&lt;/w&gt;&#39;, &#39;y&lt;/w&gt;&#39;, &#39;re&#39;, &#39;ated&lt;/w&gt;&#39;, &#39;On&lt;/w&gt;&#39;, &#39;up&#39;, &#39;side&lt;/w&gt;&#39;, &#39;Sh&#39;, &#39;ar&#39;, &#39;p&lt;/w&gt;&#39;, &#39;aw&lt;/w&gt;&#39;, &#39;shares&lt;/w&gt;&#39;, &#39;j&#39;, &#39;ump&lt;/w&gt;&#39;, &#39;6&lt;/w&gt;&#39;, &#39;ex&#39;, &#39;ten&#39;, &#39;previ&#39;, &#39;ous&lt;/w&gt;&#39;, &#39;15&lt;/w&gt;&#39;, &#39;follow&#39;, &#39;repor&#39;, &#39;that&lt;/w&gt;&#39;, &#39;T&#39;, &#39;ai&#39;, &#39;w&#39;, &#39;&lt;/w&gt;&#39;, &#39;P&#39;, &#39;rec&#39;, &#39;sion&lt;/w&gt;&#39;, &#39;du&#39;, &#39;stry&lt;/w&gt;&#39;, &#39;bu&#39;, &#39;ying&lt;/w&gt;&#39;, &#39;10&lt;/w&gt;&#39;, &#39;man&#39;, &#39;ufac&#39;, &#39;tur&#39;, &#39;Y&#39;, &#39;9&#39;, &#39;billion&lt;/w&gt;&#39;, &#39;with&lt;/w&gt;&#39;, &#39;two&lt;/w&gt;&#39;, &#39;form&lt;/w&gt;&#39;, &#39;e&lt;/w&gt;&#39;, &#39;up&lt;/w&gt;&#39;, &#39;li&#39;, &#39;qui&#39;, &#39;st&#39;, &#39;dis&#39;, &#39;pl&#39;, &#39;ay&lt;/w&gt;&#39;, &#39;production&lt;/w&gt;&#39;, &#39;E&#39;, &#39;se&#39;, &#39;where&lt;/w&gt;&#39;, &#39;under&lt;/w&gt;&#39;, &#39;pres&#39;, &#39;sure&lt;/w&gt;&#39;, &#39;am&#39;, &#39;id&lt;/w&gt;&#39;, &#39;ing&#39;, &#39;er&#39;, &#39;ard&lt;/w&gt;&#39;, &#39;China&lt;/w&gt;&#39;, &#39;wor&#39;, &#39;ri&#39;, &#39;es&lt;/w&gt;&#39;, &#39;I&#39;, &#39;C&#39;, &#39;C&lt;/w&gt;&#39;, &#39;ro&#39;, &#39;per&#39;, &#39;ty&lt;/w&gt;&#39;, &#39;big&#39;, &#39;est&lt;/w&gt;&#39;, &#39;n&#39;, &#39;in&#39;, &#39;sur&#39;, &#39;dro&#39;, &#39;4&lt;/w&gt;&#39;, &#39;ting&lt;/w&gt;&#39;, &#39;201&#39;, &#39;net&lt;/w&gt;&#39;, &#39;income&lt;/w&gt;&#39;, &#39;rose&lt;/w&gt;&#39;, &#39;NY&#39;, &#39;0&#39;, &#39;3&lt;/w&gt;&#39;, &#39;mis&#39;, &#39;expect&#39;, &#39;ations&lt;/w&gt;&#39;, &#39;Con&#39;, &#39;ta&#39;, &#39;L&#39;, &#39;fell&lt;/w&gt;&#39;, &#39;ation&lt;/w&gt;&#39;, &#39;larg&#39;, &#39;carri&#39;, &#39;reported&lt;/w&gt;&#39;, &#39;lo&#39;, &#39;ss&lt;/w&gt;&#39;, &#39;2&lt;/w&gt;&#39;, &#39;7&#39;, &#39;last&lt;/w&gt;&#39;, &#39;wi&#39;, &#39;der&lt;/w&gt;&#39;, &#39;average&lt;/w&gt;&#39;, &#39;estimate&lt;/w&gt;&#39;, &#39;ris&#39;, &#39;fu&#39;, &#39;el&lt;/w&gt;&#39;, &#39;co&#39;, &#39;sts&lt;/w&gt;&#39;, &#39;demand&lt;/w&gt;&#39;, &#39;ort&lt;/w&gt;&#39;, &#39;oper&#39;, &#39;at&#39;, &#39;or&lt;/w&gt;&#39;, &#39;M&#39;, &#39;chan&#39;, &#39;old&#39;, &#39;ings&lt;/w&gt;&#39;, &#39;ay&#39;, &#39;ann&#39;, &#39;due&lt;/w&gt;&#39;, &#39;b&#39;, &#39;deal&lt;/w&gt;&#39;, &#39;trad&#39;, &#39;Chin&#39;, &#39;ban&#39;, &#39;ks&lt;/w&gt;&#39;, &#39;stri&#39;, &#39;Com&#39;, &#39;mer&#39;, &#39;cial&lt;/w&gt;&#39;, &#39;Bank&lt;/w&gt;&#39;, &#39;down&lt;/w&gt;&#39;, &#39;their&lt;/w&gt;&#39;, &#39;earnings&lt;/w&gt;&#39;, &#39;lat&#39;, &#39;R&#39;, &#39;mat&#39;, &#39;ial&lt;/w&gt;&#39;, &#39;produc&#39;, &#39;cont&#39;, &#39;ted&lt;/w&gt;&#39;, &#39;ses&lt;/w&gt;&#39;, &#39;op&#39;, &#39;per&lt;/w&gt;&#39;, &#39;min&#39;, &#39;x&#39;, &#39;any&lt;/w&gt;&#39;, &#39;Al&#39;, &#39;um&lt;/w&gt;&#39;, &#39;Corporation&lt;/w&gt;&#39;, &#39;O&lt;/w&gt;&#39;, &#39;oil&lt;/w&gt;&#39;, &#39;maj&#39;, &#39;ors&lt;/w&gt;&#39;, &#39;et&#39;, &#39;O&#39;, &#39;But&lt;/w&gt;&#39;, &#39;perform&#39;, &#39;onal&lt;/w&gt;&#39;, &#39;equ&#39;, &#39;ities&lt;/w&gt;&#39;, &#39;rema&#39;, &#39;close&lt;/w&gt;&#39;, &#39;four&lt;/w&gt;&#39;, &#39;index&lt;/w&gt;&#39;, &#39;was&lt;/w&gt;&#39;, &#39;by&lt;/w&gt;&#39;, &#39;decline&lt;/w&gt;&#39;, &#39;coun&#39;, &#39;struc&#39;, &#39;tion&lt;/w&gt;&#39;, &#39;company&lt;/w&gt;&#39;, &#39;under&#39;, &#39;ending&lt;/w&gt;&#39;, &#39;3&#39;, &#39;will&lt;/w&gt;&#39;, &#39;be&lt;/w&gt;&#39;, &#39;between&lt;/w&gt;&#39;, &#39;U&#39;, &#39;4&#39;, &#39;00&lt;/w&gt;&#39;, &#39;million&lt;/w&gt;&#39;, &#39;50&lt;/w&gt;&#39;, &#39;below&lt;/w&gt;&#39;, &#39;it&#39;, &#39;increased&lt;/w&gt;&#39;, &#39;et&lt;/w&gt;&#39;, &#39;a&#39;, &#39;ther&lt;/w&gt;&#39;, &#39;ity&lt;/w&gt;&#39;, &#39;Me&#39;, &#39;European&lt;/w&gt;&#39;, &#39;m&#39;, &#39;il&#39;, &#39;sup&#39;, &#39;o&lt;/w&gt;&#39;, &#39;z&#39;, &#39;lead&#39;, &#39;increase&lt;/w&gt;&#39;, &#39;de&#39;, &#39;bt&lt;/w&gt;&#39;, &#39;fi&#39;, &#39;all&lt;/w&gt;&#39;, &#39;com&#39;, &#39;at&lt;/w&gt;&#39;, &#39;X&#39;, &#39;F&#39;, &#39;ance&lt;/w&gt;&#39;, &#39;40&lt;/w&gt;&#39;, &#39;G&#39;, &#39;SE&lt;/w&gt;&#39;, &#39;ged&lt;/w&gt;&#39;, &#39;pu&#39;, &#39;sh&lt;/w&gt;&#39;, &#39;of&#39;, &#39;fic&#39;, &#39;employ&#39;, &#39;ment&lt;/w&gt;&#39;, &#39;change&lt;/w&gt;&#39;, &#39;rele&#39;, &#39;ase&lt;/w&gt;&#39;, &#39;iti&#39;, &#39;ess&lt;/w&gt;&#39;, &#39;cl&#39;, &#39;ms&lt;/w&gt;&#39;, &#39;oli&#39;, &#39;ec&#39;, &#39;t&lt;/w&gt;&#39;, &#39;ver&#39;, &#39;strong&lt;/w&gt;&#39;, &#39;br&#39;, &#39;gn&#39;, &#39;hel&#39;, &#39;ep&#39;, &#39;Inc&lt;/w&gt;&#39;, &#39;NYSE&lt;/w&gt;&#39;, &#39;N&lt;/w&gt;&#39;, &#39;P&lt;/w&gt;&#39;, &#39;air&#39;, &#39;performance&lt;/w&gt;&#39;, &#39;tt&#39;, &#39;le&lt;/w&gt;&#39;, &#39;mi&#39;, &#39;sen&#39;, &#39;se&lt;/w&gt;&#39;, &#39;revenue&lt;/w&gt;&#39;, &#39;but&lt;/w&gt;&#39;, &#39;EPS&lt;/w&gt;&#39;, &#39;ch&#39;, &#39;sensus&lt;/w&gt;&#39;, &#39;targ&#39;, &#39;Ad&#39;, &#39;for&#39;, &#39;lu&#39;, &#39;tu&#39;, &#39;ter&lt;/w&gt;&#39;, &#39;sales&lt;/w&gt;&#39;, &#39;some&lt;/w&gt;&#39;, &#39;pot&#39;, &#39;ght&lt;/w&gt;&#39;, &#39;results&lt;/w&gt;&#39;, &#39;th&#39;, &#39;us&lt;/w&gt;&#39;, &#39;low&lt;/w&gt;&#39;, &#39;2016&lt;/w&gt;&#39;, &#39;do&#39;, &#39;ad&lt;/w&gt;&#39;, &#39;fut&#39;, &#39;ure&lt;/w&gt;&#39;, &#39;This&lt;/w&gt;&#39;, &#39;analy&#39;, &#39;tic&#39;, &#39;what&lt;/w&gt;&#39;, &#39;you&lt;/w&gt;&#39;, &#39;can&lt;/w&gt;&#39;, &#39;expec&#39;, &#39;be&#39;, &#39;ond&lt;/w&gt;&#39;, &#39;ap&lt;/w&gt;&#39;, &#39;Q&#39;, &#39;high&#39;, &#39;gener&#39;, &#39;18&lt;/w&gt;&#39;, &#39;ago&lt;/w&gt;&#39;, &#39;line&lt;/w&gt;&#39;, &#39;ul&#39;, &#39;l&lt;/w&gt;&#39;, &#39;over&#39;, &#39;vi&#39;, &#39;ew&lt;/w&gt;&#39;, &#39;For&lt;/w&gt;&#39;, &#39;po&#39;, &#39;sted&lt;/w&gt;&#39;, &#39;Y&lt;/w&gt;&#39;, &#39;11&lt;/w&gt;&#39;, &#39;show&#39;, &#39;v&#39;, &#39;st&lt;/w&gt;&#39;, &#39;years&lt;/w&gt;&#39;, &#39;gu&#39;, &#39;id&#39;, &#39;loo&#39;, &#39;king&lt;/w&gt;&#39;, &#39;fl&#39;, &#39;However&lt;/w&gt;&#39;, &#39;all&#39;, &#39;Wh&#39;, &#39;thr&#39;, &#39;ill&#39;, &#39;about&lt;/w&gt;&#39;, &#39;duc&#39;, &#39;ov&#39;, &#39;B&#39;, &#39;es&#39;, &#39;boo&#39;, &#39;get&lt;/w&gt;&#39;, &#39;ning&lt;/w&gt;&#39;, &#39;mon&#39;, &#39;ey&lt;/w&gt;&#39;, &#39;R&lt;/w&gt;&#39;, &#39;D&lt;/w&gt;&#39;, &#39;recent&lt;/w&gt;&#39;, &#39;he&#39;, &#39;av&#39;, &#39;ily&lt;/w&gt;&#39;, &#39;dri&#39;, &#39;ve&lt;/w&gt;&#39;, &#39;through&lt;/w&gt;&#39;, &#39;fer&#39;, &#39;enti&#39;, &#39;products&lt;/w&gt;&#39;, &#39;It&lt;/w&gt;&#39;, &#39;estim&#39;, &#39;acc&#39;, &#39;oun&#39;, &#39;early&lt;/w&gt;&#39;, &#39;In&lt;/w&gt;&#39;, &#39;has&lt;/w&gt;&#39;, &#39;un&#39;, &#39;num&#39;, &#39;ber&lt;/w&gt;&#39;, &#39;new&lt;/w&gt;&#39;, &#39;ach&lt;/w&gt;&#39;, &#39;ating&lt;/w&gt;&#39;, &#39;reta&#39;, &#39;part&#39;, &#39;ef&#39;, &#39;are&lt;/w&gt;&#39;, &#39;ow&#39;, &#39;expan&#39;, &#39;am&lt;/w&gt;&#39;, &#39;su&#39;, &#39;verage&lt;/w&gt;&#39;, &#39;business&lt;/w&gt;&#39;, &#39;including&lt;/w&gt;&#39;, &#39;ative&lt;/w&gt;&#39;, &#39;pac&#39;, &#39;ag&#39;, &#39;reas&#39;, &#39;ons&lt;/w&gt;&#39;, &#39;pe&#39;, &#39;ople&lt;/w&gt;&#39;, &#39;increas&#39;, &#39;bec&#39;, &#39;wee&#39;, &#39;used&lt;/w&gt;&#39;, &#39;dr&#39;, &#39;th&lt;/w&gt;&#39;, &#39;they&lt;/w&gt;&#39;, &#39;As&lt;/w&gt;&#39;, &#39;such&lt;/w&gt;&#39;, &#39;if&#39;, &#39;enc&#39;, &#39;our&#39;, &#39;age&lt;/w&gt;&#39;, &#39;take&lt;/w&gt;&#39;, &#39;us&#39;, &#39;pur&#39;, &#39;em&#39;, &#39;ent&#39;, &#39;mod&#39;, &#39;sal&#39;, &#39;acks&lt;/w&gt;&#39;, &#39;world&lt;/w&gt;&#39;, &#39;pre&#39;, &#39;ce&lt;/w&gt;&#39;, &#39;develop&#39;, &#39;econom&#39;, &#39;ies&lt;/w&gt;&#39;, &#39;ge&lt;/w&gt;&#39;, &#39;going&lt;/w&gt;&#39;, &#39;gre&#39;, &#39;adv&#39;, &#39;comp&#39;, &#39;ple&lt;/w&gt;&#39;, &#39;inclu&#39;, &#39;de&lt;/w&gt;&#39;, &#39;ju&#39;, &#39;ices&lt;/w&gt;&#39;, &#39;to&#39;, &#39;ause&lt;/w&gt;&#39;, &#39;qu&#39;, &#39;sc&#39;, &#39;because&lt;/w&gt;&#39;, &#39;when&lt;/w&gt;&#39;, &#39;pro&#39;, &#39;cu&#39;, &#39;als&lt;/w&gt;&#39;, &#39;T&lt;/w&gt;&#39;, &#39;other&lt;/w&gt;&#39;, &#39;ben&#39;, &#39;row&#39;, &#39;om&lt;/w&gt;&#39;, &#39;ateg&#39;, &#39;ory&lt;/w&gt;&#39;, &#39;ack&lt;/w&gt;&#39;, &#39;off&#39;, &#39;set&lt;/w&gt;&#39;, &#39;grow&#39;, &#39;manag&#39;, &#39;ement&lt;/w&gt;&#39;, &#39;own&lt;/w&gt;&#39;, &#39;des&#39;, &#39;ir&#39;, &#39;ap&#39;, &#39;poin&#39;, &#39;third&lt;/w&gt;&#39;, &#39;gg&#39;, &#39;sive&lt;/w&gt;&#39;, &#39;mark&#39;, &#39;eting&lt;/w&gt;&#39;, &#39;el&#39;, &#39;ile&lt;/w&gt;&#39;, &#39;ran&#39;, &#39;ver&lt;/w&gt;&#39;, &#39;past&lt;/w&gt;&#39;, &#39;sp&#39;, &#39;perc&#39;, &#39;le&#39;, &#39;ast&lt;/w&gt;&#39;, &#39;tec&#39;, &#39;hn&#39;, &#39;most&lt;/w&gt;&#39;, &#39;fac&#39;, &#39;ig&#39;, &#39;els&lt;/w&gt;&#39;, &#39;into&lt;/w&gt;&#39;, &#39;ital&lt;/w&gt;&#39;, &#39;ou&#39;, &#39;St&#39;, &#39;ac&#39;, &#39;bre&#39;, &#39;tax&lt;/w&gt;&#39;, &#39;ps&lt;/w&gt;&#39;, &#39;Re&#39;, &#39;Th&#39;, &#39;marg&#39;, &#39;provi&#39;, &#39;ott&#39;, &#39;port&lt;/w&gt;&#39;, &#39;ency&lt;/w&gt;&#39;, &#39;been&lt;/w&gt;&#39;, &#39;out&lt;/w&gt;&#39;, &#39;gr&#39;, &#39;ph&#39;, &#39;wh&#39;, &#39;way&lt;/w&gt;&#39;, &#39;ati&#39;, &#39;ves&lt;/w&gt;&#39;, &#39;announced&lt;/w&gt;&#39;, &#39;current&lt;/w&gt;&#39;, &#39;ets&lt;/w&gt;&#39;, &#39;2019&lt;/w&gt;&#39;, &#39;pri&#39;, &#39;mar&#39;, &#39;bet&#39;, &#39;cap&#39;, &#39;iz&#39;, &#39;invest&#39;, &#39;V&#39;, &#39;inter&#39;, &#39;national&lt;/w&gt;&#39;, &#39;ear&lt;/w&gt;&#39;, &#39;ging&lt;/w&gt;&#39;, &#39;still&lt;/w&gt;&#39;, &#39;ins&lt;/w&gt;&#39;, &#39;ven&lt;/w&gt;&#39;, &#39;fr&#39;, &#39;there&lt;/w&gt;&#39;, &#39;so&lt;/w&gt;&#39;, &#39;much&lt;/w&gt;&#39;, &#39;make&lt;/w&gt;&#39;, &#39;Mor&#39;, &#39;n&lt;/w&gt;&#39;, &#39;ans&lt;/w&gt;&#39;, &#39;no&lt;/w&gt;&#39;, &#39;may&lt;/w&gt;&#39;, &#39;exp&#39;, &#39;share&lt;/w&gt;&#39;, &#39;neg&#39;, &#39;im&#39;, &#39;ents&lt;/w&gt;&#39;, &#39;busin&#39;, &#39;read&#39;, &#39;ates&lt;/w&gt;&#39;, &#39;revenues&lt;/w&gt;&#39;, &#39;do&lt;/w&gt;&#39;, &#39;ose&lt;/w&gt;&#39;, &#39;contin&#39;, &#39;ues&lt;/w&gt;&#39;, &#39;inv&#39;, &#39;20&lt;/w&gt;&#39;, &#39;investment&lt;/w&gt;&#39;, &#39;next&lt;/w&gt;&#39;, &#39;no&#39;, &#39;tri&#39;, &#39;Inter&#39;, &#39;eng&#39;, &#39;term&lt;/w&gt;&#39;, &#39;curr&#39;, &#39;low&#39;, &#39;lim&#39;, &#39;vol&#39;, &#39;ome&lt;/w&gt;&#39;, &#39;ar&lt;/w&gt;&#39;, &#39;car&#39;, &#39;ough&lt;/w&gt;&#39;, &#39;aw&#39;, &#39;well&lt;/w&gt;&#39;, &#39;not&lt;/w&gt;&#39;, &#39;em&lt;/w&gt;&#39;, &#39;ol&#39;, &#39;Group&lt;/w&gt;&#39;, &#39;ind&#39;, &#39;eh&#39;, &#39;retur&#39;, &#39;value&lt;/w&gt;&#39;, &#39;vid&#39;, &#39;improv&#39;, &#39;ently&lt;/w&gt;&#39;, &#39;ned&lt;/w&gt;&#39;, &#39;aliz&#39;, &#39;reg&#39;, &#39;before&lt;/w&gt;&#39;, &#39;ere&lt;/w&gt;&#39;, &#39;spec&#39;, &#39;same&lt;/w&gt;&#39;, &#39;sed&lt;/w&gt;&#39;, &#39;au&#39;, &#39;comm&#39;, &#39;end&#39;, &#39;dec&#39;, &#39;sions&lt;/w&gt;&#39;, &#39;this&lt;/w&gt;&#39;, &#39;earch&lt;/w&gt;&#39;, &#39;report&lt;/w&gt;&#39;, &#39;only&lt;/w&gt;&#39;, &#39;ential&lt;/w&gt;&#39;, &#39;secur&#39;, &#39;companies&lt;/w&gt;&#39;, &#39;sub&#39;, &#39;sti&#39;, &#39;An&#39;, &#39;ited&lt;/w&gt;&#39;, &#39;based&lt;/w&gt;&#39;, &#39;te&lt;/w&gt;&#39;, &#39;form&#39;, &#39;revi&#39;, &#39;sul&#39;, &#39;ob&#39;, &#39;ined&lt;/w&gt;&#39;, &#39;ev&#39;, &#39;fore&lt;/w&gt;&#39;, &#39;estimates&lt;/w&gt;&#39;, &#39;best&lt;/w&gt;&#39;, &#39;date&lt;/w&gt;&#39;, &#39;publ&#39;, &#39;jec&#39;, &#39;with&#39;, &#39;Ch&#39;, &#39;hnology&lt;/w&gt;&#39;, &#39;NASDAQ&lt;/w&gt;&#39;, &#39;higher&lt;/w&gt;&#39;, &#39;price&lt;/w&gt;&#39;, &#39;hi&#39;, &#39;analysts&lt;/w&gt;&#39;, &#39;ific&#39;, &#39;60&lt;/w&gt;&#39;, &#39;ll&lt;/w&gt;&#39;, &#39;come&lt;/w&gt;&#39;, &#39;just&lt;/w&gt;&#39;, &#39;12&lt;/w&gt;&#39;, &#39;14&lt;/w&gt;&#39;, &#39;buy&lt;/w&gt;&#39;, &#39;better&lt;/w&gt;&#39;, &#39;old&lt;/w&gt;&#39;, &#39;surprise&lt;/w&gt;&#39;, &#39;tim&#39;, &#39;c&lt;/w&gt;&#39;, &#39;quar&#39;, &#39;ter&#39;, &#39;rev&#39;, &#39;tor&lt;/w&gt;&#39;, &#39;ite&lt;/w&gt;&#39;, &#39;three&lt;/w&gt;&#39;, &#39;ight&lt;/w&gt;&#39;, &#39;mov&#39;, &#39;time&lt;/w&gt;&#39;, &#39;around&lt;/w&gt;&#39;, &#39;tions&lt;/w&gt;&#39;, &#39;Friday&lt;/w&gt;&#39;, &#39;trading&lt;/w&gt;&#39;, &#39;move&lt;/w&gt;&#39;, &#39;While&lt;/w&gt;&#39;, &#39;ata&lt;/w&gt;&#39;, &#39;ha&#39;, &#39;anti&#39;, &#39;aly&#39;, &#39;Fed&lt;/w&gt;&#39;, &#39;rates&lt;/w&gt;&#39;, &#39;tw&#39;, &#39;ice&lt;/w&gt;&#39;, &#39;days&lt;/w&gt;&#39;, &#39;red&lt;/w&gt;&#39;, &#39;8&#39;, &#39;sign&#39;, &#39;ain&lt;/w&gt;&#39;, &#39;h&lt;/w&gt;&#39;, &#39;000&lt;/w&gt;&#39;, &#39;ross&lt;/w&gt;&#39;, &#39;compared&lt;/w&gt;&#39;, &#39;A&lt;/w&gt;&#39;, &#39;these&lt;/w&gt;&#39;, &#39;trac&#39;, &#39;Oc&#39;, &#39;posi&#39;, &#39;being&lt;/w&gt;&#39;, &#39;ough&#39;, &#39;pic&#39;, &#39;alth&#39;, &#39;f&lt;/w&gt;&#39;, &#39;ma&#39;, &#39;during&lt;/w&gt;&#39;, &#39;resul&#39;, &#39;ational&lt;/w&gt;&#39;, &#39;tal&lt;/w&gt;&#39;, &#39;like&lt;/w&gt;&#39;, &#39;ger&lt;/w&gt;&#39;, &#39;ever&lt;/w&gt;&#39;, &#39;indu&#39;, &#39;ical&lt;/w&gt;&#39;, &#39;now&lt;/w&gt;&#39;, &#39;major&lt;/w&gt;&#39;, &#39;economy&lt;/w&gt;&#39;, &#39;rate&lt;/w&gt;&#39;, &#39;key&lt;/w&gt;&#39;, &#39;Ju&#39;, &#39;gh&#39;, &#39;est&#39;, &#39;W&#39;, &#39;right&lt;/w&gt;&#39;, &#39;news&lt;/w&gt;&#39;, &#39;US&lt;/w&gt;&#39;, &#39;cre&#39;, &#39;erv&#39;, &#39;Un&#39;, &#39;I&lt;/w&gt;&#39;, &#39;ke&lt;/w&gt;&#39;, &#39;rel&#39;, &#39;lev&#39;, &#39;prices&lt;/w&gt;&#39;, &#39;ail&#39;, &#39;fec&#39;, &#39;since&lt;/w&gt;&#39;, &#39;should&lt;/w&gt;&#39;, &#39;ue&lt;/w&gt;&#39;, &#39;eral&lt;/w&gt;&#39;, &#39;months&lt;/w&gt;&#39;, &#39;ew&#39;, &#39;ell&#39;, &#39;mo&#39;, &#39;bers&lt;/w&gt;&#39;, &#39;see&lt;/w&gt;&#39;, &#39;very&lt;/w&gt;&#39;, &#39;government&lt;/w&gt;&#39;, &#39;isc&#39;, &#39;leg&#39;, &#39;af&#39;, &#39;bo&#39;, &#39;ld&lt;/w&gt;&#39;, &#39;ounc&#39;, &#39;timate&lt;/w&gt;&#39;, &#39;dic&#39;, &#39;urr&#39;, &#39;E&lt;/w&gt;&#39;, &#39;ent&lt;/w&gt;&#39;, &#39;kers&lt;/w&gt;&#39;, &#39;medi&#39;, &#39;man&lt;/w&gt;&#39;, &#39;ach&#39;, &#39;val&#39;, &#39;ued&lt;/w&gt;&#39;, &#39;long&lt;/w&gt;&#39;, &#39;forec&#39;, &#39;who&lt;/w&gt;&#39;, &#39;tal&#39;, &#39;ain&#39;, &#39;consi&#39;, &#39;der&#39;, &#39;against&lt;/w&gt;&#39;, &#39;ound&lt;/w&gt;&#39;, &#39;re&lt;/w&gt;&#39;, &#39;Americ&#39;, &#39;m&lt;/w&gt;&#39;, &#39;soli&#39;, &#39;sy&#39;, &#39;Stoc&#39;, &#39;M&lt;/w&gt;&#39;, &#39;indic&#39;, &#39;sector&lt;/w&gt;&#39;, &#39;fir&#39;, &#39;few&lt;/w&gt;&#39;, &#39;likely&lt;/w&gt;&#39;, &#39;head&lt;/w&gt;&#39;, &#39;issu&#39;, &#39;x&lt;/w&gt;&#39;, &#39;son&lt;/w&gt;&#39;, &#39;ill&lt;/w&gt;&#39;, &#39;Gr&#39;, &#39;ving&lt;/w&gt;&#39;, &#39;eg&#39;, &#39;our&lt;/w&gt;&#39;, &#39;You&lt;/w&gt;&#39;, &#39;ments&lt;/w&gt;&#39;, &#39;if&lt;/w&gt;&#39;, &#39;illion&lt;/w&gt;&#39;, &#39;stocks&lt;/w&gt;&#39;, &#39;We&lt;/w&gt;&#39;, &#39;portfoli&#39;, &#39;Shares&lt;/w&gt;&#39;, &#39;tors&lt;/w&gt;&#39;, &#39;Bo&#39;, &#39;ab&#39;, &#39;ility&lt;/w&gt;&#39;, &#39;deli&#39;, &#39;tive&lt;/w&gt;&#39;, &#39;govern&#39;, &#39;shi&#39;, &#39;ous&#39;, &#39;both&lt;/w&gt;&#39;, &#39;foc&#39;, &#39;ans&#39;, &#39;lin&#39;, &#39;services&lt;/w&gt;&#39;, &#39;ee&#39;, &#39;2018&lt;/w&gt;&#39;, &#39;acqui&#39;, &#39;ener&#39;, &#39;anc&#39;, &#39;les&lt;/w&gt;&#39;, &#39;ow&lt;/w&gt;&#39;, &#39;K&lt;/w&gt;&#39;, &#39;United&lt;/w&gt;&#39;, &#39;States&lt;/w&gt;&#39;, &#39;seg&#39;, &#39;operating&lt;/w&gt;&#39;, &#39;30&lt;/w&gt;&#39;, &#39;basis&lt;/w&gt;&#39;, &#39;points&lt;/w&gt;&#39;, &#39;Zacks&lt;/w&gt;&#39;, &#39;Rank&lt;/w&gt;&#39;, &#39;Stocks&lt;/w&gt;&#39;, &#39;currently&lt;/w&gt;&#39;, &#39;ked&lt;/w&gt;&#39;, &#39;lobal&lt;/w&gt;&#39;, &#39;Strong&lt;/w&gt;&#39;, &#39;Buy&lt;/w&gt;&#39;, &#39;16&lt;/w&gt;&#39;, &#39;Z&#39;, &#39;ould&lt;/w&gt;&#39;, &#39;strateg&#39;, &#39;2017&lt;/w&gt;&#39;, &#39;500&lt;/w&gt;&#39;, &#39;even&lt;/w&gt;&#39;, &#39;top&lt;/w&gt;&#39;, &#39;Reuters&lt;/w&gt;&#39;, &#39;ward&lt;/w&gt;&#39;, &#39;recor&#39;, &#39;level&lt;/w&gt;&#39;, &#39;range&lt;/w&gt;&#39;, &#39;above&lt;/w&gt;&#39;, &#39;we&lt;/w&gt;&#39;, &#39;ree&lt;/w&gt;&#39;, &#39;star&#39;, &#39;ell&lt;/w&gt;&#39;, &#39;ood&lt;/w&gt;&#39;, &#39;ra&#39;, &#39;dollar&lt;/w&gt;&#39;, &#39;sum&#39;, &#39;had&lt;/w&gt;&#39;, &#39;could&lt;/w&gt;&#39;, &#39;would&lt;/w&gt;&#39;, &#39;oll&#39;, &#39;his&lt;/w&gt;&#39;, &#39;own&#39;, &#39;ade&lt;/w&gt;&#39;, &#39;ession&lt;/w&gt;&#39;, &#39;inc&#39;, &#39;disc&#39;, &#39;dem&#39;, &#39;sid&#39;, &#39;tly&lt;/w&gt;&#39;, &#39;Tuesday&lt;/w&gt;&#39;, &#39;ore&lt;/w&gt;&#39;, &#39;q&#39;, &#39;ir&lt;/w&gt;&#39;, &#39;Tr&#39;, &#39;serv&#39;, &#39;ble&lt;/w&gt;&#39;, &#39;Ener&#39;, &#39;gy&lt;/w&gt;&#39;, &#39;sec&#39;, &#39;hnolo&#39;, &#39;De&#39;, &#39;Apple&lt;/w&gt;&#39;, &#39;L&lt;/w&gt;&#39;, &#39;Ph&#39;, &#39;ru&#39;, &#39;led&lt;/w&gt;&#39;, &#39;G&lt;/w&gt;&#39;, &#39;accor&#39;, &#39;and&#39;, &#39;dev&#39;, &#39;ably&lt;/w&gt;&#39;, &#39;ratio&lt;/w&gt;&#39;, &#39;cash&lt;/w&gt;&#39;, &#39;how&lt;/w&gt;&#39;, &#39;yiel&#39;, &#39;ems&lt;/w&gt;&#39;, &#39;he&lt;/w&gt;&#39;, &#39;ence&lt;/w&gt;&#39;, &#39;iscal&lt;/w&gt;&#39;, &#39;interest&lt;/w&gt;&#39;, &#39;gain&#39;, &#39;21&lt;/w&gt;&#39;, &#39;economic&lt;/w&gt;&#39;, &#39;ased&lt;/w&gt;&#39;, &#39;ine&lt;/w&gt;&#39;, &#39;Mon&#39;, &#39;fe&#39;, &#39;ures&lt;/w&gt;&#39;, &#39;pol&#39;, &#39;ET&#39;, &#39;custom&#39;, &#39;lik&#39;, &#39;Price&lt;/w&gt;&#39;, &#39;Consensus&lt;/w&gt;&#39;, &#39;projec&#39;, &#39;Cor&#39;, &#39;ties&lt;/w&gt;&#39;, &#39;By&lt;/w&gt;&#39;, &#39;New&lt;/w&gt;&#39;, &#39;beat&lt;/w&gt;&#39;, &#39;bank&lt;/w&gt;&#39;, &#39;said&lt;/w&gt;&#39;, &#39;percent&lt;/w&gt;&#39;, &#39;ste&#39;, &#39;ei&#39;, &#39;200&#39;, &#39;Corp&lt;/w&gt;&#39;, &#39;Wednesday&lt;/w&gt;&#39;, &#39;Res&#39;, &#39;sident&lt;/w&gt;&#39;, &#39;illi&#39;, &#39;sin&#39;, &#39;prov&#39;, &#39;olo&#39;, &#39;Ear&#39;, &#39;ace&#39;, &#39;cents&lt;/w&gt;&#39;, &#39;positive&lt;/w&gt;&#39;, &#39;quarters&lt;/w&gt;&#39;, &#39;industry&lt;/w&gt;&#39;, &#39;oup&lt;/w&gt;&#39;, &#39;F&lt;/w&gt;&#39;, &#39;os&lt;/w&gt;&#39;, &#39;Amazon&lt;/w&gt;&#39;, &#39;arg&#39;, &#39;ays&lt;/w&gt;&#39;, &#39;SD&#39;, &#39;announc&#39;, &#39;rise&lt;/w&gt;&#39;, &#39;Euro&#39;, &#39;loy&#39;, &#39;polic&#39;, &#39;uro&#39;, &#39;uc&#39;, &#39;Estimate&lt;/w&gt;&#39;, &#39;lob&#39;, &#39;ich&lt;/w&gt;&#39;, &#39;Bu&#39;, &#39;En&#39;, &#39;prise&lt;/w&gt;&#39;, &#39;Ac&#39;, &#39;Earnings&lt;/w&gt;&#39;, &#39;ESP&lt;/w&gt;&#39;, &#39;Str&#39;, &#39;year&#39;, &#39;Trump&lt;/w&gt;&#39;, &#39;anies&lt;/w&gt;&#39;, &#39;res&lt;/w&gt;&#39;, &#39;B&lt;/w&gt;&#39;, &#39;owever&lt;/w&gt;&#39;, &#39;aid&lt;/w&gt;&#39;, &#39;Amer&#39;, &#39;bas&#39;, &#39;ash&lt;/w&gt;&#39;, &#39;Pr&#39;, &#39;Tu&#39;, &#39;overn&#39;, &#39;mu&#39;, &#39;stoc&#39;, &#39;go&#39;, &#39;uters&lt;/w&gt;&#39;, &#39;iel&#39;, &#39;month&#39;, &#39;ird&lt;/w&gt;&#39;, &#39;Es&#39;, &#39;stom&#39;, &#39;compar&#39;, &#39;ace&lt;/w&gt;&#39;, &#39;ised&lt;/w&gt;&#39;, &#39;App&#39;, &#39;financial&lt;/w&gt;&#39;, &#39;igh&lt;/w&gt;&#39;, &#39;ters&lt;/w&gt;&#39;, &#39;ollow&#39;, &#39;ollar&lt;/w&gt;&#39;, &#39;rati&#39;, &#39;Fin&#39;, &#39;ancial&lt;/w&gt;&#39;, &#39;econ&#39;, &#39;ares&lt;/w&gt;&#39;, &#39;the&#39;, &#39;edn&#39;, &#39;bel&#39;, &#39;sus&lt;/w&gt;&#39;, &#39;emp&#39;, &#39;ank&lt;/w&gt;&#39;, &#39;ews&lt;/w&gt;&#39;, &#39;nings&lt;/w&gt;&#39;, &#39;ES&#39;, &#39;ext&lt;/w&gt;&#39;, &#39;NA&#39;, &#39;Corpor&#39;, &#39;vest&#39;, &#39;Q&lt;/w&gt;&#39;, &#39;foli&#39;, &#39;oug&#39;, &#39;ou&lt;/w&gt;&#39;, &#39;urs&#39;, &#39;devel&#39;, &#39;Fri&#39;, &#39;abo&#39;, &#39;EP&#39;, &#39;Amaz&#39;, &#39;AQ&lt;/w&gt;&#39;, &#39;Europe&#39;, &#39;ween&lt;/w&gt;&#39;, &#39;reven&#39;])
+Number of tokens: 1167
+====================
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="encoding-and-decoding">
+<h3>Encoding and Decoding<a class="headerlink" href="#encoding-and-decoding" title="Permalink to this headline">#</a></h3>
+<section id="decoding">
+<h4>Decoding<a class="headerlink" href="#decoding" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p>Decoding is extremely simple.</p></li>
+<li><p>Just concatenate all the tokens together and remove the stop token <code class="docutils literal notranslate"><span class="pre">&lt;/w&gt;</span></code>.</p></li>
+<li><p>For example, if the encoded sequence is [<code class="docutils literal notranslate"><span class="pre">the&lt;/w&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">high</span></code>, <code class="docutils literal notranslate"><span class="pre">est&lt;/w&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">moun</span></code>, <code class="docutils literal notranslate"><span class="pre">tain&lt;/w&gt;</span></code>], the decoded sequence is <code class="docutils literal notranslate"><span class="pre">the</span> <span class="pre">highest</span> <span class="pre">mountain</span></code>.</p></li>
+</ul>
+</section>
+<section id="encoding">
+<h4>Encoding<a class="headerlink" href="#encoding" title="Permalink to this headline">#</a></h4>
+<p>For the sentence <code class="docutils literal notranslate"><span class="pre">the</span> <span class="pre">highest</span> <span class="pre">mountain</span></code>,</p>
+<ul class="simple">
+<li><p>List all the tokens in the vocabulary in the order of their length.</p></li>
+<li><p>For each word, find the longest token that is a subword of the word.</p></li>
+<li><p>Assume that the vocabulary is <code class="docutils literal notranslate"><span class="pre">[&quot;errrr&lt;/w&gt;&quot;,</span> <span class="pre">&quot;tain&lt;/w&gt;&quot;,</span> <span class="pre">&quot;moun&quot;,</span> <span class="pre">&quot;est&lt;/w&gt;&quot;,</span> <span class="pre">&quot;high&quot;,</span> <span class="pre">&quot;the&lt;/w&gt;&quot;,</span> <span class="pre">&quot;a&lt;/w&gt;&quot;]</span></code>.</p></li>
+<li><p>Iterate from the longest token <code class="docutils literal notranslate"><span class="pre">errrr&lt;/w&gt;</span></code> to the shortest token <code class="docutils literal notranslate"><span class="pre">a&lt;/w&gt;</span></code> trying to find the longest token that is a subword of the word.</p></li>
+<li><p>After all the tokens are checked, all the substrings of the word will be replaced by the tokens.</p></li>
+<li><p>If there is no token that is a subword of the word, then the word is replaced by the unknown token <code class="docutils literal notranslate"><span class="pre">&lt;/u&gt;</span></code>.</p></li>
+<li><p>In this example, the word <code class="docutils literal notranslate"><span class="pre">the</span></code> is replaced by <code class="docutils literal notranslate"><span class="pre">the&lt;/w&gt;</span></code>, the word <code class="docutils literal notranslate"><span class="pre">highest</span></code> is replaced by <code class="docutils literal notranslate"><span class="pre">high</span> <span class="pre">est&lt;/w&gt;</span></code>, and the word <code class="docutils literal notranslate"><span class="pre">mountain</span></code> is replaced by <code class="docutils literal notranslate"><span class="pre">moun</span> <span class="pre">tain&lt;/w&gt;</span></code>.</p></li>
+<li><p>Encoding is very computationally expensive.</p></li>
+</ul>
+</section>
+</section>
+<section id="bpe-encoding-and-decoding-in-practice">
+<h3>BPE Encoding and Decoding in Practice<a class="headerlink" href="#bpe-encoding-and-decoding-in-practice" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">measure_token_length</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">token</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:]</span> <span class="o">==</span> <span class="s2">&quot;&lt;/w&gt;&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">token</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">tokenize_word</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">sorted_tokens</span><span class="p">,</span> <span class="n">unknown_token</span><span class="o">=</span><span class="s2">&quot;&lt;/u&gt;&quot;</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">string</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">sorted_tokens</span> <span class="o">==</span> <span class="p">[]:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">unknown_token</span><span class="p">]</span>
+
+    <span class="n">string_tokens</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sorted_tokens</span><span class="p">)):</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="n">sorted_tokens</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">token_reg</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;[.]&quot;</span><span class="p">))</span>
+
+        <span class="n">matched_positions</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">m</span><span class="o">.</span><span class="n">end</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">token_reg</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">matched_positions</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">substring_end_positions</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">matched_position</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">matched_position</span> <span class="ow">in</span> <span class="n">matched_positions</span>
+        <span class="p">]</span>
+
+        <span class="n">substring_start_position</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">substring_end_position</span> <span class="ow">in</span> <span class="n">substring_end_positions</span><span class="p">:</span>
+            <span class="n">substring</span> <span class="o">=</span> <span class="n">string</span><span class="p">[</span><span class="n">substring_start_position</span><span class="p">:</span><span class="n">substring_end_position</span><span class="p">]</span>
+            <span class="n">string_tokens</span> <span class="o">+=</span> <span class="n">tokenize_word</span><span class="p">(</span>
+                <span class="n">string</span><span class="o">=</span><span class="n">substring</span><span class="p">,</span>
+                <span class="n">sorted_tokens</span><span class="o">=</span><span class="n">sorted_tokens</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:],</span>
+                <span class="n">unknown_token</span><span class="o">=</span><span class="n">unknown_token</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">string_tokens</span> <span class="o">+=</span> <span class="p">[</span><span class="n">token</span><span class="p">]</span>
+            <span class="n">substring_start_position</span> <span class="o">=</span> <span class="n">substring_end_position</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+        <span class="n">remaining_substring</span> <span class="o">=</span> <span class="n">string</span><span class="p">[</span><span class="n">substring_start_position</span><span class="p">:]</span>
+        <span class="n">string_tokens</span> <span class="o">+=</span> <span class="n">tokenize_word</span><span class="p">(</span>
+            <span class="n">string</span><span class="o">=</span><span class="n">remaining_substring</span><span class="p">,</span>
+            <span class="n">sorted_tokens</span><span class="o">=</span><span class="n">sorted_tokens</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:],</span>
+            <span class="n">unknown_token</span><span class="o">=</span><span class="n">unknown_token</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">break</span>
+    <span class="k">return</span> <span class="n">string_tokens</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">print_tokenization</span><span class="p">(</span><span class="n">word_given</span><span class="p">,</span> <span class="n">sorted_tokens</span><span class="p">):</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tokenizing word: </span><span class="si">{}</span><span class="s2">...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">word_given</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">word_given</span> <span class="ow">in</span> <span class="n">vocab_tokenization</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tokenization of the known word:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">vocab_tokenization</span><span class="p">[</span><span class="n">word_given</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tokenization treating the known word as unknown:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="n">tokenize_word</span><span class="p">(</span>
+                <span class="n">string</span><span class="o">=</span><span class="n">word_given</span><span class="p">,</span> <span class="n">sorted_tokens</span><span class="o">=</span><span class="n">sorted_tokens</span><span class="p">,</span> <span class="n">unknown_token</span><span class="o">=</span><span class="s2">&quot;&lt;/u&gt;&quot;</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tokenizating of the unknown word:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="n">tokenize_word</span><span class="p">(</span>
+                <span class="n">string</span><span class="o">=</span><span class="n">word_given</span><span class="p">,</span> <span class="n">sorted_tokens</span><span class="o">=</span><span class="n">sorted_tokens</span><span class="p">,</span> <span class="n">unknown_token</span><span class="o">=</span><span class="s2">&quot;&lt;/u&gt;&quot;</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">word_given_known</span> <span class="o">=</span> <span class="s1">&#39;investors&lt;/w&gt;&#39;</span>
+<span class="n">word_given_unknown</span> <span class="o">=</span> <span class="s1">&#39;dogecoin&lt;/w&gt;&#39;</span>
+
+<span class="n">sorted_tokens_tuple</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">tokens_frequencies</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="p">(</span><span class="n">measure_token_length</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">sorted_tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span> <span class="k">for</span> <span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">freq</span><span class="p">)</span> <span class="ow">in</span> <span class="n">sorted_tokens_tuple</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">sorted_tokens</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;performance&lt;/w&gt;&#39;, &#39;Corporation&lt;/w&gt;&#39;, &#39;investment&lt;/w&gt;&#39;, &#39;government&lt;/w&gt;&#39;, &#39;production&lt;/w&gt;&#39;, &#39;investors&lt;/w&gt;&#39;, &#39;companies&lt;/w&gt;&#39;, &#39;Consensus&lt;/w&gt;&#39;, &#39;estimates&lt;/w&gt;&#39;, &#39;increased&lt;/w&gt;&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">print_tokenization</span><span class="p">(</span><span class="n">word_given_known</span><span class="p">,</span> <span class="n">sorted_tokens</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tokenizing word: investors&lt;/w&gt;...
+Tokenization of the known word:
+[&#39;investors&lt;/w&gt;&#39;]
+Tokenization treating the known word as unknown:
+[&#39;investors&lt;/w&gt;&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">print_tokenization</span><span class="p">(</span><span class="n">word_given_unknown</span><span class="p">,</span> <span class="n">sorted_tokens</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tokenizing word: dogecoin&lt;/w&gt;...
+Tokenizating of the unknown word:
+[&#39;do&#39;, &#39;g&#39;, &#39;ec&#39;, &#39;o&#39;, &#39;in&lt;/w&gt;&#39;]
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 <section id="references">
