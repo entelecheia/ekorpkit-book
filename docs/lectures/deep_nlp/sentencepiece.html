@@ -1132,6 +1132,13 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#how-to-train-sentencepiece">
    How to train SentencePiece
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#finding-the-optimal-segmentation">
+     Finding the optimal segmentation
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#references">
@@ -1210,6 +1217,13 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#how-to-train-sentencepiece">
    How to train SentencePiece
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#finding-the-optimal-segmentation">
+     Finding the optimal segmentation
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#references">
@@ -1565,6 +1579,53 @@ trainer_interface.cc(697) LOG(INFO) Saving vocabs: m.vocab
 </li>
 <li><p>Repeat the M-step and E-step until the unigram probabilities converge. The log-likelihood is monotonically increasing, so we can stop the training when the log-likelihood does not increase for a certain number of iterations.</p></li>
 </ol>
+<section id="finding-the-optimal-segmentation">
+<h3>Finding the optimal segmentation<a class="headerlink" href="#finding-the-optimal-segmentation" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>If all of the subwords were of the same length, we could apply the Viterbi algorithm to find the optimal segmentation.</p></li>
+<li><p>The Viterbi algorithm is a dynamic programming algorithm that finds the most likely sequence of states, given a sequence of observations and a model of the transition probabilities between states and the emission probabilities of the observations given the states.</p>
+<ul>
+<li><p>You have some hidden states <span class="math notranslate nohighlight">\(z_1, z_2, \cdots, z_n\)</span>, and you want to transition from <span class="math notranslate nohighlight">\(z_1 \rightarrow z_2 \rightarrow \cdots \rightarrow z_n\)</span>, and you know the transition matrix <span class="math notranslate nohighlight">\(A_{ij}\)</span>, giving the probability of transitioning from <span class="math notranslate nohighlight">\(z_i^{(1)}\)</span> to <span class="math notranslate nohighlight">\(z_j^{(2)}\)</span>, where <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> are the hidden states, and the superscript indicates the sequence order.</p></li>
+</ul>
+</li>
+<li><p>The problem is that <span class="math notranslate nohighlight">\(A\)</span> is not between adjacent states.</p></li>
+</ul>
+<ul>
+<li><p>Consider tokenizing the word <code class="docutils literal notranslate"><span class="pre">hello</span></code> given the subwords {<code class="docutils literal notranslate"><span class="pre">he</span></code>, <code class="docutils literal notranslate"><span class="pre">h</span></code>, <code class="docutils literal notranslate"><span class="pre">ll</span></code>, <code class="docutils literal notranslate"><span class="pre">e</span></code>, <code class="docutils literal notranslate"><span class="pre">o</span></code>, <code class="docutils literal notranslate"><span class="pre">hell</span></code>}.</p></li>
+<li><p>We can generate the following figure:</p>
+<p><img alt="" src="../../../_images/transition.png" /></p>
+<ul class="simple">
+<li><p>Each arrow represents a transition, and the weight of the arrow is the probability of the transition.</p></li>
+<li><p>The goal is to pick arrows that we arrive at <code class="docutils literal notranslate"><span class="pre">&lt;eos&gt;</span></code> (end of sequence) with the highest probability.</p></li>
+</ul>
+</li>
+<li><p>This problem has optimal substructure, so we can apply dynamic programming to solve it.</p></li>
+<li><p>For example, assume that we are at the state (4).</p>
+<ul class="simple">
+<li><p>There are three arrows that can lead to the state (4), a red, a blue, and a green arrow.</p></li>
+<li><p>The highest probability at the state (4) is just the best path from the previous state, plus the probability of the transition.
+$<span class="math notranslate nohighlight">\(
+p_i = \max_{j \le i} (p_j p_{j \rightarrow i})
+\)</span>$</p></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>The Trie structure is used to find the optimal segmentation.</p>
+<ul>
+<li><p>The Trie structure is a tree structure that is used to store a set of strings.</p></li>
+<li><p>The following figure shows the Trie structure for the subwords {<code class="docutils literal notranslate"><span class="pre">h</span></code>, <code class="docutils literal notranslate"><span class="pre">he</span></code>, <code class="docutils literal notranslate"><span class="pre">hell</span></code>, <code class="docutils literal notranslate"><span class="pre">hello</span></code>}:</p>
+<p><img alt="" src="../../../_images/trie.png" /></p>
+</li>
+<li><p>The root node is the start of the sequence, <code class="docutils literal notranslate"><span class="pre">&lt;sos&gt;</span></code>.</p></li>
+<li><p>Any time we encounter an <code class="docutils literal notranslate"><span class="pre">end</span></code> node, it means that everything in the path from <code class="docutils literal notranslate"><span class="pre">&lt;sos&gt;</span></code> to <code class="docutils literal notranslate"><span class="pre">end</span></code> is a valid subword.</p></li>
+<li><p>The root node <code class="docutils literal notranslate"><span class="pre">&lt;sos&gt;</span></code> will begin with exactly one branch for every unique first character in the vocabulary.</p></li>
+<li><p>As we grow the available subwords, we create more branches.</p></li>
+<li><p>The Trie is going to be the fundamental data structure that the tokenizer uses to store and retrieve the subwords.</p></li>
+</ul>
+</li>
+</ul>
+</section>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
