@@ -1527,8 +1527,10 @@ trainer_interface.cc(697) LOG(INFO) Saving vocabs: m.vocab
 <li><p>For example, the workd <code class="docutils literal notranslate"><span class="pre">hello</span></code> can be segmented in a number of ways, e.g., <code class="docutils literal notranslate"><span class="pre">h</span> <span class="pre">e</span> <span class="pre">l</span> <span class="pre">l</span> <span class="pre">o</span></code>, <code class="docutils literal notranslate"><span class="pre">he</span> <span class="pre">ll</span> <span class="pre">o</span></code>, <code class="docutils literal notranslate"><span class="pre">hel</span> <span class="pre">lo</span></code>, <code class="docutils literal notranslate"><span class="pre">hell</span> <span class="pre">o</span></code>, <code class="docutils literal notranslate"><span class="pre">hello</span></code>.</p></li>
 <li><p>Therefore, we should replace <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> on the left with a specific sequence of subwords, <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{y}\)</span>, respectively.</p></li>
 <li><p>The cost function for NMT is given by sum of the expected log-likelihood of the target sequence <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> given the source sequence <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>:</p>
-<p>$$
-\mathcal{L}(\theta) = - \sum_{s=1}^{|D|} \mathbb{E}_{\substack{\mathbf{x} \sim P(\mathbf{x}|X^{(s)}) \ \mathbf{y} \sim P(\mathbf{y}|Y^{(s)})}} \log P(\mathbf{y}|\mathbf{x};\theta)</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \mathcal{L}(\theta) = - \sum_{s=1}^{|D|} \mathbb{E}_{\substack{\mathbf{x} \sim P(\mathbf{x}|X^{(s)}) \\ \mathbf{y} \sim P(\mathbf{y}|Y^{(s)})}} \log P(\mathbf{y}|\mathbf{x};\theta)
+  \end{split}\]</div>
 </li>
 <li><p>This formula looks intimidating, but it is actually quite simple.</p></li>
 <li><p>In practice, we can approximate the expected log-likelihood of a single training example <span class="math notranslate nohighlight">\((\mathbf{x}, \mathbf{y})\)</span>.</p></li>
@@ -1542,7 +1544,27 @@ trainer_interface.cc(697) LOG(INFO) Saving vocabs: m.vocab
 <li><p>The actual tokenization <span class="math notranslate nohighlight">\(X\)</span> is not observed, we only observe the un-tokenized sequence <span class="math notranslate nohighlight">\(X\)</span>.</p></li>
 <li><p>This is a classic problem of maximum likelihood estimation, and we can solve it by the EM algorithm.</p></li>
 <li><p>The problem is that thte <span class="math notranslate nohighlight">\(x_i\)</span> are all of different lengths, and we cannot apply the EM algorithm directly.</p></li>
+<li><p>Instead, we should use a Bayesian approach to solve this problem.</p></li>
 </ul>
+<p>The SentencePiece training objective is given by the following equation:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}(\theta) = - \sum_{s=1}^{|D|} \log P(X^{(s)}) = - \sum_{s=1}^{|D|} \log (\sum_{\mathbf{x} \in S(\mathbf{x})} P(\mathbf{x}) )
+\]</div>
+<p>where the <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is a unigram sequence, and <span class="math notranslate nohighlight">\(S(\mathbf{x})\)</span> is the set of all possible sequences that can be generated from <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>.</p>
+<p>The steps are as follows:</p>
+<ol>
+<li><p>Initialize the unigram probabilities <span class="math notranslate nohighlight">\(p(x_i)\)</span>. The frequency of each unigram is used as the initial value.</p></li>
+<li><p>M-step: Compute the most likely sequence <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> given the current unigram probabilities <span class="math notranslate nohighlight">\(p(x_i)\)</span>.</p></li>
+<li><p>E-step: Given the current most likely sequence <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, update the unigram probabilities <span class="math notranslate nohighlight">\(p(x_i)\)</span>. In Bayesian setting, the unigram probabilities are defined as:</p>
+<div class="math notranslate nohighlight">
+\[
+   p(x_i | \mathbf{x}) = \frac{c_i}{\sum_{j=1}^{|V|} c_j} \implies \frac{e^{\psi(c_i)}}{\sum_{j=1}^{|V|} e^{\psi(c_j)}} = \frac{e^{\psi(c_i)}}{e^{\psi(\sum_{j=1}^{|V|} c_j)}} = \frac{e^{\psi(c_i)}}{e^{\psi(c_1) + \cdots + \psi(c_n)}}
+   \]</div>
+<p>where <span class="math notranslate nohighlight">\(c_i\)</span> is the frequency of the unigram <span class="math notranslate nohighlight">\(x_i\)</span> in the corpus, <span class="math notranslate nohighlight">\(|V|\)</span> is the size of the vocabulary, and <span class="math notranslate nohighlight">\(\psi(c_i)\)</span> is the digamma function.</p>
+</li>
+<li><p>Repeat the M-step and E-step until the unigram probabilities converge. The log-likelihood is monotonically increasing, so we can stop the training when the log-likelihood does not increase for a certain number of iterations.</p></li>
+</ol>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
