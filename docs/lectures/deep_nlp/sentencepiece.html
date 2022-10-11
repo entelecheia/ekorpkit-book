@@ -1138,6 +1138,11 @@ title="Print to PDF"
      Finding the optimal segmentation
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fitting-the-model">
+     Fitting the model
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -1221,6 +1226,11 @@ title="Print to PDF"
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#finding-the-optimal-segmentation">
      Finding the optimal segmentation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fitting-the-model">
+     Fitting the model
     </a>
    </li>
   </ul>
@@ -1624,6 +1634,28 @@ trainer_interface.cc(697) LOG(INFO) Saving vocabs: m.vocab
 <li><p>The root node <code class="docutils literal notranslate"><span class="pre">&lt;sos&gt;</span></code> will begin with exactly one branch for every unique first character in the vocabulary.</p></li>
 <li><p>As we grow the available subwords, we create more branches.</p></li>
 <li><p>The Trie is going to be the fundamental data structure that the tokenizer uses to store and retrieve the subwords.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="fitting-the-model">
+<h3>Fitting the model<a class="headerlink" href="#fitting-the-model" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>One of the algorithm for finding the optimal sequence from the Trie is a forwards-backwards algorithm.</p>
+<ul>
+<li><p>It is a special subset of the sum-product algorithm for training directed graphical models.</p></li>
+<li><p>More sophisticated algorithms include the Forward-DP Backward-A* algorithm, and the Forward-Filtering and Backward-Sampling algorithm (FFBS).</p></li>
+</ul>
+</li>
+<li><p>When we compute the forward step, we also store the length of the longest subword that ends at the current position.</p></li>
+<li><p>This allows us to backtrack from the end of the sequence to the beginning, and find the optimal segmentation, since the length of the arrow is the length of the subword.</p></li>
+<li><p>The EM step puts together the E step and the M step, where the E step is updating the Trie, and the M step is finding the optimal segmentation using the forwards-backwards algorithm explained above.</p></li>
+<li><p>Then, fitting the model is just a matter of repeating the EM step until the log-likelihood converges.</p></li>
+<li><p>One more thing to consider is to get the desired vocabulary size by pruning the vocabulary.</p>
+<ul>
+<li><p>First, prepare more subword tokens than the desired vocabulary size.</p></li>
+<li><p>After each EM step, remove the least probable, say 10%, of the subwords.</p></li>
+<li><p>Repeat this process until the desired vocabulary size is reached.</p></li>
 </ul>
 </li>
 </ul>
