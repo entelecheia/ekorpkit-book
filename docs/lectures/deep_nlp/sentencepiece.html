@@ -1691,6 +1691,101 @@ trainer_interface.cc(697) LOG(INFO) Saving vocabs: m.vocab
 </section>
 <section id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/entelecheia/ekorpkit-book/raw/main/assets/data/us_equities_news_sampled.zip&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;us_equities_news_sampled.parquet&quot;</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">cached_path</span><span class="p">)</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">1000</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.models.tokenizer.sentencepiece</span> <span class="kn">import</span> <span class="n">SentencePieceTokenizer</span>
+
+<span class="n">initial_vocab_size</span><span class="o">=</span><span class="mi">10000</span>
+<span class="n">vocab_size</span><span class="o">=</span><span class="mi">6000</span>
+
+<span class="n">sp</span> <span class="o">=</span> <span class="n">SentencePieceTokenizer</span><span class="p">(</span><span class="n">initial_vocab_size</span><span class="o">=</span><span class="n">initial_vocab_size</span><span class="p">,</span> <span class="n">vocab_size</span><span class="o">=</span><span class="n">vocab_size</span><span class="p">)</span>
+<span class="n">sp</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Top 10 subwords: [(&#39;▁t&#39;, 74287), (&#39;in&#39;, 58224), (&#39;th&#39;, 57063), (&#39;▁a&#39;, 56990), (&#39;▁th&#39;, 45693), (&#39;▁s&#39;, 43934), (&#39;he&#39;, 43345), (&#39;er&#39;, 41161), (&#39;re&#39;, 40441), (&#39;▁i&#39;, 40216)]
+--- Round 1. Vocab size: 10000 ---
+EM iter 0: Loss=-5332775.79
+EM iter 1: Loss=-5312437.48
+EM iter 2: Loss=-5307440.04
+EM iter 3: Loss=-5305712.62
+EM iter 4: Loss=-5305299.00
+--- Round 2. Vocab size: 8000 ---
+EM iter 0: Loss=-5462687.88
+EM iter 1: Loss=-5458428.29
+EM iter 2: Loss=-5457284.60
+EM iter 3: Loss=-5456802.94
+EM iter 4: Loss=-5456598.02
+--- Round 3. Vocab size: 6400 ---
+EM iter 0: Loss=-5617511.85
+EM iter 1: Loss=-5612685.28
+EM iter 2: Loss=-5611271.82
+EM iter 3: Loss=-5610959.49
+EM iter 4: Loss=-5610750.89
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">tokenized_text</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="s2">&quot;investment opportunities in the company&quot;</span><span class="p">,</span> <span class="n">nbest_size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">tokenized_text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 [&#39;invest&#39;, &#39;m&#39;, &#39;en&#39;, &#39;t&#39;, &#39;▁oppo&#39;, &#39;r&#39;, &#39;tun&#39;, &#39;iti&#39;, &#39;es&#39;, &#39;▁in&#39;, &#39;▁&#39;, &#39;t&#39;, &#39;he&#39;, &#39;▁comp&#39;, &#39;any&#39;]
+1 [&#39;i&#39;, &#39;nvestm&#39;, &#39;ent&#39;, &#39;▁&#39;, &#39;opp&#39;, &#39;o&#39;, &#39;rtun&#39;, &#39;ities&#39;, &#39;▁in&#39;, &#39;▁&#39;, &#39;t&#39;, &#39;he&#39;, &#39;▁&#39;, &#39;company&#39;]
+2 [&#39;in&#39;, &#39;vestm&#39;, &#39;ent&#39;, &#39;▁oppo&#39;, &#39;rtun&#39;, &#39;it&#39;, &#39;i&#39;, &#39;e&#39;, &#39;s&#39;, &#39;▁&#39;, &#39;in&#39;, &#39;▁th&#39;, &#39;e&#39;, &#39;▁c&#39;, &#39;omp&#39;, &#39;any&#39;]
+3 [&#39;i&#39;, &#39;n&#39;, &#39;vestment&#39;, &#39;▁o&#39;, &#39;ppo&#39;, &#39;r&#39;, &#39;tun&#39;, &#39;i&#39;, &#39;ties&#39;, &#39;▁in&#39;, &#39;▁&#39;, &#39;t&#39;, &#39;h&#39;, &#39;e&#39;, &#39;▁&#39;, &#39;company&#39;]
+4 [&#39;investm&#39;, &#39;ent&#39;, &#39;▁&#39;, &#39;o&#39;, &#39;pport&#39;, &#39;uni&#39;, &#39;tie&#39;, &#39;s&#39;, &#39;▁&#39;, &#39;in&#39;, &#39;▁&#39;, &#39;the&#39;, &#39;▁&#39;, &#39;com&#39;, &#39;pany&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eKonf</span><span class="o">.</span><span class="n">viewsource</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">fit</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    def fit(self, texts, vocab_size=None, delta=0.01, max_iter=5, max_rounds=5):
+        &quot;&quot;&quot;To turn off pruning, just set max_rounds=1&quot;&quot;&quot;
+        # text = re.sub(&quot; &quot;, &quot;_&quot;, text)
+        text, tokens, characters = self.initialize_vocab(texts)
+        if vocab_size is None:
+            vocab_size = self.vocab_size
+
+        if vocab_size &gt; len(tokens):
+            raise ValueError(
+                f&quot;Vocab size is larger than the availble number of tokens {len(tokens)}.&quot;
+            )
+        self.trie, self.maxlen = self._initialize_trie(tokens)
+        for i in range(1, max_rounds + 1):
+            print(f&quot;--- Round {i}. Vocab size: {len(tokens)} ---&quot;)
+            self.EM_round(text, tokens, delta, max_iter)
+            if not self.prune_tokens(tokens, characters, vocab_size):
+                break
+        self.vocab_size = len(tokens)
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
