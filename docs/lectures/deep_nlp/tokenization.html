@@ -1209,9 +1209,16 @@ title="Print to PDF"
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#implementing-wordpiece">
-     Implementing WordPiece
+    <a class="reference internal nav-link" href="#wordpiece-in-practice">
+     WordPiece in Practice
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#wordpiece-step-by-step-implementation">
+       WordPiece Step-by-Step Implementation
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
@@ -1403,9 +1410,16 @@ title="Print to PDF"
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#implementing-wordpiece">
-     Implementing WordPiece
+    <a class="reference internal nav-link" href="#wordpiece-in-practice">
+     WordPiece in Practice
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#wordpiece-step-by-step-implementation">
+       WordPiece Step-by-Step Implementation
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
@@ -2241,35 +2255,109 @@ Tokenizating of the unknown word:
 <li><p>Then, the algorithm finds the longest subword in the vcabulary that is in <code class="docutils literal notranslate"><span class="pre">##apple</span></code>, which is <code class="docutils literal notranslate"><span class="pre">##apple</span></code>, so the word <code class="docutils literal notranslate"><span class="pre">pineapple</span></code> is tokenized into <code class="docutils literal notranslate"><span class="pre">pine</span></code> and <code class="docutils literal notranslate"><span class="pre">##apple</span></code>.</p></li>
 </ul>
 </section>
-<section id="implementing-wordpiece">
-<h3>Implementing WordPiece<a class="headerlink" href="#implementing-wordpiece" title="Permalink to this headline">#</a></h3>
+<section id="wordpiece-in-practice">
+<h3>WordPiece in Practice<a class="headerlink" href="#wordpiece-in-practice" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.models.tokenizer.wordpiece</span> <span class="kn">import</span> <span class="n">WordPieceTokenizer</span>
 
-<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;bert-base-uncased&quot;</span><span class="p">)</span>
+<span class="n">wp</span> <span class="o">=</span> <span class="n">WordPieceTokenizer</span><span class="p">()</span>
+
+<span class="n">vocab_size</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">wp</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iteration: 0, vocab size: 79
+Best pair: (&#39;8&#39;, &#39;##9&#39;)
+New token: 89
+Iteration: 100, vocab size: 179
+Best pair: (&#39;##1&#39;, &#39;##6&#39;)
+New token: ##16
+Iteration: 200, vocab size: 279
+Best pair: (&#39;4&#39;, &#39;##14&#39;)
+New token: 414
+Iteration: 300, vocab size: 379
+Best pair: (&#39;n&#39;, &#39;##225&#39;)
+New token: n225
+Iteration: 400, vocab size: 479
+Best pair: (&#39;50&#39;, &#39;##0&#39;)
+New token: 500
+Iteration: 500, vocab size: 579
+Best pair: (&#39;57&#39;, &#39;##0&#39;)
+New token: 570
+Iteration: 600, vocab size: 679
+Best pair: (&#39;e&#39;, &#39;##q&#39;)
+New token: eq
+Iteration: 700, vocab size: 779
+Best pair: (&#39;exx&#39;, &#39;##o&#39;)
+New token: exxo
+Iteration: 800, vocab size: 879
+Best pair: (&#39;quantif&#39;, &#39;##y&#39;)
+New token: quantify
+Iteration: 900, vocab size: 979
+Best pair: (&#39;lymp&#39;, &#39;##h&#39;)
+New token: lymph
+Final vocab size: 1000
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">wp</span><span class="o">.</span><span class="n">encode_word</span><span class="p">(</span><span class="s2">&quot;company&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">wp</span><span class="o">.</span><span class="n">encode_word</span><span class="p">(</span><span class="s2">&quot;companies&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">wp</span><span class="o">.</span><span class="n">encode_word</span><span class="p">(</span><span class="s2">&quot;회사&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;company&#39;]
+[&#39;compani&#39;, &#39;##e&#39;, &#39;##s&#39;]
+[&#39;[UNK]&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tokenized_text</span> <span class="o">=</span> <span class="n">wp</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="s2">&quot;Investment opportunities in the company&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tokenized_text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;i&#39;, &#39;##n&#39;, &#39;##v&#39;, &#39;##e&#39;, &#39;##s&#39;, &#39;##t&#39;, &#39;##m&#39;, &#39;##e&#39;, &#39;##n&#39;, &#39;##t&#39;, &#39;###&#39;, &#39;###&#39;, &#39;opportuniti&#39;, &#39;##e&#39;, &#39;##s&#39;, &#39;###&#39;, &#39;###&#39;, &#39;i&#39;, &#39;##n&#39;, &#39;###&#39;, &#39;###&#39;, &#39;th&#39;, &#39;##e&#39;, &#39;###&#39;, &#39;###&#39;, &#39;company&#39;, &#39;###&#39;, &#39;###&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<section id="wordpiece-step-by-step-implementation">
+<h4>WordPiece Step-by-Step Implementation<a class="headerlink" href="#wordpiece-step-by-step-implementation" title="Permalink to this headline">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 
 
-<span class="k">def</span> <span class="nf">get_vocab</span><span class="p">(</span><span class="n">texts</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">pre_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">lowercase</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">lowercase</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">initialize_vocab</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">lowercase</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">vocab</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
-        <span class="n">words_with_offsets</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">backend_tokenizer</span><span class="o">.</span><span class="n">pre_tokenizer</span><span class="o">.</span><span class="n">pre_tokenize_str</span><span class="p">(</span>
-            <span class="n">tokenizer</span><span class="o">.</span><span class="n">backend_tokenizer</span><span class="o">.</span><span class="n">normalizer</span><span class="o">.</span><span class="n">normalize_str</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-        <span class="p">)</span>
-        <span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">offset</span> <span class="ow">in</span> <span class="n">words_with_offsets</span><span class="p">]</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">pre_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">lowercase</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
             <span class="n">vocab</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">vocab</span>
 
 
-<span class="n">word_freqs</span> <span class="o">=</span> <span class="n">get_vocab</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">100</span><span class="p">])</span>
+<span class="n">word_freqs</span> <span class="o">=</span> <span class="n">initialize_vocab</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of words: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">word_freqs</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
 </pre></div>
 </div>
@@ -2283,18 +2371,17 @@ Tokenizating of the unknown word:
 <p>The alphabet is the unique set composed of all the first letters of words, and all the other letters that appear in words prefixed by ##:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alphabet</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">characters</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">word_freqs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-    <span class="k">if</span> <span class="n">word</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">alphabet</span><span class="p">:</span>
-        <span class="n">alphabet</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">word</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">characters</span><span class="p">:</span>
+        <span class="n">characters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">word</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
-        <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;##</span><span class="si">{</span><span class="n">letter</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">alphabet</span><span class="p">:</span>
-            <span class="n">alphabet</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;##</span><span class="si">{</span><span class="n">letter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;##</span><span class="si">{</span><span class="n">letter</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">characters</span><span class="p">:</span>
+            <span class="n">characters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;##</span><span class="si">{</span><span class="n">letter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="n">alphabet</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-<span class="n">alphabet</span>
+<span class="n">characters</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">alphabet</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">characters</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2307,7 +2394,7 @@ Tokenizating of the unknown word:
 <p>Add the special tokens used by the model at the beginning of that vocabulary. In the case of BERT, it’s the list [“[PAD]”, “[UNK]”, “[CLS]”, “[SEP]”, “[MASK]”]:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vocab</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;[PAD]&quot;</span><span class="p">,</span> <span class="s2">&quot;[UNK]&quot;</span><span class="p">,</span> <span class="s2">&quot;[CLS]&quot;</span><span class="p">,</span> <span class="s2">&quot;[SEP]&quot;</span><span class="p">,</span> <span class="s2">&quot;[MASK]&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">alphabet</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vocab</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;[PAD]&quot;</span><span class="p">,</span> <span class="s2">&quot;[UNK]&quot;</span><span class="p">,</span> <span class="s2">&quot;[CLS]&quot;</span><span class="p">,</span> <span class="s2">&quot;[SEP]&quot;</span><span class="p">,</span> <span class="s2">&quot;[MASK]&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">characters</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -2509,11 +2596,8 @@ Last 50 tokens: [&#39;thompso&#39;, &#39;accompan&#39;, &#39;accompany&#39;, &#3
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-    <span class="n">pre_tokenize_result</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">_tokenizer</span><span class="o">.</span><span class="n">pre_tokenizer</span><span class="o">.</span><span class="n">pre_tokenize_str</span><span class="p">(</span>
-        <span class="n">tokenizer</span><span class="o">.</span><span class="n">_tokenizer</span><span class="o">.</span><span class="n">normalizer</span><span class="o">.</span><span class="n">normalize_str</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-    <span class="p">)</span>
-    <span class="n">pre_tokenized_text</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">offset</span> <span class="ow">in</span> <span class="n">pre_tokenize_result</span><span class="p">]</span>
-    <span class="n">encoded_words</span> <span class="o">=</span> <span class="p">[</span><span class="n">encode_word</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">pre_tokenized_text</span><span class="p">]</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="n">pre_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">encoded_words</span> <span class="o">=</span> <span class="p">[</span><span class="n">encode_word</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">]</span>
     <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">encoded_words</span><span class="p">,</span> <span class="p">[])</span>
 </pre></div>
 </div>
@@ -2532,6 +2616,7 @@ Last 50 tokens: [&#39;thompso&#39;, &#39;accompan&#39;, &#39;accompany&#39;, &#3
 </div>
 </div>
 </div>
+</section>
 </section>
 </section>
 <section id="unigram">
