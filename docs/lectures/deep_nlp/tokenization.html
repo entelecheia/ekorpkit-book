@@ -1231,6 +1231,13 @@ title="Print to PDF"
     <a class="reference internal nav-link" href="#implementation">
      Implementation
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#unigram-step-by-step-implementation">
+       Unigram Step-by-Step Implementation
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
@@ -1432,6 +1439,13 @@ title="Print to PDF"
     <a class="reference internal nav-link" href="#implementation">
      Implementation
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#unigram-step-by-step-implementation">
+       Unigram Step-by-Step Implementation
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
@@ -2655,37 +2669,73 @@ L=\sum_{s = 1}^{|D|} \log(P(X^{(s)})) = \sum_{s = 1}^{|D|} \log(\sum_{x \in S(X^
 <h3>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
 
-<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;xlnet-base-cased&quot;</span><span class="p">)</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/entelecheia/ekorpkit-book/raw/main/assets/data/us_equities_news_sampled.zip&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;us_equities_news_sampled.parquet&quot;</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">cached_path</span><span class="p">)</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.models.tokenizer.unigram</span> <span class="kn">import</span> <span class="n">UnigramTokenizer</span>
+
+<span class="n">initial_vocab_size</span> <span class="o">=</span> <span class="mi">2000</span>
+<span class="n">vocab_size</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="n">unigram</span> <span class="o">=</span> <span class="n">UnigramTokenizer</span><span class="p">(</span><span class="n">initial_vocab_size</span><span class="o">=</span><span class="n">initial_vocab_size</span><span class="p">,</span> <span class="n">vocab_size</span><span class="o">=</span><span class="n">vocab_size</span><span class="p">)</span>
+<span class="n">unigram</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">print_every</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Top 10 subwords: [(&#39;in&#39;, 6437), (&#39;th&#39;, 6241), (&#39;he&#39;, 4833), (&#39;er&#39;, 4585), (&#39;re&#39;, 4475), (&#39;an&#39;, 4311), (&#39;the&#39;, 3977), (&#39;on&#39;, 3842), (&#39;es&#39;, 3360), (&#39;ar&#39;, 3269)]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tokenized_text</span> <span class="o">=</span> <span class="n">unigram</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="s2">&quot;investment opportunities in the company&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tokenized_text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="unigram-step-by-step-implementation">
+<h4>Unigram Step-by-Step Implementation<a class="headerlink" href="#unigram-step-by-step-implementation" title="Permalink to this headline">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 
 
-<span class="k">def</span> <span class="nf">get_vocab</span><span class="p">(</span><span class="n">texts</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">pre_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">lowercase</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">lowercase</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">initialize_vocab</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">lowercase</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">vocab</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
-        <span class="n">words_with_offsets</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">backend_tokenizer</span><span class="o">.</span><span class="n">pre_tokenizer</span><span class="o">.</span><span class="n">pre_tokenize_str</span><span class="p">(</span>
-            <span class="n">tokenizer</span><span class="o">.</span><span class="n">backend_tokenizer</span><span class="o">.</span><span class="n">normalizer</span><span class="o">.</span><span class="n">normalize_str</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-        <span class="p">)</span>
-        <span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">offset</span> <span class="ow">in</span> <span class="n">words_with_offsets</span><span class="p">]</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">pre_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">lowercase</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
             <span class="n">vocab</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">vocab</span>
 
 
-<span class="n">word_freqs</span> <span class="o">=</span> <span class="n">get_vocab</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">100</span><span class="p">])</span>
+<span class="n">word_freqs</span> <span class="o">=</span> <span class="n">initialize_vocab</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of words: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">word_freqs</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of words: 8855
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of words: 7847
 </pre></div>
 </div>
 </div>
@@ -2697,11 +2747,11 @@ L=\sum_{s = 1}^{|D|} \log(P(X^{(s)})) = \sum_{s = 1}^{|D|} \log(\sum_{x \in S(X^
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">char_freqs</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">character_freqs</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 <span class="n">subwords_freqs</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">word_freqs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)):</span>
-        <span class="n">char_freqs</span><span class="p">[</span><span class="n">word</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">freq</span>
+        <span class="n">character_freqs</span><span class="p">[</span><span class="n">word</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">freq</span>
         <span class="c1"># Loop through the subwords of length at least 2</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
             <span class="n">subwords_freqs</span><span class="p">[</span><span class="n">word</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">j</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">freq</span>
@@ -2713,7 +2763,7 @@ L=\sum_{s = 1}^{|D|} \log(P(X^{(s)})) = \sum_{s = 1}^{|D|} \log(\sum_{x \in S(X^
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;▁t&#39;, 7127), (&#39;in&#39;, 5997), (&#39;▁a&#39;, 5589), (&#39;th&#39;, 5514), (&#39;he&#39;, 4739), (&#39;er&#39;, 4573), (&#39;▁th&#39;, 4262), (&#39;re&#39;, 4215), (&#39;an&#39;, 4210), (&#39;▁s&#39;, 3953)]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;in&#39;, 6437), (&#39;th&#39;, 6241), (&#39;he&#39;, 4833), (&#39;er&#39;, 4585), (&#39;re&#39;, 4475), (&#39;an&#39;, 4311), (&#39;the&#39;, 3977), (&#39;on&#39;, 3842), (&#39;es&#39;, 3360), (&#39;ar&#39;, 3269)]
 </pre></div>
 </div>
 </div>
@@ -2721,7 +2771,7 @@ L=\sum_{s = 1}^{|D|} \log(P(X^{(s)})) = \sum_{s = 1}^{|D|} \log(\sum_{x \in S(X^
 <p>We group the characters with the best subwords to arrive at an initial vocabulary of size 2000:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">token_freqs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">char_freqs</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="o">+</span> <span class="n">sorted_subwords</span><span class="p">[:</span> <span class="mi">2000</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">char_freqs</span><span class="p">)]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">token_freqs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">character_freqs</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="o">+</span> <span class="n">sorted_subwords</span><span class="p">[:</span> <span class="mi">2000</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">character_freqs</span><span class="p">)]</span>
 <span class="n">token_freqs</span> <span class="o">=</span> <span class="p">{</span><span class="n">token</span><span class="p">:</span> <span class="n">freq</span> <span class="k">for</span> <span class="n">token</span><span class="p">,</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">token_freqs</span><span class="p">}</span>
 </pre></div>
 </div>
@@ -2787,8 +2837,8 @@ L=\sum_{s = 1}^{|D|} \log(P(X^{(s)})) = \sum_{s = 1}^{|D|} \log(\sum_{x \in S(X^
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>([&#39;app&#39;, &#39;le&#39;], 16.827095174401983)
-([&#39;investment&#39;], 10.304598661839819)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>([&#39;app&#39;, &#39;le&#39;], 16.199784937807312)
+([&#39;investment&#39;], 9.955290111180942)
 </pre></div>
 </div>
 </div>
@@ -2809,7 +2859,7 @@ L=\sum_{s = 1}^{|D|} \log(P(X^{(s)})) = \sum_{s = 1}^{|D|} \log(\sum_{x \in S(X^
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>953811.2763311649
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>802891.4150846584
 </pre></div>
 </div>
 </div>
@@ -2849,11 +2899,11 @@ L=\sum_{s = 1}^{|D|} \log(P(X^{(s)})) = \sum_{s = 1}^{|D|} \log(\sum_{x \in S(X^
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>43.05223229911644
-206.79810601787176
-0.0
-1.416147324256599
-718.6751414387254
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>102.53267826826777
+239.44326648849528
+326.00756032345816
+113.19295595935546
+435.93838484131265
 </pre></div>
 </div>
 </div>
@@ -2879,11 +2929,8 @@ L=\sum_{s = 1}^{|D|} \log(P(X^{(s)})) = \sum_{s = 1}^{|D|} \log(\sum_{x \in S(X^
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-    <span class="n">words_with_offsets</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">backend_tokenizer</span><span class="o">.</span><span class="n">pre_tokenizer</span><span class="o">.</span><span class="n">pre_tokenize_str</span><span class="p">(</span>
-        <span class="n">tokenizer</span><span class="o">.</span><span class="n">backend_tokenizer</span><span class="o">.</span><span class="n">normalizer</span><span class="o">.</span><span class="n">normalize_str</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-    <span class="p">)</span>
-    <span class="n">pre_tokenized_text</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">offset</span> <span class="ow">in</span> <span class="n">words_with_offsets</span><span class="p">]</span>
-    <span class="n">encoded_words</span> <span class="o">=</span> <span class="p">[</span><span class="n">encode_word</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">model</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">pre_tokenized_text</span><span class="p">]</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="n">pre_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">encoded_words</span> <span class="o">=</span> <span class="p">[</span><span class="n">encode_word</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">model</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">]</span>
     <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">encoded_words</span><span class="p">,</span> <span class="p">[])</span>
 </pre></div>
 </div>
@@ -2897,11 +2944,12 @@ L=\sum_{s = 1}^{|D|} \log(P(X^{(s)})) = \sum_{s = 1}^{|D|} \log(\sum_{x \in S(X^
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;▁investment&#39;, &#39;▁o&#39;, &#39;pport&#39;, &#39;un&#39;, &#39;ities&#39;, &#39;▁in&#39;, &#39;▁the&#39;, &#39;▁company&#39;]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;investment&#39;, &#39;o&#39;, &#39;pport&#39;, &#39;un&#39;, &#39;ities&#39;, &#39;in&#39;, &#39;the&#39;, &#39;company&#39;]
 </pre></div>
 </div>
 </div>
 </div>
+</section>
 </section>
 </section>
 <section id="sentencepiece">
