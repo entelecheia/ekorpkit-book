@@ -51,6 +51,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -1426,6 +1428,7 @@ The number of merge operations is a BPE-specific parameter and not applicable to
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> install sentencepiece
+<span class="o">%</span><span class="k">pip</span> install --pre ekorpkit
 </pre></div>
 </div>
 </div>
@@ -1610,6 +1613,118 @@ trainer_interface.cc(697) LOG(INFO) Saving vocabs: m.vocab
 </li>
 <li><p>Repeat the M-step and E-step until the unigram probabilities converge. The log-likelihood is monotonically increasing, so we can stop the training when the log-likelihood does not increase for a certain number of iterations.</p></li>
 </ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+
+<span class="n">sp</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;model/tokenizer=sentencepiece&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:setting environment variable CACHED_PATH_CACHE_ROOT to /workspace/.cache/cached_path
+INFO:ekorpkit.base:setting environment variable KMP_DUPLICATE_LIB_OK to TRUE
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="simple">
+<li><p>Initialize the unigram probabilities <span class="math notranslate nohighlight">\(p(x_i)\)</span>. The frequency of each unigram is used as the initial value.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eKonf</span><span class="o">.</span><span class="n">viewsource</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">initialize_vocab</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    def initialize_vocab(self, texts, initial_vocab_size=None):
+        if initial_vocab_size is None:
+            initial_vocab_size = self.initial_vocab_size
+        text = self.pre_tokenize(&quot; &quot;.join(texts))
+        word_freqs = collections.Counter(text.split(self.whitespace_token))
+        sorted_subwords, characters = self.initialize_subwords(word_freqs)
+        tokens = (
+            list(characters.items())
+            + sorted_subwords[: self.initial_vocab_size - len(characters)]
+        )
+        tokens = {token: freq for token, freq in tokens}
+        tokens = collections.Counter(tokens)
+        return text, tokens, characters
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="simple">
+<li><p>M-step: Compute the most likely sequence <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> given the current unigram probabilities <span class="math notranslate nohighlight">\(p(x_i)\)</span>.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eKonf</span><span class="o">.</span><span class="n">viewsource</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">M_step</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    def M_step(self, text, trie):
+        loss, p = self.forward_step(text, trie)
+        tokenization = self.backward_step(text, p)
+        return tokenization, loss
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="simple">
+<li><p>E-step: Given the current most likely sequence <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, update the unigram probabilities <span class="math notranslate nohighlight">\(p(x_i)\)</span>.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eKonf</span><span class="o">.</span><span class="n">viewsource</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">E_step</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    def E_step(self, tokenization, trie):
+        # get the new token counts based on updated tokenization
+        counts = collections.Counter(tokenization)
+        norm = sum(list(counts.values()))
+
+        # Bayesianify them: https://cs.stanford.edu/~pliang/papers/tutorial-acl2007-talk.pdf
+        # https://github.com/google/sentencepiece/blob/master/src/unigram_model_trainer.cc
+        # we are returning the log probabilties here (alpha=0 prior)
+        logsum = digamma(norm)
+        for k, v in counts.items():
+            counts[k] = digamma(v) - logsum
+
+        for k, v in counts.items():
+            trie.set_value(k, v)
+        return trie
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="simple">
+<li><p>Repeat the M-step and E-step until the unigram probabilities converge.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eKonf</span><span class="o">.</span><span class="n">viewsource</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">EM_round</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    def EM_round(self, text, tokens, delta=0.01, max_iter=10):
+        tokenization, old_loss = self.M_step(text, self.trie)
+        for step in range(max_iter):
+            print(f&quot;EM iter {step}: &quot;, end=&quot;&quot;)
+            loss, tokenization, trie = self.EM_step(text, tokenization, self.trie)
+            print(f&quot;Loss={loss:.2f}&quot;)
+            if abs(old_loss - loss) &lt; delta:
+                break
+            old_loss = loss
+</pre></div>
+</div>
+</div>
+</div>
 <section id="finding-the-optimal-segmentation">
 <h3>Finding the optimal segmentation<a class="headerlink" href="#finding-the-optimal-segmentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
@@ -1658,6 +1773,28 @@ trainer_interface.cc(697) LOG(INFO) Saving vocabs: m.vocab
 </ul>
 </li>
 </ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eKonf</span><span class="o">.</span><span class="n">viewsource</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">_initialize_trie</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    def _initialize_trie(self, tokens):
+        trie = Trie()
+        norm = sum(list(tokens.values()))
+        logsum = digamma(norm)
+
+        maxlen = 0
+        for tok, val in tokens.items():
+            trie.add(tok, digamma(val) - logsum)
+            maxlen = max(maxlen, len(tok))
+
+        return trie, maxlen
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 <section id="fitting-the-model">
 <h3>Fitting the model<a class="headerlink" href="#fitting-the-model" title="Permalink to this headline">#</a></h3>
@@ -1680,6 +1817,73 @@ trainer_interface.cc(697) LOG(INFO) Saving vocabs: m.vocab
 </ul>
 </li>
 </ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eKonf</span><span class="o">.</span><span class="n">viewsource</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">forward_step</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    def forward_step(self, text, trie):
+        N = len(text)
+
+        # d[i] contains the maximum log_prob of any tokenization
+        # of text[:i], initialized to 0 (i.e. log(0)=-infty)
+        d = [-np.inf] * (N + 1)
+
+        # p[i] (stands for parent) contains the number of characters of
+        # the final token in the most likely sequence that ends at index i
+        p = [None] * (N + 1)
+        d[0] = 0
+
+        for i in range(1, N + 1):
+
+            # find all possible final words. Have to look back
+            # a distance set by the length of the longest token
+            for j in range(max(i - self.maxlen, 0), i):
+
+                final_token = text[j:i]
+                final_value = trie.get_value(final_token)
+
+                # if the current ending word has a higher log-probability,
+                # save that value and store the word (i.e. # chars to backtrack)
+                if final_value and d[j] + final_value &gt; d[i]:
+                    d[i] = d[j] + final_value
+                    p[i] = len(final_token)
+            if p[i] is None:
+                raise ValueError(f&quot;Encountered unknown token &#39;{text[i-1]}&#39;.&quot;)
+
+        loss = d[-1]
+        return loss, p
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eKonf</span><span class="o">.</span><span class="n">viewsource</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">backward_step</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    def backward_step(self, text, p):
+        idx = len(p)
+        tokenization = []
+        while idx &gt; 1:
+            # move back the number of steps p tells you to
+            next_idx = idx - p[idx - 1]
+
+            # extract the final token
+            tok = text[next_idx - 1 : idx - 1]
+            tokenization.append(tok)
+
+            idx = next_idx
+        tokenization = list(reversed(tokenization))
+        return tokenization
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 <section id="subword-sampling">
 <h3>Subword sampling<a class="headerlink" href="#subword-sampling" title="Permalink to this headline">#</a></h3>
