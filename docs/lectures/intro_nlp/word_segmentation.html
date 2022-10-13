@@ -1141,6 +1141,11 @@ title="Print to PDF"
      Branch Entropy
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#cohesion-probability">
+     Cohesion Probability
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -1222,6 +1227,11 @@ title="Print to PDF"
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#branch-entropy">
      Branch Entropy
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#cohesion-probability">
+     Cohesion Probability
     </a>
    </li>
   </ul>
@@ -1468,6 +1478,33 @@ title="Print to PDF"
 <p>where <span class="math notranslate nohighlight">\(p_i\)</span> is the probability of the number of words that can be formed by adding a single character to the end of a sub-sequence <span class="math notranslate nohighlight">\(w\)</span> and <span class="math notranslate nohighlight">\(c\)</span> is the character.</p>
 </li>
 <li><p>As in the case of accessor variety, the branch entropy can be calculated for the left-side and the right-side.</p></li>
+</ul>
+</section>
+<section id="cohesion-probability">
+<h3>Cohesion Probability<a class="headerlink" href="#cohesion-probability" title="Permalink to this headline">#</a></h3>
+<ul>
+<li><p>The accesor variety and the branch entropy determine the boundary of a word by measuring the uncertainty of the word boundary, that is, the exterior boundary of a word.</p></li>
+<li><p>Unlike the accesor variety and the branch entropy, the cohesion probability determines the boundary of a word by measuring the association among characters inside a word, that is, the interior boundary of a word.</p></li>
+<li><p>The cohesion probability is defined as the probability of a sequence of n characters given the first n-1 characters.</p>
+<div class="math notranslate nohighlight">
+\[
+    cohesion(c_1, c_2, \cdots, c_n) = \sqrt[n-1]{\prod_{i=1}^{n-1} P(c_1, c_2, \cdots, c_{i+1}|c_1, c_2, \cdots, c_i)}
+    \]</div>
+<p>where <span class="math notranslate nohighlight">\(P(c_1, c_2 | c_1) = \frac{count(c_1, c_2)}{count(c_1)}\)</span>.</p>
+<p>Therefore, the formula can be simplified as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+    cohesion(c_1, c_2, \cdots, c_n) = \sqrt[n-1]{\prod_{i=1}^{n-1} \frac{count(c_1, c_2, \cdots, c_{i+1})}{count(c_1, c_2, \cdots, c_i)}} \\ = \sqrt[n-1]{\frac{count(c_1, c_2, \cdots, c_n)}{count(c_1)}}
+    \end{split}\]</div>
+</li>
+<li><p>The above formula assumes that characters are assoiciated in the forward direction.</p></li>
+<li><p>For the backward direction, the formula is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+    cohesion(c_1, c_2, \cdots, c_n) = \sqrt[n-1]{\prod_{i=1}^{n-1} \frac{count(c_{i}, c_{i+1}, \cdots, c_n)}{count(c_{i+1}, c_{i+2}, \cdots, c_{n})}} \\ = \sqrt[n-1]{\frac{count(c_1, c_2, \cdots, c_n)}{count(c_n)}}
+    \end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(count(c_{i+1}, c_{i+2}, \cdots, c_n)\)</span> is the count of the sequence of characters from <span class="math notranslate nohighlight">\(c_{i+1}\)</span> to <span class="math notranslate nohighlight">\(c_n\)</span>.</p>
+</li>
 </ul>
 </section>
 </section>
