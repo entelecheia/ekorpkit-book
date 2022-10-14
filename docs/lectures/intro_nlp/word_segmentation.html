@@ -732,6 +732,11 @@ const thebe_selector_output = ".output, .cell_output"
      Vector Semantics and Representation
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lm_evaluation.html">
+     Language Model Evaluation
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
@@ -1115,6 +1120,11 @@ title="Print to PDF"
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#maximum-matching-algorithm">
+     Maximum Matching Algorithm
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#unknown-words">
      Unknown Words
     </a>
@@ -1137,16 +1147,16 @@ title="Print to PDF"
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#branch-entropy">
-     Branch Entropy
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#cohesion-probability">
-     Cohesion Probability
+    <a class="reference internal nav-link" href="#branching-entropy">
+     Branching Entropy
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#word-segmentation-in-practice">
+   Word Segmentation in Practice
+  </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#references">
@@ -1203,6 +1213,11 @@ title="Print to PDF"
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#maximum-matching-algorithm">
+     Maximum Matching Algorithm
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#unknown-words">
      Unknown Words
     </a>
@@ -1225,16 +1240,16 @@ title="Print to PDF"
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#branch-entropy">
-     Branch Entropy
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#cohesion-probability">
-     Cohesion Probability
+    <a class="reference internal nav-link" href="#branching-entropy">
+     Branching Entropy
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#word-segmentation-in-practice">
+   Word Segmentation in Practice
+  </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#references">
@@ -1406,6 +1421,21 @@ title="Print to PDF"
 <li><p>This allows a constant amount of memory to be used for the algorithm.</p></li>
 </ul>
 </section>
+<section id="maximum-matching-algorithm">
+<h3>Maximum Matching Algorithm<a class="headerlink" href="#maximum-matching-algorithm" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>If we have all known words in a dictionary, we can use the maximum matching algorithm to segment a sentence.</p></li>
+<li><p>The maximum matching algorithm is a greedy algorithm that finds the longest matching word from the dictionary.</p></li>
+<li><p>The algorithm is as follows:</p>
+<ol class="simple">
+<li><p>Find the longest matching word from the dictionary.</p></li>
+<li><p>If the word is found, add the word to the result and remove the word from the input.</p></li>
+<li><p>If the word is not found, add the first character to the result and remove the first character from the input.</p></li>
+<li><p>Repeat 1-3 until the input is empty.</p></li>
+</ol>
+</li>
+</ul>
+</section>
 <section id="unknown-words">
 <h3>Unknown Words<a class="headerlink" href="#unknown-words" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
@@ -1435,9 +1465,9 @@ title="Print to PDF"
 <h3>Uncertainty of word boundaries<a class="headerlink" href="#uncertainty-of-word-boundaries" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>The uncertainty of word boundaries can be measured by the entropy of the word boundary.</p></li>
-<li><p>Harris, 1970 said that if the uncertainty of successive tokens increases, the location is a word boundary.</p></li>
-<li><p>Feng et al., 2004 proposed a statistical criterion called accessor variety (AV) to measure how likely a sub-sequence is a word, and then to find the best segmentation pattern that maximizes a target function of accessor variety and the length of the sub-sequence as variants.</p></li>
-<li><p>Jin and TanakaIshii, 2006 proposed branch entropy as another criterion for unsupervised segmentation.</p></li>
+<li><p><span id="id1">[<a class="reference internal" href="../../about/index.html#id20" title="Zellig S Harris. From phoneme to morpheme. In Papers in structural and transformational linguistics, pages 32–67. Springer, 1970. URL: http://www.eecs.qmul.ac.uk/~mpurver/papers/griffiths-et-al15qitl.pdf.">Harris, 1970</a>]</span> said that if the uncertainty of successive tokens increases, the location is a word boundary.</p></li>
+<li><p><span id="id2">[<a class="reference internal" href="../../about/index.html#id18" title="Haodi Feng, Kang Chen, Xiaotie Deng, and Weimin Zheng. Accessor variety criteria for chinese word extraction. Computational linguistics, 30(1):75–93, 2004. URL: https://aclanthology.org/J04-1004.pdf.">Feng <em>et al.</em>, 2004</a>]</span> proposed a statistical criterion called accessor variety (AV) to measure how likely a sub-sequence is a word, and then to find the best segmentation pattern that maximizes a target function of accessor variety and the length of the sub-sequence as variants.</p></li>
+<li><p><span id="id3">[<a class="reference internal" href="../../about/index.html#id19" title="Zhihui Jin and Kumiko Tanaka-Ishii. Unsupervised segmentation of Chinese text by use of branching entropy. In Proceedings of the COLING/ACL 2006 Main Conference Poster Sessions, 428–435. Sydney, Australia, July 2006. Association for Computational Linguistics. URL: https://aclanthology.org/P06-2056.">Jin and Tanaka-Ishii, 2006</a>]</span> proposed branching entropy as another criterion for unsupervised segmentation.</p></li>
 <li><p>Both criteria share a similar assumption as in the fundamental work by Harris, 1970, that the uncertainty of successive tokens increases at word boundaries.</p></li>
 <li><p>The latter is the countinous version of the former.</p></li>
 </ul>
@@ -1447,66 +1477,374 @@ title="Print to PDF"
 <h3>Accessor Variety<a class="headerlink" href="#accessor-variety" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>The accessor variety (AV) defines that the uncertainty of a sub-sequence is the number of different words that can be formed by adding a sub-sequence to the sub-sequence.</p></li>
-<li><p>For the right-side accessor variety, it is the number of different words that can be formed by adding a sub-sequence to the right side of the sub-sequence.</p></li>
-<li><p>For the following sub-sequence, the right-side accessor variety of <code class="docutils literal notranslate"><span class="pre">hope</span></code> is 2, because <code class="docutils literal notranslate"><span class="pre">hope</span></code> can be followed by <code class="docutils literal notranslate"><span class="pre">less</span></code> or <code class="docutils literal notranslate"><span class="pre">fully</span></code>.</p>
+<li><p>For the forward accessor variety, it is the number of different words that can be formed by adding a sub-sequence to the right side of the sub-sequence.</p></li>
+<li><p>For the following sub-sequence, the forward accessor variety of <code class="docutils literal notranslate"><span class="pre">hope</span></code> is 2, because <code class="docutils literal notranslate"><span class="pre">hope</span></code> can be followed by <code class="docutils literal notranslate"><span class="pre">less</span></code> or <code class="docutils literal notranslate"><span class="pre">fully</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;hopeful&quot;</span><span class="p">:</span> <span class="mi">100</span>
 <span class="s2">&quot;hopeless&quot;</span><span class="p">:</span> <span class="mi">80</span>
 </pre></div>
 </div>
 </li>
-<li><p>The left-side accessor variety is the number of different words that can be formed by adding a sub-sequence to the left side of the sub-sequence.</p></li>
-<li><p>For example, the left-side accessor variety of <code class="docutils literal notranslate"><span class="pre">less</span></code> is 3, because <code class="docutils literal notranslate"><span class="pre">hopeless</span></code>, <code class="docutils literal notranslate"><span class="pre">useless</span></code>, and <code class="docutils literal notranslate"><span class="pre">pointless</span></code> can be formed by adding <code class="docutils literal notranslate"><span class="pre">less</span></code> to the left side of <code class="docutils literal notranslate"><span class="pre">less</span></code>.</p>
+<li><p>The backward accessor variety is the number of different words that can be formed by adding a sub-sequence to the left side of the sub-sequence.</p></li>
+<li><p>For example, the backward accessor variety of <code class="docutils literal notranslate"><span class="pre">less</span></code> is 3, because <code class="docutils literal notranslate"><span class="pre">hopeless</span></code>, <code class="docutils literal notranslate"><span class="pre">useless</span></code>, and <code class="docutils literal notranslate"><span class="pre">pointless</span></code> can be formed by adding <code class="docutils literal notranslate"><span class="pre">less</span></code> to the left side of <code class="docutils literal notranslate"><span class="pre">less</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;hopeless&quot;</span><span class="p">:</span> <span class="mi">80</span>
 <span class="s2">&quot;unless&quot;</span><span class="p">:</span> <span class="mi">160</span>
 <span class="s2">&quot;pointless&quot;</span><span class="p">:</span> <span class="mi">70</span>
 </pre></div>
 </div>
 </li>
-<li><p>Depending on the language, the left-side accessor variety or the right-side accessor variety may be more suitable for segmentation.</p></li>
+<li><p>Depending on the language, the forward accessor variety or the backward accessor variety may be more suitable for segmentation.</p></li>
 <li><p>Threshold values can be used to determine the word boundaries.</p></li>
 <li><p>The threshold values can be determined by the corpus.</p></li>
 </ul>
 </section>
-<section id="branch-entropy">
-<h3>Branch Entropy<a class="headerlink" href="#branch-entropy" title="Permalink to this headline">#</a></h3>
+<section id="branching-entropy">
+<h3>Branching Entropy<a class="headerlink" href="#branching-entropy" title="Permalink to this headline">#</a></h3>
+<p><strong>Assumption 1</strong>: The uncertainty of successive tokens increases at word boundaries.</p>
 <ul>
-<li><p>The branch entropy is defined as the entropy of the distribution of the number of words that can be formed by adding a single character to the end of a sub-sequence.</p>
+<li><p>Given a set of elements <span class="math notranslate nohighlight">\(X\)</span> and a set of n-gram sequences <span class="math notranslate nohighlight">\(X_n\)</span>, the conditional entropy of an element occuring after an n-gram sequence <span class="math notranslate nohighlight">\(X_n\)</span> is defined as:</p>
 <div class="math notranslate nohighlight">
 \[
-    \text{BE}(w|c) = -\sum_{i=1}^n p_i \log p_i
+    H(X|X_n) = -\sum_{x_n \in X_n} P(x_n) \sum_{x \in X} P(x|x_n) \log P(x|x_n)
     \]</div>
-<p>where <span class="math notranslate nohighlight">\(p_i\)</span> is the probability of the number of words that can be formed by adding a single character to the end of a sub-sequence <span class="math notranslate nohighlight">\(w\)</span> and <span class="math notranslate nohighlight">\(c\)</span> is the character.</p>
+<p>where <span class="math notranslate nohighlight">\(P(x) = P(X=x)\)</span>, <span class="math notranslate nohighlight">\(P(x|x_n) = P(X=x|X_n=x_n)\)</span>, and <span class="math notranslate nohighlight">\(P(X=x)\)</span> indicates the probability of an element <span class="math notranslate nohighlight">\(x\)</span> occuring in <span class="math notranslate nohighlight">\(X\)</span>.</p>
 </li>
-<li><p>As in the case of accessor variety, the branch entropy can be calculated for the left-side and the right-side.</p></li>
-</ul>
-</section>
-<section id="cohesion-probability">
-<h3>Cohesion Probability<a class="headerlink" href="#cohesion-probability" title="Permalink to this headline">#</a></h3>
-<ul>
-<li><p>The accesor variety and the branch entropy determine the boundary of a word by measuring the uncertainty of the word boundary, that is, the exterior boundary of a word.</p></li>
-<li><p>Unlike the accesor variety and the branch entropy, the cohesion probability determines the boundary of a word by measuring the association among characters inside a word, that is, the interior boundary of a word.</p></li>
-<li><p>The cohesion probability is defined as the probability of a sequence of n characters given the first n-1 characters.</p>
+<li><p><span class="math notranslate nohighlight">\(H(X|X_n)\)</span> decreases as <span class="math notranslate nohighlight">\(n\)</span> increases, meaning that <span class="math notranslate nohighlight">\(X\)</span> will become more predictable as <span class="math notranslate nohighlight">\(X_n\)</span> becomes longer.</p></li>
+<li><p>The latter half of the equation, the entropy of <span class="math notranslate nohighlight">\(X\)</span> given <span class="math notranslate nohighlight">\(X_n\)</span>, indicates the average information of branching out from a specific n-gram sequence <span class="math notranslate nohighlight">\(X_n\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
-    cohesion(c_1, c_2, \cdots, c_n) = \sqrt[n-1]{\prod_{i=1}^{n-1} P(c_1, c_2, \cdots, c_{i+1}|c_1, c_2, \cdots, c_i)}
+    H(X|X_n=x_n) = -\sum_{x \in X} P(x|x_n) \log P(x|x_n)
     \]</div>
-<p>where <span class="math notranslate nohighlight">\(P(c_1, c_2 | c_1) = \frac{count(c_1, c_2)}{count(c_1)}\)</span>.</p>
-<p>Therefore, the formula can be simplified as:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-    cohesion(c_1, c_2, \cdots, c_n) = \sqrt[n-1]{\prod_{i=1}^{n-1} \frac{count(c_1, c_2, \cdots, c_{i+1})}{count(c_1, c_2, \cdots, c_i)}} \\ = \sqrt[n-1]{\frac{count(c_1, c_2, \cdots, c_n)}{count(c_1)}}
-    \end{split}\]</div>
 </li>
-<li><p>The above formula assumes that characters are assoiciated in the forward direction.</p></li>
-<li><p>For the backward direction, the formula is:</p>
+<li><p>This local entropy is the branching entropy of <span class="math notranslate nohighlight">\(X\)</span> given <span class="math notranslate nohighlight">\(X_n\)</span>, and denoted as <span class="math notranslate nohighlight">\(h(x_n)\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}
-    cohesion(c_1, c_2, \cdots, c_n) = \sqrt[n-1]{\prod_{i=1}^{n-1} \frac{count(c_{i}, c_{i+1}, \cdots, c_n)}{count(c_{i+1}, c_{i+2}, \cdots, c_{n})}} \\ = \sqrt[n-1]{\frac{count(c_1, c_2, \cdots, c_n)}{count(c_n)}}
-    \end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(count(c_{i+1}, c_{i+2}, \cdots, c_n)\)</span> is the count of the sequence of characters from <span class="math notranslate nohighlight">\(c_{i+1}\)</span> to <span class="math notranslate nohighlight">\(c_n\)</span>.</p>
+\[
+    h(x_n) = -\sum_{x \in X} P(x|x_n) \log P(x|x_n)
+    \]</div>
 </li>
 </ul>
+<p><strong>Assumption 2</strong>: If the entropy of successive tokens is high or increasing, the location is a word boundary.</p>
+<ul>
+<li><p>Generally, as the length of the n-gram sequence increases, the entropy of the n-gram sequence decreases.</p>
+<div class="math notranslate nohighlight">
+\[
+    h(x_n) \leq h(x_{n-1})
+    \]</div>
+</li>
+<li><p>If <span class="math notranslate nohighlight">\(x_n\)</span> is the prefix of <span class="math notranslate nohighlight">\(x_{n+1}\)</span>, the branching entropy of <span class="math notranslate nohighlight">\(x_n\)</span> will likely be smaller than that of <span class="math notranslate nohighlight">\(x_{n+1}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+    h(x_n) &lt; h(x_{n+1})
+    \]</div>
+</li>
+<li><p>There are three boundary conditions to decide whether <span class="math notranslate nohighlight">\(x_n\)</span> is a word boundary:</p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\(B_{max}\)</span>: If <span class="math notranslate nohighlight">\(h(x_n) &gt; \text{val}_{max}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(B_{increase}\)</span>: <span class="math notranslate nohighlight">\(h(x_n) &gt; h(x_{n-1})\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(B_{ordinary}\)</span>: <span class="math notranslate nohighlight">\(h(x_n) &gt; \text{val}_{ordinary}\)</span></p></li>
+</ol>
+</li>
+</ul>
+<p><img alt="" src="../../../_images/branching_entropy.png" /></p>
 </section>
+</section>
+<section id="word-segmentation-in-practice">
+<h2>Word Segmentation in Practice<a class="headerlink" href="#word-segmentation-in-practice" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+
+<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;WARNING&quot;</span><span class="p">)</span>
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;corpus&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;fomc&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;https://github.com/entelecheia/ekorpkit-book/raw/main/assets/data/fomc.zip&quot;</span>
+<span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cached_path</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">auto</span><span class="o">.</span><span class="n">merge</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">fomc_corpus</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fomc_corpus</span><span class="p">)</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="n">fomc_corpus</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">fomc_corpus</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;fomc_statement&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Corpus : fomc
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+
+<span class="k">def</span> <span class="nf">normalize_word</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+    <span class="c1"># replace all non-alphanumeric characters at the end of the word with a space</span>
+    <span class="n">word</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[^a-zA-Z0-9]+$&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">word</span><span class="p">)</span>
+    <span class="c1"># replace all non-alphanumeric characters at the beginning of the word with a space</span>
+    <span class="n">word</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[^a-zA-Z0-9]+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">word</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">word</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">pre_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">lowercase</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">lowercase</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="c1"># remove urls</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;http\S+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">normalize_word</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">normalize_word</span><span class="p">(</span><span class="n">word</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># words = pre_tokenize(text).split()</span>
+<span class="n">all_words</span> <span class="o">=</span> <span class="n">pre_tokenize</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">texts</span><span class="p">[:</span><span class="mi">1</span><span class="p">]))</span>
+<span class="c1"># all_words = pre_tokenize(&quot; &quot;.join(texts))</span>
+<span class="n">word_freqs</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">all_words</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">whitespace_token</span> <span class="o">=</span> <span class="s2">&quot;▁&quot;</span>
+<span class="n">empty_token</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">max_fwd_len</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">max_bwd_len</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">character_freqs</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">subwords_freqs</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">forward_subwords_freqs</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">backward_subwords_freqs</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">left_word</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">right_word</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">empty_token</span><span class="p">]</span> <span class="o">+</span> <span class="n">all_words</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">all_words</span><span class="p">,</span> <span class="n">all_words</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="p">[</span><span class="n">empty_token</span><span class="p">]</span>
+<span class="p">):</span>
+    <span class="n">freq</span> <span class="o">=</span> <span class="n">word_freqs</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
+    <span class="n">right_word_freq</span> <span class="o">=</span> <span class="n">word_freqs</span><span class="p">[</span><span class="n">right_word</span><span class="p">]</span>
+    <span class="n">forward_subword</span> <span class="o">=</span> <span class="n">word</span> <span class="o">+</span> <span class="n">whitespace_token</span>
+    <span class="n">forward_subwords_freqs</span><span class="p">[</span><span class="n">forward_subword</span><span class="p">]</span> <span class="o">+=</span> <span class="n">freq</span>
+    <span class="n">left_word_freq</span> <span class="o">=</span> <span class="n">word_freqs</span><span class="p">[</span><span class="n">left_word</span><span class="p">]</span>
+    <span class="n">backward_subword</span> <span class="o">=</span> <span class="n">whitespace_token</span> <span class="o">+</span> <span class="n">word</span>
+    <span class="n">backward_subwords_freqs</span><span class="p">[</span><span class="n">backward_subword</span><span class="p">]</span> <span class="o">+=</span> <span class="n">freq</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)):</span>
+        <span class="n">character_freqs</span><span class="p">[</span><span class="n">word</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">freq</span>
+        <span class="c1"># Loop through the subwords of length at least 2</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">subwords_freqs</span><span class="p">[</span><span class="n">word</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">j</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">freq</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">),</span> <span class="n">max_fwd_len</span><span class="p">)):</span>
+        <span class="n">forward_subword</span> <span class="o">=</span> <span class="n">word</span> <span class="o">+</span> <span class="n">whitespace_token</span> <span class="o">+</span> <span class="n">right_word</span><span class="p">[:</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">forward_subwords_freqs</span><span class="p">[</span><span class="n">forward_subword</span><span class="p">]</span> <span class="o">+=</span> <span class="n">right_word_freq</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">),</span> <span class="n">max_bwd_len</span><span class="p">)):</span>
+        <span class="n">backward_subword</span> <span class="o">=</span> <span class="n">left_word</span><span class="p">[</span><span class="o">-</span><span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">:]</span> <span class="o">+</span> <span class="n">whitespace_token</span> <span class="o">+</span> <span class="n">word</span>
+        <span class="n">backward_subwords_freqs</span><span class="p">[</span><span class="n">backward_subword</span><span class="p">]</span> <span class="o">+=</span> <span class="n">left_word_freq</span>
+<span class="c1"># Sort subwords by frequency</span>
+<span class="n">sorted_subwords</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+    <span class="n">subwords_freqs</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Top 10 subwords: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sorted_subwords</span><span class="p">[:</span><span class="mi">10</span><span class="p">]))</span>
+<span class="c1"># sort forward subwords by frequency</span>
+<span class="n">sorted_forward_subwords</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+    <span class="n">forward_subwords_freqs</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Top 10 forward subwords: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sorted_forward_subwords</span><span class="p">[:</span><span class="mi">10</span><span class="p">]))</span>
+<span class="c1"># sort backward subwords by frequency</span>
+<span class="n">sorted_backward_subwords</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+    <span class="n">backward_subwords_freqs</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Top 10 backward subwords: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sorted_backward_subwords</span><span class="p">[:</span><span class="mi">10</span><span class="p">]))</span>
+<span class="c1"># subwords_freqs</span>
+<span class="c1"># forward_subwords_freqs</span>
+<span class="c1"># backward_subwords_freqs</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">subwords_freqs</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_forward_subwords</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_backward_subwords</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Top 10 subwords: [(&#39;th&#39;, 90), (&#39;the&#39;, 81), (&#39;he&#39;, 81), (&#39;to&#39;, 38), (&#39;in&#39;, 18), (&#39;an&#39;, 17), (&#39;re&#39;, 16), (&#39;ma&#39;, 14), (&#39;de&#39;, 13), (&#39;on&#39;, 13)]
+Top 10 forward subwords: [(&#39;the▁&#39;, 81), (&#39;to▁&#39;, 36), (&#39;decided▁t&#39;, 12), (&#39;that▁t&#39;, 11), (&#39;market▁&#39;, 9), (&#39;slightly▁t&#39;, 9), (&#39;of▁&#39;, 9), (&#39;positions▁t&#39;, 9), (&#39;in▁&#39;, 9), (&#39;rates▁t&#39;, 9)]
+Top 10 backward subwords: [(&#39;▁the&#39;, 81), (&#39;▁to&#39;, 36), (&#39;e▁federal&#39;, 9), (&#39;▁market&#39;, 9), (&#39;e▁degree&#39;, 9), (&#39;▁of&#39;, 9), (&#39;e▁action&#39;, 9), (&#39;▁in&#39;, 9), (&#39;e▁decision&#39;, 9), (&#39;e▁economic&#39;, 9)]
+1014 158 159
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bwd_tokens</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">character_freqs</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="o">+</span> <span class="n">sorted_subwords</span> <span class="o">+</span> <span class="n">sorted_backward_subwords</span>
+<span class="n">bwd_tokens</span> <span class="o">=</span> <span class="p">{</span><span class="n">token</span><span class="p">:</span> <span class="n">freq</span> <span class="k">for</span> <span class="n">token</span><span class="p">,</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">bwd_tokens</span><span class="p">}</span>
+<span class="n">bwd_tokens</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">bwd_tokens</span><span class="p">)</span>
+
+<span class="n">fwd_tokens</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">character_freqs</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="o">+</span> <span class="n">sorted_subwords</span> <span class="o">+</span> <span class="n">sorted_forward_subwords</span>
+<span class="n">fwd_tokens</span> <span class="o">=</span> <span class="p">{</span><span class="n">token</span><span class="p">:</span> <span class="n">freq</span> <span class="k">for</span> <span class="n">token</span><span class="p">,</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">fwd_tokens</span><span class="p">}</span>
+<span class="n">fwd_tokens</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">fwd_tokens</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Trie</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">end_symbol</span><span class="o">=</span><span class="s2">&quot;&lt;END&gt;&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;forward&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end_symbol</span> <span class="o">=</span> <span class="n">end_symbol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">direction</span>
+
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">==</span> <span class="s2">&quot;backward&quot;</span><span class="p">:</span>
+            <span class="c1"># reverse the word</span>
+            <span class="n">word</span> <span class="o">=</span> <span class="n">word</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span>
+        <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">word</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ch</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">node</span><span class="p">:</span>
+                <span class="n">node</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span>
+        <span class="n">node</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">end_symbol</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">==</span> <span class="s2">&quot;backward&quot;</span><span class="p">:</span>
+            <span class="c1"># reverse the word</span>
+            <span class="n">word</span> <span class="o">=</span> <span class="n">word</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span>
+        <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">word</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ch</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">node</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mi">0</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_symbol</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">node</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">node</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">end_symbol</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">==</span> <span class="s2">&quot;backward&quot;</span><span class="p">:</span>
+            <span class="c1"># reverse the word</span>
+            <span class="n">word</span> <span class="o">=</span> <span class="n">word</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span>
+        <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">word</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ch</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">node</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;word not in trie&quot;</span><span class="p">)</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_symbol</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">node</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;word not in trie&quot;</span><span class="p">)</span>
+        <span class="n">node</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">end_symbol</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">get_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">==</span> <span class="s2">&quot;backward&quot;</span><span class="p">:</span>
+            <span class="c1"># reverse the word</span>
+            <span class="n">word</span> <span class="o">=</span> <span class="n">word</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span>
+        <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">word</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ch</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">node</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[]</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span>
+        <span class="n">children</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">children</span>
+
+    <span class="k">def</span> <span class="nf">num_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_children</span><span class="p">(</span><span class="n">word</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">get_leafs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">):</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_children</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end_symbol</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_leafs</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">_get_leafs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_symbol</span> <span class="ow">in</span> <span class="n">node</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">end_symbol</span><span class="p">]]</span>
+        <span class="n">leafs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span><span class="p">:</span>
+            <span class="n">leafs</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_leafs</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">child</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">leafs</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">digamma</span>
+
+<span class="k">def</span> <span class="nf">initialize_trie</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;forward&quot;</span><span class="p">):</span>
+    <span class="n">trie</span> <span class="o">=</span> <span class="n">Trie</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="n">direction</span><span class="p">)</span>
+    <span class="c1"># norm = sum(list(tokens.values()))</span>
+    <span class="c1"># logsum = digamma(norm)</span>
+
+    <span class="n">maxlen</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">tok</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">tokens</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">trie</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tok</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+        <span class="n">maxlen</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">maxlen</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tok</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">trie</span><span class="p">,</span> <span class="n">maxlen</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fwd_trie</span><span class="p">,</span> <span class="n">fwd_maxlen</span> <span class="o">=</span> <span class="n">initialize_trie</span><span class="p">(</span><span class="n">fwd_tokens</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;forward&quot;</span><span class="p">)</span>
+<span class="n">bwd_trie</span><span class="p">,</span> <span class="n">bwd_maxlen</span> <span class="o">=</span> <span class="n">initialize_trie</span><span class="p">(</span><span class="n">bwd_tokens</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;backward&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fwd_trie</span><span class="o">.</span><span class="n">num_children</span><span class="p">(</span><span class="s2">&quot;the▁&quot;</span><span class="p">)</span> <span class="p">,</span> <span class="n">fwd_trie</span><span class="o">.</span><span class="n">num_children</span><span class="p">(</span><span class="s2">&quot;the&quot;</span><span class="p">)</span> <span class="p">,</span> <span class="n">fwd_trie</span><span class="o">.</span><span class="n">num_children</span><span class="p">(</span><span class="s2">&quot;th&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(6, 2, 4)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">fwd_trie</span><span class="o">.</span><span class="n">get_leafs</span><span class="p">(</span><span class="s2">&quot;the&quot;</span><span class="p">),</span> <span class="n">fwd_trie</span><span class="o">.</span><span class="n">get_leafs</span><span class="p">(</span><span class="s2">&quot;the▁&quot;</span><span class="p">),</span> <span class="n">fwd_trie</span><span class="o">.</span><span class="n">get_leafs</span><span class="p">(</span><span class="s2">&quot;greenspan&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[81] [3, 3, 2, 2, 1] [4]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bwd_trie</span><span class="o">.</span><span class="n">get_leafs</span><span class="p">(</span><span class="s2">&quot;▁the&quot;</span><span class="p">)</span> <span class="p">,</span><span class="n">bwd_trie</span><span class="o">.</span><span class="n">get_children</span><span class="p">(</span><span class="s2">&quot;▁the&quot;</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>([4, 3, 2, 2, 1, 1],
+ {&#39;&lt;END&gt;&#39;: 81,
+  &#39;s&#39;: {&#39;&lt;END&gt;&#39;: 4},
+  &#39;f&#39;: {&#39;&lt;END&gt;&#39;: 3},
+  &#39;t&#39;: {&#39;&lt;END&gt;&#39;: 2},
+  &#39;y&#39;: {&#39;&lt;END&gt;&#39;: 2},
+  &#39;e&#39;: {&#39;&lt;END&gt;&#39;: 1},
+  &#39;n&#39;: {&#39;&lt;END&gt;&#39;: 1}})
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">fwd_trie</span><span class="o">.</span><span class="n">get_children</span><span class="p">(</span><span class="s2">&quot;greenspan▁&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;&lt;END&gt;&#39;: 4, &#39;a&#39;: {&#39;&lt;END&gt;&#39;: 1}, &#39;d&#39;: {&#39;&lt;END&gt;&#39;: 2}}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">subword</span> <span class="ow">in</span> <span class="n">sorted_subwords</span><span class="p">:</span>
+
+    <span class="n">final_value</span> <span class="o">=</span> <span class="n">fwd_trie</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">subword</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
