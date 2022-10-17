@@ -1556,31 +1556,6 @@ title="Print to PDF"
 <h2>Word Segmentation in Practice<a class="headerlink" href="#word-segmentation-in-practice" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
-
-<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;WARNING&quot;</span><span class="p">)</span>
-
-<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;corpus&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;fomc&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s2">&quot;https://github.com/entelecheia/ekorpkit-book/raw/main/assets/data/fomc.zip&quot;</span>
-<span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">cached_path</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">auto</span><span class="o">.</span><span class="n">merge</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">fomc_corpus</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">fomc_corpus</span><span class="p">)</span>
-<span class="n">texts</span> <span class="o">=</span> <span class="n">fomc_corpus</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">fomc_corpus</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;fomc_statement&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Corpus : fomc
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;like apples&quot;</span><span class="p">,</span>
     <span class="s2">&quot;likes pineapples apples&quot;</span><span class="p">,</span>
@@ -1624,40 +1599,21 @@ title="Print to PDF"
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ws</span><span class="o">.</span><span class="n">fwd_trie</span><span class="o">.</span><span class="n">get_children</span><span class="p">(</span><span class="s2">&quot;pineapple&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;&lt;END&gt;&#39;: 12, &#39;s&#39;: {&#39;&lt;END&gt;&#39;: 7, &#39;▁&#39;: {&#39;&lt;END&gt;&#39;: 7}}, &#39;▁&#39;: {&#39;&lt;END&gt;&#39;: 5}}
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># word = &quot;federal&quot;</span>
-<span class="n">word</span> <span class="o">=</span> <span class="s2">&quot;apples&quot;</span>
-<span class="c1"># word = &quot;people&quot;</span>
-<span class="c1"># word = &quot;unhealthy&quot;</span>
-<span class="n">word</span> <span class="o">=</span> <span class="s2">&quot;unhealthiness&quot;</span>
-<span class="n">word</span> <span class="o">=</span> <span class="s2">&quot;healthiness&quot;</span>
-<span class="n">word</span> <span class="o">=</span> <span class="s2">&quot;dislikeness&quot;</span>
-<span class="c1"># word = &quot;likes&quot;s</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">word</span> <span class="o">=</span> <span class="s2">&quot;healthiness&quot;</span>
 <span class="n">results</span> <span class="o">=</span> <span class="n">ws</span><span class="o">.</span><span class="n">find_local_entropy</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
 <span class="n">results</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;d&#39;, 0.35537297116799527, 0.0),
- (&#39;i&#39;, 0.35537297116799527, 0.0),
- (&#39;s&#39;, 0.5603495554358109, 0.20497658426781562),
- (&#39;l&#39;, 0.3578897525265621, -0.2024598029092488),
- (&#39;i&#39;, 0.3578897525265621, 0.0),
- (&#39;k&#39;, 0.3578897525265621, 0.0),
- (&#39;e&#39;, 0.6983152147756927, 0.3404254622491306),
- (&#39;n&#39;, 0.36787944117144233, -0.33043577360425036),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;h&#39;, 0.3578897525265621, 0.0),
+ (&#39;e&#39;, 0.3578897525265621, 0.0),
+ (&#39;a&#39;, 0.3578897525265621, 0.0),
+ (&#39;l&#39;, 0.3578897525265621, 0.0),
+ (&#39;t&#39;, 0.3578897525265621, 0.0),
+ (&#39;h&#39;, 0.6983152147756927, 0.3404254622491306),
+ (&#39;i&#39;, 0.36787944117144233, -0.33043577360425036),
+ (&#39;n&#39;, 0.36787944117144233, 0.0),
  (&#39;e&#39;, 0.36787944117144233, 0.0),
  (&#39;s&#39;, 0.36787944117144233, 0.0),
  (&#39;s&#39;, 0.36787944117144233, 0.0)]
@@ -1672,25 +1628,12 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/word_segmentation_28_0.png" src="../../../_images/word_segmentation_28_0.png" />
+<img alt="../../../_images/word_segmentation_26_0.png" src="../../../_images/word_segmentation_26_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">word</span> <span class="o">=</span> <span class="s2">&quot;apples&quot;</span>
-<span class="n">ws</span><span class="o">.</span><span class="n">segment_word</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;forward&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;apple&#39;, &#39;s&#39;)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ws</span><span class="o">.</span><span class="n">segment_texts</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ws</span><span class="o">.</span><span class="n">segment</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1717,6 +1660,78 @@ title="Print to PDF"
  [&#39;pine&#39;, &#39;apple&#39;, &#39;tree&#39;]]
 </pre></div>
 </div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ws</span><span class="o">.</span><span class="n">extract_words</span><span class="p">(</span><span class="s2">&quot;ilikesanapple&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;i&#39;, &#39;likes&#39;, &#39;an&#39;, &#39;apple&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;아버지가 방에 들어가신다&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;아버지는 방에 들어가셨다&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;가방에 들어가다&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ws</span> <span class="o">=</span> <span class="n">WordSegmenter</span><span class="p">()</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Top 10 subwords: [(&#39;▁&#39;, 16), (&#39;가&#39;, 5), (&#39;방&#39;, 3), (&#39;방에&#39;, 3), (&#39;방에▁&#39;, 3), (&#39;에&#39;, 3), (&#39;에▁&#39;, 3), (&#39;▁들&#39;, 3), (&#39;▁들어&#39;, 3), (&#39;▁들어가&#39;, 3)]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ws</span><span class="o">.</span><span class="n">segment</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[&#39;아버지&#39;, &#39;가&#39;, &#39;방에&#39;, &#39;들어가&#39;, &#39;신다&#39;],
+ [&#39;아버지&#39;, &#39;는&#39;, &#39;방에&#39;, &#39;들어가&#39;, &#39;셨다&#39;],
+ [&#39;가방에&#39;, &#39;들어가&#39;, &#39;다&#39;]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ws</span><span class="o">.</span><span class="n">extract_words</span><span class="p">(</span><span class="s2">&quot;아버지가방에들어가신다&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;아버지가&#39;, &#39;방에&#39;, &#39;들어가신다&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ws</span><span class="o">.</span><span class="n">plot_local_entropy</span><span class="p">(</span><span class="n">word</span><span class="o">=</span><span class="s2">&quot;아버지가&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;forward&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/word_segmentation_33_0.png" src="../../../_images/word_segmentation_33_0.png" />
 </div>
 </div>
 </section>
