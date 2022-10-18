@@ -51,8 +51,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -1918,6 +1916,120 @@ INFO:ekorpkit.base:setting environment variable KMP_DUPLICATE_LIB_OK to TRUE
 <span class="n">cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/entelecheia/ekorpkit-book/raw/main/assets/data/us_equities_news_sampled.zip&quot;</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;us_equities_news_sampled.parquet&quot;</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">cached_path</span><span class="p">)</span>
 <span class="n">texts</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">1000</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.models.tokenizer.sentencepiece</span> <span class="kn">import</span> <span class="n">SentencePieceTokenizer</span>
+
+<span class="n">texts</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span>
+<span class="n">initial_vocab_size</span><span class="o">=</span><span class="mi">2000</span>
+<span class="n">vocab_size</span><span class="o">=</span><span class="mi">1000</span>
+
+<span class="n">sp</span> <span class="o">=</span> <span class="n">SentencePieceTokenizer</span><span class="p">(</span><span class="n">initial_vocab_size</span><span class="o">=</span><span class="n">initial_vocab_size</span><span class="p">,</span> <span class="n">vocab_size</span><span class="o">=</span><span class="n">vocab_size</span><span class="p">)</span>
+<span class="n">sp</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Top 10 subwords: [(&#39;▁t&#39;, 8287), (&#39;in&#39;, 6437), (&#39;▁a&#39;, 6331), (&#39;th&#39;, 6241), (&#39;▁th&#39;, 4975), (&#39;▁s&#39;, 4896), (&#39;he&#39;, 4833), (&#39;er&#39;, 4585), (&#39;▁i&#39;, 4520), (&#39;re&#39;, 4475)]
+--- Round 1. Vocab size: 2000 ---
+EM iter 0: Loss=-735337.15
+EM iter 1: Loss=-732080.23
+EM iter 2: Loss=-730844.36
+EM iter 3: Loss=-730523.67
+EM iter 4: Loss=-730282.85
+--- Round 2. Vocab size: 1600 ---
+EM iter 0: Loss=-750042.52
+EM iter 1: Loss=-749072.20
+EM iter 2: Loss=-748773.86
+EM iter 3: Loss=-748592.60
+EM iter 4: Loss=-748564.78
+--- Round 3. Vocab size: 1280 ---
+EM iter 0: Loss=-770252.23
+EM iter 1: Loss=-769683.48
+EM iter 2: Loss=-769490.68
+EM iter 3: Loss=-769442.38
+EM iter 4: Loss=-769434.93
+--- Round 4. Vocab size: 1024 ---
+EM iter 0: Loss=-788646.86
+EM iter 1: Loss=-787999.53
+EM iter 2: Loss=-787804.69
+EM iter 3: Loss=-787738.15
+EM iter 4: Loss=-787713.42
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">tokenized_text</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="s2">&quot;investment opportunities in the company&quot;</span><span class="p">,</span> <span class="n">nbest_size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">tokenized_text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 [&#39;inve&#39;, &#39;st&#39;, &#39;me&#39;, &#39;nt&#39;, &#39;▁&#39;, &#39;o&#39;, &#39;pp&#39;, &#39;o&#39;, &#39;r&#39;, &#39;tu&#39;, &#39;n&#39;, &#39;it&#39;, &#39;i&#39;, &#39;es&#39;, &#39;▁i&#39;, &#39;n&#39;, &#39;▁the&#39;, &#39;▁com&#39;, &#39;pany&#39;]
+1 [&#39;invest&#39;, &#39;m&#39;, &#39;ent&#39;, &#39;▁o&#39;, &#39;p&#39;, &#39;port&#39;, &#39;un&#39;, &#39;i&#39;, &#39;t&#39;, &#39;ies&#39;, &#39;▁&#39;, &#39;in&#39;, &#39;▁the&#39;, &#39;▁co&#39;, &#39;mpany&#39;]
+2 [&#39;invest&#39;, &#39;men&#39;, &#39;t&#39;, &#39;▁&#39;, &#39;op&#39;, &#39;port&#39;, &#39;u&#39;, &#39;n&#39;, &#39;it&#39;, &#39;i&#39;, &#39;es&#39;, &#39;▁&#39;, &#39;in&#39;, &#39;▁&#39;, &#39;the&#39;, &#39;▁&#39;, &#39;c&#39;, &#39;o&#39;, &#39;m&#39;, &#39;pany&#39;]
+3 [&#39;inv&#39;, &#39;est&#39;, &#39;me&#39;, &#39;nt&#39;, &#39;▁&#39;, &#39;o&#39;, &#39;pp&#39;, &#39;o&#39;, &#39;r&#39;, &#39;t&#39;, &#39;u&#39;, &#39;n&#39;, &#39;i&#39;, &#39;t&#39;, &#39;i&#39;, &#39;es&#39;, &#39;▁&#39;, &#39;in&#39;, &#39;▁the&#39;, &#39;▁comp&#39;, &#39;an&#39;, &#39;y&#39;]
+4 [&#39;i&#39;, &#39;nvest&#39;, &#39;ment&#39;, &#39;▁&#39;, &#39;op&#39;, &#39;p&#39;, &#39;or&#39;, &#39;tu&#39;, &#39;n&#39;, &#39;it&#39;, &#39;ie&#39;, &#39;s&#39;, &#39;▁&#39;, &#39;in&#39;, &#39;▁&#39;, &#39;the&#39;, &#39;▁co&#39;, &#39;mpany&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/entelecheia/ekorpkit-book/raw/main/assets/data/us_equities_news_sampled.zip&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;us_equities_news_sampled.parquet&quot;</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">cached_path</span><span class="p">)</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">1000</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.models.tokenizer.bet</span> <span class="kn">import</span> <span class="n">BranchingEntropyTokenizer</span>
+
+<span class="n">texts</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span>
+<span class="n">initial_vocab_size</span><span class="o">=</span><span class="mi">1500</span>
+<span class="n">vocab_size</span><span class="o">=</span><span class="mi">1000</span>
+
+<span class="n">bet</span> <span class="o">=</span> <span class="n">BranchingEntropyTokenizer</span><span class="p">(</span><span class="n">initial_vocab_size</span><span class="o">=</span><span class="n">initial_vocab_size</span><span class="p">,</span> <span class="n">vocab_size</span><span class="o">=</span><span class="n">vocab_size</span><span class="p">)</span>
+<span class="n">bet</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Top 10 subwords: [(&#39;▁&#39;, 62884), (&#39;e&#39;, 34781), (&#39;t&#39;, 25513), (&#39;a&#39;, 23707), (&#39;o&#39;, 21291), (&#39;n&#39;, 21148), (&#39;i&#39;, 21103), (&#39;s&#39;, 20501), (&#39;r&#39;, 19790), (&#39;l&#39;, 11511)]
+--- Round 1. Vocab size: 1464 ---
+EM iter 0: Loss=519013.16
+--- Round 2. Vocab size: 1172 ---
+EM iter 0: Loss=519013.16
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">tokenized_text</span> <span class="o">=</span> <span class="n">bet</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="s2">&quot;investment opportunities in the company&quot;</span><span class="p">,</span> <span class="n">nbest_size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">tokenized_text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 [&#39;in&#39;, &#39;ve&#39;, &#39;st&#39;, &#39;m&#39;, &#39;en&#39;, &#39;t&#39;, &#39;▁op&#39;, &#39;p&#39;, &#39;o&#39;, &#39;r&#39;, &#39;t&#39;, &#39;un&#39;, &#39;i&#39;, &#39;t&#39;, &#39;ies&#39;, &#39;▁in&#39;, &#39;▁the&#39;, &#39;▁&#39;, &#39;com&#39;, &#39;pany&#39;]
+1 [&#39;inve&#39;, &#39;s&#39;, &#39;t&#39;, &#39;m&#39;, &#39;ent&#39;, &#39;▁op&#39;, &#39;p&#39;, &#39;or&#39;, &#39;tu&#39;, &#39;n&#39;, &#39;it&#39;, &#39;i&#39;, &#39;e&#39;, &#39;s&#39;, &#39;▁in&#39;, &#39;▁the&#39;, &#39;▁&#39;, &#39;com&#39;, &#39;pany&#39;]
+2 [&#39;in&#39;, &#39;vest&#39;, &#39;ment&#39;, &#39;▁o&#39;, &#39;pp&#39;, &#39;or&#39;, &#39;t&#39;, &#39;u&#39;, &#39;n&#39;, &#39;it&#39;, &#39;i&#39;, &#39;es&#39;, &#39;▁&#39;, &#39;in&#39;, &#39;▁&#39;, &#39;the&#39;, &#39;▁&#39;, &#39;co&#39;, &#39;mpany&#39;]
+3 [&#39;i&#39;, &#39;n&#39;, &#39;vest&#39;, &#39;men&#39;, &#39;t&#39;, &#39;▁&#39;, &#39;o&#39;, &#39;pp&#39;, &#39;o&#39;, &#39;r&#39;, &#39;t&#39;, &#39;un&#39;, &#39;it&#39;, &#39;i&#39;, &#39;es&#39;, &#39;▁&#39;, &#39;in&#39;, &#39;▁&#39;, &#39;th&#39;, &#39;e&#39;, &#39;▁&#39;, &#39;c&#39;, &#39;om&#39;, &#39;pany&#39;]
+4 [&#39;i&#39;, &#39;nvest&#39;, &#39;ment&#39;, &#39;▁&#39;, &#39;o&#39;, &#39;pp&#39;, &#39;ort&#39;, &#39;un&#39;, &#39;i&#39;, &#39;t&#39;, &#39;ie&#39;, &#39;s&#39;, &#39;▁in&#39;, &#39;▁t&#39;, &#39;he&#39;, &#39;▁&#39;, &#39;co&#39;, &#39;mp&#39;, &#39;any&#39;]
 </pre></div>
 </div>
 </div>
