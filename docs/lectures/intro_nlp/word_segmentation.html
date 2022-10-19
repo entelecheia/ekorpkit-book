@@ -1583,10 +1583,10 @@ title="Print to PDF"
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.models.tokenizer.words</span> <span class="kn">import</span> <span class="n">WordSegmenter</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.models.tokenizers.models.branching</span> <span class="kn">import</span> <span class="n">BranchingEntropy</span>
 
-<span class="n">ws</span> <span class="o">=</span> <span class="n">WordSegmenter</span><span class="p">()</span>
-<span class="n">ws</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+<span class="n">be</span> <span class="o">=</span> <span class="n">BranchingEntropy</span><span class="p">()</span>
+<span class="n">word_freqs</span><span class="p">,</span> <span class="n">subwords</span><span class="p">,</span> <span class="n">characters</span> <span class="o">=</span> <span class="n">be</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1598,47 +1598,44 @@ title="Print to PDF"
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">word</span> <span class="o">=</span> <span class="s2">&quot;healthiness&quot;</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">ws</span><span class="o">.</span><span class="n">find_local_entropy</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">word</span> <span class="o">=</span> <span class="s2">&quot;apples&quot;</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">be</span><span class="o">.</span><span class="n">find_local_entropy</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;forward&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">results</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;h&#39;, 0.3578897525265621, 0.0), (&#39;e&#39;, 0.3578897525265621, 0.0)]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a 0.8253511960924991
+ap 0.34837475613155383
+app 0.34837475613155383
+appl 0.34837475613155383
+apple 0.6804820290579754
+apples 0.3496905752250248
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;a&#39;, 0.8253511960924991, 0.0),
+ (&#39;p&#39;, 0.34837475613155383, -0.47697643996094524),
+ (&#39;p&#39;, 0.34837475613155383, 0.0),
+ (&#39;l&#39;, 0.34837475613155383, 0.0),
+ (&#39;e&#39;, 0.6804820290579754, 0.33210727292642156),
+ (&#39;s&#39;, 0.3496905752250248, -0.3307914538329506)]
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.models.tokenizer.words</span> <span class="kn">import</span> <span class="n">entropy</span>
-
-<span class="n">word</span> <span class="o">=</span> <span class="s2">&quot;applest&quot;</span>
-<span class="c1"># word =  &quot;healthi&quot;</span>
-<span class="n">entropy</span><span class="p">(</span><span class="n">ws</span><span class="o">.</span><span class="n">fwd_trie</span><span class="p">,</span> <span class="n">word</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">be</span><span class="o">.</span><span class="n">plot_local_entropy</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;forward&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ws</span><span class="o">.</span><span class="n">plot_local_entropy</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;forward&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../../_images/word_segmentation_27_0.png" src="../../../_images/word_segmentation_27_0.png" />
+<img alt="../../../_images/word_segmentation_26_0.png" src="../../../_images/word_segmentation_26_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ws</span><span class="o">.</span><span class="n">segment</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">be</span><span class="o">.</span><span class="n">branching</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1668,7 +1665,7 @@ title="Print to PDF"
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ws</span><span class="o">.</span><span class="n">extract_words</span><span class="p">(</span><span class="s2">&quot;ilikesanapple&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">be</span><span class="o">.</span><span class="n">naive_segment</span><span class="p">(</span><span class="s2">&quot;ilikesanapple&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1691,8 +1688,10 @@ title="Print to PDF"
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ws</span> <span class="o">=</span> <span class="n">WordSegmenter</span><span class="p">()</span>
-<span class="n">ws</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.models.tokenizers.models.branching</span> <span class="kn">import</span> <span class="n">BranchingEntropy</span>
+
+<span class="n">be</span> <span class="o">=</span> <span class="n">BranchingEntropy</span><span class="p">()</span>
+<span class="n">word_freqs</span><span class="p">,</span> <span class="n">subwords</span><span class="p">,</span> <span class="n">characters</span> <span class="o">=</span> <span class="n">be</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1704,7 +1703,7 @@ title="Print to PDF"
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ws</span><span class="o">.</span><span class="n">segment</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">be</span><span class="o">.</span><span class="n">branching</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1718,7 +1717,7 @@ title="Print to PDF"
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ws</span><span class="o">.</span><span class="n">extract_words</span><span class="p">(</span><span class="s2">&quot;아버지가방에들어가신다&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">be</span><span class="o">.</span><span class="n">naive_segment</span><span class="p">(</span><span class="s2">&quot;아버지가방에들어가신다&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1730,12 +1729,12 @@ title="Print to PDF"
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ws</span><span class="o">.</span><span class="n">plot_local_entropy</span><span class="p">(</span><span class="n">word</span><span class="o">=</span><span class="s2">&quot;아버지가&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;forward&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">be</span><span class="o">.</span><span class="n">plot_local_entropy</span><span class="p">(</span><span class="n">word</span><span class="o">=</span><span class="s2">&quot;아버지가&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;forward&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/word_segmentation_34_0.png" src="../../../_images/word_segmentation_34_0.png" />
+<img alt="../../../_images/word_segmentation_33_0.png" src="../../../_images/word_segmentation_33_0.png" />
 </div>
 </div>
 </section>
