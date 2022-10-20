@@ -1914,27 +1914,29 @@ trainer_interface.cc(697) LOG(INFO) Saving vocabs: m.vocab
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.models.tokenizers.sp</span> <span class="kn">import</span> <span class="n">SentencePieceUnigramTokenizer</span>
 
 <span class="n">texts</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span>
-<span class="n">vocab_size</span><span class="o">=</span><span class="mi">10000</span>
+<span class="n">vocab_size</span> <span class="o">=</span> <span class="mi">10000</span>
 
 <span class="n">sp</span> <span class="o">=</span> <span class="n">SentencePieceUnigramTokenizer</span><span class="p">()</span>
-<span class="n">sp</span><span class="o">.</span><span class="n">train_from_iterator</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">vocab_size</span><span class="o">=</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">min_frequency</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">sp</span><span class="o">.</span><span class="n">train_from_iterator</span><span class="p">(</span>
+    <span class="n">texts</span><span class="p">,</span> <span class="n">vocab_size</span><span class="o">=</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">min_frequency</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">initial_alphabet</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;!&quot;</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">]</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Round 1. Vocab size: 19604 ---
-EM iter 0: Loss=-534729.77
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Round 1. Vocab size: 19607 ---
+EM iter 0: Loss=-534729.78
 EM iter 1: Loss=-532880.29
-EM iter 2: Loss=-532254.31
+EM iter 2: Loss=-532254.32
 EM iter 3: Loss=-532028.36
 EM iter 4: Loss=-531944.54
---- Round 2. Vocab size: 14703 ---
+--- Round 2. Vocab size: 14706 ---
 EM iter 0: Loss=-553927.27
 EM iter 1: Loss=-553527.38
 EM iter 2: Loss=-553470.71
 EM iter 3: Loss=-553436.42
 EM iter 4: Loss=-553420.64
---- Round 3. Vocab size: 11028 ---
+--- Round 3. Vocab size: 11030 ---
 EM iter 0: Loss=-574955.71
 EM iter 1: Loss=-574631.13
 EM iter 2: Loss=-574562.02
@@ -1967,27 +1969,17 @@ EM iter 4: Loss=-574515.56
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sp</span><span class="o">.</span><span class="n">_tokenizer</span><span class="o">.</span><span class="n">trie</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s2">&quot;the&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-5.524425583014601
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence</span> <span class="o">=</span> <span class="s2">&quot;investment opportunities in the company&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence</span> <span class="o">=</span> <span class="s2">&quot;Investment opportunities in the company.&quot;</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">_tokenizer</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">sequence</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">_tokenizer</span><span class="o">.</span><span class="n">pre_tokenize</span><span class="p">(</span><span class="n">sequence</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">_tokenizer</span><span class="o">.</span><span class="n">generalized_forward_step</span><span class="p">(</span><span class="s2">&quot;▁company.&quot;</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">_tokenizer</span><span class="o">.</span><span class="n">trie</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>investment opportunities in the company
-[&#39;▁investment&#39;, &#39;▁opportunities&#39;, &#39;▁in&#39;, &#39;▁the&#39;, &#39;▁company&#39;]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>investment opportunities in the company.
+[&#39;▁Investment&#39;, &#39;▁opportunities&#39;, &#39;▁in&#39;, &#39;▁the&#39;, &#39;▁company.&#39;]
+[None, [1], [2], [3], [4], [5], [6], [7], [8], [1]]
 </pre></div>
 </div>
 </div>
@@ -1995,17 +1987,17 @@ EM iter 4: Loss=-574515.56
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
-    <span class="n">tokenized_text</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="s2">&quot;investment opportunities in the company&quot;</span><span class="p">,</span> <span class="n">nbest_size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">tokenized_text</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">nbest_size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">tokenized_text</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 [&#39;▁investment&#39;, &#39;▁&#39;, &#39;opportunities&#39;, &#39;▁&#39;, &#39;in&#39;, &#39;▁t&#39;, &#39;he&#39;, &#39;▁company&#39;]
-1 [&#39;▁investment&#39;, &#39;▁opportunities&#39;, &#39;▁&#39;, &#39;i&#39;, &#39;n&#39;, &#39;▁&#39;, &#39;t&#39;, &#39;he&#39;, &#39;▁company&#39;]
-2 [&#39;▁investment&#39;, &#39;▁opportunities&#39;, &#39;▁&#39;, &#39;in&#39;, &#39;▁&#39;, &#39;th&#39;, &#39;e&#39;, &#39;▁&#39;, &#39;c&#39;, &#39;ompany&#39;]
-3 [&#39;▁i&#39;, &#39;n&#39;, &#39;vest&#39;, &#39;me&#39;, &#39;n&#39;, &#39;t&#39;, &#39;▁&#39;, &#39;opportunities&#39;, &#39;▁in&#39;, &#39;▁&#39;, &#39;th&#39;, &#39;e&#39;, &#39;▁company&#39;]
-4 [&#39;▁&#39;, &#39;i&#39;, &#39;nvestment&#39;, &#39;▁&#39;, &#39;opportunities&#39;, &#39;▁&#39;, &#39;i&#39;, &#39;n&#39;, &#39;▁t&#39;, &#39;he&#39;, &#39;▁&#39;, &#39;company&#39;]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 [&#39;▁&#39;, &#39;i&#39;, &#39;nvestment&#39;, &#39;▁opportunitie&#39;, &#39;s&#39;, &#39;▁in&#39;, &#39;▁t&#39;, &#39;h&#39;, &#39;e&#39;, &#39;▁&#39;, &#39;company&#39;, &#39;.&#39;]
+1 [&#39;▁investment&#39;, &#39;▁opportuni&#39;, &#39;ti&#39;, &#39;es&#39;, &#39;▁i&#39;, &#39;n&#39;, &#39;▁th&#39;, &#39;e&#39;, &#39;▁company&#39;, &#39;.&#39;]
+2 [&#39;▁i&#39;, &#39;nvestmen&#39;, &#39;t&#39;, &#39;▁opportunitie&#39;, &#39;s&#39;, &#39;▁in&#39;, &#39;▁the&#39;, &#39;▁&#39;, &#39;co&#39;, &#39;mpany&#39;, &#39;.&#39;]
+3 [&#39;▁investmen&#39;, &#39;t&#39;, &#39;▁&#39;, &#39;opportunities&#39;, &#39;▁&#39;, &#39;in&#39;, &#39;▁&#39;, &#39;t&#39;, &#39;h&#39;, &#39;e&#39;, &#39;▁c&#39;, &#39;ompany&#39;, &#39;.&#39;]
+4 [&#39;▁investmen&#39;, &#39;t&#39;, &#39;▁o&#39;, &#39;pportuniti&#39;, &#39;es&#39;, &#39;▁in&#39;, &#39;▁&#39;, &#39;the&#39;, &#39;▁c&#39;, &#39;ompany&#39;, &#39;.&#39;]
 </pre></div>
 </div>
 </div>
