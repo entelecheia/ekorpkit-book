@@ -1583,89 +1583,111 @@ title="Print to PDF"
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.models.tokenizers.models.branching</span> <span class="kn">import</span> <span class="n">BranchingEntropy</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.tokenizers.branching</span> <span class="kn">import</span> <span class="n">BranchingEntropyTokenizer</span>
 
-<span class="n">be</span> <span class="o">=</span> <span class="n">BranchingEntropy</span><span class="p">()</span>
-<span class="n">word_freqs</span><span class="p">,</span> <span class="n">subwords</span><span class="p">,</span> <span class="n">characters</span> <span class="o">=</span> <span class="n">be</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+<span class="n">bet</span> <span class="o">=</span> <span class="n">BranchingEntropyTokenizer</span><span class="p">()</span>
+<span class="n">bet</span><span class="o">.</span><span class="n">train_from_iterator</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">min_frequency</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Top 10 subwords: [(&#39;▁&#39;, 114), (&#39;e&#39;, 63), (&#39;p&#39;, 59), (&#39;l&#39;, 37), (&#39;a&#39;, 33), (&#39;s&#39;, 30), (&#39;i&#39;, 27), (&#39;n&#39;, 26), (&#39;pl&#39;, 24), (&#39;ple&#39;, 23)]
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "430e96bf4a4a441d880001bc4c5d2231", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total words: 29
+Top 10 words: [(&#39;▁of&#39;, 9), (&#39;▁apples&#39;, 6), (&#39;▁pineapples&#39;, 5), (&#39;▁pineapple&#39;, 5), (&#39;▁apple&#39;, 4), (&#39;▁and&#39;, 2), (&#39;▁people&#39;, 2), (&#39;▁unhealthy&#39;, 2), (&#39;▁tree&#39;, 2), (&#39;▁like&#39;, 1)]
+Total words after filtering: 29
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "62fcd970f1a04d1e8baefcdd97706f54", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total subwords: 543
+Top 10 subwords: [(&#39;▁&#39;, 114), (&#39;e&#39;, 63), (&#39;p&#39;, 59), (&#39;l&#39;, 37), (&#39;a&#39;, 33), (&#39;s&#39;, 30), (&#39;i&#39;, 27), (&#39;n&#39;, 26), (&#39;pl&#39;, 24), (&#39;ple&#39;, 23)]
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">word</span> <span class="o">=</span> <span class="s2">&quot;apples&quot;</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">be</span><span class="o">.</span><span class="n">find_local_entropy</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;forward&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence</span> <span class="o">=</span> <span class="n">texts</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">bet</span><span class="o">.</span><span class="n">_tokenizer</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">sequence</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">bet</span><span class="o">.</span><span class="n">_tokenizer</span><span class="o">.</span><span class="n">pre_tokenize</span><span class="p">(</span><span class="n">sequence</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dislikes apple and pineapple
+[&#39;▁dislikes&#39;, &#39;▁apple&#39;, &#39;▁and&#39;, &#39;▁pineapple&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">word</span> <span class="o">=</span> <span class="s2">&quot;pineapples&quot;</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">bet</span><span class="o">.</span><span class="n">find_local_entropy</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;forward&quot;</span><span class="p">)</span>
 <span class="n">results</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a 0.8253511960924991
-ap 0.34837475613155383
-app 0.34837475613155383
-appl 0.34837475613155383
-apple 0.6804820290579754
-apples 0.3496905752250248
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;a&#39;, 0.8253511960924991, 0.0),
- (&#39;p&#39;, 0.34837475613155383, -0.47697643996094524),
- (&#39;p&#39;, 0.34837475613155383, 0.0),
- (&#39;l&#39;, 0.34837475613155383, 0.0),
- (&#39;e&#39;, 0.6804820290579754, 0.33210727292642156),
- (&#39;s&#39;, 0.3496905752250248, -0.3307914538329506)]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;p&#39;, 0.9104566797405919, 0.0),
+ (&#39;i&#39;, 0.3496905752250248, -0.5607661045155671),
+ (&#39;n&#39;, 0.3496905752250248, 0.0),
+ (&#39;e&#39;, 0.44914649901267, 0.09945592378764523),
+ (&#39;a&#39;, 0.3499656090752427, -0.0991808899374273),
+ (&#39;p&#39;, 0.3499656090752427, 0.0),
+ (&#39;p&#39;, 0.3499656090752427, 0.0),
+ (&#39;l&#39;, 0.3499656090752427, 0.0),
+ (&#39;e&#39;, 0.6764449241372277, 0.32647931506198496),
+ (&#39;s&#39;, 0.5144984575880421, -0.16194646654918554)]
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">be</span><span class="o">.</span><span class="n">plot_local_entropy</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;forward&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bet</span><span class="o">.</span><span class="n">plot_local_entropy</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;forward&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/word_segmentation_26_0.png" src="../../../_images/word_segmentation_26_0.png" />
+<img alt="../../../_images/word_segmentation_27_0.png" src="../../../_images/word_segmentation_27_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">be</span><span class="o">.</span><span class="n">branching</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tokenized</span> <span class="o">=</span> <span class="p">[</span><span class="n">bet</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">]</span>
+<span class="n">tokenized</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[&#39;like&#39;, &#39;apple&#39;, &#39;s&#39;],
- [&#39;like&#39;, &#39;s&#39;, &#39;pine&#39;, &#39;apple&#39;, &#39;s&#39;, &#39;and&#39;, &#39;apple&#39;, &#39;s&#39;],
- [&#39;dis&#39;, &#39;like&#39;, &#39;s&#39;, &#39;apple&#39;, &#39;and&#39;, &#39;pine&#39;, &#39;apple&#39;],
- [&#39;people&#39;, &#39;dis&#39;, &#39;like&#39;, &#39;pine&#39;, &#39;apple&#39;, &#39;s&#39;],
- [&#39;an&#39;, &#39;apple&#39;, &#39;make&#39;, &#39;s&#39;, &#39;people&#39;, &#39;health&#39;, &#39;y&#39;],
- [&#39;pine&#39;, &#39;tree&#39;, &#39;s&#39;, &#39;make&#39;, &#39;pine&#39;, &#39;apple&#39;],
- [&#39;pine&#39;, &#39;apple&#39;, &#39;un&#39;, &#39;health&#39;, &#39;y&#39;],
- [&#39;like&#39;, &#39;ness&#39;, &#39;of&#39;, &#39;apple&#39;, &#39;s&#39;],
- [&#39;dis&#39;, &#39;like&#39;, &#39;ness&#39;, &#39;of&#39;, &#39;pine&#39;, &#39;apple&#39;, &#39;s&#39;],
- [&#39;health&#39;, &#39;of&#39;, &#39;pine&#39;, &#39;apple&#39;],
- [&#39;health&#39;, &#39;iness&#39;, &#39;of&#39;, &#39;apple&#39;],
- [&#39;dis&#39;, &#39;play&#39;, &#39;of&#39;, &#39;pine&#39;, &#39;apple&#39;, &#39;s&#39;],
- [&#39;un&#39;, &#39;health&#39;, &#39;y&#39;, &#39;of&#39;, &#39;apple&#39;, &#39;s&#39;],
- [&#39;un&#39;, &#39;health&#39;, &#39;iness&#39;, &#39;of&#39;, &#39;pine&#39;, &#39;apple&#39;, &#39;s&#39;],
- [&#39;un&#39;, &#39;like&#39;, &#39;apple&#39;, &#39;s&#39;],
- [&#39;kind&#39;, &#39;ness&#39;, &#39;of&#39;, &#39;apple&#39;, &#39;s&#39;],
- [&#39;kind&#39;, &#39;of&#39;, &#39;pine&#39;, &#39;apple&#39;, &#39;s&#39;],
- [&#39;apple&#39;, &#39;tree&#39;],
- [&#39;pine&#39;, &#39;apple&#39;, &#39;tree&#39;]]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[&#39;▁like&#39;, &#39;▁apple&#39;, &#39;s&#39;],
+ [&#39;▁like&#39;, &#39;s&#39;, &#39;▁pineapple&#39;, &#39;s&#39;, &#39;▁and&#39;, &#39;▁apple&#39;, &#39;s&#39;],
+ [&#39;▁dis&#39;, &#39;like&#39;, &#39;s&#39;, &#39;▁apple&#39;, &#39;▁and&#39;, &#39;▁pineapple&#39;],
+ [&#39;▁people&#39;, &#39;▁dis&#39;, &#39;like&#39;, &#39;▁pineapple&#39;, &#39;s.&#39;],
+ [&#39;▁an&#39;, &#39;▁apple&#39;, &#39;▁make&#39;, &#39;s&#39;, &#39;▁people&#39;, &#39;▁health&#39;, &#39;y.&#39;],
+ [&#39;▁pine&#39;, &#39;▁tree&#39;, &#39;s&#39;, &#39;▁make&#39;, &#39;▁pineapple&#39;],
+ [&#39;▁pineapple&#39;, &#39;▁un&#39;, &#39;health&#39;, &#39;y&#39;],
+ [&#39;▁like&#39;, &#39;ness&#39;, &#39;▁of&#39;, &#39;▁apple&#39;, &#39;s&#39;],
+ [&#39;▁dis&#39;, &#39;like&#39;, &#39;ness&#39;, &#39;▁of&#39;, &#39;▁pineapple&#39;, &#39;s&#39;],
+ [&#39;▁health&#39;, &#39;▁of&#39;, &#39;▁pineapple&#39;],
+ [&#39;▁health&#39;, &#39;iness&#39;, &#39;▁of&#39;, &#39;▁apple&#39;],
+ [&#39;▁dis&#39;, &#39;play&#39;, &#39;▁of&#39;, &#39;▁pineapple&#39;, &#39;s&#39;],
+ [&#39;▁un&#39;, &#39;health&#39;, &#39;y&#39;, &#39;▁of&#39;, &#39;▁apple&#39;, &#39;s&#39;],
+ [&#39;▁un&#39;, &#39;health&#39;, &#39;iness&#39;, &#39;▁of&#39;, &#39;▁pineapple&#39;, &#39;s&#39;],
+ [&#39;▁un&#39;, &#39;like&#39;, &#39;▁apple&#39;, &#39;s&#39;],
+ [&#39;▁kind&#39;, &#39;ness&#39;, &#39;▁of&#39;, &#39;▁apple&#39;, &#39;s&#39;],
+ [&#39;▁kind&#39;, &#39;▁of&#39;, &#39;▁pineapple&#39;, &#39;s&#39;],
+ [&#39;▁apple&#39;, &#39;▁tree&#39;],
+ [&#39;▁pineapple&#39;, &#39;▁tree&#39;]]
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">be</span><span class="o">.</span><span class="n">naive_segment</span><span class="p">(</span><span class="s2">&quot;ilikesanapple&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bet</span><span class="o">.</span><span class="n">naive_segment</span><span class="p">(</span><span class="s2">&quot;ilikesanapple&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1688,36 +1710,47 @@ apples 0.3496905752250248
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.models.tokenizers.models.branching</span> <span class="kn">import</span> <span class="n">BranchingEntropy</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.tokenizers.branching</span> <span class="kn">import</span> <span class="n">BranchingEntropyTokenizer</span>
 
-<span class="n">be</span> <span class="o">=</span> <span class="n">BranchingEntropy</span><span class="p">()</span>
-<span class="n">word_freqs</span><span class="p">,</span> <span class="n">subwords</span><span class="p">,</span> <span class="n">characters</span> <span class="o">=</span> <span class="n">be</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+<span class="n">bet</span> <span class="o">=</span> <span class="n">BranchingEntropyTokenizer</span><span class="p">()</span>
+<span class="n">bet</span><span class="o">.</span><span class="n">train_from_iterator</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">min_frequency</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Top 10 subwords: [(&#39;▁&#39;, 16), (&#39;가&#39;, 5), (&#39;방&#39;, 3), (&#39;방에&#39;, 3), (&#39;방에▁&#39;, 3), (&#39;에&#39;, 3), (&#39;에▁&#39;, 3), (&#39;▁들&#39;, 3), (&#39;▁들어&#39;, 3), (&#39;▁들어가&#39;, 3)]
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "581160ef72374dee9160b097075af87b", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total words: 7
+Top 10 words: [(&#39;▁방에&#39;, 2), (&#39;▁아버지가&#39;, 1), (&#39;▁들어가신다&#39;, 1), (&#39;▁아버지는&#39;, 1), (&#39;▁들어가셨다&#39;, 1), (&#39;▁가방에&#39;, 1), (&#39;▁들어가다&#39;, 1)]
+Total words after filtering: 7
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "f0933623b5bf402980aa4c7573292ec8", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total subwords: 93
+Top 10 subwords: [(&#39;▁&#39;, 16), (&#39;가&#39;, 5), (&#39;방&#39;, 3), (&#39;방에&#39;, 3), (&#39;방에▁&#39;, 3), (&#39;에&#39;, 3), (&#39;에▁&#39;, 3), (&#39;▁들&#39;, 3), (&#39;▁들어&#39;, 3), (&#39;▁들어가&#39;, 3)]
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">be</span><span class="o">.</span><span class="n">branching</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tokenized</span> <span class="o">=</span> <span class="p">[</span><span class="n">bet</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">]</span>
+<span class="n">tokenized</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[&#39;아버지&#39;, &#39;가&#39;, &#39;방에&#39;, &#39;들어가&#39;, &#39;신다&#39;],
- [&#39;아버지&#39;, &#39;는&#39;, &#39;방에&#39;, &#39;들어가&#39;, &#39;셨다&#39;],
- [&#39;가방에&#39;, &#39;들어가&#39;, &#39;다&#39;]]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[&#39;▁아버지&#39;, &#39;가&#39;, &#39;▁방에&#39;, &#39;▁들어가&#39;, &#39;신다&#39;],
+ [&#39;▁아버지&#39;, &#39;는&#39;, &#39;▁방에&#39;, &#39;▁들어가&#39;, &#39;셨다&#39;],
+ [&#39;▁가방에&#39;, &#39;▁들어가&#39;, &#39;다&#39;]]
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">be</span><span class="o">.</span><span class="n">naive_segment</span><span class="p">(</span><span class="s2">&quot;아버지가방에들어가신다&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bet</span><span class="o">.</span><span class="n">naive_segment</span><span class="p">(</span><span class="s2">&quot;아버지가방에들어가신다&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1729,12 +1762,120 @@ apples 0.3496905752250248
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">be</span><span class="o">.</span><span class="n">plot_local_entropy</span><span class="p">(</span><span class="n">word</span><span class="o">=</span><span class="s2">&quot;아버지가&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;forward&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bet</span><span class="o">.</span><span class="n">plot_local_entropy</span><span class="p">(</span><span class="n">word</span><span class="o">=</span><span class="s2">&quot;아버지가&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;forward&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/word_segmentation_33_0.png" src="../../../_images/word_segmentation_33_0.png" />
+<img alt="../../../_images/word_segmentation_34_0.png" src="../../../_images/word_segmentation_34_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/entelecheia/ekorpkit-book/raw/main/assets/data/us_equities_news_sampled.zip&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;us_equities_news_sampled.parquet&quot;</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">cached_path</span><span class="p">)</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">text</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.tokenizers.branching</span> <span class="kn">import</span> <span class="n">BranchingEntropyTokenizer</span>
+
+<span class="n">bet</span> <span class="o">=</span> <span class="n">BranchingEntropyTokenizer</span><span class="p">()</span>
+<span class="n">bet</span><span class="o">.</span><span class="n">train_from_iterator</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">min_frequency</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "a87dc886d3b34321a340cf04479720bc", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total words: 107685
+Top 10 words: [(&#39;▁the&#39;, 715895), (&#39;▁to&#39;, 334075), (&#39;▁of&#39;, 314837), (&#39;▁in&#39;, 278030), (&#39;▁and&#39;, 274910), (&#39;▁a&#39;, 259527), (&#39;▁s&#39;, 169595), (&#39;▁for&#39;, 133255), (&#39;▁is&#39;, 130552), (&#39;▁on&#39;, 113286)]
+Total words after filtering: 107685
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "3bc9bb1704e945bea5986e93900a600e", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total subwords: 3019773
+Top 10 subwords: [(&#39;▁&#39;, 26177132), (&#39;e&#39;, 7246161), (&#39;t&#39;, 5334633), (&#39;a&#39;, 4971213), (&#39;o&#39;, 4428694), (&#39;n&#39;, 4415394), (&#39;i&#39;, 4397713), (&#39;s&#39;, 4366700), (&#39;r&#39;, 4125315), (&#39;l&#39;, 2404918)]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bet</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;../data/tokenizers/&quot;</span><span class="p">,</span> <span class="s2">&quot;branching&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;../data/tokenizers/branching/vocab.json&#39;,
+ &#39;../data/tokenizers/branching/config.json&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.tokenizers.branching</span> <span class="kn">import</span> <span class="n">BranchingEntropyTokenizer</span>
+
+<span class="n">bet</span> <span class="o">=</span> <span class="n">BranchingEntropyTokenizer</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;../data/tokenizers/&quot;</span><span class="p">,</span> <span class="s2">&quot;branching&quot;</span><span class="p">,</span> <span class="n">branching_threshold</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence</span> <span class="o">=</span> <span class="s2">&quot;Investment opportunities in the company.&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">bet</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">flatten</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;▁invest&#39;, &#39;ment&#39;), (&#39;▁opportunit&#39;, &#39;ies&#39;), (&#39;▁in&#39;,), (&#39;▁the&#39;,), (&#39;▁company.&#39;,)]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">word</span> <span class="o">=</span> <span class="s2">&quot;opportunities&quot;</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">bet</span><span class="o">.</span><span class="n">find_local_entropy</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;forward&quot;</span><span class="p">)</span>
+<span class="n">results</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;o&#39;, 1.6685048103579356, 0.0),
+ (&#39;p&#39;, 1.3555092471084405, -0.3129955632494952),
+ (&#39;p&#39;, 0.9108418255394937, -0.4446674215689468),
+ (&#39;o&#39;, 0.6427134625159031, -0.26812836302359055),
+ (&#39;r&#39;, 0.3471915175356232, -0.2955219449802799),
+ (&#39;t&#39;, 0.34719163560873423, 1.1807311101064144e-07),
+ (&#39;u&#39;, 0.3465816990140907, -0.0006099365946435342),
+ (&#39;n&#39;, 0.36397574612376266, 0.017394047109671962),
+ (&#39;i&#39;, 0.38877433848452686, 0.024798592360764204),
+ (&#39;t&#39;, 0.6935809334723632, 0.3048065949878363),
+ (&#39;i&#39;, 0.3465904853592323, -0.34699044811313084),
+ (&#39;e&#39;, 0.3465904853592323, 0.0),
+ (&#39;s&#39;, 0.3628543733328082, 0.016263887973575863)]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bet</span><span class="o">.</span><span class="n">plot_local_entropy</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;forward&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/word_segmentation_41_0.png" src="../../../_images/word_segmentation_41_0.png" />
 </div>
 </div>
 </section>
