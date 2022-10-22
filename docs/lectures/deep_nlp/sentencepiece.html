@@ -1405,6 +1405,8 @@ The number of merge operations is a BPE-specific parameter and not applicable to
 <li><p>One observation is that the original input and tokenized sequence are <strong>NOT reversibly convertible</strong>.</p></li>
 <li><p>For instance, the information that is no space between “World” and “.” is dropped from the tokenized sequence, since e.g., <code class="docutils literal notranslate"><span class="pre">Tokenize(“World.”)</span> <span class="pre">==</span> <span class="pre">Tokenize(“World</span> <span class="pre">.”)</span></code></p></li>
 <li><p>SentencePiece treats the input text just as a sequence of Unicode characters. Whitespace is also handled as a normal symbol.</p></li>
+</ul>
+<ul>
 <li><p>To handle the whitespace as a basic token explicitly, SentencePiece first escapes the whitespace with a meta symbol “▁” (U+2581) as follows.</p>
 <blockquote>
 <div><p>Hello▁World.</p>
@@ -1415,8 +1417,6 @@ The number of merge operations is a BPE-specific parameter and not applicable to
 <div><p>[Hello] [▁Wor] [ld] [.]</p>
 </div></blockquote>
 </li>
-</ul>
-<ul class="simple">
 <li><p>Since the whitespace is preserved in the segmented text, we can detokenize the text without any ambiguities.</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">detokenized</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pieces</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;▁&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
