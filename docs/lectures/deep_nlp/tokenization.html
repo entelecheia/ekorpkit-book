@@ -2689,40 +2689,6 @@ L=\sum_{s = 1}^{|D|} \log(P(X^{(s)})) = \sum_{s = 1}^{|D|} \log(\sum_{x \in S(X^
 <p>The most common way to prepare the seed vocabulary is to use the most frequent substrings and characters in the corpus. This unigram language model based subword segmentation consists of characters, subwords and words.</p>
 <section id="implementation">
 <h3>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">#</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.tokenizers.unigram</span> <span class="kn">import</span> <span class="n">UnigramTokenizer</span>
-
-<span class="n">initial_vocab_size</span> <span class="o">=</span> <span class="mi">2000</span>
-<span class="n">vocab_size</span> <span class="o">=</span> <span class="mi">1000</span>
-
-<span class="n">unigram</span> <span class="o">=</span> <span class="n">UnigramTokenizer</span><span class="p">(</span><span class="n">initial_vocab_size</span><span class="o">=</span><span class="n">initial_vocab_size</span><span class="p">,</span> <span class="n">vocab_size</span><span class="o">=</span><span class="n">vocab_size</span><span class="p">)</span>
-<span class="n">unigram</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">print_every</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Top 10 subwords: [(&#39;in&#39;, 6437), (&#39;th&#39;, 6241), (&#39;he&#39;, 4833), (&#39;er&#39;, 4585), (&#39;re&#39;, 4475), (&#39;an&#39;, 4311), (&#39;the&#39;, 3977), (&#39;on&#39;, 3842), (&#39;es&#39;, 3360), (&#39;ar&#39;, 3269)]
-Iteration: 0, vocab size: 1800
-Iteration: 1, vocab size: 1620
-Iteration: 2, vocab size: 1458
-Iteration: 3, vocab size: 1313
-Iteration: 4, vocab size: 1182
-Iteration: 5, vocab size: 1064
-Iteration: 6, vocab size: 958
-Final vocab size: 958
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tokenized_text</span> <span class="o">=</span> <span class="n">unigram</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="s2">&quot;investment opportunities in the company&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">tokenized_text</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
 <section id="unigram-step-by-step-implementation">
 <h4>Unigram Step-by-Step Implementation<a class="headerlink" href="#unigram-step-by-step-implementation" title="Permalink to this headline">#</a></h4>
 <div class="cell docutils container">
@@ -2786,11 +2752,29 @@ Final vocab size: 958
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">sorted_subwords</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>60023
+</pre></div>
+</div>
+</div>
+</div>
 <p>We group the characters with the best subwords to arrive at an initial vocabulary of size 2000:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">token_freqs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">character_freqs</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="o">+</span> <span class="n">sorted_subwords</span><span class="p">[:</span> <span class="mi">2000</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">character_freqs</span><span class="p">)]</span>
 <span class="n">token_freqs</span> <span class="o">=</span> <span class="p">{</span><span class="n">token</span><span class="p">:</span> <span class="n">freq</span> <span class="k">for</span> <span class="n">token</span><span class="p">,</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">token_freqs</span><span class="p">}</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">token_freqs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2000
 </pre></div>
 </div>
 </div>
@@ -3052,7 +3036,7 @@ Final vocab size: 958
 <ul class="simple">
 <li><p>BPE-dropout is an effective subword regularization method based on BPE.</p></li>
 <li><p>This keeps the BPE vocabulary and the merge table as original while changing the segmentation procedure.</p></li>
-<li><p>Here, some merges are randomly removed with a probability of p at each merge step, thus giving multiple segmentations for the same word.</p></li>
+<li><p>Here, some merges are randomly removed with a probability of <span class="math notranslate nohighlight">\(p\)</span> at each merge step, thus giving multiple segmentations for the same word.</p></li>
 <li><p>If the probability is zero, the subword segmentation is equal to the original BPE.</p></li>
 <li><p>If the probability is one, the subword segmentation is equal to character segmentation.</p></li>
 <li><p>If the probability is varied from 0 to 1, it gives multiple segmentations with various granularities.</p></li>
