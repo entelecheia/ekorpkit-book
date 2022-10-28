@@ -51,8 +51,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -1112,6 +1110,43 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#key-changes-to-the-mt5-architecture">
+   Key Changes To The mT5 Architecture
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-tokens-are-used">
+   How Tokens Are Used
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-technical-details">
+   The Technical Details
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-pros-and-cons-of-byt5">
+   The Pros And Cons Of ByT5
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pros">
+     Pros
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#cons">
+     Cons
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-results">
+   The Results
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#references">
    References
   </a>
@@ -1143,6 +1178,43 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#what-is-byt5">
    What Is ByT5?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#key-changes-to-the-mt5-architecture">
+   Key Changes To The mT5 Architecture
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-tokens-are-used">
+   How Tokens Are Used
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-technical-details">
+   The Technical Details
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-pros-and-cons-of-byt5">
+   The Pros And Cons Of ByT5
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pros">
+     Pros
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#cons">
+     Cons
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-results">
+   The Results
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -1192,6 +1264,85 @@ title="Print to PDF"
 <li><p>The proposed ByT5 is based on Google’s recent token-based mT5 (Massively Multilingual Text-to-Text Transfer Transformer)</p></li>
 </ul>
 <p><img alt="" src="../../../_images/byt5-vs-mt5.png" /></p>
+</section>
+<section id="key-changes-to-the-mt5-architecture">
+<h2>Key Changes To The mT5 Architecture<a class="headerlink" href="#key-changes-to-the-mt5-architecture" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>Feeding UTF-8 bytes of the SentencePiece vocabulary directly to the embedding layer without any text preprocessing.</p></li>
+<li><p>An additional 3 IDs are reserved for the special tokens: padding, end-of-sequence, and an unused token.</p></li>
+<li><p>The team then modifies the pretrained task such that instead of adding 100 new tokens for the sentinels, they reuse the final 100 byte IDs.</p></li>
+<li><p>Rather than using an average span length of 3 subwords, they mask longer byte-spans with a mean length of 20 bytes.</p></li>
+<li><p>They found that byte-level models with a heavier encoder perform better on both classification and generation tasks.</p></li>
+<li><p>They dropped any illegal bytes in the model’s ouput to keep the output valid UTF-8.</p></li>
+</ul>
+</section>
+<section id="how-tokens-are-used">
+<h2>How Tokens Are Used<a class="headerlink" href="#how-tokens-are-used" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>The mT5 tokens are much shorter than the ByT5 tokens because every character is a token in ByT5.</p></li>
+<li><p>The model is designed to remove <span class="math notranslate nohighlight">\(n\)</span> tokens from the input and replace with placeholder tokens.</p></li>
+<li><p>The encoder is given the content with the sets of tokens missing and the placeholder to understand where the tokens are missing.</p></li>
+<li><p>The decoder is given the missing tokens and the placeholder assigned to the content that is hidden to it.</p></li>
+<li><p>Essentially, the encoder knows the content with the tokens missing and the decoder knows the missing tokens.</p></li>
+<li><p>On training, accuracy is measured by how well the decoder can predict the missing tokens.</p></li>
+<li><p>Accuracy of 80% means that the decoder can predict 80% of the missing tokens correctly.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/byt5-mc4.png" /></p>
+</section>
+<section id="the-technical-details">
+<h2>The Technical Details<a class="headerlink" href="#the-technical-details" title="Permalink to this headline">#</a></h2>
+<blockquote>
+<div><p>“We release ByT5 in five sizes analogous to T5 and mT5 (Small, Base, Large, XL, XXL). We aim for ByT5 to cover the same use cases as mT5: it is a general-purpose pre-trained text-to-text model covering 100+ languages. We expect ByT5 will be particular useful for tasks operating on short-to-medium length text sequences (a few sentences or less), as these will incur less slowdown in fine-tuning and inference.”</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>There are five sizes of ByT5 models covering 100+ languages.</p></li>
+<li><p>The prediction is that ByT5 will be better for tasks operating on shorter text sequences.</p></li>
+<li><p>A marginally better model that takes 100x more time to train and run is not a good trade-off.</p></li>
+<li><p>ByT5 requires ~5x more tokens for the same text length compared to mT5.</p></li>
+</ul>
+<blockquote>
+<div><p>“Second, we modify the pre-training task. mT5 uses the “span corruption” pre-training objective first proposed by Raffel et al. (2020) where spans of tokens in unlabeled text data are replaced with a single “sentinel” ID and the model must fill in the missing spans. Rather than adding 100 new tokens for the sentinels, we find it sufficient to reuse the final 100 byte IDs. While mT5 uses an average span length of 3 subword tokens, we find that masking longer byte-spans is valuable.”</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>mT5 replaces 3 tokens with a sentinel token.</p></li>
+<li><p>ByT5 replaces 20 bytes with a sentinel token.</p></li>
+</ul>
+<blockquote>
+<div><p>“Third, we find that ByT5 performs best when we decouple the depth of the encoder and decoder transformer stacks. While T5 and mT5 used “balanced” architectures, we find byte-level models benefit significantly from a “heavier” encoder. Specifically, we set our encoder depth to 3 times that of the decoder.”</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>mT5 used balances architectures with the same number of layers in the encoder and decoder.</p></li>
+<li><p>ByT5 uses a heavier encoder with 3 times the number of layers as the decoder.</p></li>
+</ul>
+</section>
+<section id="the-pros-and-cons-of-byt5">
+<h2>The Pros And Cons Of ByT5<a class="headerlink" href="#the-pros-and-cons-of-byt5" title="Permalink to this headline">#</a></h2>
+<section id="pros">
+<h3>Pros<a class="headerlink" href="#pros" title="Permalink to this headline">#</a></h3>
+<ul>
+<li><p>In a model with a large vocabulary, the vocaboulary matrix can take up a substantial proportion of the model’s parameters.</p></li>
+<li><p>Vocabulary of mT5 takes up 85% ~ 16% of the model’s parameters depending on the model size.</p></li>
+<li><p>By switching to a byte-level model, the saved parameters can be used for other purposes, such as adding more layers or making the layers wider.</p>
+<p><img alt="" src="../../../_images/byt5-vocab.png" /></p>
+</li>
+</ul>
+</section>
+<section id="cons">
+<h3>Cons<a class="headerlink" href="#cons" title="Permalink to this headline">#</a></h3>
+<ul>
+<li><p>Byte-level sequences are much longer than token-level sequences, and this increases the cost of computation.</p></li>
+<li><p>If the decoder is particularly large, autoregressive sampling can be expensive.</p></li>
+<li><p>In terms of FLOPs (floating-point operations per second), ByT5 requires ~1.2x more operations for the pre-training.</p>
+<p><img alt="" src="../../../_images/byt5-flops-pretrain.png" /></p>
+</li>
+</ul>
+</section>
+</section>
+<section id="the-results">
+<h2>The Results<a class="headerlink" href="#the-results" title="Permalink to this headline">#</a></h2>
+<blockquote>
+<div><p>“ByT5 is competitive with mT5 on standard English and multilingual NLP benchmarks and outperforms mT5 at small model sizes. Additionally ByT5 excels on free-form generation tasks and transliteration.”</p>
+</div></blockquote>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
