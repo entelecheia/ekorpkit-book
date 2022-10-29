@@ -51,8 +51,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -355,7 +353,7 @@ const thebe_selector_output = ".output, .cell_output"
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../../tutorials/models/art/stable-diffusion.html">
-       Stable Diffusion Inpainting
+       Stable Diffusion
       </a>
      </li>
      <li class="toctree-l3">
@@ -806,6 +804,16 @@ const thebe_selector_output = ".output, .cell_output"
      SentencePiece Tokenizer
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../deep_nlp/byt5.html">
+     ByT5: Towards a token-free future with pre-trained byte-to-byte models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../deep_nlp/lab1-corpus.html">
+     Lab 1: Preparing Data for Language Modeling
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
@@ -1142,12 +1150,12 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#evaluation-of-compositions">
    Evaluation of Compositions
   </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#uncertainty-of-word-boundaries">
+   Uncertainty of word boundaries
+  </a>
   <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#uncertainty-of-word-boundaries">
-     Uncertainty of word boundaries
-    </a>
-   </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#accessor-variety">
      Accessor Variety
@@ -1164,6 +1172,18 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#word-segmentation-in-practice">
    Word Segmentation in Practice
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#word-segmentation-for-korean">
+     Word Segmentation for Korean
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#working-with-news-article-samples">
+     Working with news article samples
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#references">
@@ -1235,12 +1255,12 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#evaluation-of-compositions">
    Evaluation of Compositions
   </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#uncertainty-of-word-boundaries">
+   Uncertainty of word boundaries
+  </a>
   <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#uncertainty-of-word-boundaries">
-     Uncertainty of word boundaries
-    </a>
-   </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#accessor-variety">
      Accessor Variety
@@ -1257,6 +1277,18 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#word-segmentation-in-practice">
    Word Segmentation in Practice
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#word-segmentation-for-korean">
+     Word Segmentation for Korean
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#working-with-news-article-samples">
+     Working with news article samples
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#references">
@@ -1468,8 +1500,9 @@ title="Print to PDF"
 <li><p>At word boundary, the uncertainty of the segmentation increases.</p></li>
 <li><p>By measuring the uncertainty, we can evaluate the composition.</p></li>
 </ul>
+</section>
 <section id="uncertainty-of-word-boundaries">
-<h3>Uncertainty of word boundaries<a class="headerlink" href="#uncertainty-of-word-boundaries" title="Permalink to this headline">#</a></h3>
+<h2>Uncertainty of word boundaries<a class="headerlink" href="#uncertainty-of-word-boundaries" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p>The uncertainty of word boundaries can be measured by the entropy of the word boundary.</p></li>
 <li><p><span id="id1">[<a class="reference internal" href="../../about/index.html#id20" title="Zellig S Harris. From phoneme to morpheme. In Papers in structural and transformational linguistics, pages 32–67. Springer, 1970. URL: http://www.eecs.qmul.ac.uk/~mpurver/papers/griffiths-et-al15qitl.pdf.">Harris, 1970</a>]</span> said that if the uncertainty of successive tokens increases, the location is a word boundary.</p></li>
@@ -1479,7 +1512,6 @@ title="Print to PDF"
 <li><p>The latter is the countinous version of the former.</p></li>
 </ul>
 <p><img alt="" src="../../../_images/branching_entropy_uncertainty.png" /></p>
-</section>
 <section id="accessor-variety">
 <h3>Accessor Variety<a class="headerlink" href="#accessor-variety" title="Permalink to this headline">#</a></h3>
 <ul>
@@ -1491,6 +1523,8 @@ title="Print to PDF"
 </pre></div>
 </div>
 </li>
+</ul>
+<ul>
 <li><p>The backward accessor variety is the number of different words that can be formed by adding a sub-sequence to the left side of the sub-sequence.</p></li>
 <li><p>For example, the backward accessor variety of <code class="docutils literal notranslate"><span class="pre">less</span></code> is 3, because <code class="docutils literal notranslate"><span class="pre">hopeless</span></code>, <code class="docutils literal notranslate"><span class="pre">useless</span></code>, and <code class="docutils literal notranslate"><span class="pre">pointless</span></code> can be formed by adding <code class="docutils literal notranslate"><span class="pre">less</span></code> to the left side of <code class="docutils literal notranslate"><span class="pre">less</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;hopeless&quot;</span><span class="p">:</span> <span class="mi">80</span>
@@ -1658,7 +1692,7 @@ Top 10 subwords: [(&#39;▁&#39;, 114), (&#39;e&#39;, 63), (&#39;p&#39;, 59), (&
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/word_segmentation_27_0.png" src="../../../_images/word_segmentation_27_0.png" />
+<img alt="../../../_images/word_segmentation_28_0.png" src="../../../_images/word_segmentation_28_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1668,7 +1702,7 @@ Top 10 subwords: [(&#39;▁&#39;, 114), (&#39;e&#39;, 63), (&#39;p&#39;, 59), (&
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/word_segmentation_28_0.png" src="../../../_images/word_segmentation_28_0.png" />
+<img alt="../../../_images/word_segmentation_29_0.png" src="../../../_images/word_segmentation_29_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1745,6 +1779,8 @@ Top 10 subwords: [(&#39;▁&#39;, 114), (&#39;e&#39;, 63), (&#39;p&#39;, 59), (&
 </div>
 </div>
 </div>
+<section id="word-segmentation-for-korean">
+<h3>Word Segmentation for Korean<a class="headerlink" href="#word-segmentation-for-korean" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
@@ -1875,7 +1911,7 @@ Top 10 subwords: [(&#39;▁&#39;, 70), (&#39;방&#39;, 15), (&#39;가&#39;, 12),
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/word_segmentation_38_0.png" src="../../../_images/word_segmentation_38_0.png" />
+<img alt="../../../_images/word_segmentation_40_0.png" src="../../../_images/word_segmentation_40_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1885,7 +1921,7 @@ Top 10 subwords: [(&#39;▁&#39;, 70), (&#39;방&#39;, 15), (&#39;가&#39;, 12),
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/word_segmentation_39_0.png" src="../../../_images/word_segmentation_39_0.png" />
+<img alt="../../../_images/word_segmentation_41_0.png" src="../../../_images/word_segmentation_41_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1895,9 +1931,12 @@ Top 10 subwords: [(&#39;▁&#39;, 70), (&#39;방&#39;, 15), (&#39;가&#39;, 12),
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/word_segmentation_40_0.png" src="../../../_images/word_segmentation_40_0.png" />
+<img alt="../../../_images/word_segmentation_42_0.png" src="../../../_images/word_segmentation_42_0.png" />
 </div>
 </div>
+</section>
+<section id="working-with-news-article-samples">
+<h3>Working with news article samples<a class="headerlink" href="#working-with-news-article-samples" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
@@ -2020,7 +2059,7 @@ Top 10 subwords: [(&#39;▁&#39;, 26177132), (&#39;e&#39;, 7246161), (&#39;t&#39
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/word_segmentation_48_0.png" src="../../../_images/word_segmentation_48_0.png" />
+<img alt="../../../_images/word_segmentation_51_0.png" src="../../../_images/word_segmentation_51_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2058,9 +2097,10 @@ Top 10 subwords: [(&#39;▁&#39;, 26177132), (&#39;e&#39;, 7246161), (&#39;t&#39
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/word_segmentation_50_0.png" src="../../../_images/word_segmentation_50_0.png" />
+<img alt="../../../_images/word_segmentation_53_0.png" src="../../../_images/word_segmentation_53_0.png" />
 </div>
 </div>
+</section>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
