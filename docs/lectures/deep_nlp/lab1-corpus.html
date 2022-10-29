@@ -1,0 +1,2390 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Lab 1: Preparing Data for Language Modeling &#8212; eKorpkit Tutorials</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/ekorpkit.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="AI Art (Text-to-Image)" href="../aiart/index.html" />
+    <link rel="prev" title="ByT5: Towards a token-free future with pre-trained byte-to-byte models" href="byt5.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-FN4GFT8HP8"></script>
+<script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){ dataLayer.push(arguments); }
+                    gtag('js', new Date());
+                    gtag('config', 'G-FN4GFT8HP8');
+                </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../_static/ekorpkit.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">eKorpkit Tutorials</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    eKonomic Research Python Toolkit
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Basics
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/index.html">
+   Getting started
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/install.html">
+     Installation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/usage.html">
+     Usage
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/features/index.html">
+   Key features
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/easy_config.html">
+     Easy Configuration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/no_boiler.html">
+     No Boilerplate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/workflows.html">
+     Workflows
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/share.html">
+     Sharable and Reproducible
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/plug.html">
+     Pluggable Architece
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tutorials
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/config/index.html">
+   Configuring ekorpkit
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/config/eKonf.html">
+     Using eKonf class
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/datasets/index.html">
+   Datasets
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/corpus.html">
+     Build and Load Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/datasets/dataset.html">
+     Build and Load Datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/pipeline.html">
+     Corpus task pipelines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/models/index.html">
+   Models
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/models/automl/index.html">
+     Auto ML
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/embeddings/index.html">
+     Word Embeddings
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/embeddings/word2vec_basics.html">
+       Word2Vec Basics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/embeddings/eval_vectors.html">
+       Evaluate pretrained embeddings
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/ngram/index.html">
+     N-Grams
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram.html">
+       N-Grams
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram_for_lexicons.html">
+       N-Gram model for ngram lexicon features
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram_for_words.html">
+       N-Gram model for unigram lexicon features
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/sentiment/index.html">
+     Sentiment Analyers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/lbsa_en.html">
+       Lexicon-based Sentiment Analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/financial_phrasebank_lm.html">
+       Evaluate LM with financial phrasebank
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/sentiment.html">
+       LM Dictionary vs. finbert vs. T5
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/models/transformers/index.html">
+     Transformers
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/art/index.html">
+     AI Art (Text-to-Image)
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/art/disco.html">
+       Disco Diffusion
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/art/stable-diffusion.html">
+       Stable Diffusion
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/art/dalle-mini.html">
+       DALL·E Mini
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/pipelines/index.html">
+   Pipelines
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/pipelines/pipeline.html">
+     Instantiating pipeline
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/preprocessors/index.html">
+   Preprocessors
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+  <label for="toctree-checkbox-11">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/normalizer/index.html">
+     Normalizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+    <label for="toctree-checkbox-12">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/normalizer/normalizer.html">
+       Normalizers
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/segmenter/index.html">
+     Segmenters
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+    <label for="toctree-checkbox-13">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/segmenter/segmenter.html">
+       Segmenters
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/tokenizer/index.html">
+     Tokenizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/>
+    <label for="toctree-checkbox-14">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/tokenizer/mecab.html">
+       Mecab Tokenizer
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/visualizers/index.html">
+   Visualizers
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/>
+  <label for="toctree-checkbox-15">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/visualizers/plot.html">
+     Plots
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../tutorials/workflow/index.html">
+   Workflows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Datasets
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../corpus/ekorpkot_corpus.html">
+   The eKorpkit Corpus
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Use Cases
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/fomc/index.html">
+   FOMC
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/>
+  <label for="toctree-checkbox-16">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/02_FOMC_numerical_data.html">
+     Preparing Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/03_FOMC_corpus.html">
+     Preparing Textual Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/04_FOMC_EDA_numericals.html">
+     EDA on Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/05_FOMC_features.html">
+     Visualizing Features
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/06_FOMC_AutoML.html">
+     Checking Baseline with AutoML
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/07_FOMC_sentiments.html">
+     Predicting Sentiments of FOMC Corpus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/08_FOMC_EDA_sentiments.html">
+     EDA on Sentiment Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/09_FOMC_AutoML_with_tones.html">
+     Predicting the next decisions with tones
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../usecases/bok/index.html">
+   Bank of Korea
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/edgar/index.html">
+   EDGAR
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" type="checkbox"/>
+  <label for="toctree-checkbox-17">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/edgar/predict_edgar.html">
+     Prediciting Sentiments
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/esg/index.html">
+   ESG
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" type="checkbox"/>
+  <label for="toctree-checkbox-18">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/snorkel-polarity.html">
+     Preparing polarity classification datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/rubrix.html">
+     Improving classification datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/classifiers.html">
+     Training Classifiers for ESG Ratings
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/econ_news_corpus.html">
+     Building
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       econ_news_kr
+      </span>
+     </code>
+     corpus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/predict_news.html">
+     Predicting ESG Categories and Polarities
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/rubrix_classifiers.html">
+     Preparing classifiers for active learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/predict_for_learning.html">
+     Preparing active learning data
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/esg-en/index.html">
+   ESG (English)
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/>
+  <label for="toctree-checkbox-19">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg-en/esg_corpus.html">
+     Building
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       JOCo
+      </span>
+     </code>
+     corpus
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/cointax/index.html">
+   Taxation on Cryptocurrency
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" type="checkbox"/>
+  <label for="toctree-checkbox-20">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/cointax/coin_dataset.html">
+     Improving classification datasets
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Research
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../research/esg_topics/analyst.html">
+   ESG Topic Analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../research/esg_topics/rethink_esg.html">
+   Rethinking ESG
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Lectures
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../intro_nlp/index.html">
+   Introduction to NLP
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" type="checkbox"/>
+  <label for="toctree-checkbox-21">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/intro.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/ekorpkit.html">
+     Getting started with ekorpkit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/research.html">
+     Research Applications
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/topic.html">
+     Topic Modeling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/topic_models.html">
+     Topic Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/topic_coherence.html">
+     Topic Coherence Measures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/sentiments.html">
+     Sentiment Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/tokenization.html">
+     Tokenization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/word_segmentation.html">
+     Word Segmentation and Association
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/vectorization.html">
+     Vector Semantics and Representation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/language_models.html">
+     Language Models
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   Deep Learning for NLP
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" type="checkbox"/>
+  <label for="toctree-checkbox-22">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="intro.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="ekorpkit.html">
+     Getting started with ekorpkit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="zeroshot.html">
+     Zero Shot, Prompt, and Search Strategies
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="bloom.html">
+     What is BLOOM?
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="bloom_apps.html">
+     Bloom Examples
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="transformers.html">
+     Transformers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="bert.html">
+     BERT: Bidirectional Encoder Representations from Transformers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="t5.html">
+     T5: Text-To-Text Transfer Transformer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="tokenization.html">
+     Tokenization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="sentencepiece.html">
+     SentencePiece Tokenizer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="byt5.html">
+     ByT5: Towards a token-free future with pre-trained byte-to-byte models
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Lab 1: Preparing Data for Language Modeling
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../aiart/index.html">
+   AI Art (Text-to-Image)
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" type="checkbox"/>
+  <label for="toctree-checkbox-23">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/intro.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/project-themes.html">
+     Project Themes - A Brave New World
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/dalle1.html">
+     DALL·E 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/dalle2.html">
+     DALL·E 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/imagen.html">
+     Imagen
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mlops/index.html">
+   Machine Learning Systems Design
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ds/index.html">
+   Data Science for Economics and Finance
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about/index.html">
+   Bibliography
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about/cite.html">
+   Citation
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/entelecheia/ekorpkit-book/main?urlpath=tree/ekorpkit-book/docs/lectures/deep_nlp/lab1-corpus.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://colab.research.google.com/github/entelecheia/ekorpkit-book/blob/main/ekorpkit-book/docs/lectures/deep_nlp/lab1-corpus.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Colab"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../../_static/images/logo_colab.png">
+  </span>
+<span class="headerbtn__text-container">Colab</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/entelecheia/ekorpkit-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/entelecheia/ekorpkit-book/issues/new?title=Issue%20on%20page%20%2Fdocs/lectures/deep_nlp/lab1-corpus.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../../_sources/docs/lectures/deep_nlp/lab1-corpus.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#install-the-ekorpkit-library-along-with-its-dependencies">
+   Install the ekorpkit library along with its dependencies
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#build-corpora-with-the-ekorpkit-configs">
+   Build corpora with the ekorpkit configs
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#wikipedia-dump">
+     Wikipedia Dump
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#fetch-the-dump-and-extract-it-to-the-data-directory">
+       Fetch the dump and extract it to the
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         data
+        </span>
+       </code>
+       directory
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#build-the-corpus-by-parsing-the-wikipedia-dump">
+       Build the corpus by Parsing the Wikipedia Dump
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#instantiating-corpora">
+   Instantiating corpora
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#instantiating-a-corpus">
+   Instantiating a corpus
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Lab 1: Preparing Data for Language Modeling</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#install-the-ekorpkit-library-along-with-its-dependencies">
+   Install the ekorpkit library along with its dependencies
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#build-corpora-with-the-ekorpkit-configs">
+   Build corpora with the ekorpkit configs
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#wikipedia-dump">
+     Wikipedia Dump
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#fetch-the-dump-and-extract-it-to-the-data-directory">
+       Fetch the dump and extract it to the
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         data
+        </span>
+       </code>
+       directory
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#build-the-corpus-by-parsing-the-wikipedia-dump">
+       Build the corpus by Parsing the Wikipedia Dump
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#instantiating-corpora">
+   Instantiating corpora
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#instantiating-a-corpus">
+   Instantiating a corpus
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="lab-1-preparing-data-for-language-modeling">
+<h1>Lab 1: Preparing Data for Language Modeling<a class="headerlink" href="#lab-1-preparing-data-for-language-modeling" title="Permalink to this headline">#</a></h1>
+<section id="install-the-ekorpkit-library-along-with-its-dependencies">
+<h2>Install the ekorpkit library along with its dependencies<a class="headerlink" href="#install-the-ekorpkit-library-along-with-its-dependencies" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> install --pre ekorpkit[wiki,fetch]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+
+<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;version:&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+
+<span class="n">is_notebook</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_notebook</span><span class="p">()</span>
+<span class="n">is_colab</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is notebook?&quot;</span><span class="p">,</span> <span class="n">is_notebook</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is colab?&quot;</span><span class="p">,</span> <span class="n">is_colab</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">is_colab</span><span class="p">:</span>
+    <span class="n">eKonf</span><span class="o">.</span><span class="n">mount_google_drive</span><span class="p">()</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">set_workspace</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="s2">&quot;/content/drive/MyDrive/workspace/&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="s2">&quot;ekorpkit-book&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;environment variables:&quot;</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">env</span><span class="p">()</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.utils.notebook:shell type: ZMQInteractiveShell
+INFO:ekorpkit.utils.notebook:Google Colab not detected.
+INFO:ekorpkit.base:Setting EKORPKIT_WORKSPACE_ROOT to /content/drive/MyDrive/workspace/
+INFO:ekorpkit.base:Setting EKORPKIT_PROJECT to ekorpkit-book
+INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.40.post0.dev2
+is notebook? True
+is colab? False
+environment variables:
+{&#39;CUDA_DEVICE_ORDER&#39;: None,
+ &#39;CUDA_VISIBLE_DEVICES&#39;: None,
+ &#39;EKORPKIT_CONFIG_DIR&#39;: &#39;/workspace/projects/ekorpkit-book/config&#39;,
+ &#39;EKORPKIT_DATA_DIR&#39;: None,
+ &#39;EKORPKIT_LOG_LEVEL&#39;: &#39;INFO&#39;,
+ &#39;EKORPKIT_PROJECT&#39;: &#39;ekorpkit-book&#39;,
+ &#39;EKORPKIT_WORKSPACE_ROOT&#39;: &#39;/content/drive/MyDrive/workspace&#39;,
+ &#39;KMP_DUPLICATE_LIB_OK&#39;: &#39;TRUE&#39;,
+ &#39;NUM_WORKERS&#39;: 230}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="build-corpora-with-the-ekorpkit-configs">
+<h2>Build corpora with the ekorpkit configs<a class="headerlink" href="#build-corpora-with-the-ekorpkit-configs" title="Permalink to this headline">#</a></h2>
+<section id="wikipedia-dump">
+<h3>Wikipedia Dump<a class="headerlink" href="#wikipedia-dump" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>The first step is to download the Wikipedia dump.</p></li>
+<li><p>The dump is a collection of all Wikipedia articles in XML format.</p></li>
+<li><p>The dump for English is available at <a class="reference external" href="https://dumps.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2">https://dumps.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2</a>.</p></li>
+<li><p>The dump is about 20.3 GB in size.</p></li>
+<li><p>For other languages, change <code class="docutils literal notranslate"><span class="pre">en</span></code> to the language code of your choice.</p></li>
+<li><p>For the detailed list of language codes, see <a class="reference external" href="https://meta.wikimedia.org/wiki/List_of_Wikipedias">https://meta.wikimedia.org/wiki/List_of_Wikipedias</a>.</p></li>
+</ul>
+<section id="fetch-the-dump-and-extract-it-to-the-data-directory">
+<h4>Fetch the dump and extract it to the <code class="docutils literal notranslate"><span class="pre">data</span></code> directory<a class="headerlink" href="#fetch-the-dump-and-extract-it-to-the-data-directory" title="Permalink to this headline">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.io.fetch.loader.wiki</span> <span class="kn">import</span> <span class="n">Wiki</span>
+
+<span class="n">wiki</span> <span class="o">=</span> <span class="n">Wiki</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="s2">&quot;ko&quot;</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
+<span class="n">wiki</span><span class="o">.</span><span class="n">download_dump</span><span class="p">()</span>
+<span class="n">wiki</span><span class="o">.</span><span class="n">extract_wiki</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Following the instructions above, you can download the dump for other languages.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wiki_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;io/fetcher=wiki&#39;</span><span class="p">)</span>
+<span class="n">wiki_cfg</span><span class="o">.</span><span class="n">lang</span> <span class="o">=</span> <span class="s2">&quot;ko&quot;</span>
+<span class="n">wiki_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;kowiki&quot;</span>
+<span class="n">wiki_cfg</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">wiki_cfg</span><span class="o">.</span><span class="n">dump</span><span class="o">.</span><span class="n">dump_dir</span><span class="si">}</span><span class="s2">/extracted&quot;</span>
+<span class="n">wiki_cfg</span><span class="o">.</span><span class="n">autoload</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">wiki_cfg</span><span class="o">.</span><span class="n">force_download</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">wiki_cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">wiki_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">wiki_cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;_name_&#39;: &#39;fetcher&#39;,
+ &#39;_target_&#39;: &#39;ekorpkit.io.fetch.loader.wiki.Wiki&#39;,
+ &#39;auto&#39;: {&#39;load&#39;: False},
+ &#39;autoload&#39;: False,
+ &#39;compress&#39;: False,
+ &#39;dump&#39;: {&#39;_target_&#39;: &#39;web_download&#39;,
+          &#39;dump_dir&#39;: &#39;/content/drive/MyDrive/workspace/.cache/corpus/kowiki&#39;,
+          &#39;dump_file&#39;: &#39;kowiki.xml.bz2&#39;,
+          &#39;url&#39;: &#39;https://dumps.wikimedia.org/kowiki/latest/kowiki-latest-pages-articles.xml.bz2&#39;},
+ &#39;extract&#39;: {&#39;_target_&#39;: &#39;extract_wiki&#39;},
+ &#39;force&#39;: {&#39;download&#39;: True},
+ &#39;force_download&#39;: True,
+ &#39;lang&#39;: &#39;ko&#39;,
+ &#39;limit&#39;: -1,
+ &#39;name&#39;: &#39;kowiki&#39;,
+ &#39;num_workers&#39;: 50,
+ &#39;output_dir&#39;: &#39;/content/drive/MyDrive/workspace/.cache/corpus/kowiki/extracted&#39;,
+ &#39;output_file&#39;: None,
+ &#39;path&#39;: {&#39;cached_path&#39;: None,
+          &#39;columns&#39;: None,
+          &#39;concat_data&#39;: False,
+          &#39;data_columns&#39;: None,
+          &#39;data_dir&#39;: &#39;/content/drive/MyDrive/workspace/data/kowiki&#39;,
+          &#39;data_file&#39;: None,
+          &#39;filetype&#39;: &#39;&#39;,
+          &#39;name&#39;: &#39;kowiki&#39;,
+          &#39;output&#39;: {&#39;base_dir&#39;: &#39;/content/drive/MyDrive/workspace/.cache/corpus/kowiki/extracted&#39;,
+                     &#39;columns&#39;: None,
+                     &#39;file&#39;: None,
+                     &#39;filename&#39;: None,
+                     &#39;filepath&#39;: &#39;/content/drive/MyDrive/workspace/.cache/corpus/kowiki/extracted&#39;,
+                     &#39;filetype&#39;: &#39;&#39;,
+                     &#39;suffix&#39;: None},
+          &#39;output_dir&#39;: &#39;/content/drive/MyDrive/workspace/.cache/corpus/kowiki/extracted&#39;,
+          &#39;output_file&#39;: None,
+          &#39;root&#39;: &#39;/content/drive/MyDrive/workspace/data/kowiki&#39;,
+          &#39;suffix&#39;: None,
+          &#39;verbose&#39;: True},
+ &#39;verbose&#39;: True}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.io.fetch.loader.wiki</span> <span class="kn">import</span> <span class="n">Wiki</span>
+
+<span class="n">args</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">wiki_cfg</span><span class="p">)</span>
+<span class="n">wiki</span> <span class="o">=</span> <span class="n">Wiki</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
+<span class="n">wiki</span><span class="o">.</span><span class="n">download_dump</span><span class="p">()</span>
+<span class="n">wiki</span><span class="o">.</span><span class="n">extract_wiki</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "7f57cd7e390042ad85a99efd0b1fbafa", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Preprocessing &#39;/content/drive/MyDrive/workspace/.cache/corpus/kowiki/kowiki.xml.bz2&#39; to collect template definitions: this may take some time.
+INFO: Preprocessed 100000 pages
+INFO: Preprocessed 200000 pages
+INFO: Preprocessed 300000 pages
+INFO: Preprocessed 400000 pages
+INFO: Preprocessed 500000 pages
+INFO: Preprocessed 600000 pages
+INFO: Preprocessed 700000 pages
+INFO: Preprocessed 800000 pages
+INFO: Preprocessed 900000 pages
+INFO: Preprocessed 1000000 pages
+INFO: Preprocessed 1100000 pages
+INFO: Preprocessed 1200000 pages
+INFO: Preprocessed 1300000 pages
+INFO: Preprocessed 1400000 pages
+INFO: Preprocessed 1500000 pages
+INFO: Preprocessed 1600000 pages
+INFO: Preprocessed 1700000 pages
+INFO: Loaded 60850 templates in 214.3s
+INFO: Starting page extraction from /content/drive/MyDrive/workspace/.cache/corpus/kowiki/kowiki.xml.bz2.
+INFO: Using 50 extract processes.
+INFO: Extracted 100000 articles (2809.9 art/s)
+INFO: Extracted 200000 articles (4194.9 art/s)
+INFO: Extracted 300000 articles (4598.9 art/s)
+INFO: Extracted 400000 articles (5019.5 art/s)
+INFO: Extracted 500000 articles (5461.3 art/s)
+INFO: Extracted 600000 articles (5120.8 art/s)
+INFO: Extracted 700000 articles (5254.5 art/s)
+INFO: Extracted 800000 articles (6065.9 art/s)
+INFO: Extracted 900000 articles (19874.6 art/s)
+INFO: Extracted 1000000 articles (10843.3 art/s)
+INFO: Extracted 1100000 articles (5674.7 art/s)
+INFO: Extracted 1200000 articles (5990.6 art/s)
+INFO: Extracted 1300000 articles (5678.9 art/s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracted kowiki from dump file /content/drive/MyDrive/workspace/.cache/corpus/kowiki/kowiki.xml.bz2
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Finished 50-process extraction of 1339049 articles in 247.2s (5417.6 art/s)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="build-the-corpus-by-parsing-the-wikipedia-dump">
+<h4>Build the corpus by Parsing the Wikipedia Dump<a class="headerlink" href="#build-the-corpus-by-parsing-the-wikipedia-dump" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p>The next step is to parse the Wikipedia dump and build the corpus.</p></li>
+<li><p>Extracted Wikipedia dump is in JSON Lines format, which is a line-delimited JSON format.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;corpus/builtin=kowiki&#39;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s1">&#39;../data/kowiki&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="c1"># eKonf.print(cfg)</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:instantiating ekorpkit.datasets.build.DatasetBuilder...
+INFO:ekorpkit.base:instantiating ekorpkit.io.fetch.loader.wiki.Wiki...
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "07ae5155eb6148f2bd62d1a76e6d2385", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Traceback (most recent call last):
+  File &quot;/opt/conda/lib/python3.8/runpy.py&quot;, line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File &quot;/opt/conda/lib/python3.8/runpy.py&quot;, line 87, in _run_code
+    exec(code, run_globals)
+  File &quot;/opt/conda/lib/python3.8/site-packages/wikiextractor/WikiExtractor.py&quot;, line 645, in &lt;module&gt;
+    main()
+  File &quot;/opt/conda/lib/python3.8/site-packages/wikiextractor/WikiExtractor.py&quot;, line 640, in main
+    process_dump(input_file, args.templates, output_path, file_size,
+  File &quot;/opt/conda/lib/python3.8/site-packages/wikiextractor/WikiExtractor.py&quot;, line 301, in process_dump
+    for line in input:
+  File &quot;/opt/conda/lib/python3.8/codecs.py&quot;, line 322, in decode
+    (result, consumed) = self._buffer_decode(data, self.errors, final)
+UnicodeDecodeError: &#39;utf-8&#39; codec can&#39;t decode byte 0xa1 in position 16: invalid start byte
+INFO:ekorpkit.base:instantiating ekorpkit.info.stat.SummaryInfo...
+INFO:ekorpkit.info.stat:Loading info file: ../data/kowiki/info-kowiki.yaml
+INFO:ekorpkit.base:instantiating ekorpkit.io.load.data.load_data...
+INFO:ekorpkit.io.file:Processing [0] files from [&#39;**/*&#39;]
+WARNING:ekorpkit.io.load.data:No files to load
+INFO:ekorpkit.datasets.build: &gt;&gt; elapsed time to load and parse data: 0:00:00.006897
+INFO:ekorpkit.datasets.build:
+Transforming dataframe with pipeline: [&#39;reset_index&#39;, &#39;save_metadata&#39;]
+INFO:ekorpkit.pipelines.pipe:Applying pipeline: OrderedDict([(&#39;reset_index&#39;, &#39;reset_index&#39;), (&#39;save_metadata&#39;, &#39;save_metadata&#39;)])
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function reset_index at 0x7fac3bbe8ca0&gt;)
+INFO:ekorpkit.pipelines.pipe:Resetting index: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.reset_index&#39;}, &#39;index_column_name&#39;: &#39;id&#39;, &#39;drop_index&#39;: False, &#39;verbose&#39;: True}
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function save_metadata at 0x7fac3b3e9820&gt;)
+INFO:ekorpkit.pipelines.pipe:Saving metadata: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.save_metadata&#39;}, &#39;path&#39;: {&#39;root&#39;: &#39;/workspace/data/ekorpkit-book&#39;, &#39;name&#39;: &#39;ekorpkit-book&#39;, &#39;cached_path&#39;: None, &#39;filetype&#39;: None, &#39;verbose&#39;: True, &#39;data_dir&#39;: &#39;/workspace/data/ekorpkit-book&#39;, &#39;data_file&#39;: None, &#39;concat_data&#39;: False, &#39;data_columns&#39;: None, &#39;columns&#39;: None, &#39;output_dir&#39;: None, &#39;output_file&#39;: None, &#39;suffix&#39;: None, &#39;output&#39;: {&#39;filename&#39;: &#39;meta-kowiki-train.parquet&#39;, &#39;base_dir&#39;: &#39;../data/kowiki&#39;, &#39;filetype&#39;: &#39;.parquet&#39;, &#39;suffix&#39;: None, &#39;filepath&#39;: &#39;../data/kowiki/meta-kowiki-train.parquet&#39;, &#39;columns&#39;: None, &#39;verbose&#39;: True}}, &#39;filepath&#39;: None, &#39;filetype&#39;: None, &#39;column_info&#39;: {&#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;, &#39;text&#39;: &#39;text&#39;, &#39;merge_meta_on&#39;: &#39;id&#39;, &#39;timestamp&#39;: None}, &#39;datetime&#39;: {&#39;columns&#39;: None, &#39;format&#39;: None, &#39;rcParams&#39;: None}, &#39;timestamp&#39;: {&#39;key&#39;: None, &#39;format&#39;: None, &#39;rcParams&#39;: None}, &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;}, &#39;meta&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;curid&#39;: &#39;str&#39;, &#39;url&#39;: &#39;str&#39;, &#39;title&#39;: &#39;str&#39;}, &#39;segment_separator&#39;: &#39;\\n\\n&#39;, &#39;sentence_separator&#39;: &#39;\\n&#39;}, &#39;split_name&#39;: &#39;train&#39;, &#39;verbose&#39;: True}
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracted kowiki from dump file /workspace/.cache/corpus/kowiki/kowiki.xml.bz
+{&#39;category&#39;: &#39;formal&#39;,
+ &#39;column_info&#39;: {&#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;,
+                             &#39;merge_meta_on&#39;: &#39;id&#39;,
+                             &#39;text&#39;: &#39;text&#39;,
+                             &#39;timestamp&#39;: None},
+                 &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;},
+                 &#39;datetime&#39;: {&#39;columns&#39;: None,
+                              &#39;format&#39;: None,
+                              &#39;rcParams&#39;: None},
+                 &#39;meta&#39;: {&#39;curid&#39;: &#39;str&#39;,
+                          &#39;id&#39;: &#39;int&#39;,
+                          &#39;title&#39;: &#39;str&#39;,
+                          &#39;url&#39;: &#39;str&#39;},
+                 &#39;segment_separator&#39;: &#39;\\n\\n&#39;,
+                 &#39;sentence_separator&#39;: &#39;\\n&#39;,
+                 &#39;timestamp&#39;: {&#39;format&#39;: None, &#39;key&#39;: None, &#39;rcParams&#39;: None}},
+ &#39;description&#39;: &#39;위키백과, 우리 모두의 백과사전&#39;,
+ &#39;fullname&#39;: &#39;Korean Wikipedia Corpus&#39;,
+ &#39;homepage&#39;: &#39;https://ko.wikipedia.org&#39;,
+ &#39;lang&#39;: &#39;ko&#39;,
+ &#39;license&#39;: &#39;CC Attribution / Share-Alike 3.0&#39;,
+ &#39;name&#39;: &#39;kowiki&#39;,
+ &#39;version&#39;: &#39;1.0.0&#39;}
+Empty DataFrame
+Columns: []
+Index: []
+(0, 0)
+Empty DataFrame
+Columns: [id]
+Index: []
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
+<span class="nn">File /opt/conda/lib/python3.8/site-packages/hydra/_internal/instantiate/_instantiate2.py:92,</span> in <span class="ni">_call_target</span><span class="nt">(_target_, _partial_, args, kwargs, full_key)</span>
+<span class="g g-Whitespace">     </span><span class="mi">91</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">92</span>     <span class="k">return</span> <span class="n">_target_</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">93</span> <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+
+<span class="nn">File /workspace/projects/ekorpkit/ekorpkit/datasets/build.py:67,</span> in <span class="ni">DatasetBuilder.__init__</span><span class="nt">(self, **args)</span>
+<span class="g g-Whitespace">     </span><span class="mi">66</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto</span><span class="o">.</span><span class="n">load</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">67</span>     <span class="bp">self</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+<span class="nn">File /workspace/projects/ekorpkit/ekorpkit/datasets/build.py:85,</span> in <span class="ni">DatasetBuilder.build</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">     </span><span class="mi">84</span>         <span class="k">continue</span>
+<span class="ne">---&gt; </span><span class="mi">85</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_process_split</span><span class="p">(</span><span class="n">split_name</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">87</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">summary_info</span><span class="p">:</span>
+
+<span class="nn">File /workspace/projects/ekorpkit/ekorpkit/datasets/build.py:130,</span> in <span class="ni">DatasetBuilder._process_split</span><span class="nt">(self, split_name)</span>
+<span class="g g-Whitespace">    </span><span class="mi">127</span>     <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">128</span>         <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Transforming dataframe with pipeline: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">transform_pipeline</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">129</span>     <span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">130</span>     <span class="n">df</span> <span class="o">=</span> <span class="n">apply_pipeline</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform_pipeline</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pipeline_</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">132</span> <span class="c1"># Saving data</span>
+
+<span class="nn">File /workspace/projects/ekorpkit/ekorpkit/pipelines/pipe.py:44,</span> in <span class="ni">apply_pipeline</span><span class="nt">(df, pipeline, pipeline_args, update_args, verbose)</span>
+<span class="g g-Whitespace">     </span><span class="mi">42</span>         <span class="n">pipeline_targets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">44</span> <span class="k">return</span> <span class="n">reduce</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">pipe</span><span class="p">,</span> <span class="n">pipeline_targets</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
+
+<span class="nn">File /workspace/projects/ekorpkit/ekorpkit/ekonf.py:371,</span> in <span class="ni">eKonf.pipe</span><span class="nt">(data, cfg)</span>
+<span class="g g-Whitespace">    </span><span class="mi">369</span> <span class="nd">@staticmethod</span>
+<span class="g g-Whitespace">    </span><span class="mi">370</span> <span class="k">def</span> <span class="nf">pipe</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cfg</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">371</span>     <span class="k">return</span> <span class="n">_pipe</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+
+<span class="nn">File /workspace/projects/ekorpkit/ekorpkit/base.py:803,</span> in <span class="ni">_pipe</span><span class="nt">(data, pipe)</span>
+<span class="g g-Whitespace">    </span><span class="mi">802</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">803</span>     <span class="k">return</span> <span class="n">fn</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pipe</span><span class="p">)</span>
+
+<span class="nn">File /workspace/projects/ekorpkit/ekorpkit/pipelines/pipe.py:1202,</span> in <span class="ni">save_metadata</span><span class="nt">(df, args)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1201</span>     <span class="n">df</span><span class="p">[</span><span class="n">eKonf</span><span class="o">.</span><span class="n">Keys</span><span class="o">.</span><span class="n">SPLIT</span><span class="p">]</span> <span class="o">=</span> <span class="n">split_name</span>
+<span class="ne">-&gt; </span><span class="mi">1202</span> <span class="n">df_meta</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">meta_columns</span><span class="p">]</span>
+<span class="g g-Whitespace">   </span><span class="mi">1203</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">df_meta</span><span class="p">,</span> <span class="o">**</span><span class="n">_path</span><span class="p">)</span>
+
+<span class="nn">File /opt/conda/lib/python3.8/site-packages/pandas/core/frame.py:3464,</span> in <span class="ni">DataFrame.__getitem__</span><span class="nt">(self, key)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3463</span>         <span class="n">key</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">3464</span>     <span class="n">indexer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loc</span><span class="o">.</span><span class="n">_get_listlike_indexer</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="g g-Whitespace">   </span><span class="mi">3466</span> <span class="c1"># take() does not accept boolean indexers</span>
+
+<span class="nn">File /opt/conda/lib/python3.8/site-packages/pandas/core/indexing.py:1314,</span> in <span class="ni">_LocIndexer._get_listlike_indexer</span><span class="nt">(self, key, axis)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1312</span>     <span class="n">keyarr</span><span class="p">,</span> <span class="n">indexer</span><span class="p">,</span> <span class="n">new_indexer</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">_reindex_non_unique</span><span class="p">(</span><span class="n">keyarr</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1314</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_read_indexer</span><span class="p">(</span><span class="n">keyarr</span><span class="p">,</span> <span class="n">indexer</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1316</span> <span class="k">if</span> <span class="n">needs_i8_conversion</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1317</span>     <span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">IntervalIndex</span><span class="p">,</span> <span class="n">CategoricalIndex</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1318</span> <span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1319</span>     <span class="c1"># For CategoricalIndex take instead of reindex to preserve dtype.</span>
+<span class="g g-Whitespace">   </span><span class="mi">1320</span>     <span class="c1">#  For IntervalIndex this is to map integers to the Intervals they match to.</span>
+
+<span class="nn">File /opt/conda/lib/python3.8/site-packages/pandas/core/indexing.py:1377,</span> in <span class="ni">_LocIndexer._validate_read_indexer</span><span class="nt">(self, key, indexer, axis)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1376</span> <span class="n">not_found</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ensure_index</span><span class="p">(</span><span class="n">key</span><span class="p">)[</span><span class="n">missing_mask</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+<span class="ne">-&gt; </span><span class="mi">1377</span> <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">not_found</span><span class="si">}</span><span class="s2"> not in index&quot;</span><span class="p">)</span>
+
+<span class="ne">KeyError</span>: &quot;[&#39;curid&#39;, &#39;url&#39;, &#39;title&#39;] not in index&quot;
+
+<span class="n">The</span> <span class="n">above</span> <span class="n">exception</span> <span class="n">was</span> <span class="n">the</span> <span class="n">direct</span> <span class="n">cause</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">exception</span><span class="p">:</span>
+
+<span class="ne">InstantiationException</span><span class="g g-Whitespace">                    </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">workspace</span><span class="o">/</span><span class="n">projects</span><span class="o">/</span><span class="n">ekorpkit</span><span class="o">-</span><span class="n">book</span><span class="o">/</span><span class="n">ekorpkit</span><span class="o">-</span><span class="n">book</span><span class="o">/</span><span class="n">docs</span><span class="o">/</span><span class="n">lectures</span><span class="o">/</span><span class="n">deep_nlp</span><span class="o">/</span><span class="n">lab1</span><span class="o">-</span><span class="n">corpus</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">Cell</span> <span class="mi">6</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell://ssh-remote%2Bekorpkit-book/workspace/projects/ekorpkit-book/ekorpkit-book/docs/lectures/deep_nlp/lab1-corpus.ipynb#W3sdnNjb2RlLXJlbW90ZQ%3D%3D?line=2&#39;</span><span class="o">&gt;</span><span class="mi">3</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="n">cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
+      <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell://ssh-remote%2Bekorpkit-book/workspace/projects/ekorpkit-book/ekorpkit-book/docs/lectures/deep_nlp/lab1-corpus.ipynb#W3sdnNjb2RlLXJlbW90ZQ%3D%3D?line=3&#39;</span><span class="o">&gt;</span><span class="mi">4</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="c1"># eKonf.print(cfg)</span>
+<span class="o">----&gt;</span> <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell://ssh-remote%2Bekorpkit-book/workspace/projects/ekorpkit-book/ekorpkit-book/docs/lectures/deep_nlp/lab1-corpus.ipynb#W3sdnNjb2RlLXJlbW90ZQ%3D%3D?line=4&#39;</span><span class="o">&gt;</span><span class="mi">5</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="n">db</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+
+<span class="nn">File /workspace/projects/ekorpkit/ekorpkit/ekonf.py:190,</span> in <span class="ni">eKonf.instantiate</span><span class="nt">(config, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">188</span> <span class="nd">@staticmethod</span>
+<span class="g g-Whitespace">    </span><span class="mi">189</span> <span class="k">def</span> <span class="nf">instantiate</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">190</span>     <span class="k">return</span> <span class="n">_instantiate</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File /workspace/projects/ekorpkit/ekorpkit/base.py:685,</span> in <span class="ni">_instantiate</span><span class="nt">(config, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">683</span> <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">684</span>     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;instantiating </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">_Keys</span><span class="o">.</span><span class="n">TARGET</span><span class="p">)</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">685</span> <span class="k">return</span> <span class="n">hydra</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File /opt/conda/lib/python3.8/site-packages/hydra/_internal/instantiate/_instantiate2.py:222,</span> in <span class="ni">instantiate</span><span class="nt">(config, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">219</span>     <span class="n">_convert_</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">_Keys</span><span class="o">.</span><span class="n">CONVERT</span><span class="p">,</span> <span class="n">ConvertMode</span><span class="o">.</span><span class="n">NONE</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">220</span>     <span class="n">_partial_</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">_Keys</span><span class="o">.</span><span class="n">PARTIAL</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">222</span>     <span class="k">return</span> <span class="n">instantiate_node</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">223</span>         <span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="n">_recursive_</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="n">_convert_</span><span class="p">,</span> <span class="n">partial</span><span class="o">=</span><span class="n">_partial_</span>
+<span class="g g-Whitespace">    </span><span class="mi">224</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">225</span> <span class="k">elif</span> <span class="n">OmegaConf</span><span class="o">.</span><span class="n">is_list</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">226</span>     <span class="c1"># Finalize config (convert targets to strings, merge with kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">227</span>     <span class="n">config_copy</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+<span class="nn">File /opt/conda/lib/python3.8/site-packages/hydra/_internal/instantiate/_instantiate2.py:339,</span> in <span class="ni">instantiate_node</span><span class="nt">(node, convert, recursive, partial, *args)</span>
+<span class="g g-Whitespace">    </span><span class="mi">334</span>                 <span class="n">value</span> <span class="o">=</span> <span class="n">instantiate_node</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">335</span>                     <span class="n">value</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="n">convert</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="n">recursive</span>
+<span class="g g-Whitespace">    </span><span class="mi">336</span>                 <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">337</span>             <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">_convert_node</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">convert</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">339</span>     <span class="k">return</span> <span class="n">_call_target</span><span class="p">(</span><span class="n">_target_</span><span class="p">,</span> <span class="n">partial</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">full_key</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">340</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">341</span>     <span class="c1"># If ALL or PARTIAL non structured, instantiate in dict and resolve interpolations eagerly.</span>
+<span class="g g-Whitespace">    </span><span class="mi">342</span>     <span class="k">if</span> <span class="n">convert</span> <span class="o">==</span> <span class="n">ConvertMode</span><span class="o">.</span><span class="n">ALL</span> <span class="ow">or</span> <span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">343</span>         <span class="n">convert</span> <span class="o">==</span> <span class="n">ConvertMode</span><span class="o">.</span><span class="n">PARTIAL</span>
+<span class="nn">    344         and node._metadata.object_type</span> in <span class="nt">(None, dict)</span>
+<span class="g g-Whitespace">    </span><span class="mi">345</span>     <span class="p">):</span>
+
+<span class="nn">File /opt/conda/lib/python3.8/site-packages/hydra/_internal/instantiate/_instantiate2.py:97,</span> in <span class="ni">_call_target</span><span class="nt">(_target_, _partial_, args, kwargs, full_key)</span>
+<span class="g g-Whitespace">     </span><span class="mi">95</span> <span class="k">if</span> <span class="n">full_key</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">96</span>     <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">full_key: </span><span class="si">{</span><span class="n">full_key</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="ne">---&gt; </span><span class="mi">97</span> <span class="k">raise</span> <span class="n">InstantiationException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+
+<span class="ne">InstantiationException</span>: Error in call to target &#39;ekorpkit.datasets.build.DatasetBuilder&#39;:
+<span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;[&#39;curid&#39;, &#39;url&#39;, &#39;title&#39;] not in index&quot;</span><span class="p">)</span>
+<span class="ne">full_key</span>: corpus.builtin
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;corpus/builtin=_dummy_fomc_minutes&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/fomc_minutes&quot;</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "1a03373c87a94bd7aae33c5980056ee9", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "089d5bd23ea54d8897a86ef9626dda16", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "7c2be16dd2a743b5a3f4fec0c4c585fd", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "ae8908f6668e44d898e4c885c96c4e35", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "62f81bb9e4da4d96b2508c6e5122af69", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "a92de0b5eba74cbebaeebea4cc0619b6", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "0589d04377974339a74106b5dc157354", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "199276c15efc450e8a584039f3845423", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "77c38b4c5bf542cda929d66db7f037f1", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "aedabfed1ad84de5bfd7b4712d91c298", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "ce17bb2df5ea4116907c93460de02083", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "ba03b01653d545f5ae77ebbbdf68ab59", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "3de3c838464d4c61a574bd3624405f46", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "b99a2725c722445ea9e78c3837ad5f55", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "6256e7ebf7cb437497b65dc1350cc808", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "6259cc53c5b54d508aad865733d0366c", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "aa64c435093646448348f11bd133a02e", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "82c026d8779c400e8bbfc6a9128f223f", "version_major": 2, "version_minor": 0}
+</script></div>
+</div>
+</section>
+</section>
+</section>
+<section id="instantiating-corpora">
+<h2>Instantiating corpora<a class="headerlink" href="#instantiating-corpora" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;corpus=corpora&#39;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;bok_minutes&#39;</span><span class="p">,</span> <span class="s1">&#39;fomc_minutes&#39;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s1">&#39;../data&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">auto</span><span class="o">.</span><span class="n">load</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">crps</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">crps</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Corpora
+----------
+bok_minutes
+fomc_minutes
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crps</span><span class="p">[</span><span class="s1">&#39;bok_minutes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>text</th>
+      <th>split</th>
+    </tr>
+    <tr>
+      <th>index</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>Economic Situation\n일부 위원은 관련부서에서 지난 3\/4분기 중 ...</td>
+      <td>train</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crps</span><span class="p">[</span><span class="s1">&#39;fomc_minutes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>text</th>
+      <th>content_type</th>
+      <th>split</th>
+    </tr>
+    <tr>
+      <th>index</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>A meeting of the Federal Open Market Committee...</td>
+      <td>fomc_minutes</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>A meeting of the Federal Open Market Committee...</td>
+      <td>fomc_minutes</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>A meeting of the Federal Open Market Committee...</td>
+      <td>fomc_minutes</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>A meeting of the Federal Open Market Committee...</td>
+      <td>fomc_minutes</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>A meeting of the Federal Open Market Committee...</td>
+      <td>fomc_minutes</td>
+      <td>train</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crps</span><span class="o">.</span><span class="n">concat_corpora</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crps</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>text</th>
+      <th>split</th>
+      <th>corpus</th>
+      <th>content_type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>Economic Situation\n일부 위원은 관련부서에서 지난 3\/4분기 중 ...</td>
+      <td>train</td>
+      <td>bok_minutes</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>A meeting of the Federal Open Market Committee...</td>
+      <td>train</td>
+      <td>fomc_minutes</td>
+      <td>fomc_minutes</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>A meeting of the Federal Open Market Committee...</td>
+      <td>train</td>
+      <td>fomc_minutes</td>
+      <td>fomc_minutes</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2</td>
+      <td>A meeting of the Federal Open Market Committee...</td>
+      <td>train</td>
+      <td>fomc_minutes</td>
+      <td>fomc_minutes</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3</td>
+      <td>A meeting of the Federal Open Market Committee...</td>
+      <td>train</td>
+      <td>fomc_minutes</td>
+      <td>fomc_minutes</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>4</td>
+      <td>A meeting of the Federal Open Market Committee...</td>
+      <td>train</td>
+      <td>fomc_minutes</td>
+      <td>fomc_minutes</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crps</span><span class="o">.</span><span class="n">metadata</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>mdate</th>
+      <th>rdate</th>
+      <th>filename</th>
+      <th>split</th>
+      <th>corpus</th>
+      <th>date</th>
+      <th>speaker</th>
+      <th>title</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>2018-11-30 10:00:00</td>
+      <td>2018-12-18 16:00:00</td>
+      <td>BOK_20181130_20181218</td>
+      <td>train</td>
+      <td>bok_minutes</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>train</td>
+      <td>fomc_minutes</td>
+      <td>1993-02-03</td>
+      <td>Alan Greenspan</td>
+      <td>FOMC Meeting Minutes</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>train</td>
+      <td>fomc_minutes</td>
+      <td>1993-03-23</td>
+      <td>Alan Greenspan</td>
+      <td>FOMC Meeting Minutes</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>train</td>
+      <td>fomc_minutes</td>
+      <td>1993-05-18</td>
+      <td>Alan Greenspan</td>
+      <td>FOMC Meeting Minutes</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>train</td>
+      <td>fomc_minutes</td>
+      <td>1993-07-07</td>
+      <td>Alan Greenspan</td>
+      <td>FOMC Meeting Minutes</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>4</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>train</td>
+      <td>fomc_minutes</td>
+      <td>1993-08-17</td>
+      <td>Alan Greenspan</td>
+      <td>FOMC Meeting Minutes</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="instantiating-a-corpus">
+<h2>Instantiating a corpus<a class="headerlink" href="#instantiating-a-corpus" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;corpus&#39;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;bok_minutes&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s1">&#39;../data&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">column_info</span><span class="o">.</span><span class="n">timestamp</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;mdate&#39;</span>
+<span class="n">crps</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">crps</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Corpus : bok_minutes
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crps</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>text</th>
+      <th>split</th>
+    </tr>
+    <tr>
+      <th>index</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>Economic Situation\n일부 위원은 관련부서에서 지난 3\/4분기 중 ...</td>
+      <td>train</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crps</span><span class="o">.</span><span class="n">metadata</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>mdate</th>
+      <th>rdate</th>
+      <th>filename</th>
+      <th>split</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>2018-11-30 10:00:00</td>
+      <td>2018-12-18 16:00:00</td>
+      <td>BOK_20181130_20181218</td>
+      <td>train</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">crps</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="n">crps</span><span class="o">.</span><span class="n">IDs</span><span class="p">,</span> <span class="n">crps</span><span class="o">.</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">crps</span><span class="o">.</span><span class="n">DATA</span><span class="p">,</span> <span class="n">crps</span><span class="o">.</span><span class="n">METADATA</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>id [&#39;id&#39;, &#39;split&#39;] text [&#39;id&#39;, &#39;text&#39;, &#39;split&#39;] [&#39;id&#39;, &#39;mdate&#39;, &#39;rdate&#39;, &#39;filename&#39;, &#39;split&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crps</span><span class="o">.</span><span class="n">merge_metadata</span><span class="p">()</span>
+<span class="n">crps</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>text</th>
+      <th>split</th>
+      <th>mdate</th>
+      <th>rdate</th>
+      <th>filename</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>Economic Situation\n일부 위원은 관련부서에서 지난 3\/4분기 중 ...</td>
+      <td>train</td>
+      <td>2018-11-30 10:00:00</td>
+      <td>2018-12-18 16:00:00</td>
+      <td>BOK_20181130_20181218</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crps</span><span class="o">.</span><span class="n">COLUMN</span><span class="o">.</span><span class="n">TIMESTAMP_INFO</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;mdate&#39;</span>
+<span class="n">crps</span><span class="o">.</span><span class="n">load_timestamp</span><span class="p">()</span>
+<span class="n">crps</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>text</th>
+      <th>split</th>
+      <th>mdate</th>
+      <th>rdate</th>
+      <th>filename</th>
+      <th>timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>Economic Situation\n일부 위원은 관련부서에서 지난 3\/4분기 중 ...</td>
+      <td>train</td>
+      <td>2018-11-30 10:00:00</td>
+      <td>2018-12-18 16:00:00</td>
+      <td>BOK_20181130_20181218</td>
+      <td>2018-11-30 10:00:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eKonf</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">crps</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;category&#39;: &#39;formal&#39;,
+ &#39;column_info&#39;: {&#39;_keys_&#39;: {&#39;dataset&#39;: &#39;dataset&#39;,
+                            &#39;id&#39;: &#39;id&#39;,
+                            &#39;split&#39;: &#39;split&#39;,
+                            &#39;text&#39;: &#39;text&#39;,
+                            &#39;timestamp&#39;: &#39;timestamp&#39;},
+                 &#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;,
+                             &#39;merge_meta_on&#39;: &#39;id&#39;,
+                             &#39;text&#39;: &#39;text&#39;,
+                             &#39;timestamp&#39;: None},
+                 &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;},
+                 &#39;datetime&#39;: {&#39;columns&#39;: None,
+                              &#39;format&#39;: None,
+                              &#39;rcParams&#39;: None},
+                 &#39;meta&#39;: {&#39;filename&#39;: &#39;str&#39;,
+                          &#39;id&#39;: &#39;int&#39;,
+                          &#39;mdate&#39;: &#39;str&#39;,
+                          &#39;rdate&#39;: &#39;str&#39;},
+                 &#39;segment_separator&#39;: &#39;\\n\\n&#39;,
+                 &#39;sentence_separator&#39;: &#39;\\n&#39;,
+                 &#39;timestamp&#39;: {&#39;format&#39;: None, &#39;key&#39;: None, &#39;rcParams&#39;: None}},
+ &#39;data_files&#39;: {&#39;train&#39;: &#39;bok_minutes-train.parquet&#39;},
+ &#39;data_files_modified&#39;: &#39;2022-06-14 02:24:20&#39;,
+ &#39;description&#39;: &#39;BOK Minutes Corpus&#39;,
+ &#39;fullname&#39;: &#39;BOK MPB Minutes&#39;,
+ &#39;homepage&#39;: &#39;https://www.bok.or.kr&#39;,
+ &#39;info_updated&#39;: &#39;2022-06-14 02:24:21&#39;,
+ &#39;lang&#39;: &#39;ko&#39;,
+ &#39;license&#39;: &#39;Bank of Korea&#39;,
+ &#39;meta_files&#39;: {&#39;train&#39;: &#39;meta-bok_minutes-train.parquet&#39;},
+ &#39;meta_files_modified&#39;: &#39;2022-06-14 02:24:20&#39;,
+ &#39;name&#39;: &#39;bok_minutes&#39;,
+ &#39;num_bytes_before_processing&#39;: 88948,
+ &#39;num_docs&#39;: 1,
+ &#39;num_docs_before_processing&#39;: 1,
+ &#39;num_segments&#39;: 5,
+ &#39;num_sents&#39;: 346,
+ &#39;num_words&#39;: 8171,
+ &#39;size_in_bytes&#39;: 88925,
+ &#39;size_in_human_bytes&#39;: &#39;86.84 KiB&#39;,
+ &#39;splits&#39;: {&#39;train&#39;: {&#39;data_file&#39;: &#39;bok_minutes-train.parquet&#39;,
+                      &#39;dataset_name&#39;: &#39;bok_minutes&#39;,
+                      &#39;human_bytes&#39;: &#39;86.84 KiB&#39;,
+                      &#39;human_bytes_wospc&#39;: &#39;78.86 KiB&#39;,
+                      &#39;meta_file&#39;: &#39;meta-bok_minutes-train.parquet&#39;,
+                      &#39;name&#39;: &#39;train&#39;,
+                      &#39;num_bytes&#39;: 88925,
+                      &#39;num_bytes_before_processing&#39;: 88948,
+                      &#39;num_bytes_max&#39;: 88925,
+                      &#39;num_bytes_median&#39;: 88925.0,
+                      &#39;num_bytes_min&#39;: 88925,
+                      &#39;num_bytes_wospc&#39;: 80751,
+                      &#39;num_docs&#39;: 1,
+                      &#39;num_docs_before_processing&#39;: 1,
+                      &#39;num_segments&#39;: 5,
+                      &#39;num_segments_median&#39;: 5.0,
+                      &#39;num_sents&#39;: 346,
+                      &#39;num_sents_median&#39;: 346.0,
+                      &#39;num_words&#39;: 8171,
+                      &#39;num_words_max&#39;: 8171,
+                      &#39;num_words_median&#39;: 8171.0,
+                      &#39;num_words_min&#39;: 8171}},
+ &#39;version&#39;: &#39;1.0.0&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./docs/lectures/deep_nlp"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="byt5.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">ByT5: Towards a token-free future with pre-trained byte-to-byte models</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../aiart/index.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">AI Art (Text-to-Image)</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Young Joon Lee<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
