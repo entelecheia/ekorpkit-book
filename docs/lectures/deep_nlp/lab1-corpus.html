@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Lab 1: Preparing Data for Language Modeling &#8212; eKorpkit Tutorials</title>
+    <title>Lab 1: Preparing Wikipedia Corpora &#8212; eKorpkit Tutorials</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -809,7 +809,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     Lab 1: Preparing Data for Language Modeling
+     Lab 1: Preparing Wikipedia Corpora
     </a>
    </li>
   </ul>
@@ -1168,7 +1168,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Lab 1: Preparing Data for Language Modeling</h1>
+                <h1>Lab 1: Preparing Wikipedia Corpora</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -1245,8 +1245,8 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="lab-1-preparing-data-for-language-modeling">
-<h1>Lab 1: Preparing Data for Language Modeling<a class="headerlink" href="#lab-1-preparing-data-for-language-modeling" title="Permalink to this headline">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="lab-1-preparing-wikipedia-corpora">
+<h1>Lab 1: Preparing Wikipedia Corpora<a class="headerlink" href="#lab-1-preparing-wikipedia-corpora" title="Permalink to this headline">#</a></h1>
 <section id="install-the-ekorpkit-library-along-with-its-dependencies">
 <h2>Install the ekorpkit library along with its dependencies<a class="headerlink" href="#install-the-ekorpkit-library-along-with-its-dependencies" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
@@ -1621,7 +1621,134 @@ INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs:
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
 {"model_id": "47e837cae0e84fd3afbde18d29b8d325", "version_major": 2, "version_minor": 0}
-</script></div>
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to segment: 0:26:43.238374
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function filter_length at 0x7fce771d3280&gt;, len_bytes={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}, len_words={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_words&#39;})
+INFO:ekorpkit.pipelines.pipe:Filtering by length: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.filter_length&#39;, &#39;len_bytes&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}, &#39;len_words&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_words&#39;}}, &#39;apply_to&#39;: &#39;text&#39;, &#39;min_length&#39;: 30, &#39;max_length&#39;: None, &#39;len_func&#39;: &#39;len_bytes&#39;, &#39;len_column&#39;: &#39;num_bytes&#39;, &#39;add_len_column&#39;: True, &#39;verbose&#39;: True, &#39;use_batcher&#39;: True}
+INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 50  input_split: False  merge_output: True  len(data): 1339048 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "8224db593bbd4df298f7e3b21aabe851", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.pipelines.pipe:removed 736936 of 1339048 documents with length &lt; 30
+INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to filter length: 0:00:03.079006
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function drop_duplicates at 0x7fce771d34c0&gt;)
+INFO:ekorpkit.pipelines.pipe:Dropping duplicates: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.drop_duplicates&#39;}, &#39;apply_to&#39;: &#39;text&#39;, &#39;verbose&#39;: True}
+INFO:ekorpkit.pipelines.pipe:601641 documents after dropping 471 duplicates from [[&#39;text&#39;]]
+INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to drop duplicates: 0:00:01.811704
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function save_samples at 0x7fce771d3790&gt;)
+INFO:ekorpkit.pipelines.pipe:Saving samples: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.save_samples&#39;}, &#39;path&#39;: {&#39;root&#39;: &#39;/content/drive/MyDrive/workspace/data/ekorpkit-book&#39;, &#39;name&#39;: &#39;ekorpkit-book&#39;, &#39;cached_path&#39;: None, &#39;filetype&#39;: &#39;&#39;, &#39;verbose&#39;: True, &#39;data_dir&#39;: &#39;/content/drive/MyDrive/workspace/data/ekorpkit-book&#39;, &#39;data_file&#39;: None, &#39;concat_data&#39;: False, &#39;data_columns&#39;: None, &#39;columns&#39;: None, &#39;output_dir&#39;: None, &#39;output_file&#39;: None, &#39;suffix&#39;: None, &#39;output&#39;: {&#39;filename&#39;: &#39;sample-kowiki-train.txt&#39;, &#39;base_dir&#39;: &#39;/content/drive/MyDrive/workspace/data/datasets/corpus/kowiki&#39;, &#39;filetype&#39;: &#39;.txt&#39;, &#39;suffix&#39;: None, &#39;filepath&#39;: &#39;/content/drive/MyDrive/workspace/data/datasets/corpus/kowiki/sample-kowiki-train.txt&#39;, &#39;columns&#39;: None, &#39;verbose&#39;: True}}, &#39;apply_to&#39;: &#39;text&#39;, &#39;num_samples_to_save&#39;: 2, &#39;output_file&#39;: None, &#39;sample_length_to_print&#39;: 1000, &#39;verbose&#39;: True}
+INFO:ekorpkit.pipelines.pipe:Saved 2 samples to /content/drive/MyDrive/workspace/data/datasets/corpus/kowiki/sample-kowiki-train.txt
+INFO:ekorpkit.info.stat:Calculating statistics for split: train
+INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 50  input_split: False  merge_output: True  len(data): 601641 len(args): 5
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>----------------------------------------------------------------------------------------------------
+
+text: 
+《그랜드 점프》(, )는 슈에이샤가 발행하는 일본의 소년 만화 잡지이다.
+
+----------------------------------------------------------------------------------------------------
+text: 
+레이크파크()는 다음과 같은 뜻이 있다.
+
+----------------------------------------------------------------------------------------------------
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "9ad1bd2f771c422593c6806a64b1e700", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 50  input_split: False  merge_output: True  len(data): 601641 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "5c7df22e54b747f2a5b30a34ac406a40", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 50  input_split: False  merge_output: True  len(data): 601641 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "680500c65fed4751afcc3b87c322d043", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 50  input_split: False  merge_output: True  len(data): 601641 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "f7f4538e02534ec199de2601c80d8905", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 50  input_split: False  merge_output: True  len(data): 601641 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "fe77ec00d0ec483ebc484896f7f5f9b5", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.info.stat: &gt;&gt; elapsed time to calculate statistics: 0:00:07.233255
+INFO:ekorpkit.info.stat:Saving updated info file: /content/drive/MyDrive/workspace/data/datasets/corpus/kowiki/info-kowiki.yaml
+INFO:ekorpkit.datasets.build:
+Corpus [kowiki] is built to [/content/drive/MyDrive/workspace/data/datasets/corpus/kowiki] from [/content/drive/MyDrive/workspace/data/archive/datasets/source/kowiki]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;category&#39;: &#39;formal&#39;,
+ &#39;column_info&#39;: {&#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;,
+                             &#39;merge_meta_on&#39;: &#39;id&#39;,
+                             &#39;text&#39;: &#39;text&#39;,
+                             &#39;timestamp&#39;: None},
+                 &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;},
+                 &#39;datetime&#39;: {&#39;columns&#39;: None,
+                              &#39;format&#39;: None,
+                              &#39;rcParams&#39;: None},
+                 &#39;meta&#39;: {&#39;curid&#39;: &#39;str&#39;,
+                          &#39;id&#39;: &#39;int&#39;,
+                          &#39;title&#39;: &#39;str&#39;,
+                          &#39;url&#39;: &#39;str&#39;},
+                 &#39;segment_separator&#39;: &#39;\\n\\n&#39;,
+                 &#39;sentence_separator&#39;: &#39;\\n&#39;,
+                 &#39;timestamp&#39;: {&#39;format&#39;: None, &#39;key&#39;: None, &#39;rcParams&#39;: None}},
+ &#39;data_files&#39;: {&#39;train&#39;: &#39;kowiki-train.parquet&#39;},
+ &#39;data_files_modified&#39;: &#39;2022-10-29 06:30:41&#39;,
+ &#39;description&#39;: &#39;위키백과, 우리 모두의 백과사전&#39;,
+ &#39;fullname&#39;: &#39;Korean Wikipedia Corpus&#39;,
+ &#39;homepage&#39;: &#39;https://ko.wikipedia.org&#39;,
+ &#39;info_updated&#39;: &#39;2022-10-29 06:58:28&#39;,
+ &#39;lang&#39;: &#39;ko&#39;,
+ &#39;license&#39;: &#39;CC Attribution / Share-Alike 3.0&#39;,
+ &#39;meta_files&#39;: {&#39;train&#39;: &#39;meta-kowiki-train.parquet&#39;},
+ &#39;meta_files_modified&#39;: &#39;2022-10-29 06:29:35&#39;,
+ &#39;name&#39;: &#39;kowiki&#39;,
+ &#39;num_bytes_before_processing&#39;: 801994255,
+ &#39;num_docs&#39;: 601641,
+ &#39;num_docs_before_processing&#39;: 1339048,
+ &#39;num_segments&#39;: 601727,
+ &#39;num_sents&#39;: 6064076,
+ &#39;num_words&#39;: 74965324,
+ &#39;size_in_bytes&#39;: 800672700,
+ &#39;size_in_human_bytes&#39;: &#39;763.58 MiB&#39;,
+ &#39;splits&#39;: {&#39;train&#39;: {&#39;data_file&#39;: &#39;kowiki-train.parquet&#39;,
+                      &#39;dataset_name&#39;: &#39;kowiki&#39;,
+                      &#39;human_bytes&#39;: &#39;763.58 MiB&#39;,
+                      &#39;human_bytes_wospc&#39;: &#39;692.66 MiB&#39;,
+                      &#39;meta_file&#39;: &#39;meta-kowiki-train.parquet&#39;,
+                      &#39;name&#39;: &#39;train&#39;,
+                      &#39;num_bytes&#39;: 800672700,
+                      &#39;num_bytes_before_processing&#39;: 801994255,
+                      &#39;num_bytes_max&#39;: 417935,
+                      &#39;num_bytes_median&#39;: 348.0,
+                      &#39;num_bytes_min&#39;: 30,
+                      &#39;num_bytes_wospc&#39;: 726308931,
+                      &#39;num_docs&#39;: 601641,
+                      &#39;num_docs_before_processing&#39;: 1339048,
+                      &#39;num_segments&#39;: 601727,
+                      &#39;num_segments_median&#39;: 1.0,
+                      &#39;num_sents&#39;: 6064076,
+                      &#39;num_sents_median&#39;: 3.0,
+                      &#39;num_words&#39;: 74965324,
+                      &#39;num_words_max&#39;: 35733,
+                      &#39;num_words_median&#39;: 32.0,
+                      &#39;num_words_min&#39;: 1}},
+ &#39;version&#39;: &#39;1.0.0&#39;}
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 </section>
@@ -1633,6 +1760,18 @@ INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs:
 <span class="n">cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">50</span>
 <span class="n">db</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:instantiating ekorpkit.datasets.build.DatasetBuilder...
+INFO:ekorpkit.base:instantiating ekorpkit.io.fetch.loader.wiki.Wiki...
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "c277d7ad202e4f30ae37542969cc47b4", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Preprocessing &#39;/content/drive/MyDrive/workspace/.cache/corpus/enwiki/enwiki.xml.bz2&#39; to collect template definitions: this may take some time.
+INFO: Preprocessed 100000 pages
 </pre></div>
 </div>
 </div>
