@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>ByT5: Towards a token-free future with pre-trained byte-to-byte models &#8212; eKorpkit Tutorials</title>
     
   <!-- Loaded before other Sphinx assets -->
@@ -20,7 +21,7 @@
     href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -37,7 +38,7 @@
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -51,7 +52,7 @@ const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -1344,7 +1345,7 @@ title="Print to PDF"
                 
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="byt5-towards-a-token-free-future-with-pre-trained-byte-to-byte-models">
+  <section class="tex2jax_ignore mathjax_ignore" id="byt5-towards-a-token-free-future-with-pre-trained-byte-to-byte-models">
 <h1>ByT5: Towards a token-free future with pre-trained byte-to-byte models<a class="headerlink" href="#byt5-towards-a-token-free-future-with-pre-trained-byte-to-byte-models" title="Permalink to this headline">#</a></h1>
 <p><img alt="" src="../../../_images/byt5-intro.png" /></p>
 <p>The ByT5 model was presented in <span id="id1">[<a class="reference internal" href="../../about/index.html#id22" title="Linting Xue, Aditya Barua, Noah Constant, Rami Al-Rfou, Sharan Narang, Mihir Kale, Adam Roberts, and Colin Raffel. Byt5: towards a token-free future with pre-trained byte-to-byte models. Transactions of the Association for Computational Linguistics, 10:291–306, 2022. URL: https://arxiv.org/pdf/2105.13626v1.pdf.">Xue <em>et al.</em>, 2022</a>]</span>.</p>
@@ -1352,7 +1353,7 @@ title="Print to PDF"
 <blockquote>
 <div><p>Most widely-used pre-trained language models operate on sequences of tokens corresponding to word or subword units. Encoding text as a sequence of tokens requires a tokenizer, which is typically created as an independent artifact from the model. Token-free models that instead operate directly on raw text (bytes or characters) have many benefits: they can process text in any language out of the box, they are more robust to noise, and they minimize technical debt by removing complex and error-prone text preprocessing pipelines. Since byte or character sequences are longer than token sequences, past work on token-free models has often introduced new model architectures designed to amortize the cost of operating directly on raw text. In this paper, we show that a standard Transformer architecture can be used with minimal modifications to process byte sequences. We carefully characterize the trade-offs in terms of parameter count, training FLOPs, and inference speed, and show that byte-level models are competitive with their token-level counterparts. We also demonstrate that byte-level models are significantly more robust to noise and perform better on tasks that are sensitive to spelling and pronunciation. As part of our contribution, we release a new set of pre-trained byte-level Transformer models based on the T5 architecture, as well as all code and data used in our experiments.</p>
 </div></blockquote>
-<div class="section" id="what-is-a-token-in-machine-learning">
+<section id="what-is-a-token-in-machine-learning">
 <h2>What Is A Token In Machine Learning?<a class="headerlink" href="#what-is-a-token-in-machine-learning" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p>A token is a sequence of characters that is considered as a single entity during processing.</p></li>
@@ -1364,8 +1365,8 @@ title="Print to PDF"
 <li><p>Attention mechanisms are expensive, and the cost of computation increases with the order of <span class="math notranslate nohighlight">\(N^2\)</span> where <span class="math notranslate nohighlight">\(N\)</span> is the number of tokens in the sequence.</p></li>
 <li><p>This explains why tokenization is important, it dramatically reduces the number of tokens in a sequence, and thus the cost of computation.</p></li>
 </ul>
-</div>
-<div class="section" id="what-is-byt5">
+</section>
+<section id="what-is-byt5">
 <h2>What Is ByT5?<a class="headerlink" href="#what-is-byt5" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p>ByT5 is a token-free model that operates directly on raw text (bytes or characters).</p></li>
@@ -1376,8 +1377,8 @@ title="Print to PDF"
 <li><p>The proposed ByT5 is based on Google’s recent token-based mT5 (Massively Multilingual Text-to-Text Transfer Transformer)</p></li>
 </ul>
 <p><img alt="" src="../../../_images/byt5-vs-mt5.png" /></p>
-</div>
-<div class="section" id="key-changes-to-the-mt5-architecture">
+</section>
+<section id="key-changes-to-the-mt5-architecture">
 <h2>Key Changes To the mT5 Architecture<a class="headerlink" href="#key-changes-to-the-mt5-architecture" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p>Feeding UTF-8 bytes of the SentencePiece vocabulary directly to the embedding layer without any text preprocessing.</p></li>
@@ -1387,8 +1388,8 @@ title="Print to PDF"
 <li><p>They found that byte-level models with a heavier encoder perform better on both classification and generation tasks.</p></li>
 <li><p>They dropped any illegal bytes in the model’s ouput to keep the output valid UTF-8.</p></li>
 </ul>
-</div>
-<div class="section" id="how-tokens-are-used">
+</section>
+<section id="how-tokens-are-used">
 <h2>How Tokens Are Used<a class="headerlink" href="#how-tokens-are-used" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p>The mT5 tokens are much shorter than the ByT5 tokens because every character is a token in ByT5.</p></li>
@@ -1400,8 +1401,8 @@ title="Print to PDF"
 <li><p>Accuracy of 80% means that the decoder can predict 80% of the missing tokens correctly.</p></li>
 </ul>
 <p><img alt="" src="../../../_images/byt5-mc4.png" /></p>
-</div>
-<div class="section" id="the-technical-details">
+</section>
+<section id="the-technical-details">
 <h2>The Technical Details<a class="headerlink" href="#the-technical-details" title="Permalink to this headline">#</a></h2>
 <blockquote>
 <div><p>“We release ByT5 in five sizes analogous to T5 and mT5 (Small, Base, Large, XL, XXL). We aim for ByT5 to cover the same use cases as mT5: it is a general-purpose pre-trained text-to-text model covering 100+ languages. We expect ByT5 will be particular useful for tasks operating on short-to-medium length text sequences (a few sentences or less), as these will incur less slowdown in fine-tuning and inference.”</p>
@@ -1426,10 +1427,10 @@ title="Print to PDF"
 <li><p>mT5 used balances architectures with the same number of layers in the encoder and decoder.</p></li>
 <li><p>ByT5 uses a heavier encoder with 3 times the number of layers as the decoder.</p></li>
 </ul>
-</div>
-<div class="section" id="the-pros-and-cons-of-byt5">
+</section>
+<section id="the-pros-and-cons-of-byt5">
 <h2>The Pros And Cons Of ByT5<a class="headerlink" href="#the-pros-and-cons-of-byt5" title="Permalink to this headline">#</a></h2>
-<div class="section" id="pros">
+<section id="pros">
 <h3>Pros<a class="headerlink" href="#pros" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>In a model with a large vocabulary, the vocaboulary matrix can take up a substantial proportion of the model’s parameters.</p></li>
@@ -1438,8 +1439,8 @@ title="Print to PDF"
 <p><img alt="" src="../../../_images/byt5-vocab.png" /></p>
 </li>
 </ul>
-</div>
-<div class="section" id="cons">
+</section>
+<section id="cons">
 <h3>Cons<a class="headerlink" href="#cons" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Byte-level sequences are much longer than token-level sequences, and this increases the cost of computation.</p></li>
@@ -1450,22 +1451,22 @@ title="Print to PDF"
 <p><img alt="" src="../../../_images/byt5-flops-pretrain.png" /></p>
 </li>
 </ul>
-</div>
-</div>
-<div class="section" id="the-results">
+</section>
+</section>
+<section id="the-results">
 <h2>The Results<a class="headerlink" href="#the-results" title="Permalink to this headline">#</a></h2>
 <blockquote>
 <div><p>“ByT5 is competitive with mT5 on standard English and multilingual NLP benchmarks and outperforms mT5 at small model sizes. Additionally ByT5 excels on free-form generation tasks and transliteration.”</p>
 </div></blockquote>
-<div class="section" id="english-classification-tasks-glue-superglue">
+<section id="english-classification-tasks-glue-superglue">
 <h3>English Classification Tasks (GLUE, SuperGLUE)<a class="headerlink" href="#english-classification-tasks-glue-superglue" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>ByT5 outperforms mT5 on small and base model sizes by sizable margins, and loses close battles on larger models.</p>
 <p><img alt="" src="../../../_images/byt5-glue.png" /></p>
 </li>
 </ul>
-</div>
-<div class="section" id="english-generation-tasks-xsum-tweetqa-drop">
+</section>
+<section id="english-generation-tasks-xsum-tweetqa-drop">
 <h3>English Generation Tasks (XSum, TweetQA, DROP)<a class="headerlink" href="#english-generation-tasks-xsum-tweetqa-drop" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>XSum gets the model to summarize a news article in a single sentence, and TweetQA is question answering from Tweets. DROP is a challenging reading comprehension task that requires numerical reasoning.</p></li>
@@ -1473,8 +1474,8 @@ title="Print to PDF"
 <p><img alt="" src="../../../_images/byt5-gen.png" /></p>
 </li>
 </ul>
-</div>
-<div class="section" id="cross-lingual-benchmarks">
+</section>
+<section id="cross-lingual-benchmarks">
 <h3>Cross-lingual Benchmarks<a class="headerlink" href="#cross-lingual-benchmarks" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Changes to vocabulary and tokenization are likely to affect different languages in different ways.</p></li>
@@ -1484,8 +1485,8 @@ title="Print to PDF"
 <p><img alt="" src="../../../_images/byt5-xling.png" /></p>
 </li>
 </ul>
-</div>
-<div class="section" id="word-level-tasks">
+</section>
+<section id="word-level-tasks">
 <h3>Word-Level Tasks<a class="headerlink" href="#word-level-tasks" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Unsurprisingly, “characteraware” models excel on tasks around word-internal phenonema.</p></li>
@@ -1493,9 +1494,9 @@ title="Print to PDF"
 <p><img alt="" src="../../../_images/byt5-word.png" /></p>
 </li>
 </ul>
-</div>
-</div>
-<div class="section" id="experiments-on-synthetic-noise">
+</section>
+</section>
+<section id="experiments-on-synthetic-noise">
 <h2>Experiments on Synthetic Noise<a class="headerlink" href="#experiments-on-synthetic-noise" title="Permalink to this headline">#</a></h2>
 <p>The authors test six types of noise on the model:</p>
 <ul class="simple">
@@ -1506,7 +1507,7 @@ title="Print to PDF"
 <li><p><strong>Uppercase</strong>: Each character is converted to uppercase. Here, we restrict to languages whose scripts distinguish case (for XNLI: Bulgarian, English, French, German, Greek, Russian, Spanish, Swahili, Turkish, Vietnamese; for TyDiQA-GoldP: English, Finnish, Indonesian, Russian, Swahili).</p></li>
 <li><p><strong>Random case</strong>: Each character is set to a random case (upper or lower). Again, only languages whose scripts distinguish case are considered.</p></li>
 </ul>
-<div class="section" id="results">
+<section id="results">
 <h3>Results<a class="headerlink" href="#results" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Character-level models are more robust to real and synthetic noise than BPE or word-based models, across a range of morphological, syntactic and semantic tagging tasks.</p></li>
@@ -1514,9 +1515,9 @@ title="Print to PDF"
 <p><img alt="" src="../../../_images/byt5-noise.png" /></p>
 </li>
 </ul>
-</div>
-</div>
-<div class="section" id="ablation-study">
+</section>
+</section>
+<section id="ablation-study">
 <h2>Ablation Study<a class="headerlink" href="#ablation-study" title="Permalink to this headline">#</a></h2>
 <blockquote>
 <div><p>“ByT5 outperforms mT5 in any of these four scenarios: (1) at model sizes under 1 billion parameters, (2) on generative tasks, (3) on multilingual tasks with in-language labels, and (4) in the presence of various types of noise.”</p>
@@ -1527,8 +1528,8 @@ title="Print to PDF"
 <blockquote>
 <div><p>“Our “hands-off” approach of feeding raw UTF-8 bytes directly into the transformer costs +33% pre-training time, as well as longer inference time (10–50% longer for small models, and 100–600% longer for our largest models). As such, there is significant room for improvement. We believe techniques such as hash embeddings, local attention and down-sampling (Clark et al., 2021), as well as sparse computation (Fedus et al., 2021) can help address latency issues, removing the remaining barriers to a token-free future.”</p>
 </div></blockquote>
-</div>
-<div class="section" id="conclusion">
+</section>
+<section id="conclusion">
 <h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p>While ByT5 takes longer to train, and underperforms in some tasks (zero-shot translation for example) the payoff for tasks where noise is an issue (think social and voice) is significant.</p></li>
@@ -1537,15 +1538,15 @@ title="Print to PDF"
 <li><p>Token-free models could collect information from noisy environments and to more quickly learn new terms being used as shorthand, slang, or jargon, and even emojis.</p></li>
 <li><p>These information could be used to improve the performance of token-based models.</p></li>
 </ul>
-</div>
-<div class="section" id="references">
+</section>
+<section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://arxiv.org/pdf/2105.13626v1.pdf">ByT5: Towards a token-free future with pre-trained byte-to-byte models</a></p></li>
 <li><p><a class="reference external" href="https://wandb.ai/onlineinference/byt5/reports/ByT5-What-It-Might-Mean-For-SEO--Vmlldzo4NzY1NzE#what-is-byt5?">ByT5: What It Might Mean For SEO</a></p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
