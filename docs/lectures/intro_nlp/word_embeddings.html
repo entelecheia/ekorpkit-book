@@ -1224,11 +1224,63 @@ title="Print to PDF"
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#negative-sampling">
+     Negative sampling
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#two-models">
      Two models
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#continuous-bag-of-words-cbow">
+   Continuous Bag of Words (CBOW)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-0-prepare-the-data">
+     Step 0: Prepare the data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-1-define-a-function-to-create-a-context-and-a-target-word">
+     Step 1: Define a function to create a context and a target word
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-2-build-the-model">
+     Step 2: Build the model
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id4">
+     Step 3: Loss and optimization function.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id5">
+     Step 4: Training the model.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#visualizing-the-embeddings">
+     Visualizing the embeddings
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#evaluation">
+     Evaluation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#skip-gram-model">
+   Skip-gram model
+  </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#references">
@@ -1331,11 +1383,63 @@ title="Print to PDF"
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#negative-sampling">
+     Negative sampling
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#two-models">
      Two models
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#continuous-bag-of-words-cbow">
+   Continuous Bag of Words (CBOW)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-0-prepare-the-data">
+     Step 0: Prepare the data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-1-define-a-function-to-create-a-context-and-a-target-word">
+     Step 1: Define a function to create a context and a target word
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-2-build-the-model">
+     Step 2: Build the model
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id4">
+     Step 3: Loss and optimization function.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id5">
+     Step 4: Training the model.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#visualizing-the-embeddings">
+     Visualizing the embeddings
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#evaluation">
+     Evaluation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#skip-gram-model">
+   Skip-gram model
+  </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#references">
@@ -1587,7 +1691,7 @@ title="Print to PDF"
 <h2>Word2Vec<a class="headerlink" href="#word2vec" title="Permalink to this headline">#</a></h2>
 <p>Word2Vec is a neural network architecture that was proposed by <span id="id3">[<a class="reference internal" href="../../about/index.html#id24" title="Tomas Mikolov, Ilya Sutskever, Kai Chen, Greg S Corrado, and Jeff Dean. Distributed representations of words and phrases and their compositionality. Advances in neural information processing systems, 2013.">Mikolov <em>et al.</em>, 2013</a>]</span> in 2013. It is a shallow, two-layer neural network that is trained to reconstruct linguistic contexts of words.</p>
 <p>The problem of the previous neural network is that it is computationally expensive to train. The hidden layer computes probability distribution for all the words in the vocabulary. This is because the output layer is a fully connected layer.</p>
-<p>Word2Vec solves this problem by removing hidden layers and sharing the projection layer for all the words in the vocabulary.</p>
+<p>Word2Vec solves this problem by using a single output neuron. This is achieved by using a <code class="docutils literal notranslate"><span class="pre">hierarchical</span> <span class="pre">softmax</span></code> or <code class="docutils literal notranslate"><span class="pre">negative</span> <span class="pre">sampling</span></code> method.</p>
 <section id="main-idea">
 <h3>Main idea<a class="headerlink" href="#main-idea" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
@@ -1597,20 +1701,312 @@ title="Print to PDF"
 <li><p>These models can be trained on large amounts of raw text (and pre-trained embeddings can be downloaded).</p></li>
 </ul>
 </section>
+<section id="negative-sampling">
+<h3>Negative sampling<a class="headerlink" href="#negative-sampling" title="Permalink to this headline">#</a></h3>
+<p>Train a binary classifier that decides whether a target word t appears in the context of other words <span class="math notranslate nohighlight">\(c_{1..k}\)</span></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Context</span></code>: the set of k words near (surrounding) t</p></li>
+<li><p>Treat the target word t and any word that actually appears in its context in a real corpus as <code class="docutils literal notranslate"><span class="pre">positive</span></code> examples</p></li>
+<li><p>Treat the target word t and randomly sampled words that don’t appear in its context as <code class="docutils literal notranslate"><span class="pre">negative</span></code> examples</p></li>
+<li><p>Train a <code class="docutils literal notranslate"><span class="pre">binary</span> <span class="pre">logistic</span> <span class="pre">regression</span></code> classifier to distinguish these cases</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">weights</span></code> of this classifier depend on the <code class="docutils literal notranslate"><span class="pre">similarity</span></code> of t and the words in <span class="math notranslate nohighlight">\(c_{1..k}\)</span></p></li>
+</ul>
+</section>
 <section id="two-models">
 <h3>Two models<a class="headerlink" href="#two-models" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p><strong>Continuous Bag of Words (CBOW)</strong>: predicts the target word from the context words.</p></li>
 <li><p><strong>Skip-gram</strong>: predicts the context words from the target word.</p></li>
 </ul>
+<p><img alt="" src="../../../_images/cbow_skip-gram.png" /></p>
 </section>
+</section>
+<section id="continuous-bag-of-words-cbow">
+<h2>Continuous Bag of Words (CBOW)<a class="headerlink" href="#continuous-bag-of-words-cbow" title="Permalink to this headline">#</a></h2>
+<p>The CBOW model predicts the target word from the context words.</p>
+<p>This model reduces the complexity of calculating the probability distribution for all the words in the vocabulary to the <span class="math notranslate nohighlight">\(\log_2(V)\)</span> complexity of calculating the probability distribution for the target word.</p>
+<section id="step-0-prepare-the-data">
+<h3>Step 0: Prepare the data<a class="headerlink" href="#step-0-prepare-the-data" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_format=&#39;retina&#39;
+
+<span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/entelecheia/ekorpkit-book/raw/main/assets/data/us_equities_news_sampled.zip&#39;</span>
+<span class="n">corpus</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;us_equities_news_sampled.parquet&quot;</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">cached_path</span><span class="p">)</span>
+<span class="n">corpus</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Investing com Asian stock markets were broadly lower for a second day on Thursday as weak U S data on durable goods orders added to concerns over the global growth outlook while concerns over declining corporate profits also weighed During late Asian trade Hong Kong s Hang Seng Index tumbled 1 55 Australia s ASX 200 Index dipped 0 1 while Japan s Nikkei 225 Index shed 0 7 The Nikkei came further off a one year closing high hit earlier in the week as investors cashed in ahead of the Japanese fiscal year end March is the final month of Japan s fiscal year and market participants have expected many funds to lock in profits from a meteoric 19 rally in the January to March period after shedding more than 13 in April to December Exporters which have gained sharply in the first quarter on the back a weakening yen declined Automakers Toyota and Nissan slumped 1 65 and 1 8 respectively while consumer electronics giant Sony retreated 1 5 On the upside Sharp saw shares jump 6 7 extending the previous day s 15 rally following reports that Taiwan s Hon Hai Precision Industry is buying 10 of the Japanese electronics manufacturer for JPY66 91 billion with the two to form a tie up in liquid crystal display production Elsewhere shares in Hong Kong came under pressure amid lingering fears over a hard landing in China and worries over declining corporate profits PICC Property Casualty China s biggest non life insurer saw shares drop 4 after reporting 2011 net income rose to CNY8 03 billion missing expectations for income of CNY8 8 billion China Shipping Container Lines fell 1 55 after the nation s second largest container carrier reported a loss of CNY2 74 billion last year wider than the average estimate of CNY2 63 billion amid rising fuel costs and declining demand Port operator China Merchants Holdings declined 1 7 after saying annual profit dropped 5 2 due to costs from a harbor deal Hong Kong traded Chinese banks were also broadly weaker with Industrial and Commercial Bank of China and Bank of China down 2 4 and 2 3 respectively ahead of their 2011 earnings reports later on Thursday Raw material producers also contributed to losses amid concerns over the global growth outlook Copper mining giant Jiangxi Copper Company dropped 3 4 Aluminum Corporation of China or CHALCO slumped 2 4 while shares in oil majors PetroChina and CNOOC fell 2 1 and 3 8 respectively But shares in Australia outperformed regional equities for a second day remaining close to a four month high The index was weighed by a 7 decline in Leighton Holdings the country s largest construction company after saying its underlying profit in the year ending December 31 will be between AUD400 million and AUD450 million below market expectations citing increased costs due to wet weather and lower than expected productivity Meanwhile European stock markets were mildly lower after the open supported by hopes that euro zone leaders will increase the size of the European debt firewall to combat the fiscal crisis The EURO STOXX 50 shed 0 3 France s CAC 40 dipped 0 1 Germany s DAX fell 0 25 while London s FTSE 100 edged 0 15 lower Later in the day Germany was to publish official data on employment change while the U S was to release official data on initial jobless claims&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">words</span> <span class="o">=</span> <span class="n">corpus</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="c1"># By deriving a set from `words`, we deduplicate the array</span>
+<span class="n">vocab</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+<span class="n">vocab_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">)</span>
+
+<span class="n">word_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">vocab</span><span class="p">)</span>
+
+<span class="n">word_to_ix</span> <span class="o">=</span> <span class="p">{</span><span class="n">word</span><span class="p">:</span> <span class="n">ix</span> <span class="k">for</span> <span class="n">ix</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vocab</span><span class="p">)}</span>
+<span class="n">ix_to_word</span> <span class="o">=</span> <span class="p">{</span><span class="n">ix</span><span class="p">:</span> <span class="n">word</span> <span class="k">for</span> <span class="n">ix</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vocab</span><span class="p">)}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="step-1-define-a-function-to-create-a-context-and-a-target-word">
+<h3>Step 1: Define a function to create a context and a target word<a class="headerlink" href="#step-1-define-a-function-to-create-a-context-and-a-target-word" title="Permalink to this headline">#</a></h3>
+<p>Define a function to create a context window with n words from the right and left of the target word.</p>
+<p>The function should take two arguments: data and window size. The window size will define how many words we are supposed to take from the right and from the left.</p>
+<p>The for loop: <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">i</span> <span class="pre">in</span> <span class="pre">range(window_size,</span> <span class="pre">len(words)</span> <span class="pre">–</span> <span class="pre">window_size)</span></code>: iterates through a range starting from the window size, i.e. 2 means it will ignore words in index 0 and 1 from the sentence, and end 2 words before the sentence ends.</p>
+<p>Inside the for loop, we try separate context and target words and store them in a list.</p>
+<p>For example, if we have the sentence “I like deep learning because it is fun”, and the window size is 2, the function will return the following list:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[([</span><span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;like&#39;</span><span class="p">,</span> <span class="s1">&#39;learning&#39;</span><span class="p">,</span> <span class="s1">&#39;because&#39;</span><span class="p">],</span> <span class="s1">&#39;deep&#39;</span><span class="p">),</span>
+ <span class="p">([</span><span class="s1">&#39;like&#39;</span><span class="p">,</span> <span class="s1">&#39;deep&#39;</span><span class="p">,</span> <span class="s1">&#39;because&#39;</span><span class="p">,</span> <span class="s1">&#39;it&#39;</span><span class="p">],</span> <span class="s1">&#39;learning&#39;</span><span class="p">),</span>
+ <span class="p">([</span><span class="s1">&#39;deep&#39;</span><span class="p">,</span> <span class="s1">&#39;learning&#39;</span><span class="p">,</span> <span class="s1">&#39;it&#39;</span><span class="p">,</span> <span class="s1">&#39;is&#39;</span><span class="p">],</span> <span class="s1">&#39;because&#39;</span><span class="p">),</span>
+ <span class="p">([</span><span class="s1">&#39;learning&#39;</span><span class="p">,</span> <span class="s1">&#39;because&#39;</span><span class="p">,</span> <span class="s1">&#39;is&#39;</span><span class="p">,</span> <span class="s1">&#39;fun&#39;</span><span class="p">],</span> <span class="s1">&#39;it&#39;</span><span class="p">)]</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">CBOW</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">window_size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="o">-</span> <span class="n">window_size</span><span class="p">):</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">words</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">window_size</span><span class="p">],</span>
+            <span class="n">words</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="p">(</span><span class="n">window_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)],</span>
+            <span class="n">words</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">window_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)],</span>
+            <span class="n">words</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">window_size</span><span class="p">],</span>
+        <span class="p">]</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">words</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">context</span><span class="p">,</span> <span class="n">target</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">data</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s call the function and see the output.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">CBOW</span><span class="p">(</span><span class="s2">&quot;I like deep learning because it is fun&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[([&#39;I&#39;, &#39;like&#39;, &#39;learning&#39;, &#39;because&#39;], &#39;deep&#39;),
+ ([&#39;like&#39;, &#39;deep&#39;, &#39;because&#39;, &#39;it&#39;], &#39;learning&#39;),
+ ([&#39;deep&#39;, &#39;learning&#39;, &#39;it&#39;, &#39;is&#39;], &#39;because&#39;),
+ ([&#39;learning&#39;, &#39;because&#39;, &#39;is&#39;, &#39;fun&#39;], &#39;it&#39;)]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="step-2-build-the-model">
+<h3>Step 2: Build the model<a class="headerlink" href="#step-2-build-the-model" title="Permalink to this headline">#</a></h3>
+<p>In the CBOW model, we reduce the hidden layer to only one. So all together we have: an embedding layer, a hidden layer which passes through the ReLU layer, and an output layer.</p>
+<p>The context words index is fed into the embedding layers, which is then passed through the hidden layer followed by the nonlinear activation layer, i.e. ReLU, and finally we get the output.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+
+
+<span class="k">def</span> <span class="nf">make_context_vector</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">word_to_ix</span><span class="p">):</span>
+    <span class="n">idxs</span> <span class="o">=</span> <span class="p">[</span><span class="n">word_to_ix</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">context</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">idxs</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">CBOW_Model</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">CBOW_Model</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="c1"># out: 1 x emdedding_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embeddings</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">embedding_dim</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation_function1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
+
+        <span class="c1"># out: 1 x vocab_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+        <span class="n">embeds</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embeddings</span><span class="p">(</span><span class="n">inputs</span><span class="p">))</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear1</span><span class="p">(</span><span class="n">embeds</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_function1</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear2</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="k">def</span> <span class="nf">get_word_emdedding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">):</span>
+        <span class="n">word</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">word_to_ix</span><span class="p">[</span><span class="n">word</span><span class="p">]])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">embeddings</span><span class="p">(</span><span class="n">word</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id4">
+<h3>Step 3: Loss and optimization function.<a class="headerlink" href="#id4" title="Permalink to this headline">#</a></h3>
+<p>We are using the cross-entropy loss function and the SGD optimizer. You can also use the Adam optimizer.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">CONTEXT_SIZE</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># 2 words to the left, 2 to the right</span>
+<span class="n">EMDEDDING_DIM</span> <span class="o">=</span> <span class="mi">100</span>
+
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">CBOW</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">CBOW_Model</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">EMDEDDING_DIM</span><span class="p">)</span>
+
+<span class="n">loss_function</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id5">
+<h3>Step 4: Training the model.<a class="headerlink" href="#id5" title="Permalink to this headline">#</a></h3>
+<p>Finally, we train the model.</p>
+<p><code class="docutils literal notranslate"><span class="pre">make_context_vector</span></code> turns words into numbers.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># TRAINING</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
+    <span class="n">total_loss</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">context</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">context_vector</span> <span class="o">=</span> <span class="n">make_context_vector</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">word_to_ix</span><span class="p">)</span>
+
+        <span class="n">log_probs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">context_vector</span><span class="p">)</span>
+
+        <span class="n">total_loss</span> <span class="o">+=</span> <span class="n">loss_function</span><span class="p">(</span><span class="n">log_probs</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">word_to_ix</span><span class="p">[</span><span class="n">target</span><span class="p">]]))</span>
+
+    <span class="c1"># optimize at the end of each epoch</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+    <span class="n">total_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch: </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s2">, Loss: </span><span class="si">{</span><span class="n">total_loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 0, Loss: 4.84812593460083
+Epoch: 10, Loss: 4.375508785247803
+Epoch: 20, Loss: 4.032909393310547
+Epoch: 30, Loss: 3.749638080596924
+Epoch: 40, Loss: 3.5140340328216553
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="visualizing-the-embeddings">
+<h3>Visualizing the embeddings<a class="headerlink" href="#visualizing-the-embeddings" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">word_list</span><span class="p">:</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_word_emdedding</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_word_emdedding</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+        <span class="n">w</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">textcoords</span><span class="o">=</span><span class="s2">&quot;offset points&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span>
+    <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/word_embeddings_31_0.png" src="../../../_images/word_embeddings_31_0.png" />
+</div>
+</div>
+</section>
+<section id="evaluation">
+<h3>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">CBOW_test</span><span class="p">(</span><span class="n">test_data</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="n">correct_ct</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">context</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">context_vector</span> <span class="o">=</span> <span class="n">make_context_vector</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">word_to_ix</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">context_vector</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">predicted</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">word_to_ix</span><span class="p">[</span><span class="n">target</span><span class="p">]]):</span>
+            <span class="n">correct_ct</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;Accuracy: </span><span class="si">{:.1f}</span><span class="s2">% (</span><span class="si">{:d}</span><span class="s2">/</span><span class="si">{:d}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">correct_ct</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">correct_ct</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">CBOW_test</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy: 99.8% (570/571)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># TESTING</span>
+<span class="n">context</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;investing&quot;</span><span class="p">,</span> <span class="s2">&quot;com&quot;</span><span class="p">,</span> <span class="s2">&quot;stock&quot;</span><span class="p">,</span> <span class="s2">&quot;markets&quot;</span><span class="p">]</span>
+<span class="n">context_vector</span> <span class="o">=</span> <span class="n">make_context_vector</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">word_to_ix</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">context_vector</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print result</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Context: </span><span class="si">{</span><span class="n">context</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Prediction: </span><span class="si">{</span><span class="n">ix_to_word</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">item</span><span class="p">()]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Context: [&#39;investing&#39;, &#39;com&#39;, &#39;stock&#39;, &#39;markets&#39;]
+
+Prediction: asian
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="skip-gram-model">
+<h2>Skip-gram model<a class="headerlink" href="#skip-gram-model" title="Permalink to this headline">#</a></h2>
+<p>The skip-gram model is the same as the CBOW model with one difference: it predicts the context words from the target word.</p>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://arxiv.org/abs/1301.3781">Word2Vec</a></p></li>
-<li><p><a class="reference external" href="https://amitness.com/2020/06/fasttext-embeddings/">A Visual Guide to FastText Word Embeddings</a></p></li>
 <li><p><a class="reference external" href="https://fasttext.cc/">FastText</a></p></li>
+<li><p><a class="reference external" href="https://amitness.com/2020/06/fasttext-embeddings/">A Visual Guide to FastText Word Embeddings</a></p></li>
 <li><p><a class="reference external" href="http://christopher5106.github.io/deep/learning/2020/04/02/fasttext_pretrained_embeddings_subword_word_representations.html">Get FastText representation from pretrained embeddings with subword information</a></p></li>
 <li><p><a class="reference external" href="https://neptune.ai/blog/word-embeddings-guide">The Ultimate Guide to Word Embeddings</a></p></li>
 <li><p><a class="reference external" href="https://colab.research.google.com/drive/12TQ4CmY6jUnFlQZFnKenmKL3UdTkcatx?usp=sharing#scrollTo=bxwcGfO8eI6G">Neural Network Language Model.ipynb</a></p></li>
