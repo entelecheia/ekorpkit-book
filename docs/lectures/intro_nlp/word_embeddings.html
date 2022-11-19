@@ -53,6 +53,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Language Models" href="language_models.html" />
@@ -2459,11 +2461,12 @@ Epoch: 150000 cost = 1.239178
 <section id="softmax">
 <h3>Softmax<a class="headerlink" href="#softmax" title="Permalink to this headline">#</a></h3>
 <p>The equation for the softmax function is:</p>
-<p>$$
-\begin{align}
+<p>$$</p>
+<div class="amsmath math notranslate nohighlight" id="equation-2892bbd6-66e2-49f8-9d6f-7299370d879e">
+<span class="eqno">(1)<a class="headerlink" href="#equation-2892bbd6-66e2-49f8-9d6f-7299370d879e" title="Permalink to this equation">#</a></span>\[\begin{align}
 \text{softmax}(x_i|c) = \frac{e^{x_i}}{\sum_{j=1}^n e^{x_j}}
-\end{align}
-$$</p>
+\end{align}\]</div>
+<p>$$</p>
 <p>where $x_i$ is the score of the target word $w_i$ and $c$ is the context words.</p>
 <p>The complexity of the softmax function is $\mathcal{O}(n)$, where $n$ is the number of words in the vocabulary.</p>
 <p>With a large vocabulary, say 100,000 words, the softmax function becomes very expensive to compute. For each word ($w_i$), we have to compute the exponential of the score of each word in the vocabulary ($x_j$) and then sum them up. This is $\mathcal{O}(n)$.</p>
@@ -2484,11 +2487,12 @@ $$</p>
 <p>The positive class contains samples from training data distribution, while the negative class contains samples from a noise distribution $Q$, and we label them 1 and 0 respectively. Noise distribution is a unigram distribution of the training set.</p>
 <p>For every target word given context, we generate sample noise from the distribution $Q$ as $Q(w)$, such that it’s $k$ times more frequent than the samples from the training data distribution $P(w|c)$.</p>
 <p>The loss function is the sum of the log probabilities of the positive samples and the negative samples, and is given by:</p>
-<p>$$
-\begin{align}
-\mathcal{L} = -\sum_{w_i \in V} \log \frac{e^{s_{\theta}(w|c)}}{e^{s_{\theta}(w|c)} + k Q(w)} + \sum_{j=1}^k \log[1-\frac{e^{s_{\theta}(\bar{w}<em>{ij}|c)}}{e^{s</em>{\theta}(\bar{w}<em>{ij}|c)} + k Q(\bar{w}</em>{ij})}]
-\end{align}
-$$</p>
+<p>$$</p>
+<div class="amsmath math notranslate nohighlight" id="equation-8c4e32df-a12f-449f-ba9d-40daf47a61d1">
+<span class="eqno">(2)<a class="headerlink" href="#equation-8c4e32df-a12f-449f-ba9d-40daf47a61d1" title="Permalink to this equation">#</a></span>\[\begin{align}
+\mathcal{L} = -\sum_{w_i \in V} \log \frac{e^{s_{\theta}(w|c)}}{e^{s_{\theta}(w|c)} + k Q(w)} + \sum_{j=1}^k \log[1-\frac{e^{s_{\theta}(\bar{w}_{ij}|c)}}{e^{s_{\theta}(\bar{w}_{ij}|c)} + k Q(\bar{w}_{ij})}]
+\end{align}\]</div>
+<p>$$</p>
 <p>where $w_i$ is the $i$th negative sample.</p>
 <p>As we increase the number of noise samples $k$, the NCE derivative approaches the likelihood gradient, or the softmax function of the normalised model.</p>
 <p>In conclusion, NCE is a way of learning a data distribution by comparing it against a noise distribution, and modifying the learning parameters such that the model $P_{\theta}$ is closer to the noise $P_{\text{data}}$.</p>
@@ -2498,11 +2502,12 @@ $$</p>
 <p>Negative sampling is a sampling-based method that is used to approximate the softmax function. It simplifies the NCE method by removing the need to calculate the noise distribution $Q$.</p>
 <p>Negative sampling gets rid of the noise distribution $Q$ and uses a single noise sample $w_j$ for each target word $w_t$.</p>
 <p>The loss function is the sum of the log probabilities of the positive samples and the negative samples, and is given by:</p>
-<p>$$
-\begin{align}
+<p>$$</p>
+<div class="amsmath math notranslate nohighlight" id="equation-877dd8ea-9a50-421c-8333-032a753ee87e">
+<span class="eqno">(3)<a class="headerlink" href="#equation-877dd8ea-9a50-421c-8333-032a753ee87e" title="Permalink to this equation">#</a></span>\[\begin{align}
 \mathcal{L} = -\sum_{w_i \in V} \log \sigma (s_{\theta}(w|c)) + \sum_{j=1}^k \log \sigma (-s_{\theta}(\bar{w}_{ij}|c))
-\end{align}
-$$</p>
+\end{align}\]</div>
+<p>$$</p>
 <p>where $\sigma$ is the sigmoid function.</p>
 </section>
 </section>
