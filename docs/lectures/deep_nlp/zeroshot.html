@@ -53,8 +53,6 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="What is BLOOM?" href="bloom.html" />
@@ -816,6 +814,11 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
   </ul>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../nlp_apps/index.html">
+   Applications of NLP
+  </a>
+ </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../aiart/index.html">
    AI Art (Text-to-Image)
@@ -1442,10 +1445,9 @@ by Patrick von Platen (Huggingface)</p>
 </ul>
 <p>Auto-regressive language generation is based on the assumption that the text being generated can be decomposed into a sequence of subparts.
 Each part is dependent on the previous parts, thus we can use an auto-regressive decoder to generate text one token at a time based on its predecessors.</p>
-<div class="math notranslate nohighlight">
-\[ P(w_{1:T} | W_0 ) = \prod_{t=1}^T P(w_{t} | w_{1: t-1}, W_0) \text{ ,with }  w_{1: 0} = \emptyset, \]</div>
+<p>$$ P(w_{1:T} | W_0 ) = \prod_{t=1}^T P(w_{t} | w_{1: t-1}, W_0) \text{ ,with }  w_{1: 0} = \emptyset, $$</p>
 <blockquote>
-<div><p><span class="math notranslate nohighlight">\(W_0\)</span> being the initial <em>context</em> word sequence. The length <span class="math notranslate nohighlight">\(T\)</span> of the word sequence is usually determined <em>on-the-fly</em> and corresponds to the timestep <span class="math notranslate nohighlight">\(t=T\)</span> the EOS token is generated from <span class="math notranslate nohighlight">\(P(w_{t} | w_{1: t-1}, W_{0})\)</span>.</p>
+<div><p>$W_0$ being the initial <em>context</em> word sequence. The length $T$ of the word sequence is usually determined <em>on-the-fly</em> and corresponds to the timestep $t=T$ the EOS token is generated from $P(w_{t} | w_{1: t-1}, W_{0})$.</p>
 </div></blockquote>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1472,10 +1474,10 @@ If your task is similar to the task the model of the checkpoint was trained on, 
 <section id="greedy-search">
 <h3>Greedy Search<a class="headerlink" href="#greedy-search" title="Permalink to this headline">#</a></h3>
 <p><img alt="greedy" src="../../../_images/entelecheia_greedy_search.png" /></p>
-<p>Greedy search simply selects the word with the highest probability as its next word: <span class="math notranslate nohighlight">\(w_t = argmax_{w}P(w | w_{1:t-1})\)</span> at each timestep <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>Greedy search simply selects the word with the highest probability as its next word: $w_t = argmax_{w}P(w | w_{1:t-1})$ at each timestep $t$.</p>
 <p><img alt="greedy" src="../../../_images/deepnlp_2_greedy_search.png" /></p>
 <p>Starting from the word “The” the algorithm greedily chooses the next word of highest probability “nice” and so on, so
-that the final generated word sequence is (“The”, “nice”, “woman”) having an overall probability of <span class="math notranslate nohighlight">\(0.5 \times 0.4 = 0.2\)</span>.</p>
+that the final generated word sequence is (“The”, “nice”, “woman”) having an overall probability of $0.5 \times 0.4 = 0.2$.</p>
 <ul class="simple">
 <li><p>Generate word sequences using GPT2 on the context (“I”,”enjoy”,”studying”,”deep”,”learning”,”for”,”natural”, “language”, “processing”).</p></li>
 </ul>
@@ -1519,7 +1521,7 @@ I&#39;m not sure how to apply it to real-world applications. I&#39;m not sure ho
 <ul class="simple">
 <li><p>At time step 1, besides the most likely hypothesis  (“The”,”nice”), beam search also keeps track of the second
 most likely one (“The”,”dog”).</p></li>
-<li><p>At time step 2, beam search finds that the word sequence (“The”,”dog”,”has”),  has with <span class="math notranslate nohighlight">\(0.36\)</span>, a higher probability than (“The”,”nice”,”woman”), which has <span class="math notranslate nohighlight">\(0.2\)</span>.</p></li>
+<li><p>At time step 2, beam search finds that the word sequence (“The”,”dog”,”has”),  has with $0.36$, a higher probability than (“The”,”nice”,”woman”), which has $0.2$.</p></li>
 <li><p>It has found the most likely word sequence in our toy example!</p></li>
 <li><p>Beam search will always find an output sequence with higher probability than greedy search, but is not guaranteed to find the most likely output.</p></li>
 </ul>
@@ -1653,13 +1655,12 @@ In this post, I&#39;ll show you how you can use Deep Learning to build a neural 
 </section>
 <section id="sampling">
 <h3>Sampling<a class="headerlink" href="#sampling" title="Permalink to this headline">#</a></h3>
-<p>Sampling means randomly picking the next word <span class="math notranslate nohighlight">\(w_t\)</span> according to its conditional probability distribution:</p>
-<div class="math notranslate nohighlight">
-\[ w_t \sim P(w|w_{1:t-1}) \]</div>
+<p>Sampling means randomly picking the next word $w_t$ according to its conditional probability distribution:</p>
+<p>$$ w_t \sim P(w|w_{1:t-1}) $$</p>
 <p>The following graphic visualizes language generation when sampling.</p>
 <p><img alt="sampling" src="../../../_images/deepnlp_2_sampling_search.png" /></p>
 <p>Language generation using sampling is not <em>deterministic</em> anymore.
-The word (“car”) is sampled from the conditioned probability distribution <span class="math notranslate nohighlight">\(P(w | \text{&quot;The&quot;})\)</span>, followed by sampling (“drives”) from <span class="math notranslate nohighlight">\(P(w | \text{&quot;The&quot;}, \text{&quot;car&quot;})\)</span>.</p>
+The word (“car”) is sampled from the conditioned probability distribution $P(w | \text{“The”})$, followed by sampling (“drives”) from $P(w | \text{“The”}, \text{“car”})$.</p>
 <ul class="simple">
 <li><p>Set <code class="docutils literal notranslate"><span class="pre">do_sample=True</span></code> and deactivate <em>Top-K</em> sampling via <code class="docutils literal notranslate"><span class="pre">top_k=0</span></code>.</p></li>
 </ul>
@@ -1693,7 +1694,7 @@ I enjoy studying deep learning for natural language processing, especially to se
 <li><p>The text seems alright - but when taking a closer look, it is not very coherent.</p></li>
 <li><p>Some words don’t sound like they were written by a human.</p></li>
 <li><p>That is the big problem when sampling word sequences: The models often generate incoherent gibberish.</p></li>
-<li><p>A trick is to make the distribution <span class="math notranslate nohighlight">\(P(w|w_{1:t-1})\)</span> sharper (increasing the likelihood of high probability words and decreasing the likelihood of low probability words) by lowering the so-called <code class="docutils literal notranslate"><span class="pre">temperature</span></code> of the <a class="reference external" href="https://en.wikipedia.org/wiki/Softmax_function#Smooth_arg_max">softmax</a>.</p></li>
+<li><p>A trick is to make the distribution $P(w|w_{1:t-1})$ sharper (increasing the likelihood of high probability words and decreasing the likelihood of low probability words) by lowering the so-called <code class="docutils literal notranslate"><span class="pre">temperature</span></code> of the <a class="reference external" href="https://en.wikipedia.org/wiki/Softmax_function#Smooth_arg_max">softmax</a>.</p></li>
 </ul>
 <p><img alt="temperature" src="../../../_images/deepnlp_2_sampling_search_with_temp.png" /></p>
 <ul class="simple">
@@ -1737,7 +1738,7 @@ The current human-language
 </div>
 <ul class="simple">
 <li><p>There are less weird n-grams and the output is a bit more coherent now.</p></li>
-<li><p>While applying temperature can make a distribution less random, in its limit, when setting <code class="docutils literal notranslate"><span class="pre">temperature</span></code> <span class="math notranslate nohighlight">\(\to 0\)</span>, temperature scaled sampling becomes equal to greedy decoding and will suffer from the same problems as before.</p></li>
+<li><p>While applying temperature can make a distribution less random, in its limit, when setting <code class="docutils literal notranslate"><span class="pre">temperature</span></code> $\to 0$, temperature scaled sampling becomes equal to greedy decoding and will suffer from the same problems as before.</p></li>
 </ul>
 </section>
 <section id="top-k-sampling">
@@ -1745,8 +1746,8 @@ The current human-language
 <p><img alt="top_k" src="../../../_images/deepnlp_2_top_k_sampling.png" /></p>
 <p>In <em>Top-K</em> sampling, the <em>K</em> most likely next words are filtered and the probability mass is redistributed among only those <em>K</em> next words. GPT2 adopted this sampling scheme, which was one of the reasons for its success in story generation.</p>
 <ul class="simple">
-<li><p>Having set <span class="math notranslate nohighlight">\(K = 6\)</span>, in both sampling steps we limit our sampling pool to 6 words.</p></li>
-<li><p>While the 6 most likely words, defined as <span class="math notranslate nohighlight">\(V_{\text{top-K}}\)</span> encompass only two-thirds of the whole
+<li><p>Having set $K = 6$, in both sampling steps we limit our sampling pool to 6 words.</p></li>
+<li><p>While the 6 most likely words, defined as $V_{\text{top-K}}$ encompass only two-thirds of the whole
 probability mass in the first step, it includes almost all of the probability mass in the second step.</p></li>
 <li><p>Nevertheless, we see that it successfully eliminates the rather weird candidates (“not”, “the”, “small”, “told”) in the second sampling step.</p></li>
 </ul>
@@ -1779,11 +1780,11 @@ I enjoy studying deep learning for natural language processing, as well as in te
 </div>
 <ul class="simple">
 <li><p>The text is arguably the most <em>human-sounding</em> text so far.</p></li>
-<li><p>One concern with <em>Top-K</em> sampling is that it does not dynamically adapt the number of words that are filtered from the next word probability distribution <span class="math notranslate nohighlight">\(P(w|w_{1:t-1})\)</span>.</p></li>
+<li><p>One concern with <em>Top-K</em> sampling is that it does not dynamically adapt the number of words that are filtered from the next word probability distribution $P(w|w_{1:t-1})$.</p></li>
 <li><p>This can be problematic as some words might be sampled from a very sharp distribution (distribution on the right in the graph above), whereas others from a much more flat distribution (distribution on the left in the graph above).</p></li>
-<li><p>In step <span class="math notranslate nohighlight">\(t=1\)</span>, Top-K eliminates the possibility to sample (“people”,”big”,”house”,”cat”), which seem like reasonable candidates.</p></li>
-<li><p>On the other hand, in step <span class="math notranslate nohighlight">\(t=2\)</span> the method includes the arguably ill-fitted words (“down”,”a”) in the sample pool of words.</p></li>
-<li><p>Thus, limiting the sample pool to a fixed size <span class="math notranslate nohighlight">\(K\)</span> could endanger the model to produce gibberish for sharp distributions and limit the model’s creativity for flat distribution.</p></li>
+<li><p>In step $t=1$, Top-K eliminates the possibility to sample (“people”,”big”,”house”,”cat”), which seem like reasonable candidates.</p></li>
+<li><p>On the other hand, in step $t=2$ the method includes the arguably ill-fitted words (“down”,”a”) in the sample pool of words.</p></li>
+<li><p>Thus, limiting the sample pool to a fixed size $K$ could endanger the model to produce gibberish for sharp distributions and limit the model’s creativity for flat distribution.</p></li>
 <li><p>This intuition led Ari Holtzman et al. (2019) to create <em><strong>Top-p</strong></em>- or <em><strong>nucleus</strong></em>-sampling.</p></li>
 </ul>
 </section>
@@ -1794,9 +1795,9 @@ I enjoy studying deep learning for natural language processing, as well as in te
 <li><p>Instead of sampling only from the most likely <em>K</em> words, in <em>Top-p</em> sampling chooses from the smallest possible set of words whose cumulative probability exceeds the probability <em>p</em>.</p></li>
 <li><p>The probability mass is then redistributed among this set of words.</p></li>
 <li><p>This way, the size of the set of words (<em>a.k.a</em> the number of words in the set) can dynamically increase and decrease according to the next word’s probability distribution.</p></li>
-<li><p>Having set <span class="math notranslate nohighlight">\(p=0.92\)</span>, <em>Top-p</em> sampling picks the <em>minimum</em> number of words to exceed together <span class="math notranslate nohighlight">\(p=92\)</span> of the probability mass, defined as <span class="math notranslate nohighlight">\(V_{\text{top-p}}\)</span>.</p></li>
+<li><p>Having set $p=0.92$, <em>Top-p</em> sampling picks the <em>minimum</em> number of words to exceed together $p=92$ of the probability mass, defined as $V_{\text{top-p}}$.</p></li>
 <li><p>In the first example, this included the 9 most likely words, whereas it only has to pick the top 3 words in the second example to exceed 92%.</p></li>
-<li><p>It can be seen that it keeps a wide range of words where the next word is arguably less predictable, <em>e.g.</em> <span class="math notranslate nohighlight">\(P(w | \text{&quot;The''})\)</span>, and only a few words when the next word seems more predictable, <em>e.g.</em> <span class="math notranslate nohighlight">\(P(w | \text{&quot;The&quot;}, \text{&quot;car&quot;})\)</span>.</p></li>
+<li><p>It can be seen that it keeps a wide range of words where the next word is arguably less predictable, <em>e.g.</em> $P(w | \text{“The’’})$, and only a few words when the next word seems more predictable, <em>e.g.</em> $P(w | \text{“The”}, \text{“car”})$.</p></li>
 </ul>
 <p>Activate <em>Top-p</em> sampling by setting <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">&lt;</span> <span class="pre">top_p</span> <span class="pre">&lt;</span> <span class="pre">1</span></code>:</p>
 <div class="cell docutils container">
@@ -1917,7 +1918,7 @@ Another way to learn Deep Learning is by coding. For example, I often code to so
 <section id="prompt-engineering-the-career-of-future">
 <h2>Prompt Engineering: The Career of Future<a class="headerlink" href="#prompt-engineering-the-career-of-future" title="Permalink to this headline">#</a></h2>
 <p><img alt="prompt" src="../../../_images/deepnlp_2_prompt.png" />
-(source: <a class="reference external" href="https://twitter.com/karpathy/status/1273788774422441984/photo/1">https://twitter.com/karpathy/status/1273788774422441984/photo/1</a>)</p>
+(source: https://twitter.com/karpathy/status/1273788774422441984/photo/1)</p>
 <blockquote>
 <div><p>With the No-Code revolution around the corner, and the coming of new-age technologies like GPT-3 we may see a stark difference between the career of today and the careers of tomorrow…</p>
 </div></blockquote>
