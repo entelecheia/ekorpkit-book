@@ -1641,8 +1641,9 @@ title="Print to PDF"
 <p>“The cat is lying on the floor and the dog was eating”,</p>
 <p>“The doc was lying on the floor and the cat was eating”</p>
 <p>In a mathematical sense, a word embedding is a parameterized function of the word:</p>
-<p>$$ f_{\theta}(w) = \theta $$</p>
-<p>where $\theta$ is a vector of real numbers. The vector $\theta$ is the embedding of the word $w$.</p>
+<div class="math notranslate nohighlight">
+\[ f_{\theta}(w) = \theta \]</div>
+<p>where <span class="math notranslate nohighlight">\(\theta\)</span> is a vector of real numbers. The vector <span class="math notranslate nohighlight">\(\theta\)</span> is the embedding of the word <span class="math notranslate nohighlight">\(w\)</span>.</p>
 <p>In a broad sense, <code class="docutils literal notranslate"><span class="pre">embedding</span></code> refers to a lower-dimensional dense vector representation of a higher-dimensional object.</p>
 <ul class="simple">
 <li><p>in NLP, this higher-dimensional object will be a document.</p></li>
@@ -1671,37 +1672,38 @@ title="Print to PDF"
 <h2>Categorical Embeddings<a class="headerlink" href="#categorical-embeddings" title="Permalink to this headline">#</a></h2>
 <p><img alt="" src="../../../_images/110.png" /></p>
 <p>Categorical embeddings are a way of representing categorical variables as vectors.</p>
-<p>For a binary classification problem with outcome $Y$:
-- If you have a high-dimensional categorical variable $X$, (e.g. 1000 categories), you can represent $X$ as a vector of length 1000.
+<p>For a binary classification problem with outcome <span class="math notranslate nohighlight">\(Y\)</span>:
+- If you have a high-dimensional categorical variable <span class="math notranslate nohighlight">\(X\)</span>, (e.g. 1000 categories), you can represent <span class="math notranslate nohighlight">\(X\)</span> as a vector of length 1000.
 - It is computationally expensive for a ML model to learn from a high-dimensional categorical variable.</p>
-<p>Instead, you can represent $X$ as a lower-dimensional vector of length $k$ (e.g. 10). This is called a categorical embedding.</p>
+<p>Instead, you can represent <span class="math notranslate nohighlight">\(X\)</span> as a lower-dimensional vector of length <span class="math notranslate nohighlight">\(k\)</span> (e.g. 10). This is called a categorical embedding.</p>
 <p>Embedding approaches:</p>
 <ol class="simple">
-<li><p>PCA applied to the dummy variables $X$ to get a lower-dimensional vector representation of $\tilde{X}$.</p></li>
-<li><p>Regress $Y$ on $X$, predict $\hat{Y}(X_i)$, use that as a feature in a new model.</p></li>
+<li><p>PCA applied to the dummy variables <span class="math notranslate nohighlight">\(X\)</span> to get a lower-dimensional vector representation of <span class="math notranslate nohighlight">\(\tilde{X}\)</span>.</p></li>
+<li><p>Regress <span class="math notranslate nohighlight">\(Y\)</span> on <span class="math notranslate nohighlight">\(X\)</span>, predict <span class="math notranslate nohighlight">\(\hat{Y}(X_i)\)</span>, use that as a feature in a new model.</p></li>
 </ol>
 <section id="an-embedding-layer-is-matrix-multiplication">
 <h3>An embedding layer is matrix multiplication:<a class="headerlink" href="#an-embedding-layer-is-matrix-multiplication" title="Permalink to this headline">#</a></h3>
-<p>$$
-\underbrace{h_1}<em>{n_E \times 1} = \underbrace{\omega_E}</em>{n_E \times n_W} \cdot \underbrace{x}_{n_x \times 1}
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+\underbrace{h_1}_{n_E \times 1} = \underbrace{\omega_E}_{n_E \times n_W} \cdot \underbrace{x}_{n_x \times 1} 
+\]</div>
 <ul class="simple">
-<li><p>$x$ = a categorical variable (e.g., representing a word)</p>
+<li><p><span class="math notranslate nohighlight">\(x\)</span> = a categorical variable (e.g., representing a word)</p>
 <ul>
 <li><p>One-hot vector with a single item equaling one.</p></li>
 <li><p>Input to the embedding layer.</p></li>
 </ul>
 </li>
-<li><p>$h_1$ = the first hidden layer of the neural net</p>
+<li><p><span class="math notranslate nohighlight">\(h_1\)</span> = the first hidden layer of the neural net</p>
 <ul>
 <li><p>The output of the embedding layer.</p></li>
 </ul>
 </li>
-<li><p>The embedding matrix $\omega_E$ encodes predictive information about the categories.</p></li>
+<li><p>The embedding matrix <span class="math notranslate nohighlight">\(\omega_E\)</span> encodes predictive information about the categories.</p></li>
 <li><p>It has a spatial interpretation when projected into 2D space.</p>
 <ul>
-<li><p>Each row of $\omega_E$ is a vector in $n_E$-dimensional space.</p></li>
-<li><p>The rows of $\omega_E$ are the coordinates of the points in the vector space.</p></li>
+<li><p>Each row of <span class="math notranslate nohighlight">\(\omega_E\)</span> is a vector in <span class="math notranslate nohighlight">\(n_E\)</span>-dimensional space.</p></li>
+<li><p>The rows of <span class="math notranslate nohighlight">\(\omega_E\)</span> are the coordinates of the points in the vector space.</p></li>
 <li><p>The points are the categories.</p></li>
 <li><p>The distance between the points is the similarity between the categories.</p></li>
 <li><p>The angle between the points is the relationship between the categories.</p></li>
@@ -1722,20 +1724,22 @@ $$</p>
 <blockquote>
 <div><p>Word embeddings are neural network layers that map words to dense vectors.</p>
 </div></blockquote>
-<p>Documents are lists of word indexes ${w_1 ,w_2 ,…,w_{n_i} }$.</p>
+<p>Documents are lists of word indexes <span class="math notranslate nohighlight">\({w_1 ,w_2 ,...,w_{n_i} }\)</span>.</p>
 <ul class="simple">
-<li><p>Let $w_i$ be a one-hot vector (dimensionality $n_w$ = vocab size) where the associated word’s index equals one.</p></li>
+<li><p>Let <span class="math notranslate nohighlight">\(w_i\)</span> be a one-hot vector (dimensionality <span class="math notranslate nohighlight">\(n_w\)</span> = vocab size) where the associated word’s index equals one.</p></li>
 <li><p>Normalize all documents to the same length L; shorter documents can be padded with a null token.</p></li>
 <li><p>This requirement can be relaxed with recurrent neural networks.</p></li>
 </ul>
-<p>The embedding layer replaces the list of sparse one-hot vectors with a list of n E -dimensional ($n_E$ &lt;&lt; $n_w$ ) dense vectors</p>
-<p>$$ \mathbf{X} = [x_1 \ldots x_L ] $$</p>
+<p>The embedding layer replaces the list of sparse one-hot vectors with a list of n E -dimensional (<span class="math notranslate nohighlight">\(n_E\)</span> &lt;&lt; <span class="math notranslate nohighlight">\(n_w\)</span> ) dense vectors</p>
+<div class="math notranslate nohighlight">
+\[ \mathbf{X} = [x_1 \ldots x_L ] \]</div>
 <p>where</p>
-<p>$$
-\underbrace{x_j}<em>{n_E \times 1} = \underbrace{\mathbf{E}}</em>{n_E \times n_W} \cdot \underbrace{w_j}_{n_w \times 1}
-$$</p>
-<p>$\mathbf{E}$ a matrix of word vectors. The column associated with the word at $j$ is selected by the dot-product with one-hot vector $w_j$.</p>
-<p>$\mathbf{X}$ is flattened into an $L * n_E$ vector for input to the next layer.</p>
+<div class="math notranslate nohighlight">
+\[
+\underbrace{x_j}_{n_E \times 1} = \underbrace{\mathbf{E}}_{n_E \times n_W} \cdot \underbrace{w_j}_{n_w \times 1}
+\]</div>
+<p><span class="math notranslate nohighlight">\(\mathbf{E}\)</span> a matrix of word vectors. The column associated with the word at <span class="math notranslate nohighlight">\(j\)</span> is selected by the dot-product with one-hot vector <span class="math notranslate nohighlight">\(w_j\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(\mathbf{X}\)</span> is flattened into an <span class="math notranslate nohighlight">\(L * n_E\)</span> vector for input to the next layer.</p>
 <p><img alt="" src="../../../_images/44.png" /></p>
 <section id="why-do-we-need-neural-networks-for-word-embeddings">
 <h3>Why do we need neural networks for word embeddings?<a class="headerlink" href="#why-do-we-need-neural-networks-for-word-embeddings" title="Permalink to this headline">#</a></h3>
@@ -1874,13 +1878,13 @@ $$</p>
 </section>
 <section id="negative-sampling">
 <h3>Negative sampling<a class="headerlink" href="#negative-sampling" title="Permalink to this headline">#</a></h3>
-<p>Train a binary classifier that decides whether a target word t appears in the context of other words $c_{1..k}$</p>
+<p>Train a binary classifier that decides whether a target word t appears in the context of other words <span class="math notranslate nohighlight">\(c_{1..k}\)</span></p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Context</span></code>: the set of k words near (surrounding) t</p></li>
 <li><p>Treat the target word t and any word that actually appears in its context in a real corpus as <code class="docutils literal notranslate"><span class="pre">positive</span></code> examples</p></li>
 <li><p>Treat the target word t and randomly sampled words that don’t appear in its context as <code class="docutils literal notranslate"><span class="pre">negative</span></code> examples</p></li>
 <li><p>Train a <code class="docutils literal notranslate"><span class="pre">binary</span> <span class="pre">logistic</span> <span class="pre">regression</span></code> classifier to distinguish these cases</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">weights</span></code> of this classifier depend on the <code class="docutils literal notranslate"><span class="pre">similarity</span></code> of t and the words in $c_{1..k}$</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">weights</span></code> of this classifier depend on the <code class="docutils literal notranslate"><span class="pre">similarity</span></code> of t and the words in <span class="math notranslate nohighlight">\(c_{1..k}\)</span></p></li>
 </ul>
 </section>
 <section id="two-models">
@@ -1905,15 +1909,15 @@ $$</p>
 <section id="continuous-bag-of-words-cbow">
 <h2>Continuous Bag of Words (CBOW)<a class="headerlink" href="#continuous-bag-of-words-cbow" title="Permalink to this headline">#</a></h2>
 <p>The CBOW model predicts the target word from the context words.</p>
-<p>This model reduces the complexity of calculating the probability distribution for all the words in the vocabulary to the $\log_2(V)$ complexity of calculating the probability distribution for the target word.</p>
+<p>This model reduces the complexity of calculating the probability distribution for all the words in the vocabulary to the <span class="math notranslate nohighlight">\(\log_2(V)\)</span> complexity of calculating the probability distribution for the target word.</p>
 <section id="architecture">
 <h3>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">#</a></h3>
-<a class="bg-primary reference internal image-reference" href="../../../_images/cbow.png"><img alt="cbow" class="bg-primary" src="../../../_images/cbow.png" style="width: 400px;" /></a>
+<a class="bg-primary mb-1 reference internal image-reference" href="../../../_images/cbow.png"><img alt="cbow" class="bg-primary mb-1 align-center" src="../../../_images/cbow.png" style="width: 350px;" /></a>
 <ul class="simple">
 <li><p>The input layer is the context words.</p></li>
-<li><p>The input is $C$ context words, each represented as a one-hot vector of size $V$, where $V$ is the size of the vocabulary, yielding a $C \times V$ matrix.</p></li>
-<li><p>Each row of the matrix is multiplied by the weight matrix $W$ of size $V \times N$, where $N$ is the size of the embedding.</p></li>
-<li><p>The resulting matrix is summed up to get a vector of size $N$.</p></li>
+<li><p>The input is <span class="math notranslate nohighlight">\(C\)</span> context words, each represented as a one-hot vector of size <span class="math notranslate nohighlight">\(V\)</span>, where <span class="math notranslate nohighlight">\(V\)</span> is the size of the vocabulary, yielding a <span class="math notranslate nohighlight">\(C \times V\)</span> matrix.</p></li>
+<li><p>Each row of the matrix is multiplied by the weight matrix <span class="math notranslate nohighlight">\(W\)</span> of size <span class="math notranslate nohighlight">\(V \times N\)</span>, where <span class="math notranslate nohighlight">\(N\)</span> is the size of the embedding.</p></li>
+<li><p>The resulting matrix is summed up to get a vector of size <span class="math notranslate nohighlight">\(N\)</span>.</p></li>
 <li><p>This vector is passed through a softmax layer to get the probability distribution of the target word.</p></li>
 <li><p>The learned weights of the softmax layer are the word embeddings.</p></li>
 </ul>
@@ -2186,7 +2190,7 @@ Prediction: asian
 <h2>Skip-gram model<a class="headerlink" href="#skip-gram-model" title="Permalink to this headline">#</a></h2>
 <p>The skip-gram model is the same as the CBOW model with one difference: it predicts the context words from the target word.</p>
 <p><img alt="" src="../../../_images/cbow_skip-gram.png" /></p>
-<p>In the above figure, $w[i]$ is the target word, and $w[i-2], w[i-1], w[i+1], w[i+2]$ are the context words, where $i$ is the location of the target word in the sentence.</p>
+<p>In the above figure, <span class="math notranslate nohighlight">\(w[i]\)</span> is the target word, and <span class="math notranslate nohighlight">\(w[i-2], w[i-1], w[i+1], w[i+2]\)</span> are the context words, where <span class="math notranslate nohighlight">\(i\)</span> is the location of the target word in the sentence.</p>
 <p>The model predicts the probability of a word being a context word given the target word. The output probabilities explain how likely a word is to be close to the target word.</p>
 <p>This shallow neural network architecture is called a <code class="docutils literal notranslate"><span class="pre">skip-gram</span></code> model because it predicts the context words from the target word.</p>
 <p>We don’t use this trained network for prediction. Instead, we use the weights of the embedding layer as the word embeddings.</p>
@@ -2197,9 +2201,9 @@ Prediction: asian
 <li><p>We can use a one-hot vector to represent the target word.</p></li>
 <li><p>Say we have a vocabulary of 10,000 words. Then the one-hot vector for the word “deep” will be a vector of 10,000 elements, where all the elements are 0 except the 4th element, which is 1.</p></li>
 <li><p>Similarly, the output layer will be a vector of 10,000 elements, where each element represents the probability of the word being the context word.</p></li>
-<li><p>The hidden layer is a linear layer that maps the one-hot vector to a vector of $d$ elements, where $d$ is the dimension of the word embeddings.</p></li>
+<li><p>The hidden layer is a linear layer that maps the one-hot vector to a vector of <span class="math notranslate nohighlight">\(d\)</span> elements, where <span class="math notranslate nohighlight">\(d\)</span> is the dimension of the word embeddings.</p></li>
 <li><p>The opimized weights of the hidden layer are the word embeddings.</p></li>
-<li><p>The dimensions of the hidden layer are $d \times V$, where $V$ is the size of the vocabulary.</p></li>
+<li><p>The dimensions of the hidden layer are <span class="math notranslate nohighlight">\(d \times V\)</span>, where <span class="math notranslate nohighlight">\(V\)</span> is the size of the vocabulary.</p></li>
 </ul>
 <p><img alt="" src="../../../_images/skip-gram.png" /></p>
 </section>
@@ -2461,54 +2465,54 @@ Epoch: 150000 cost = 1.239178
 <section id="softmax">
 <h3>Softmax<a class="headerlink" href="#softmax" title="Permalink to this headline">#</a></h3>
 <p>The equation for the softmax function is:</p>
-<p>$$</p>
-<div class="amsmath math notranslate nohighlight" id="equation-2892bbd6-66e2-49f8-9d6f-7299370d879e">
-<span class="eqno">(1)<a class="headerlink" href="#equation-2892bbd6-66e2-49f8-9d6f-7299370d879e" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="math notranslate nohighlight">
+\[
+\begin{align}
 \text{softmax}(x_i|c) = \frac{e^{x_i}}{\sum_{j=1}^n e^{x_j}}
-\end{align}\]</div>
-<p>$$</p>
-<p>where $x_i$ is the score of the target word $w_i$ and $c$ is the context words.</p>
-<p>The complexity of the softmax function is $\mathcal{O}(n)$, where $n$ is the number of words in the vocabulary.</p>
-<p>With a large vocabulary, say 100,000 words, the softmax function becomes very expensive to compute. For each word ($w_i$), we have to compute the exponential of the score of each word in the vocabulary ($x_j$) and then sum them up. This is $\mathcal{O}(n)$.</p>
+\end{align}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(x_i\)</span> is the score of the target word <span class="math notranslate nohighlight">\(w_i\)</span> and <span class="math notranslate nohighlight">\(c\)</span> is the context words.</p>
+<p>The complexity of the softmax function is <span class="math notranslate nohighlight">\(\mathcal{O}(n)\)</span>, where <span class="math notranslate nohighlight">\(n\)</span> is the number of words in the vocabulary.</p>
+<p>With a large vocabulary, say 100,000 words, the softmax function becomes very expensive to compute. For each word (<span class="math notranslate nohighlight">\(w_i\)</span>), we have to compute the exponential of the score of each word in the vocabulary (<span class="math notranslate nohighlight">\(x_j\)</span>) and then sum them up. This is <span class="math notranslate nohighlight">\(\mathcal{O}(n)\)</span>.</p>
 </section>
 <section id="hierarchical-softmax">
 <h3>Hierarchical softmax<a class="headerlink" href="#hierarchical-softmax" title="Permalink to this headline">#</a></h3>
 <p>Hierarchical softmax is a method to reduce the complexity of the softmax function. It is a tree-based data structure that is used to represent the vocabulary.</p>
-<p>Hierarchical softmax was introduced by Morin and Bengio in 2005, as an alternative to the full softmax function, where it replaces it with a hierarchical layer. It borrows the technique from the binary huffman tree, which reduces the complexity of calculating the probability from $\mathcal{O}(n)$ to $\mathcal{O}(\log_2(n))$.</p>
+<p>Hierarchical softmax was introduced by Morin and Bengio in 2005, as an alternative to the full softmax function, where it replaces it with a hierarchical layer. It borrows the technique from the binary huffman tree, which reduces the complexity of calculating the probability from <span class="math notranslate nohighlight">\(\mathcal{O}(n)\)</span> to <span class="math notranslate nohighlight">\(\mathcal{O}(\log_2(n))\)</span>.</p>
 <p>The hierarchical softmax is a binary tree, where each node represents a word in the vocabulary. The root node represents the entire vocabulary. The left child represents the words that are less frequent than the parent node, and the right child represents the words that are more frequent than the parent node.</p>
-<p>The probability of a word $w_i$ is the product of the probabilities of the nodes on the path from the root to the leaf node that represents $w_i$.</p>
-<p>In the huffman tree, we no longer calculate the output embeddings $w^\prime$. Instead, we calculate the probability of turning right or left at each node.</p>
+<p>The probability of a word <span class="math notranslate nohighlight">\(w_i\)</span> is the product of the probabilities of the nodes on the path from the root to the leaf node that represents <span class="math notranslate nohighlight">\(w_i\)</span>.</p>
+<p>In the huffman tree, we no longer calculate the output embeddings <span class="math notranslate nohighlight">\(w^\prime\)</span>. Instead, we calculate the probability of turning right or left at each node.</p>
 </section>
 <section id="noise-contrastive-estimation">
 <h3>Noise-contrastive estimation<a class="headerlink" href="#noise-contrastive-estimation" title="Permalink to this headline">#</a></h3>
 <p>Noise-contrastive estimation (NCE) is an approximation method to reduce the complexity of the softmax function. It is a sampling-based method that is used to approximate the softmax function.</p>
 <p>NCE takes an unnormalised multinomial function (i.e. the function that has multiple labels and its output has not been passed through a softmax layer), and converts it to a binary logistic regression.</p>
-<p>In order to learn the distribution to predict the target word ($w_t$) from some specific context ($c$), we need to create two classes: <strong>positive samples</strong> and <strong>negative samples</strong>.</p>
-<p>The positive class contains samples from training data distribution, while the negative class contains samples from a noise distribution $Q$, and we label them 1 and 0 respectively. Noise distribution is a unigram distribution of the training set.</p>
-<p>For every target word given context, we generate sample noise from the distribution $Q$ as $Q(w)$, such that it’s $k$ times more frequent than the samples from the training data distribution $P(w|c)$.</p>
+<p>In order to learn the distribution to predict the target word (<span class="math notranslate nohighlight">\(w_t\)</span>) from some specific context (<span class="math notranslate nohighlight">\(c\)</span>), we need to create two classes: <strong>positive samples</strong> and <strong>negative samples</strong>.</p>
+<p>The positive class contains samples from training data distribution, while the negative class contains samples from a noise distribution <span class="math notranslate nohighlight">\(Q\)</span>, and we label them 1 and 0 respectively. Noise distribution is a unigram distribution of the training set.</p>
+<p>For every target word given context, we generate sample noise from the distribution <span class="math notranslate nohighlight">\(Q\)</span> as <span class="math notranslate nohighlight">\(Q(w)\)</span>, such that it’s <span class="math notranslate nohighlight">\(k\)</span> times more frequent than the samples from the training data distribution <span class="math notranslate nohighlight">\(P(w|c)\)</span>.</p>
 <p>The loss function is the sum of the log probabilities of the positive samples and the negative samples, and is given by:</p>
-<p>$$</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8c4e32df-a12f-449f-ba9d-40daf47a61d1">
-<span class="eqno">(2)<a class="headerlink" href="#equation-8c4e32df-a12f-449f-ba9d-40daf47a61d1" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="math notranslate nohighlight">
+\[
+\begin{align}
 \mathcal{L} = -\sum_{w_i \in V} \log \frac{e^{s_{\theta}(w|c)}}{e^{s_{\theta}(w|c)} + k Q(w)} + \sum_{j=1}^k \log[1-\frac{e^{s_{\theta}(\bar{w}_{ij}|c)}}{e^{s_{\theta}(\bar{w}_{ij}|c)} + k Q(\bar{w}_{ij})}]
-\end{align}\]</div>
-<p>$$</p>
-<p>where $w_i$ is the $i$th negative sample.</p>
-<p>As we increase the number of noise samples $k$, the NCE derivative approaches the likelihood gradient, or the softmax function of the normalised model.</p>
-<p>In conclusion, NCE is a way of learning a data distribution by comparing it against a noise distribution, and modifying the learning parameters such that the model $P_{\theta}$ is closer to the noise $P_{\text{data}}$.</p>
+\end{align}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(w_i\)</span> is the <span class="math notranslate nohighlight">\(i\)</span>th negative sample.</p>
+<p>As we increase the number of noise samples <span class="math notranslate nohighlight">\(k\)</span>, the NCE derivative approaches the likelihood gradient, or the softmax function of the normalised model.</p>
+<p>In conclusion, NCE is a way of learning a data distribution by comparing it against a noise distribution, and modifying the learning parameters such that the model <span class="math notranslate nohighlight">\(P_{\theta}\)</span> is closer to the noise <span class="math notranslate nohighlight">\(P_{\text{data}}\)</span>.</p>
 </section>
 <section id="id11">
 <h3>Negative sampling<a class="headerlink" href="#id11" title="Permalink to this headline">#</a></h3>
-<p>Negative sampling is a sampling-based method that is used to approximate the softmax function. It simplifies the NCE method by removing the need to calculate the noise distribution $Q$.</p>
-<p>Negative sampling gets rid of the noise distribution $Q$ and uses a single noise sample $w_j$ for each target word $w_t$.</p>
+<p>Negative sampling is a sampling-based method that is used to approximate the softmax function. It simplifies the NCE method by removing the need to calculate the noise distribution <span class="math notranslate nohighlight">\(Q\)</span>.</p>
+<p>Negative sampling gets rid of the noise distribution <span class="math notranslate nohighlight">\(Q\)</span> and uses a single noise sample <span class="math notranslate nohighlight">\(w_j\)</span> for each target word <span class="math notranslate nohighlight">\(w_t\)</span>.</p>
 <p>The loss function is the sum of the log probabilities of the positive samples and the negative samples, and is given by:</p>
-<p>$$</p>
-<div class="amsmath math notranslate nohighlight" id="equation-877dd8ea-9a50-421c-8333-032a753ee87e">
-<span class="eqno">(3)<a class="headerlink" href="#equation-877dd8ea-9a50-421c-8333-032a753ee87e" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="math notranslate nohighlight">
+\[
+\begin{align}
 \mathcal{L} = -\sum_{w_i \in V} \log \sigma (s_{\theta}(w|c)) + \sum_{j=1}^k \log \sigma (-s_{\theta}(\bar{w}_{ij}|c))
-\end{align}\]</div>
-<p>$$</p>
-<p>where $\sigma$ is the sigmoid function.</p>
+\end{align}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma\)</span> is the sigmoid function.</p>
 </section>
 </section>
 <section id="glove">

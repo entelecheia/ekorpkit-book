@@ -53,6 +53,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Topic Models" href="topic_models.html" />
@@ -1502,12 +1504,12 @@ title="Print to PDF"
 <li><p>Each topic is a distribution over words.</p></li>
 <li><p>Each document is a distribution over topics.</p></li>
 </ul>
-<p>Input: $N \times M$ document-term count matrix $X$</p>
-<p>Assume: there are $K$ topics (tunable hyperparameter, use coherence).</p>
-<p>Like PCA or NMF, LDA works by factorizing $X$ into:</p>
+<p>Input: <span class="math notranslate nohighlight">\(N \times M\)</span> document-term count matrix <span class="math notranslate nohighlight">\(X\)</span></p>
+<p>Assume: there are <span class="math notranslate nohighlight">\(K\)</span> topics (tunable hyperparameter, use coherence).</p>
+<p>Like PCA or NMF, LDA works by factorizing <span class="math notranslate nohighlight">\(X\)</span> into:</p>
 <ul class="simple">
-<li><p>an $N \times K$ document-topic matrix</p></li>
-<li><p>an $K \times M$ topic-term matrix</p></li>
+<li><p>an <span class="math notranslate nohighlight">\(N \times K\)</span> document-topic matrix</p></li>
+<li><p>an <span class="math notranslate nohighlight">\(K \times M\)</span> topic-term matrix</p></li>
 </ul>
 <p>When we fit these 4 questions to LDA, it will give us back something like this:</p>
 <p><img alt="" src="../../../_images/161.png" /></p>
@@ -1893,7 +1895,7 @@ Wall time: 25.7 s
 </section>
 <section id="id1">
 <h3>Non-negative Matrix Factorization (NMF)<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
-<p>Rather than constraining our factors to be <em>orthogonal</em>, another idea would to constrain them to be <em>non-negative</em>. NMF is a factorization of a non-negative data set $V$: $$ V = W H$$ into non-negative matrices $W,; H$. Often positive factors will be <strong>more easily interpretable</strong> (and this is the reason behind NMF’s popularity).</p>
+<p>Rather than constraining our factors to be <em>orthogonal</em>, another idea would to constrain them to be <em>non-negative</em>. NMF is a factorization of a non-negative data set <span class="math notranslate nohighlight">\(V\)</span>: $<span class="math notranslate nohighlight">\( V = W H\)</span><span class="math notranslate nohighlight">\( into non-negative matrices \)</span>W,; H$. Often positive factors will be <strong>more easily interpretable</strong> (and this is the reason behind NMF’s popularity).</p>
 <p>Nonnegative matrix factorization (NMF) is a non-exact factorization that factors into one skinny positive matrix and one short positive matrix.  NMF is NP-hard and non-unique.  There are a number of variations on it, created by adding different constraints.</p>
 <p><img alt="" src="../../../_images/nmf_doc.png" /></p>
 <p>(source: <a class="reference external" href="http://perso.telecom-paristech.fr/~essid/teach/NMF_tutorial_ICME-2014.pdf">NMF Tutorial</a>)</p>
@@ -2017,26 +2019,26 @@ Wall time: 4.16 s
 <section id="cosine-similarity">
 <h3>Cosine Similarity<a class="headerlink" href="#cosine-similarity" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>Representatio nof document $i$ as a vector $x_i$</p>
+<li><p>Representatio nof document <span class="math notranslate nohighlight">\(i\)</span> as a vector <span class="math notranslate nohighlight">\(x_i\)</span></p>
 <ul>
-<li><p>for example $x_i$ = term counts or $x_i$ = IDF-weighted term frequencies</p></li>
+<li><p>for example <span class="math notranslate nohighlight">\(x_i\)</span> = term counts or <span class="math notranslate nohighlight">\(x_i\)</span> = IDF-weighted term frequencies</p></li>
 </ul>
 </li>
-<li><p>Each document is a non-negative vector in an $n_x$-space, where $n_x$ = vocabulary size</p>
+<li><p>Each document is a non-negative vector in an <span class="math notranslate nohighlight">\(n_x\)</span>-space, where <span class="math notranslate nohighlight">\(n_x\)</span> = vocabulary size</p>
 <ul>
 <li><p>documents are rays, and similar documents have similar vectors</p></li>
 </ul>
 </li>
-<li><p>Can measure similarity between documents $i$ and $j$ by the cosine of the angle between $x_i$ and $x_j$:</p>
+<li><p>Can measure similarity between documents <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> by the cosine of the angle between <span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(x_j\)</span>:</p>
 <ul>
-<li><p>With perfectly collinear documents (that is, $x_i = α x_j$, $α \gt 0$), $cos(0) = 1$</p></li>
-<li><p>For orthogonal documents (no words in common), $cos(\pi/2)=0$</p></li>
+<li><p>With perfectly collinear documents (that is, <span class="math notranslate nohighlight">\(x_i = α x_j\)</span>, <span class="math notranslate nohighlight">\(α \gt 0\)</span>), <span class="math notranslate nohighlight">\(cos(0) = 1\)</span></p></li>
+<li><p>For orthogonal documents (no words in common), <span class="math notranslate nohighlight">\(cos(\pi/2)=0\)</span></p></li>
 </ul>
 </li>
 </ul>
 <ul>
 <li><p>Cosine similarity is computable as the normalized dot product between the vectors:</p>
-<p>$ cos_sim(x_1,x_2) = \frac{x_1 \cdot x_2}{|x_1||x_2|}$</p>
+<p><span class="math notranslate nohighlight">\( cos\_sim(x_1,x_2) = \frac{x_1 \cdot x_2}{\|x_1\|\|x_2\|}\)</span></p>
 </li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics.pairwise</span> <span class="kn">import</span> <span class="n">cosine_similarity</span>

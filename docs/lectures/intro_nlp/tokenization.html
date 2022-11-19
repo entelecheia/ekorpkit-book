@@ -53,6 +53,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Word Segmentation and Association" href="word_segmentation.html" />
@@ -2153,19 +2155,19 @@ Such exceptions are called <code class="docutils literal notranslate"><span clas
 <section id="input">
 <h3>Input:<a class="headerlink" href="#input" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>A set of documents (e.g. text files), $D$</p></li>
+<li><p>A set of documents (e.g. text files), <span class="math notranslate nohighlight">\(D\)</span></p></li>
 </ul>
 </section>
 <section id="output-tokens">
 <h3>Output (tokens):<a class="headerlink" href="#output-tokens" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>A sequence, $W$ , containing a list of tokens – words or word pieces for use in natural language processing</p></li>
+<li><p>A sequence, <span class="math notranslate nohighlight">\(W\)</span> , containing a list of tokens – words or word pieces for use in natural language processing</p></li>
 </ul>
 </section>
 <section id="output-n-grams">
 <h3>Output (n-grams):<a class="headerlink" href="#output-n-grams" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>A matrix, $X$, containing statistics about word/phrase frequencies in those documents.</p></li>
+<li><p>A matrix, <span class="math notranslate nohighlight">\(X\)</span>, containing statistics about word/phrase frequencies in those documents.</p></li>
 </ul>
 </section>
 <section id="tokens">
@@ -2315,16 +2317,17 @@ Such exceptions are called <code class="docutils literal notranslate"><span clas
 </section>
 <section id="bag-of-words-representation">
 <h2>Bag-of-words representation<a class="headerlink" href="#bag-of-words-representation" title="Permalink to this headline">#</a></h2>
-<p>Say we want to convert a corpus $D$ to a matrix $X$:</p>
+<p>Say we want to convert a corpus <span class="math notranslate nohighlight">\(D\)</span> to a matrix <span class="math notranslate nohighlight">\(X\)</span>:</p>
 <ul class="simple">
-<li><p>In the <code class="docutils literal notranslate"><span class="pre">“bag-of-words”</span></code> representation, a row of $X$ is just the frequency distribution over words in the document corresponding to that row.</p></li>
+<li><p>In the <code class="docutils literal notranslate"><span class="pre">“bag-of-words”</span></code> representation, a row of <span class="math notranslate nohighlight">\(X\)</span> is just the frequency distribution over words in the document corresponding to that row.</p></li>
 </ul>
 <section id="counts-and-frequencies">
 <h3>Counts and frequencies<a class="headerlink" href="#counts-and-frequencies" title="Permalink to this headline">#</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">Document</span> <span class="pre">counts</span></code>: number of documents where a token appears.</p>
 <p><code class="docutils literal notranslate"><span class="pre">Term</span> <span class="pre">counts</span></code>: number of total appearances of a token in corpus.</p>
 <p><code class="docutils literal notranslate"><span class="pre">Term</span> <span class="pre">frequency</span></code>:</p>
-<p>$$ \text{Term Frequency of } w \text{ in document } k = \frac{\text{Count of }w\text{ in document }k}{\text{Total tokens in document } k} $$</p>
+<div class="math notranslate nohighlight">
+\[ \text{Term Frequency of } w \text{ in document } k = \frac{\text{Count of }w\text{ in document }k}{\text{Total tokens in document } k} \]</div>
 </section>
 <section id="building-a-vocabulary">
 <h3>Building a vocabulary<a class="headerlink" href="#building-a-vocabulary" title="Permalink to this headline">#</a></h3>
@@ -2348,11 +2351,12 @@ Such exceptions are called <code class="docutils literal notranslate"><span clas
 <h3>TF-IDF Weighting<a class="headerlink" href="#tf-idf-weighting" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>TF/IDF: “Term-Frequency / Inverse-Document-Frequency.”</p></li>
-<li><p>The formula for word $w$ in document $k$:</p></li>
+<li><p>The formula for word <span class="math notranslate nohighlight">\(w\)</span> in document <span class="math notranslate nohighlight">\(k\)</span>:</p></li>
 </ul>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \text{TF-IDF} = \frac{\text{Term Frequency of }w\text{ in document }k}{\text{Total tokens in document } k} \times \log \frac{\text{Total number of documents}}{\text{Document count of }w}
-$$</p>
+\]</div>
 <ul class="simple">
 <li><p>The formula up-weights relatively rare words that do not appear in all documents.</p>
 <ul>
@@ -2512,16 +2516,18 @@ Then the IDF is 0.105, with TF-IDF for this document equal to .003.
 <li><p>Pointwise Mutual Information (PMI) is a measure of how often two words co-occur in a corpus.</p></li>
 <li><p>PMI is defined as:</p></li>
 </ul>
-<p>$$
-PMI(w_1,w_2) = \frac{P(w_1_ w_2)}{P(w_1)P(w_2)} \
+<div class="math notranslate nohighlight">
+\[\begin{split}
+PMI(w_1,w_2) = \frac{P(w_1\_ w_2)}{P(w_1)P(w_2)} \\
 = \frac{\text{Prob. of collocation, actual}}{\text{Prob. of collocation, if independent}}
-$$</p>
-<p>where $w_1$ and $w_2$ are words in the vocabulary, and $w_1$, $w_2$ is the N-gram $w_1_w_2$.
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(w_1\)</span> and <span class="math notranslate nohighlight">\(w_2\)</span> are words in the vocabulary, and <span class="math notranslate nohighlight">\(w_1\)</span>, <span class="math notranslate nohighlight">\(w_2\)</span> is the N-gram <span class="math notranslate nohighlight">\(w_1\_w_2\)</span>.
 ranks words by how often they collocate, relative to how often they occur apart.</p>
 <ul class="simple">
 <li><p>Generalizes to longer phrases (length N) as the geometric mean of the probabilities:</p></li>
 </ul>
-<p>$$ \frac{P(w<em>1,\ldots w_2 )}{\prod</em>{i=1}^{n} \sqrt[n]{P(w_i)}} $$</p>
+<div class="math notranslate nohighlight">
+\[ \frac{P(w*1,\ldots w_2 )}{\prod*{i=1}^{n} \sqrt[n]{P(w_i)}} \]</div>
 <ul class="simple">
 <li><p>Caveat: Rare words will have high PMI, but this is not necessarily a good thing.</p>
 <ul>
@@ -2556,7 +2562,7 @@ ranks words by how often they collocate, relative to how often they occur apart.
 <li><p>Numerals, Symbols,</p></li>
 <li><p>Interjections, etc.</p></li>
 </ul>
-<p>See e.g. https://universaldependencies.org/u/pos/</p>
+<p>See e.g. <a class="reference external" href="https://universaldependencies.org/u/pos/">https://universaldependencies.org/u/pos/</a></p>
 <section id="pos-tagging">
 <h3>POS Tagging<a class="headerlink" href="#pos-tagging" title="Permalink to this headline">#</a></h3>
 <p>Words often have more than one POS:</p>
