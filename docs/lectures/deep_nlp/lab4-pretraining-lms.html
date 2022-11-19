@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Lab 4: Pretraining a Language Model &#8212; eKorpkit Tutorials</title>
+    <title>Lab 4: Pretraining Language Models &#8212; eKorpkit Tutorials</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -812,7 +812,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     Lab 4: Pretraining a Language Model
+     Lab 4: Pretraining Language Models
     </a>
    </li>
   </ul>
@@ -1213,7 +1213,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Lab 4: Pretraining a Language Model</h1>
+                <h1>Lab 4: Pretraining Language Models</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -1282,13 +1282,89 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="lab-4-pretraining-a-language-model">
-<h1>Lab 4: Pretraining a Language Model<a class="headerlink" href="#lab-4-pretraining-a-language-model" title="Permalink to this headline">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="lab-4-pretraining-language-models">
+<h1>Lab 4: Pretraining Language Models<a class="headerlink" href="#lab-4-pretraining-language-models" title="Permalink to this headline">#</a></h1>
 <p><img alt="" src="../../../_images/train.png" /></p>
 <p>Now that we have our dataset and tokenizer, in this lab, we will train a language model on a large corpus of text from scratch.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">pre</span> <span class="n">ekorpkit</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_format=&#39;retina&#39;
+<span class="o">%</span><span class="k">load_ext</span> autotime
+<span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+
+<span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+
+<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;version:&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+
+<span class="n">is_colab</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is colab?&quot;</span><span class="p">,</span> <span class="n">is_colab</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">is_colab</span><span class="p">:</span>
+    <span class="n">eKonf</span><span class="o">.</span><span class="n">mount_google_drive</span><span class="p">()</span>
+<span class="n">workspace_dir</span> <span class="o">=</span> <span class="s2">&quot;/content/drive/MyDrive/workspace&quot;</span>
+<span class="n">project_name</span> <span class="o">=</span> <span class="s2">&quot;ekorpkit-book&quot;</span>
+<span class="n">project_dir</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">set_workspace</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="n">workspace_dir</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project_name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;project_dir:&quot;</span><span class="p">,</span> <span class="n">project_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.utils.notebook:Google Colab not detected.
+INFO:ekorpkit.base:Setting EKORPKIT_WORKSPACE_ROOT to /content/drive/MyDrive/workspace
+INFO:ekorpkit.base:Setting EKORPKIT_PROJECT to ekorpkit-book
+INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.40.post0.dev22
+is colab? False
+project_dir: /content/drive/MyDrive/workspace/projects/ekorpkit-book
+time: 1.2 s (started: 2022-11-19 10:16:54 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">notebook_login</span>
+
+<span class="n">notebook_login</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">HfApi</span>
+<span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">HfFolder</span>
+
+<span class="n">token</span> <span class="o">=</span> <span class="n">HfFolder</span><span class="o">.</span><span class="n">get_token</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;HF_USER_ACCESS_TOKEN&quot;</span><span class="p">]</span>
+
+<span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Please login to huggingface_hub&quot;</span><span class="p">)</span>
+
+<span class="n">user_id</span> <span class="o">=</span> <span class="n">HfApi</span><span class="p">()</span><span class="o">.</span><span class="n">whoami</span><span class="p">(</span><span class="n">token</span><span class="p">)[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;user id &#39;</span><span class="si">{</span><span class="n">user_id</span><span class="si">}</span><span class="s2">&#39; will be used during this lab&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>user id &#39;entelecheia&#39; will be used during this lab
+time: 866 ms (started: 2022-11-19 11:07:25 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
 <section id="unicode-normalization">
 <h2>Unicode Normalization<a class="headerlink" href="#unicode-normalization" title="Permalink to this headline">#</a></h2>
-<p>One little thing to note is that we will need to normalize our text before training our language model. This is because the same character can be represented in different ways. For example, the character “é” can be represented as “e” followed by a combining accent character, or as a single character. We will use the <a class="reference external" href="https://unicode.org/reports/tr15/#Norm_Forms">Unicode Normalization Form C</a> to normalize our text. This will convert all characters to their canonical representation.</p>
+<p>One little thing to note is that we will need to normalize our text before training our language model. This is because the same character can be represented in different ways. For example, the character “é” can be represented as “e” followed by a combining accent character, or as a single character.</p>
 <section id="tl-dr">
 <h3>TL;DR<a class="headerlink" href="#tl-dr" title="Permalink to this headline">#</a></h3>
 <p>Use <code class="docutils literal notranslate"><span class="pre">NFKC</span></code> normalization to normalize your text before training your language model.</p>
@@ -1334,6 +1410,7 @@ NFC: ａｂｃＡＢＣ１２３가나다…, 13
 NFD: ａｂｃＡＢＣ１２３가나다…, 16
 NFKC: abcABC123가나다..., 15
 NFKD: abcABC123가나다..., 18
+time: 23.8 ms (started: 2022-11-19 10:16:57 +00:00)
 </pre></div>
 </div>
 </div>
@@ -1346,6 +1423,10 @@ NFKD: abcABC123가나다..., 18
 <section id="what-is-bert">
 <h3>What is BERT?<a class="headerlink" href="#what-is-bert" title="Permalink to this headline">#</a></h3>
 <p>BERT is a large-scale language model that was trained on the English Wikipedia using a masked-language modeling objective. The model was then fine-tuned on a variety of downstream tasks, including question answering, natural language inference, and sentiment analysis. BERT was the first large-scale language model to be pre-trained using a deep bidirectional architecture and outperformed previous language models on a variety of tasks.</p>
+<p>BERT was originally pre-trained on 1 Million Steps with a global batch size of 256.</p>
+<blockquote>
+<div><p>“We train with batch size of 256 sequences (256 sequences * 512 tokens = 128,000 tokens/batch) for 1,000,000 steps, which is approximately 40 epochs over the 3.3 billion word corpus.”</p>
+</div></blockquote>
 <p>For more information, see the lecture notes on BERT.</p>
 </section>
 <section id="masked-language-modeling-mlm">
@@ -1360,7 +1441,352 @@ NFKD: abcABC123가나다..., 18
 <section id="preprocessing-the-dataset">
 <h2>Preprocessing the Dataset<a class="headerlink" href="#preprocessing-the-dataset" title="Permalink to this headline">#</a></h2>
 <p>Before training our language model, we need to preprocess our dataset. We will use our tokenizer to tokenize our dataset and then convert the tokens to their IDs. If we have a sentence that is longer than the maximum sequence length, we will truncate the sentence. If the sentence is shorter than the maximum sequence length, we will pad the sentence with the padding token.</p>
-<p>From four tokenizers we have trained in the previous lab, we will use the <code class="docutils literal notranslate"><span class="pre">unigram</span></code> model trained using <code class="docutils literal notranslate"><span class="pre">SentencePiece</span></code> to tokenize our dataset.</p>
+<p>Unlike the original BERT paper, we will not use the WordPiece tokenization algorithm. Instead, we will use the <code class="docutils literal notranslate"><span class="pre">unigram</span></code> tokenization algorithm.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tokenizers</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">PreTrainedTokenizerFast</span>
+<span class="kn">from</span> <span class="nn">tokenizers.processors</span> <span class="kn">import</span> <span class="n">BertProcessing</span>
+
+<span class="n">tokenizer_path</span> <span class="o">=</span> <span class="s2">&quot;tokenizers/enko_wiki/enko_wiki_unigram_huggingface_vocab_30000.json&quot;</span>
+<span class="n">tokenizer_path</span> <span class="o">=</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">tokenizer_path</span>
+<span class="n">context_length</span> <span class="o">=</span> <span class="mi">512</span>
+
+<span class="n">unigram_tokenizer</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">tokenizer_path</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Vocab size: </span><span class="si">{</span><span class="n">unigram_tokenizer</span><span class="o">.</span><span class="n">get_vocab_size</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">unigram_tokenizer</span><span class="o">.</span><span class="n">post_processor</span> <span class="o">=</span> <span class="n">BertProcessing</span><span class="p">(</span>
+    <span class="p">(</span><span class="s2">&quot;&lt;/s&gt;&quot;</span><span class="p">,</span> <span class="n">unigram_tokenizer</span><span class="o">.</span><span class="n">token_to_id</span><span class="p">(</span><span class="s2">&quot;&lt;/s&gt;&quot;</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">&quot;&lt;s&gt;&quot;</span><span class="p">,</span> <span class="n">unigram_tokenizer</span><span class="o">.</span><span class="n">token_to_id</span><span class="p">(</span><span class="s2">&quot;&lt;s&gt;&quot;</span><span class="p">)),</span>
+<span class="p">)</span>
+
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">PreTrainedTokenizerFast</span><span class="p">(</span>
+    <span class="n">tokenizer_object</span><span class="o">=</span><span class="n">unigram_tokenizer</span><span class="p">,</span>
+    <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">max_length</span><span class="o">=</span><span class="n">context_length</span><span class="p">,</span>
+    <span class="n">return_length</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">bos_token</span><span class="o">=</span><span class="s2">&quot;&lt;s&gt;&quot;</span><span class="p">,</span>
+    <span class="n">eos_token</span><span class="o">=</span><span class="s2">&quot;&lt;/s&gt;&quot;</span><span class="p">,</span>
+    <span class="n">unk_token</span><span class="o">=</span><span class="s2">&quot;&lt;unk&gt;&quot;</span><span class="p">,</span>
+    <span class="n">pad_token</span><span class="o">=</span><span class="s2">&quot;&lt;pad&gt;&quot;</span><span class="p">,</span>
+    <span class="n">cls_token</span><span class="o">=</span><span class="s2">&quot;&lt;cls&gt;&quot;</span><span class="p">,</span>
+    <span class="n">sep_token</span><span class="o">=</span><span class="s2">&quot;&lt;sep&gt;&quot;</span><span class="p">,</span>
+    <span class="n">mask_token</span><span class="o">=</span><span class="s2">&quot;&lt;mask&gt;&quot;</span><span class="p">,</span>
+    <span class="n">padding_side</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;is_fast: </span><span class="si">{</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">is_fast</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Vocab size: </span><span class="si">{</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">vocab_size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">(</span><span class="s2">&quot;Hello, my dog is cute&quot;</span><span class="p">))</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/tokenizers/enko_wiki&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Vocab size: 30000
+is_fast: True
+Vocab size: 30000
+{&#39;input_ids&#39;: [1, 8, 14690, 10, 8, 968, 8, 6871, 8, 42, 8, 2777, 72, 2], &#39;token_type_ids&#39;: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], &#39;attention_mask&#39;: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/tokenizers/enko_wiki/tokenizer_config.json&#39;,
+ &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/tokenizers/enko_wiki/special_tokens_map.json&#39;,
+ &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/tokenizers/enko_wiki/tokenizer.json&#39;)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 67 ms (started: 2022-11-19 10:55:20 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tokenizer</span><span class="p">(</span><span class="s2">&quot;Hello, this one sentence!&quot;</span><span class="p">,</span> <span class="s2">&quot;And this sentence goes with it.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;input_ids&#39;: [1, 8, 14690, 10, 8, 235, 8, 202, 8, 15219, 489, 2, 8, 37, 8, 235, 8, 15219, 8, 11241, 8, 80, 8, 65, 9, 2], &#39;token_type_ids&#39;: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], &#39;attention_mask&#39;: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 23.9 ms (started: 2022-11-19 10:55:39 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">load_dataset</span>
+
+<span class="n">data_dir</span> <span class="o">=</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/data/tokenizers/enko_filtered_chunk&quot;</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="o">=</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">)</span>
+<span class="n">dataset</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "3eeddc62f7db4f55a039916fbd57d972", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:datasets.builder:Using custom data configuration default-f34802e795f4ed05
+WARNING:datasets.builder:Reusing dataset text (/workspace/data/tbts/.cache/huggingface/datasets/text/default-f34802e795f4ed05/0.0.0/21a506d1b2b34316b1e82d0bd79066905d846e5d7e619823c0dd338d6f1fa6ad)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset({
+    features: [&#39;text&#39;],
+    num_rows: 3618972
+})
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 1.02 s (started: 2022-11-19 09:39:39 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">text_column</span> <span class="o">=</span> <span class="s2">&quot;text&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="n">element</span><span class="p">):</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span>
+        <span class="n">element</span><span class="p">[</span><span class="n">text_column</span><span class="p">],</span>
+        <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="n">context_length</span><span class="p">,</span>
+        <span class="n">return_special_tokens_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">outputs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 15.3 ms (started: 2022-11-19 09:55:12 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_proc</span> <span class="o">=</span> <span class="mi">20</span>
+
+<span class="c1"># preprocess dataset</span>
+<span class="n">tokenized_dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+    <span class="n">tokenize</span><span class="p">,</span> <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">remove_columns</span><span class="o">=</span><span class="p">[</span><span class="n">text_column</span><span class="p">],</span> <span class="n">num_proc</span><span class="o">=</span><span class="n">num_proc</span>
+<span class="p">)</span>
+<span class="n">tokenized_dataset</span><span class="o">.</span><span class="n">features</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
+
+<span class="c1"># Main data processing function that will concatenate all texts from our dataset and generate chunks of</span>
+<span class="c1"># max_seq_length.</span>
+<span class="k">def</span> <span class="nf">group_texts</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
+    <span class="c1"># Concatenate all texts.</span>
+    <span class="n">concatenated_examples</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="n">examples</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">examples</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+    <span class="n">total_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">concatenated_examples</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">examples</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]])</span>
+    <span class="c1"># We drop the small remainder, we could add padding if the model supported it instead of this drop, you can</span>
+    <span class="c1"># customize this part to your needs.</span>
+    <span class="k">if</span> <span class="n">total_length</span> <span class="o">&gt;=</span> <span class="n">context_length</span><span class="p">:</span>
+        <span class="n">total_length</span> <span class="o">=</span> <span class="p">(</span><span class="n">total_length</span> <span class="o">//</span> <span class="n">context_length</span><span class="p">)</span> <span class="o">*</span> <span class="n">context_length</span>
+    <span class="c1"># Split by chunks of max_len.</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">k</span><span class="p">:</span> <span class="p">[</span><span class="n">t</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">context_length</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">total_length</span><span class="p">,</span> <span class="n">context_length</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">concatenated_examples</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="n">tokenized_dataset</span> <span class="o">=</span> <span class="n">tokenized_dataset</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">group_texts</span><span class="p">,</span> <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_proc</span><span class="o">=</span><span class="n">num_proc</span><span class="p">)</span>
+
+<span class="c1"># shuffle dataset</span>
+<span class="n">tokenized_dataset</span> <span class="o">=</span> <span class="n">tokenized_dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;the dataset contains in total </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tokenized_dataset</span><span class="p">)</span><span class="o">*</span><span class="n">context_length</span><span class="si">}</span><span class="s2"> tokens&quot;</span><span class="p">)</span>
+<span class="c1"># the dataset contains in total 137,816,832 tokens</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoConfig</span><span class="p">,</span> <span class="n">AutoModelForMaskedLM</span>
+
+<span class="n">tk_path</span> <span class="o">=</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/tokenizers/enko_wiki&quot;</span>
+
+<span class="c1"># Load codeparrot tokenizer trained for Python code tokenization</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">tk_path</span><span class="p">)</span>
+
+<span class="c1"># Configuration</span>
+<span class="n">config_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;vocab_size&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">),</span>
+    <span class="s2">&quot;pad_token_id&quot;</span><span class="p">:</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token_id</span><span class="p">,</span>
+    <span class="c1"># &quot;torch_dtype&quot;: &quot;float16&quot;,</span>
+<span class="p">}</span>
+
+<span class="c1"># # Load model with config and push to hub</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">AutoConfig</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;bert-base-uncased&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">config_kwargs</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForMaskedLM</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+<span class="n">model_path</span> <span class="o">=</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/models/enko_wiki_bert_base_uncased&quot;</span>
+<span class="n">model</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 3.4 s (started: 2022-11-19 11:29:40 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">BertForMaskedLM</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">BertForMaskedLM</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">model_size</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BERT size: </span><span class="si">{</span><span class="n">model_size</span><span class="o">/</span><span class="mi">1000</span><span class="o">**</span><span class="mi">2</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">M parameters&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>BERT size: 109.1M parameters
+time: 2.07 s (started: 2022-11-19 11:23:15 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">DataCollatorForLanguageModeling</span>
+
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token</span>
+<span class="n">data_collator</span> <span class="o">=</span> <span class="n">DataCollatorForLanguageModeling</span><span class="p">(</span>
+    <span class="n">tokenizer</span><span class="p">,</span> <span class="n">mlm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mlm_probability</span><span class="o">=</span><span class="mf">0.15</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2022-11-19 11:24:52.315972: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 1.71 s (started: 2022-11-19 11:24:52 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">Dataset</span>
+
+<span class="n">dataset_dir</span> <span class="o">=</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/data/tokenized_datasets/enko_filtered&quot;</span>
+
+<span class="n">tokenized_dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">load_from_disk</span><span class="p">(</span><span class="n">dataset_dir</span><span class="p">)</span>
+<span class="n">tokenized_dataset</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset({
+    features: [&#39;input_ids&#39;, &#39;token_type_ids&#39;, &#39;attention_mask&#39;, &#39;special_tokens_mask&#39;],
+    num_rows: 268366
+})
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 55.2 ms (started: 2022-11-19 11:27:08 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">out</span> <span class="o">=</span> <span class="n">data_collator</span><span class="p">([</span><span class="n">tokenized_dataset</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)])</span>
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">out</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> shape: </span><span class="si">{</span><span class="n">out</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>input_ids shape: torch.Size([5, 512])
+token_type_ids shape: torch.Size([5, 512])
+attention_mask shape: torch.Size([5, 512])
+labels shape: torch.Size([5, 512])
+time: 49.9 ms (started: 2022-11-19 11:27:34 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">Trainer</span><span class="p">,</span> <span class="n">TrainingArguments</span>
+
+
+<span class="n">args</span> <span class="o">=</span> <span class="n">TrainingArguments</span><span class="p">(</span>
+    <span class="n">output_dir</span><span class="o">=</span><span class="n">model_path</span><span class="p">,</span>
+    <span class="n">per_device_train_batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+    <span class="n">per_device_eval_batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+    <span class="n">evaluation_strategy</span><span class="o">=</span><span class="s2">&quot;steps&quot;</span><span class="p">,</span>
+    <span class="n">eval_steps</span><span class="o">=</span><span class="mi">5_000</span><span class="p">,</span>
+    <span class="n">logging_steps</span><span class="o">=</span><span class="mi">5_000</span><span class="p">,</span>
+    <span class="n">gradient_accumulation_steps</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+    <span class="n">num_train_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">weight_decay</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">warmup_steps</span><span class="o">=</span><span class="mi">1_000</span><span class="p">,</span>
+    <span class="n">lr_scheduler_type</span><span class="o">=</span><span class="s2">&quot;cosine&quot;</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="mf">5e-4</span><span class="p">,</span>
+    <span class="n">save_steps</span><span class="o">=</span><span class="mi">5_000</span><span class="p">,</span>
+    <span class="n">fp16</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">push_to_hub</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
+    <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
+    <span class="n">data_collator</span><span class="o">=</span><span class="n">data_collator</span><span class="p">,</span>
+    <span class="n">train_dataset</span><span class="o">=</span><span class="n">tokenized_dataset</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using cuda_amp half precision backend
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 2.43 s (started: 2022-11-19 11:34:48 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">accelerate</span> <span class="kn">import</span> <span class="n">Accelerator</span>
+
+<span class="n">accelerator</span> <span class="o">=</span> <span class="n">Accelerator</span><span class="p">()</span>
+<span class="n">acc_state</span> <span class="o">=</span> <span class="p">{</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">):</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">accelerator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">accelerator</span><span class="o">.</span><span class="n">device</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;device: </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">accelerator</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">trainer</span><span class="p">)</span>
+
+<span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+
+<span class="n">trainer</span><span class="o">.</span><span class="n">save_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>device: cuda
+time: 47.9 ms (started: 2022-11-19 11:34:51 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
