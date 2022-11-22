@@ -51,6 +51,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Applications of NLP" href="../nlp_apps/index.html" />
@@ -1256,6 +1258,11 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mlm-trainer-usage">
+   MLM Trainer Usage
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#references">
    References
   </a>
@@ -1380,6 +1387,11 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mlm-trainer-usage">
+   MLM Trainer Usage
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#references">
    References
   </a>
@@ -1434,7 +1446,7 @@ INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.en
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.40.post0.dev22
 is colab? False
 project_dir: /content/drive/MyDrive/workspace/projects/ekorpkit-book
-time: 1.46 s (started: 2022-11-21 00:59:54 +00:00)
+time: 1.45 s (started: 2022-11-22 01:27:10 +00:00)
 </pre></div>
 </div>
 </div>
@@ -1775,7 +1787,10 @@ WARNING:datasets.builder:Reusing dataset text (/workspace/data/tbts/.cache/huggi
 <span class="n">config_kwargs</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;vocab_size&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">),</span>
     <span class="s2">&quot;pad_token_id&quot;</span><span class="p">:</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token_id</span><span class="p">,</span>
-    <span class="c1"># &quot;torch_dtype&quot;: &quot;float16&quot;,</span>
+    <span class="s2">&quot;mask_token_id&quot;</span><span class="p">:</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">mask_token_id</span><span class="p">,</span>
+    <span class="s2">&quot;cls_token_id&quot;</span><span class="p">:</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">cls_token_id</span><span class="p">,</span>
+    <span class="s2">&quot;sep_token_id&quot;</span><span class="p">:</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">sep_token_id</span><span class="p">,</span>
+    <span class="s2">&quot;unk_token_id&quot;</span><span class="p">:</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">unk_token_id</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="c1"># # Load model with config and push to hub</span>
@@ -1978,7 +1993,11 @@ time: 47.9 ms (started: 2022-11-19 11:34:51 +00:00)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 1.47 s (started: 2022-11-21 01:29:46 +00:00)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2022-11-22 11:42:52.886950: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 4.33 s (started: 2022-11-22 11:42:52 +00:00)
 </pre></div>
 </div>
 </div>
@@ -1993,12 +2012,386 @@ time: 47.9 ms (started: 2022-11-19 11:34:51 +00:00)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;score&#39;: 0.00023856022744439542, &#39;token&#39;: 3664, &#39;token_str&#39;: &#39;lot&#39;, &#39;sequence&#39;: &#39;▁ 처음으로 ▁ 대중적 으로 ▁ lot ▁ 롤플레잉 ▁ 게임 이다.&#39;}
-{&#39;score&#39;: 0.00023203201999422163, &#39;token&#39;: 7648, &#39;token_str&#39;: &#39;soul&#39;, &#39;sequence&#39;: &#39;▁ 처음으로 ▁ 대중적 으로 ▁ soul ▁ 롤플레잉 ▁ 게임 이다.&#39;}
-{&#39;score&#39;: 0.00021189276594668627, &#39;token&#39;: 13056, &#39;token_str&#39;: &#39;단단&#39;, &#39;sequence&#39;: &#39;▁ 처음으로 ▁ 대중적 으로 ▁ 단단 ▁ 롤플레잉 ▁ 게임 이다.&#39;}
-{&#39;score&#39;: 0.00020540630794130266, &#39;token&#39;: 4039, &#39;token_str&#39;: &#39;carolina&#39;, &#39;sequence&#39;: &#39;▁ 처음으로 ▁ 대중적 으로 ▁ carolina ▁ 롤플레잉 ▁ 게임 이다.&#39;}
-{&#39;score&#39;: 0.00019756682740990072, &#39;token&#39;: 14201, &#39;token_str&#39;: &#39;미소&#39;, &#39;sequence&#39;: &#39;▁ 처음으로 ▁ 대중적 으로 ▁ 미소 ▁ 롤플레잉 ▁ 게임 이다.&#39;}
-time: 87.3 ms (started: 2022-11-21 01:42:57 +00:00)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;score&#39;: 0.1881457269191742, &#39;token&#39;: 1183, &#39;token_str&#39;: &#39;만든&#39;, &#39;sequence&#39;: &#39;▁ 처음으로 ▁ 대중적 으로 ▁ 만든 ▁ 롤플레잉 ▁ 게임 이다.&#39;}
+{&#39;score&#39;: 0.14176464080810547, &#39;token&#39;: 3567, &#39;token_str&#39;: &#39;제작한&#39;, &#39;sequence&#39;: &#39;▁ 처음으로 ▁ 대중적 으로 ▁ 제작한 ▁ 롤플레잉 ▁ 게임 이다.&#39;}
+{&#39;score&#39;: 0.04182405769824982, &#39;token&#39;: 15022, &#39;token_str&#39;: &#39;롤플레잉&#39;, &#39;sequence&#39;: &#39;▁ 처음으로 ▁ 대중적 으로 ▁ 롤플레잉 ▁ 롤플레잉 ▁ 게임 이다.&#39;}
+{&#39;score&#39;: 0.035137832164764404, &#39;token&#39;: 3225, &#39;token_str&#39;: &#39;개발한&#39;, &#39;sequence&#39;: &#39;▁ 처음으로 ▁ 대중적 으로 ▁ 개발한 ▁ 롤플레잉 ▁ 게임 이다.&#39;}
+{&#39;score&#39;: 0.033710286021232605, &#39;token&#39;: 3171, &#39;token_str&#39;: &#39;아시안&#39;, &#39;sequence&#39;: &#39;▁ 처음으로 ▁ 대중적 으로 ▁ 아시안 ▁ 롤플레잉 ▁ 게임 이다.&#39;}
+time: 115 ms (started: 2022-11-22 11:42:59 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="mlm-trainer-usage">
+<h2>MLM Trainer Usage<a class="headerlink" href="#mlm-trainer-usage" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_format=&#39;retina&#39;
+<span class="o">%</span><span class="k">load_ext</span> autotime
+<span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+
+<span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+
+<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;version:&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+
+<span class="n">is_colab</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is colab?&quot;</span><span class="p">,</span> <span class="n">is_colab</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">is_colab</span><span class="p">:</span>
+    <span class="n">eKonf</span><span class="o">.</span><span class="n">mount_google_drive</span><span class="p">()</span>
+<span class="n">workspace_dir</span> <span class="o">=</span> <span class="s2">&quot;/content/drive/MyDrive/workspace&quot;</span>
+<span class="n">project_name</span> <span class="o">=</span> <span class="s2">&quot;ekorpkit-book&quot;</span>
+<span class="n">project_dir</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">set_workspace</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="n">workspace_dir</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project_name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;project_dir:&quot;</span><span class="p">,</span> <span class="n">project_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.utils.notebook:Google Colab not detected.
+INFO:ekorpkit.base:Setting EKORPKIT_WORKSPACE_ROOT to /content/drive/MyDrive/workspace
+INFO:ekorpkit.base:Setting EKORPKIT_PROJECT to ekorpkit-book
+INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.40.post0.dev22
+is colab? False
+project_dir: /content/drive/MyDrive/workspace/projects/ekorpkit-book
+time: 1.47 s (started: 2022-11-22 11:45:52 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.models.transformer.trainer</span> <span class="kn">import</span> <span class="n">MlmTrainer</span>
+
+<span class="n">data_dir</span> <span class="o">=</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/data/tokenizers/enko_filtered_chunk&quot;</span>
+<span class="n">tokenizer_path</span> <span class="o">=</span> <span class="s2">&quot;tokenizers/enko_wiki/enko_wiki_unigram_huggingface_vocab_30000.json&quot;</span>
+<span class="n">tokenizer_path</span> <span class="o">=</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">tokenizer_path</span>
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;model/transformer=mlm.trainer&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;enko_wiki_bert_base_uncased&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">config_name</span> <span class="o">=</span> <span class="s2">&quot;bert-base-uncased&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">tokenizer_path</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">train_file</span> <span class="o">=</span> <span class="n">data_dir</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">max_seq_length</span> <span class="o">=</span> <span class="mi">512</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">use_accelerator</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">num_train_epochs</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">MlmTrainer</span><span class="p">(</span><span class="o">**</span><span class="n">cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.batch:Batch name: enko_wiki_bert_base_uncased, Batch num: 0
+INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+WARNING:ekorpkit.models.transformer.trainer:Process rank: -1, device: cuda:0, n_gpu: 8distributed training: False, 16-bits training: True
+INFO:ekorpkit.models.transformer.trainer:Training/evaluation parameters TrainingArguments(
+_n_gpu=8,
+adafactor=False,
+adam_beta1=0.9,
+adam_beta2=0.999,
+adam_epsilon=1e-08,
+auto_find_batch_size=False,
+bf16=False,
+bf16_full_eval=False,
+data_seed=None,
+dataloader_drop_last=False,
+dataloader_num_workers=0,
+dataloader_pin_memory=True,
+ddp_bucket_cap_mb=None,
+ddp_find_unused_parameters=None,
+ddp_timeout=1800,
+debug=[],
+deepspeed=None,
+disable_tqdm=False,
+do_eval=True,
+do_predict=False,
+do_train=True,
+eval_accumulation_steps=None,
+eval_delay=0,
+eval_steps=1000,
+evaluation_strategy=steps,
+fp16=True,
+fp16_backend=auto,
+fp16_full_eval=False,
+fp16_opt_level=O1,
+fsdp=[],
+fsdp_min_num_params=0,
+fsdp_transformer_layer_cls_to_wrap=None,
+full_determinism=False,
+gradient_accumulation_steps=8,
+gradient_checkpointing=False,
+greater_is_better=None,
+group_by_length=False,
+half_precision_backend=auto,
+hub_model_id=None,
+hub_private_repo=False,
+hub_strategy=every_save,
+hub_token=&lt;HUB_TOKEN&gt;,
+ignore_data_skip=False,
+include_inputs_for_metrics=False,
+jit_mode_eval=False,
+label_names=None,
+label_smoothing_factor=0.0,
+learning_rate=0.0005,
+length_column_name=length,
+load_best_model_at_end=False,
+local_rank=-1,
+log_level=passive,
+log_level_replica=passive,
+log_on_each_node=True,
+logging_dir=None,
+logging_first_step=False,
+logging_nan_inf_filter=True,
+logging_steps=1000,
+logging_strategy=steps,
+lr_scheduler_type=cosine,
+max_grad_norm=1.0,
+max_steps=-1,
+metric_for_best_model=None,
+mp_parameters=,
+no_cuda=False,
+num_train_epochs=10,
+optim=adamw_hf,
+output_dir=/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/enko_wiki_bert_base_uncased,
+overwrite_output_dir=True,
+past_index=-1,
+per_device_eval_batch_size=32,
+per_device_train_batch_size=32,
+prediction_loss_only=False,
+push_to_hub=False,
+push_to_hub_model_id=None,
+push_to_hub_organization=None,
+push_to_hub_token=&lt;PUSH_TO_HUB_TOKEN&gt;,
+ray_scope=last,
+remove_unused_columns=True,
+report_to=[&#39;wandb&#39;],
+resume_from_checkpoint=None,
+run_name=enko_wiki_bert_base_uncased,
+save_on_each_node=False,
+save_steps=5000,
+save_strategy=steps,
+save_total_limit=None,
+seed=508429504,
+sharded_ddp=[],
+skip_memory_metrics=True,
+tf32=None,
+torchdynamo=None,
+tpu_metrics_debug=False,
+tpu_num_cores=None,
+use_ipex=False,
+use_legacy_prediction_loop=False,
+use_mps_device=False,
+warmup_ratio=0.0,
+warmup_steps=1000,
+weight_decay=0.1,
+xpu_backend=None,
+)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 3.28 s (started: 2022-11-22 11:47:42 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [61] files from [&#39;*.txt&#39;]
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "a74d9cbfa74642e7b20202a30ce40478", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO|configuration_utils.py:654] 2022-11-22 11:48:26,566 &gt;&gt; loading configuration file config.json from cache at /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/cache/models--bert-base-uncased/snapshots/0a6aa9128b6194f4f3c4db429b6cb4891cdb421b/config.json
+[INFO|configuration_utils.py:706] 2022-11-22 11:48:26,567 &gt;&gt; Model config BertConfig {
+  &quot;_name_or_path&quot;: &quot;bert-base-uncased&quot;,
+  &quot;architectures&quot;: [
+    &quot;BertForMaskedLM&quot;
+  ],
+  &quot;attention_probs_dropout_prob&quot;: 0.1,
+  &quot;classifier_dropout&quot;: null,
+  &quot;gradient_checkpointing&quot;: false,
+  &quot;hidden_act&quot;: &quot;gelu&quot;,
+  &quot;hidden_dropout_prob&quot;: 0.1,
+  &quot;hidden_size&quot;: 768,
+  &quot;initializer_range&quot;: 0.02,
+  &quot;intermediate_size&quot;: 3072,
+  &quot;layer_norm_eps&quot;: 1e-12,
+  &quot;max_position_embeddings&quot;: 512,
+  &quot;model_type&quot;: &quot;bert&quot;,
+  &quot;num_attention_heads&quot;: 12,
+  &quot;num_hidden_layers&quot;: 12,
+  &quot;pad_token_id&quot;: 0,
+  &quot;position_embedding_type&quot;: &quot;absolute&quot;,
+  &quot;transformers_version&quot;: &quot;4.24.0&quot;,
+  &quot;type_vocab_size&quot;: 2,
+  &quot;use_cache&quot;: true,
+  &quot;vocab_size&quot;: 30522
+}
+
+INFO:ekorpkit.models.transformer.trainer:Update model config with {&#39;vocab_size&#39;: 30000, &#39;pad_token_id&#39;: 4, &#39;mask_token_id&#39;: 3, &#39;unk_token_id&#39;: 7, &#39;sep_token_id&#39;: 6, &#39;cls_token_id&#39;: 5}
+INFO:ekorpkit.models.transformer.trainer:Is a fast tokenizer? True
+INFO:ekorpkit.models.transformer.trainer:Vocab size: 30000
+[INFO|tokenization_utils_base.py:2125] 2022-11-22 11:48:26,637 &gt;&gt; tokenizer config file saved in /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/enko_wiki_bert_base_uncased/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2132] 2022-11-22 11:48:26,637 &gt;&gt; Special tokens file saved in /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/enko_wiki_bert_base_uncased/special_tokens_map.json
+[INFO|tokenization_utils_base.py:1773] 2022-11-22 11:48:26,659 &gt;&gt; loading file tokenizer.json
+[INFO|tokenization_utils_base.py:1773] 2022-11-22 11:48:26,660 &gt;&gt; loading file added_tokens.json
+[INFO|tokenization_utils_base.py:1773] 2022-11-22 11:48:26,660 &gt;&gt; loading file special_tokens_map.json
+[INFO|tokenization_utils_base.py:1773] 2022-11-22 11:48:26,660 &gt;&gt; loading file tokenizer_config.json
+INFO:ekorpkit.models.transformer.trainer:Training new model from scratch
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "c38c37be3ae5497da66644336551b087", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:datasets.builder:Using custom data configuration default-f34802e795f4ed05
+INFO:datasets.builder:Generating dataset text (/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/cache/text/default-f34802e795f4ed05/0.0.0/21a506d1b2b34316b1e82d0bd79066905d846e5d7e619823c0dd338d6f1fa6ad)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading and preparing dataset text/default to /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/cache/text/default-f34802e795f4ed05/0.0.0/21a506d1b2b34316b1e82d0bd79066905d846e5d7e619823c0dd338d6f1fa6ad...
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "0bea74433e2246528dc91f085d13f583", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:datasets.download.download_manager:Downloading took 0.0 min
+INFO:datasets.download.download_manager:Checksum Computation took 0.0 min
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "2dd3fb89922749d0a24923ed7ae01d4c", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:datasets.utils.info_utils:Unable to verify checksums.
+INFO:datasets.builder:Generating train split
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:datasets.utils.info_utils:Unable to verify splits sizes.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset text downloaded and prepared to /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/cache/text/default-f34802e795f4ed05/0.0.0/21a506d1b2b34316b1e82d0bd79066905d846e5d7e619823c0dd338d6f1fa6ad. Subsequent calls will reuse this data.
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "64231737d2f848b3a9edfbdf47e2649a", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:datasets.builder:Using custom data configuration default-f34802e795f4ed05
+INFO:datasets.builder:Overwrite dataset info from restored data version.
+INFO:datasets.info:Loading Dataset info from /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/cache/text/default-f34802e795f4ed05/0.0.0/21a506d1b2b34316b1e82d0bd79066905d846e5d7e619823c0dd338d6f1fa6ad
+WARNING:datasets.builder:Reusing dataset text (/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/cache/text/default-f34802e795f4ed05/0.0.0/21a506d1b2b34316b1e82d0bd79066905d846e5d7e619823c0dd338d6f1fa6ad)
+INFO:datasets.info:Loading Dataset info from /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/cache/text/default-f34802e795f4ed05/0.0.0/21a506d1b2b34316b1e82d0bd79066905d846e5d7e619823c0dd338d6f1fa6ad
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "374cb6613f9e41e0ba64fe126aff1fcf", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:datasets.arrow_dataset:Caching processed dataset at /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/cache/text/default-f34802e795f4ed05/0.0.0/21a506d1b2b34316b1e82d0bd79066905d846e5d7e619823c0dd338d6f1fa6ad/cache-eeb2ea6f5aef8e0d.arrow
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "7c194c12832e4438a958448f3acf91c6", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:datasets.arrow_dataset:Caching processed dataset at /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/cache/text/default-f34802e795f4ed05/0.0.0/21a506d1b2b34316b1e82d0bd79066905d846e5d7e619823c0dd338d6f1fa6ad/cache-1456f5c04921f9e6.arrow
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">show_config</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.batch:Using existing path: /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling
+INFO:ekorpkit.batch:Merging config with args: {}
+INFO:ekorpkit.batch:Batch name: enko_wiki_bert_base_uncased, Batch num: 0
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;_target_&#39;: &#39;ekorpkit.models.transformer.trainer.MlmTrainer&#39;,
+ &#39;autoload&#39;: False,
+ &#39;batch&#39;: {&#39;batch_name&#39;: &#39;enko_wiki_bert_base_uncased&#39;,
+           &#39;batch_num&#39;: None,
+           &#39;random_seed&#39;: True,
+           &#39;resume_latest&#39;: False,
+           &#39;resume_run&#39;: False,
+           &#39;run_to_resume&#39;: &#39;latest&#39;,
+           &#39;seed&#39;: None},
+ &#39;data&#39;: {&#39;dataset_config_name&#39;: None,
+          &#39;dataset_name&#39;: None,
+          &#39;line_by_line&#39;: False,
+          &#39;max_eval_samples&#39;: None,
+          &#39;max_seq_length&#39;: 512,
+          &#39;max_train_samples&#39;: None,
+          &#39;mlm_probability&#39;: 0.15,
+          &#39;overwrite_cache&#39;: False,
+          &#39;pad_to_max_length&#39;: False,
+          &#39;preprocessing_num_workers&#39;: None,
+          &#39;train_file&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/data/tokenizers/enko_filtered_chunk&#39;,
+          &#39;validation_file&#39;: None,
+          &#39;validation_split_percentage&#39;: 5},
+ &#39;device&#39;: &#39;cuda&#39;,
+ &#39;model&#39;: {&#39;cache_dir&#39;: None,
+           &#39;config_name&#39;: &#39;bert-base-uncased&#39;,
+           &#39;config_overrides&#39;: None,
+           &#39;model_name_or_path&#39;: None,
+           &#39;model_revision&#39;: &#39;main&#39;,
+           &#39;model_type&#39;: None,
+           &#39;tokenizer_name&#39;: None,
+           &#39;use_auth_token&#39;: False,
+           &#39;use_fast_tokenizer&#39;: True},
+ &#39;name&#39;: &#39;enko_wiki_bert_base_uncased&#39;,
+ &#39;path&#39;: {&#39;batch_dir&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/demo&#39;,
+          &#39;batch_name&#39;: &#39;demo&#39;,
+          &#39;cache_dir&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/cache&#39;,
+          &#39;library_dir&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/libs&#39;,
+          &#39;model_dir&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/models&#39;,
+          &#39;name&#39;: &#39;language-modeling&#39;,
+          &#39;output_dir&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs&#39;,
+          &#39;root&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling&#39;,
+          &#39;tmp_dir&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/tmp&#39;,
+          &#39;verbose&#39;: False},
+ &#39;secret&#39;: {&#39;hf_user_access_token&#39;: None, &#39;wandb_api_key&#39;: None},
+ &#39;tokenizer&#39;: {&#39;bos_token&#39;: &#39;&lt;s&gt;&#39;,
+               &#39;cls_token&#39;: &#39;&lt;cls&gt;&#39;,
+               &#39;eos_token&#39;: &#39;&lt;/s&gt;&#39;,
+               &#39;mask_token&#39;: &#39;&lt;mask&gt;&#39;,
+               &#39;model_max_length&#39;: None,
+               &#39;model_type&#39;: None,
+               &#39;name&#39;: None,
+               &#39;pad_token&#39;: &#39;&lt;pad&gt;&#39;,
+               &#39;padding_side&#39;: &#39;right&#39;,
+               &#39;path&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/tokenizers/enko_wiki/enko_wiki_unigram_huggingface_vocab_30000.json&#39;,
+               &#39;return_length&#39;: True,
+               &#39;sep_token&#39;: &#39;&lt;sep&gt;&#39;,
+               &#39;truncation&#39;: True,
+               &#39;unk_token&#39;: &#39;&lt;unk&gt;&#39;},
+ &#39;training&#39;: {&#39;do_eval&#39;: True,
+              &#39;do_train&#39;: True,
+              &#39;eval_steps&#39;: 1000,
+              &#39;evaluation_strategy&#39;: &#39;steps&#39;,
+              &#39;fp16&#39;: True,
+              &#39;gradient_accumulation_steps&#39;: 8,
+              &#39;learning_rate&#39;: 0.0005,
+              &#39;logging_steps&#39;: 1000,
+              &#39;lr_scheduler_type&#39;: &#39;cosine&#39;,
+              &#39;num_train_epochs&#39;: 10,
+              &#39;output_dir&#39;: None,
+              &#39;overwrite_output_dir&#39;: True,
+              &#39;per_device_eval_batch_size&#39;: 32,
+              &#39;per_device_train_batch_size&#39;: 32,
+              &#39;push_to_hub&#39;: False,
+              &#39;report_to&#39;: &#39;wandb&#39;,
+              &#39;run_name&#39;: &#39;enko_wiki_bert_base_uncased&#39;,
+              &#39;save_steps&#39;: 5000,
+              &#39;warmup_steps&#39;: 1000,
+              &#39;weight_decay&#39;: 0.1},
+ &#39;use_accelerator&#39;: True,
+ &#39;verbose&#39;: False}
+time: 115 ms (started: 2022-11-22 11:48:22 +00:00)
 </pre></div>
 </div>
 </div>
