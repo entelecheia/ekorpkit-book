@@ -25,6 +25,10 @@ tokenizer = AutoTokenizer.from_pretrained(tk_path)
 config_kwargs = {
     "vocab_size": len(tokenizer),
     "pad_token_id": tokenizer.pad_token_id,
+    "mask_token_id": tokenizer.mask_token_id,
+    "cls_token_id": tokenizer.cls_token_id,
+    "sep_token_id": tokenizer.sep_token_id,
+    "unk_token_id": tokenizer.unk_token_id,
     # "torch_dtype": "float16",
 }
 
@@ -59,10 +63,10 @@ args = TrainingArguments(
     per_device_train_batch_size=32,
     per_device_eval_batch_size=32,
     evaluation_strategy="steps",
-    eval_steps=5_000,
+    # eval_steps=5_000,
     logging_steps=5_000,
     gradient_accumulation_steps=8,
-    num_train_epochs=40,
+    num_train_epochs=10,
     weight_decay=0.1,
     warmup_steps=1_000,
     lr_scheduler_type="cosine",
