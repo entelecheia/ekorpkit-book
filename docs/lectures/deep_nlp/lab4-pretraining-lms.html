@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Lab 4: Pretraining Language Models &#8212; eKorpkit Tutorials</title>
     
   <!-- Loaded before other Sphinx assets -->
@@ -20,7 +21,7 @@
     href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -37,7 +38,7 @@
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -50,8 +51,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Applications of NLP" href="../nlp_apps/index.html" />
@@ -675,6 +674,11 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/language_models.html">
+     Language Models
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../intro_nlp/topic.html">
      Topic Modeling
     </a>
@@ -712,11 +716,6 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="../intro_nlp/word_embeddings.html">
      Word Embeddings
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../intro_nlp/language_models.html">
-     Language Models
     </a>
    </li>
    <li class="toctree-l2">
@@ -1415,7 +1414,7 @@ title="Print to PDF"
                 
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="lab-4-pretraining-language-models">
+  <section class="tex2jax_ignore mathjax_ignore" id="lab-4-pretraining-language-models">
 <h1>Lab 4: Pretraining Language Models<a class="headerlink" href="#lab-4-pretraining-language-models" title="Permalink to this headline">#</a></h1>
 <p><img alt="" src="../../../_images/train.png" /></p>
 <p>Now that we have our dataset and tokenizer, in this lab, we will train a language model on a large corpus of text from scratch.</p>
@@ -1502,14 +1501,14 @@ time: 893 ms (started: 2022-11-21 01:06:46 +00:00)
 </div>
 </div>
 </div>
-<div class="section" id="unicode-normalization">
+<section id="unicode-normalization">
 <h2>Unicode Normalization<a class="headerlink" href="#unicode-normalization" title="Permalink to this headline">#</a></h2>
 <p>One little thing to note is that we will need to normalize our text before training our language model. This is because the same character can be represented in different ways. For example, the character “é” can be represented as “e” followed by a combining accent character, or as a single character.</p>
-<div class="section" id="tl-dr">
+<section id="tl-dr">
 <h3>TL;DR<a class="headerlink" href="#tl-dr" title="Permalink to this headline">#</a></h3>
 <p>Use <code class="docutils literal notranslate"><span class="pre">NFKC</span></code> normalization to normalize your text before training your language model.</p>
-</div>
-<div class="section" id="unicode-normalization-forms">
+</section>
+<section id="unicode-normalization-forms">
 <h3>Unicode Normalization Forms<a class="headerlink" href="#unicode-normalization-forms" title="Permalink to this headline">#</a></h3>
 <p>There are four normalization forms:</p>
 <ul class="simple">
@@ -1524,8 +1523,8 @@ time: 893 ms (started: 2022-11-21 01:06:46 +00:00)
 <li><p>The length of the string is changed or not: NFC and NFKC always produce a string of the same length or shorter, while NFD and NFKD may produce a string that is longer.</p></li>
 <li><p>The original string is changed or not: NFC and NFD always produce a string that is identical to the original string, while NFKC and NFKD may produce a string that is different from the original string.</p></li>
 </ul>
-</div>
-<div class="section" id="unicode-normalization-in-python">
+</section>
+<section id="unicode-normalization-in-python">
 <h3>Unicode Normalization in Python<a class="headerlink" href="#unicode-normalization-in-python" title="Permalink to this headline">#</a></h3>
 <p>In Python, you can use the <code class="docutils literal notranslate"><span class="pre">unicodedata</span></code> module to normalize your text. The <code class="docutils literal notranslate"><span class="pre">unicodedata.normalize</span></code> function takes two arguments:</p>
 <ul class="simple">
@@ -1555,12 +1554,12 @@ time: 23.8 ms (started: 2022-11-19 10:16:57 +00:00)
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="bert-pretraining">
+</section>
+</section>
+<section id="bert-pretraining">
 <h2>BERT Pretraining<a class="headerlink" href="#bert-pretraining" title="Permalink to this headline">#</a></h2>
 <p>In this lab, we will train a BERT-like model using masked-language modeling, one of the two pretraining tasks used in the original BERT paper.</p>
-<div class="section" id="what-is-bert">
+<section id="what-is-bert">
 <h3>What is BERT?<a class="headerlink" href="#what-is-bert" title="Permalink to this headline">#</a></h3>
 <p>BERT is a large-scale language model that was trained on the English Wikipedia using a masked-language modeling objective. The model was then fine-tuned on a variety of downstream tasks, including question answering, natural language inference, and sentiment analysis. BERT was the first large-scale language model to be pre-trained using a deep bidirectional architecture and outperformed previous language models on a variety of tasks.</p>
 <p>BERT was originally pre-trained on 1 Million Steps with a global batch size of 256.</p>
@@ -1568,17 +1567,17 @@ time: 23.8 ms (started: 2022-11-19 10:16:57 +00:00)
 <div><p>“We train with batch size of 256 sequences (256 sequences * 512 tokens = 128,000 tokens/batch) for 1,000,000 steps, which is approximately 40 epochs over the 3.3 billion word corpus.”</p>
 </div></blockquote>
 <p>For more information, see the lecture notes on BERT.</p>
-</div>
-<div class="section" id="masked-language-modeling-mlm">
+</section>
+<section id="masked-language-modeling-mlm">
 <h3>Masked-Language Modeling (MLM)<a class="headerlink" href="#masked-language-modeling-mlm" title="Permalink to this headline">#</a></h3>
 <p>Masked-language modeling is a pretraining task where we mask some of the input tokens and train the model to predict the original value of the masked tokens. For example, if we have the sentence “The dog ate the apple”, we can mask the word “ate” and train the model to predict the original value of the masked token. The model will then learn to predict the original value of the masked tokens based on the context of the sentence.</p>
 <p>Example:</p>
 <blockquote>
 <div><p>Input: “The dog [MASK] the apple”</p>
 </div></blockquote>
-</div>
-</div>
-<div class="section" id="preprocessing-the-dataset">
+</section>
+</section>
+<section id="preprocessing-the-dataset">
 <h2>Preprocessing the Dataset<a class="headerlink" href="#preprocessing-the-dataset" title="Permalink to this headline">#</a></h2>
 <p>Before training our language model, we need to preprocess our dataset. We will use our tokenizer to tokenize our dataset and then convert the tokens to their IDs. If we have a sentence that is longer than the maximum sequence length, we will truncate the sentence. If the sentence is shorter than the maximum sequence length, we will pad the sentence with the padding token.</p>
 <p>Unlike the original BERT paper, we will not use the WordPiece tokenization algorithm. Instead, we will use the <code class="docutils literal notranslate"><span class="pre">unigram</span></code> tokenization algorithm.</p>
@@ -1638,7 +1637,7 @@ Vocab size: 30000
 </div>
 </div>
 </div>
-<div class="section" id="load-the-tokenizer">
+<section id="load-the-tokenizer">
 <h3>Load the tokenizer<a class="headerlink" href="#load-the-tokenizer" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1674,8 +1673,8 @@ time: 59.6 ms (started: 2022-11-21 01:03:21 +00:00)
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="load-the-dataset">
+</section>
+<section id="load-the-dataset">
 <h3>Load the dataset<a class="headerlink" href="#load-the-dataset" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1706,8 +1705,8 @@ WARNING:datasets.builder:Reusing dataset text (/workspace/data/tbts/.cache/huggi
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="tokenize-the-dataset">
+</section>
+<section id="tokenize-the-dataset">
 <h3>Tokenize the dataset<a class="headerlink" href="#tokenize-the-dataset" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1778,9 +1777,9 @@ WARNING:datasets.builder:Reusing dataset text (/workspace/data/tbts/.cache/huggi
 </div>
 </div>
 <p>We have 137,816,832 tokens in our dataset. For reference, the original BERT paper used 3.2 billion tokens, and GPT-3 uses 300 billion tokens.</p>
-</div>
-</div>
-<div class="section" id="initializing-a-new-model">
+</section>
+</section>
+<section id="initializing-a-new-model">
 <h2>Initializing a New Model<a class="headerlink" href="#initializing-a-new-model" title="Permalink to this headline">#</a></h2>
 <p>We will initialize a new model using the <code class="docutils literal notranslate"><span class="pre">bert-base-uncased</span></code> configuration. We will then save the configuration to a file so that we can use it later when we load the model.</p>
 <div class="cell docutils container">
@@ -1835,7 +1834,7 @@ time: 2.07 s (started: 2022-11-19 11:23:15 +00:00)
 </div>
 </div>
 </div>
-<div class="section" id="set-up-a-datacollator">
+<section id="set-up-a-datacollator">
 <h3>Set up a DataCollator<a class="headerlink" href="#set-up-a-datacollator" title="Permalink to this headline">#</a></h3>
 <p>Before we can start training, we need to set up a data collator that will be used to collate the batches of data. We will use the <code class="docutils literal notranslate"><span class="pre">DataCollatorForLanguageModeling</span></code> data collator, which will take care of masking the tokens and padding the sequences.</p>
 <div class="cell docutils container">
@@ -1859,8 +1858,8 @@ To enable them in other operations, rebuild TensorFlow with the appropriate comp
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="load-the-tokenized-dataset">
+</section>
+<section id="load-the-tokenized-dataset">
 <h3>Load the Tokenized Dataset<a class="headerlink" href="#load-the-tokenized-dataset" title="Permalink to this headline">#</a></h3>
 <p>Our dataset is already tokenized, there are 268,366 examples in our dataset.</p>
 <div class="cell docutils container">
@@ -1905,12 +1904,12 @@ time: 70 ms (started: 2022-11-21 01:24:35 +00:00)
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="training-the-model">
+</section>
+</section>
+<section id="training-the-model">
 <h2>Training the Model<a class="headerlink" href="#training-the-model" title="Permalink to this headline">#</a></h2>
 <p>We will configure the training arguments and then set up a trainer to train our model.</p>
-<div class="section" id="configure-the-training-arguments">
+<section id="configure-the-training-arguments">
 <h3>Configure the Training Arguments<a class="headerlink" href="#configure-the-training-arguments" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1954,8 +1953,8 @@ time: 70 ms (started: 2022-11-21 01:24:35 +00:00)
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="train-the-model">
+</section>
+<section id="train-the-model">
 <h3>Train the Model<a class="headerlink" href="#train-the-model" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1983,9 +1982,9 @@ time: 47.9 ms (started: 2022-11-19 11:34:51 +00:00)
 </div>
 </div>
 <p>It took 6h 33m 0.0s to train our model for 40 epochs.</p>
-</div>
-</div>
-<div class="section" id="testing-the-model">
+</section>
+</section>
+<section id="testing-the-model">
 <h2>Testing the Model<a class="headerlink" href="#testing-the-model" title="Permalink to this headline">#</a></h2>
 <p>We will load our model and test it on a few examples.</p>
 <div class="cell docutils container">
@@ -2067,8 +2066,8 @@ time: 223 ms (started: 2022-11-22 19:14:05 +00:00)
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="usage-of-mlm-trainer">
+</section>
+<section id="usage-of-mlm-trainer">
 <h2>Usage of MLM Trainer<a class="headerlink" href="#usage-of-mlm-trainer" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2612,8 +2611,8 @@ time: 262 ms (started: 2022-11-23 06:17:35 +00:00)
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="training-bnwiki-bert-using-mlm-trainer">
+</section>
+<section id="training-bnwiki-bert-using-mlm-trainer">
 <h2>Training bnwiki_bert using MLM Trainer<a class="headerlink" href="#training-bnwiki-bert-using-mlm-trainer" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2645,10 +2644,39 @@ INFO:ekorpkit.base:Setting EKORPKIT_PROJECT to ekorpkit-book
 INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.40.post0.dev27
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.40.post0.dev28
 is colab? False
 project_dir: /content/drive/MyDrive/workspace/projects/ekorpkit-book
-time: 1.49 s (started: 2022-11-24 01:34:09 +00:00)
+time: 1.41 s (started: 2022-11-24 10:48:11 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.tokenizers.trainer</span> <span class="kn">import</span> <span class="n">TokenizerTrainer</span>
+
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;tokenizer=trainer&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;bnwiki&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">use_sample</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">model_type</span> <span class="o">=</span> <span class="s2">&quot;unigram&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">=</span> <span class="mi">30000</span>
+
+<span class="n">tk_trainer</span> <span class="o">=</span> <span class="n">TokenizerTrainer</span><span class="p">(</span><span class="o">**</span><span class="n">cfg</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tk_trainer</span><span class="o">.</span><span class="n">model_path</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tk_trainer</span><span class="o">.</span><span class="n">sample_filepath</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+INFO:ekorpkit.base:No method defined to call
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/tokenizers/bnwiki/bnwiki_unigram_huggingface_vocab_30000.json
+/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/bnwiki/sentence_sample/sentence_chunks_sampled.txt
+time: 2.82 s (started: 2022-11-24 10:48:13 +00:00)
 </pre></div>
 </div>
 </div>
@@ -2657,18 +2685,17 @@ time: 1.49 s (started: 2022-11-24 01:34:09 +00:00)
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.models.transformer.trainers</span> <span class="kn">import</span> <span class="n">MlmTrainer</span>
 
-<span class="n">data_dir</span> <span class="o">=</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/language-modeling/outputs/bnwiki/sentence_sample/sentence_chunks_sampled.txt&quot;</span>
-<span class="n">tokenizer_name</span> <span class="o">=</span> <span class="s2">&quot;bnwiki_unigram_huggingface_vocab_30000.json&quot;</span>
+<span class="c1"># data_file = &quot;bnwiki_filtered.parquet&quot;</span>
 
 <span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;model/transformer=mlm.trainer&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;bnwiki&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">config_name</span> <span class="o">=</span> <span class="s2">&quot;bert-base-uncased&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">tokenizer_name</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">train_file</span> <span class="o">=</span> <span class="n">data_dir</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tk_trainer</span><span class="o">.</span><span class="n">model_path</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">train_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tk_trainer</span><span class="o">.</span><span class="n">sample_filepath</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">max_seq_length</span> <span class="o">=</span> <span class="mi">512</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">8</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">use_accelerator</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">num_train_epochs</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">num_train_epochs</span> <span class="o">=</span> <span class="mi">50</span>
 
 <span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">eval_steps</span><span class="p">:</span> <span class="mi">100</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">warmup_steps</span><span class="p">:</span> <span class="mi">50</span>
@@ -2678,7 +2705,7 @@ time: 1.49 s (started: 2022-11-24 01:34:09 +00:00)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2022-11-24 01:34:12.646680: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2022-11-24 10:48:16.468385: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
 To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
 INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
 WARNING:ekorpkit.models.transformer.trainers.mlm:Process rank: -1, device: cuda:0, n_gpu: 8, distributed training: False, 16-bits training: True
@@ -2748,9 +2775,9 @@ max_steps=-1,
 metric_for_best_model=None,
 mp_parameters=,
 no_cuda=False,
-num_train_epochs=10,
+num_train_epochs=50,
 optim=adamw_hf,
-output_dir=/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/models/bnwiki/bnwiki_bert-base-uncased,
+output_dir=/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/models/bnwiki/bnwiki-bert-base-uncased,
 overwrite_output_dir=True,
 past_index=-1,
 per_device_eval_batch_size=32,
@@ -2769,7 +2796,7 @@ save_on_each_node=False,
 save_steps=5000,
 save_strategy=steps,
 save_total_limit=None,
-seed=4224210455,
+seed=761100147,
 sharded_ddp=[],
 skip_memory_metrics=True,
 tf32=None,
@@ -2787,7 +2814,7 @@ xpu_backend=None,
 INFO:ekorpkit.base:No method defined to call
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 5.8 s (started: 2022-11-24 01:34:12 +00:00)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 4.97 s (started: 2022-11-24 10:48:16 +00:00)
 </pre></div>
 </div>
 </div>
@@ -2799,8 +2826,8 @@ INFO:ekorpkit.base:No method defined to call
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO|configuration_utils.py:654] 2022-11-24 01:34:18,995 &gt;&gt; loading configuration file config.json from cache at /content/drive/MyDrive/workspace/.cache/models--bert-base-uncased/snapshots/0a6aa9128b6194f4f3c4db429b6cb4891cdb421b/config.json
-[INFO|configuration_utils.py:706] 2022-11-24 01:34:18,996 &gt;&gt; Model config BertConfig {
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO|configuration_utils.py:654] 2022-11-24 10:48:22,043 &gt;&gt; loading configuration file config.json from cache at /content/drive/MyDrive/workspace/.cache/models--bert-base-uncased/snapshots/0a6aa9128b6194f4f3c4db429b6cb4891cdb421b/config.json
+[INFO|configuration_utils.py:706] 2022-11-24 10:48:22,044 &gt;&gt; Model config BertConfig {
   &quot;_name_or_path&quot;: &quot;bert-base-uncased&quot;,
   &quot;architectures&quot;: [
     &quot;BertForMaskedLM&quot;
@@ -2829,12 +2856,12 @@ INFO:ekorpkit.base:No method defined to call
 INFO:ekorpkit.models.transformer.trainers.mlm:Update model config with {&#39;vocab_size&#39;: 30000, &#39;pad_token_id&#39;: 4, &#39;mask_token_id&#39;: 3, &#39;unk_token_id&#39;: 7, &#39;sep_token_id&#39;: 6, &#39;cls_token_id&#39;: 5}
 INFO:ekorpkit.models.transformer.trainers.mlm:Is a fast tokenizer? True
 INFO:ekorpkit.models.transformer.trainers.mlm:Vocab size: 30000
-[INFO|tokenization_utils_base.py:2125] 2022-11-24 01:34:19,109 &gt;&gt; tokenizer config file saved in /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/models/bnwiki/bnwiki_bert-base-uncased/tokenizer_config.json
-[INFO|tokenization_utils_base.py:2132] 2022-11-24 01:34:19,109 &gt;&gt; Special tokens file saved in /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/models/bnwiki/bnwiki_bert-base-uncased/special_tokens_map.json
-[INFO|tokenization_utils_base.py:1773] 2022-11-24 01:34:19,146 &gt;&gt; loading file tokenizer.json
-[INFO|tokenization_utils_base.py:1773] 2022-11-24 01:34:19,146 &gt;&gt; loading file added_tokens.json
-[INFO|tokenization_utils_base.py:1773] 2022-11-24 01:34:19,147 &gt;&gt; loading file special_tokens_map.json
-[INFO|tokenization_utils_base.py:1773] 2022-11-24 01:34:19,147 &gt;&gt; loading file tokenizer_config.json
+[INFO|tokenization_utils_base.py:2125] 2022-11-24 10:48:22,150 &gt;&gt; tokenizer config file saved in /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/models/bnwiki/bnwiki-bert-base-uncased/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2132] 2022-11-24 10:48:22,150 &gt;&gt; Special tokens file saved in /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/models/bnwiki/bnwiki-bert-base-uncased/special_tokens_map.json
+[INFO|tokenization_utils_base.py:1773] 2022-11-24 10:48:22,188 &gt;&gt; loading file tokenizer.json
+[INFO|tokenization_utils_base.py:1773] 2022-11-24 10:48:22,189 &gt;&gt; loading file added_tokens.json
+[INFO|tokenization_utils_base.py:1773] 2022-11-24 10:48:22,189 &gt;&gt; loading file special_tokens_map.json
+[INFO|tokenization_utils_base.py:1773] 2022-11-24 10:48:22,189 &gt;&gt; loading file tokenizer_config.json
 INFO:ekorpkit.models.transformer.trainers.mlm:Training new model from scratch
 WARNING:datasets.builder:Using custom data configuration default-f05d2933e84bb227
 INFO:datasets.builder:Overwrite dataset info from restored data version.
@@ -2852,164 +2879,161 @@ INFO:datasets.info:Loading Dataset info from /content/drive/MyDrive/workspace/.c
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "e79e7345cb224e27be1faaffb4f002db", "version_major": 2, "version_minor": 0}
+{"model_id": "e47243342f2342b4a565e3724ebc9502", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "15510c30ec6b474fa9ef960c881a1f4e", "version_major": 2, "version_minor": 0}
 </script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "491b8b256dde40bebe6a17437dff9cb7", "version_major": 2, "version_minor": 0}
+{"model_id": "d9104c6506d4430b8bf7010b6925bfea", "version_major": 2, "version_minor": 0}
 </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "46d6c61f161144e985e1ad482d6709a2", "version_major": 2, "version_minor": 0}
+{"model_id": "30fdc4d9363a4195ac0add4db41b97df", "version_major": 2, "version_minor": 0}
 </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "918e3eae1a5b49cea8e0857594839980", "version_major": 2, "version_minor": 0}
-</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "69bb188a09434ac4a25f20c13127a86b", "version_major": 2, "version_minor": 0}
-</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "b04113a39934404f966b203eafa33e3c", "version_major": 2, "version_minor": 0}
+{"model_id": "0fcecb745d24469ba5bf135f6321d48a", "version_major": 2, "version_minor": 0}
 </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "10ac115676da48abb6ed3f2bc1d89da8", "version_major": 2, "version_minor": 0}
+{"model_id": "cb4c62f0a3a14cf98135d470242b0454", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "3932af9fdd044668959ed6c4b39019bb", "version_major": 2, "version_minor": 0}
 </script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "8438d5cc91ac4043869226eac24a5092", "version_major": 2, "version_minor": 0}
+{"model_id": "22d344d09fa94281a627e2395aba2d7c", "version_major": 2, "version_minor": 0}
 </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "d47cfa1b3aeb4493bcd2eb0b91ec6900", "version_major": 2, "version_minor": 0}
+{"model_id": "8272e4d94c364e4ca3847c3e66d2874f", "version_major": 2, "version_minor": 0}
 </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "f45cd43657d249cc961adfdd1b5aa2c8", "version_major": 2, "version_minor": 0}
+{"model_id": "e083707272284ab6bbd4a324d11f1dd8", "version_major": 2, "version_minor": 0}
 </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "501edb8036fd4a70bf8182b016b93f13", "version_major": 2, "version_minor": 0}
-</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "d6af828198924e1f99f4c42d548d65bc", "version_major": 2, "version_minor": 0}
-</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "8fae311d8900484eb88b8e635ea8396f", "version_major": 2, "version_minor": 0}
-</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "d44c8b6737724ae9a1567ef7253d053a", "version_major": 2, "version_minor": 0}
+{"model_id": "205967723f0a477cb9f8e6d13a99dd12", "version_major": 2, "version_minor": 0}
 </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "caa42cff83514fbc899102ef966b2488", "version_major": 2, "version_minor": 0}
+{"model_id": "dda9e042e67d4012855dd52d2461fc4a", "version_major": 2, "version_minor": 0}
 </script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "7fe400b1efe642dfb63db98f733b5cc1", "version_major": 2, "version_minor": 0}
+{"model_id": "fa1a55cdb0f1435bb2ccf3203fc2b8d9", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "19895f04804444cdb3329160a9ead859", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "b6f8d231e75a4d199430cf106bc2c535", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "3fc3b287ce844c15961e633e2165cdb2", "version_major": 2, "version_minor": 0}
 </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>          
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "4e722d136352489d8a7c26373a49b3c6", "version_major": 2, "version_minor": 0}
+{"model_id": "acf64d639f7d471ca35e4df55919ee7f", "version_major": 2, "version_minor": 0}
 </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "32c3a67124374e5ba6e1c9be39c1272d", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "9e904747d7ef426fb5682611df04d167", "version_major": 2, "version_minor": 0}
-</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "5bebfd6a06594b99a0a8b6f93d8ad195", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "b0881ad8c54249928c652da50ed04b9d", "version_major": 2, "version_minor": 0}
-</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "b3c967c8793547738d4db6f46fced93a", "version_major": 2, "version_minor": 0}
+{"model_id": "3b92fb91f79c4f6a8adb8eb7dc4f14d4", "version_major": 2, "version_minor": 0}
 </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "89f4cd66b4f747f2b4e1277fc09e3e30", "version_major": 2, "version_minor": 0}
+{"model_id": "70dc66450d8d4f2e8788b124c95bf6ad", "version_major": 2, "version_minor": 0}
 </script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "1ac1ace3ad3e4e61a994e0469f5cc989", "version_major": 2, "version_minor": 0}
+{"model_id": "7db34d21b78a4a72855bb17730bfe9c8", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "2b55a60006644a76b5918d1e8a341dee", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "d302af7d33b24b5989a74f09edde9a3d", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "2f995e61f957447aa438e01135951d74", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "2a5c62256a3b48ebbf99d636e247f195", "version_major": 2, "version_minor": 0}
 </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>          
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "7a0e769b26e64daf8ab0b818696c9cf8", "version_major": 2, "version_minor": 0}
+{"model_id": "a745a9ce31914e30bada7d63edddf65e", "version_major": 2, "version_minor": 0}
 </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "5f83c844ccb54e85a1a14cb3f9505bb8", "version_major": 2, "version_minor": 0}
+{"model_id": "bc0ba214962245218eb3ee337eeea2f3", "version_major": 2, "version_minor": 0}
 </script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "f9ed9faf593445aaaa232c4ccce84399", "version_major": 2, "version_minor": 0}
-</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "a3af054a37314024baf37e5ecedf69c9", "version_major": 2, "version_minor": 0}
-</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "5211001064f84f059966f5aab1614941", "version_major": 2, "version_minor": 0}
-</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "d34abe8e932c4469a41f525292ccbe47", "version_major": 2, "version_minor": 0}
+{"model_id": "288660f6c146442b9b8a7a209efaffe2", "version_major": 2, "version_minor": 0}
 </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  
 </pre></div>
 </div>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "460e233af18d429daa96dda24081d493", "version_major": 2, "version_minor": 0}
+{"model_id": "acfe1ceabeb240aab7839e330d9ac8a8", "version_major": 2, "version_minor": 0}
 </script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "b639194a8c2d4dab88759efe0d1cde7f", "version_major": 2, "version_minor": 0}
-</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO|trainer.py:557] 2022-11-24 01:34:47,323 &gt;&gt; Using cuda_amp half precision backend
+{"model_id": "b1ca3f93cd2b41589ffa584904d708af", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "c2a7b3c78abf4e75addc3ff5b7cab625", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "5d030ab1f5d94738baee54e1e43f3c12", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "89f4f12f176f4b679ec682ad7a98d851", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO|trainer.py:557] 2022-11-24 10:48:43,694 &gt;&gt; Using cuda_amp half precision backend
 INFO:ekorpkit.models.transformer.trainers.mlm:Accelerator state: {&#39;fork_launched&#39;: &#39;False&#39;, &#39;backend&#39;: &#39;None&#39;, &#39;deepspeed_plugin&#39;: &#39;None&#39;, &#39;distributed_type&#39;: &#39;DistributedType.NO&#39;, &#39;num_processes&#39;: &#39;1&#39;, &#39;process_index&#39;: &#39;0&#39;, &#39;local_process_index&#39;: &#39;0&#39;, &#39;device&#39;: &#39;cuda&#39;, &#39;mixed_precision&#39;: &#39;no&#39;, &#39;initialized&#39;: &#39;True&#39;}
 INFO:ekorpkit.models.transformer.trainers.mlm:Accelerator device: cuda
-INFO:ekorpkit.batch:Saving config to /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/bnwiki/configs/bnwiki(1)_config.yaml
-[INFO|trainer.py:725] 2022-11-24 01:34:47,432 &gt;&gt; The following columns in the training set don&#39;t have a corresponding argument in `BertForMaskedLM.forward` and have been ignored: special_tokens_mask. If special_tokens_mask are not expected by `BertForMaskedLM.forward`,  you can safely ignore this message.
-[INFO|trainer.py:1608] 2022-11-24 01:34:47,442 &gt;&gt; ***** Running training *****
-[INFO|trainer.py:1609] 2022-11-24 01:34:47,443 &gt;&gt;   Num examples = 41190
-[INFO|trainer.py:1610] 2022-11-24 01:34:47,443 &gt;&gt;   Num Epochs = 10
-[INFO|trainer.py:1611] 2022-11-24 01:34:47,443 &gt;&gt;   Instantaneous batch size per device = 32
-[INFO|trainer.py:1612] 2022-11-24 01:34:47,444 &gt;&gt;   Total train batch size (w. parallel, distributed &amp; accumulation) = 2048
-[INFO|trainer.py:1613] 2022-11-24 01:34:47,444 &gt;&gt;   Gradient Accumulation steps = 8
-[INFO|trainer.py:1614] 2022-11-24 01:34:47,444 &gt;&gt;   Total optimization steps = 200
-[INFO|trainer.py:1615] 2022-11-24 01:34:47,445 &gt;&gt;   Number of trainable parameters = 109112880
-[INFO|integrations.py:680] 2022-11-24 01:34:47,447 &gt;&gt; Automatic Weights &amp; Biases logging enabled, to disable set os.environ[&quot;WANDB_DISABLED&quot;] = &quot;true&quot;
+INFO:ekorpkit.batch:Saving config to /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/bnwiki/configs/bnwiki(2)_config.yaml
+[INFO|trainer.py:725] 2022-11-24 10:48:43,805 &gt;&gt; The following columns in the training set don&#39;t have a corresponding argument in `BertForMaskedLM.forward` and have been ignored: special_tokens_mask. If special_tokens_mask are not expected by `BertForMaskedLM.forward`,  you can safely ignore this message.
+[INFO|trainer.py:1608] 2022-11-24 10:48:43,817 &gt;&gt; ***** Running training *****
+[INFO|trainer.py:1609] 2022-11-24 10:48:43,817 &gt;&gt;   Num examples = 21987
+[INFO|trainer.py:1610] 2022-11-24 10:48:43,817 &gt;&gt;   Num Epochs = 50
+[INFO|trainer.py:1611] 2022-11-24 10:48:43,818 &gt;&gt;   Instantaneous batch size per device = 32
+[INFO|trainer.py:1612] 2022-11-24 10:48:43,818 &gt;&gt;   Total train batch size (w. parallel, distributed &amp; accumulation) = 2048
+[INFO|trainer.py:1613] 2022-11-24 10:48:43,818 &gt;&gt;   Gradient Accumulation steps = 8
+[INFO|trainer.py:1614] 2022-11-24 10:48:43,818 &gt;&gt;   Total optimization steps = 500
+[INFO|trainer.py:1615] 2022-11-24 10:48:43,819 &gt;&gt;   Number of trainable parameters = 109112880
+[INFO|integrations.py:680] 2022-11-24 10:48:43,821 &gt;&gt; Automatic Weights &amp; Biases logging enabled, to disable set os.environ[&quot;WANDB_DISABLED&quot;] = &quot;true&quot;
 <span class=" -Color -Color-Bold -Color-Bold-Blue">wandb</span>: Currently logged in as: <span class=" -Color -Color-Yellow">entelecheia</span>. Use <span class=" -Color -Color-Bold">`wandb login --relogin`</span> to force relogin
 </pre></div>
 </div>
 <div class="output text_html">wandb version 0.13.5 is available!  To upgrade, please run:
- $ pip install wandb --upgrade</div><div class="output text_html">Tracking run with wandb version 0.13.3</div><div class="output text_html">Run data is saved locally in <code>/workspace/projects/ekorpkit-book/ekorpkit-book/docs/lectures/deep_nlp/wandb/run-20221124_013449-2d4mn6zv</code></div><div class="output text_html">Syncing run <strong><a href="https://wandb.ai/entelecheia/ekorpkit-book/runs/2d4mn6zv" target="_blank">bnwiki</a></strong> to <a href="https://wandb.ai/entelecheia/ekorpkit-book" target="_blank">Weights & Biases</a> (<a href="https://wandb.me/run" target="_blank">docs</a>)<br/></div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[WARNING|logging.py:281] 2022-11-24 01:34:55,146 &gt;&gt; You&#39;re using a PreTrainedTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+ $ pip install wandb --upgrade</div><div class="output text_html">Tracking run with wandb version 0.13.3</div><div class="output text_html">Run data is saved locally in <code>/workspace/projects/ekorpkit-book/ekorpkit-book/docs/lectures/deep_nlp/wandb/run-20221124_104845-2xpde2w1</code></div><div class="output text_html">Syncing run <strong><a href="https://wandb.ai/entelecheia/ekorpkit-book/runs/2xpde2w1" target="_blank">bnwiki</a></strong> to <a href="https://wandb.ai/entelecheia/ekorpkit-book" target="_blank">Weights & Biases</a> (<a href="https://wandb.me/run" target="_blank">docs</a>)<br/></div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[WARNING|logging.py:281] 2022-11-24 10:48:51,894 &gt;&gt; You&#39;re using a PreTrainedTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
 </pre></div>
 </div>
 <div class="output text_html">
     <div>
 
-      <progress value='200' max='200' style='width:300px; height:20px; vertical-align: middle;'></progress>
-      [200/200 14:26, Epoch 9/10]
+      <progress value='27' max='500' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      [ 27/500 02:05 < 39:38, 0.20 it/s, Epoch 2.56/50]
     </div>
     <table border="1" class="dataframe">
   <thead>
@@ -3021,58 +3045,7 @@ INFO:ekorpkit.batch:Saving config to /content/drive/MyDrive/workspace/projects/e
   </thead>
   <tbody>
   </tbody>
-</table><p></div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO|trainer.py:1859] 2022-11-24 01:49:56,784 &gt;&gt; 
-
-Training completed. Do not forget to share your model on huggingface.co/models =)
-
-
-[INFO|trainer.py:2678] 2022-11-24 01:49:56,787 &gt;&gt; Saving model checkpoint to /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/models/bnwiki/bnwiki_bert-base-uncased
-[INFO|configuration_utils.py:447] 2022-11-24 01:49:56,788 &gt;&gt; Configuration saved in /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/models/bnwiki/bnwiki_bert-base-uncased/config.json
-[INFO|modeling_utils.py:1624] 2022-11-24 01:49:57,259 &gt;&gt; Model weights saved in /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/models/bnwiki/bnwiki_bert-base-uncased/pytorch_model.bin
-[INFO|tokenization_utils_base.py:2125] 2022-11-24 01:49:57,260 &gt;&gt; tokenizer config file saved in /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/models/bnwiki/bnwiki_bert-base-uncased/tokenizer_config.json
-[INFO|tokenization_utils_base.py:2132] 2022-11-24 01:49:57,261 &gt;&gt; Special tokens file saved in /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/models/bnwiki/bnwiki_bert-base-uncased/special_tokens_map.json
-INFO:ekorpkit.models.transformer.trainers.mlm:*** Evaluate ***
-[INFO|trainer.py:725] 2022-11-24 01:49:57,271 &gt;&gt; The following columns in the evaluation set don&#39;t have a corresponding argument in `BertForMaskedLM.forward` and have been ignored: special_tokens_mask. If special_tokens_mask are not expected by `BertForMaskedLM.forward`,  you can safely ignore this message.
-[INFO|trainer.py:2929] 2022-11-24 01:49:57,275 &gt;&gt; ***** Running Evaluation *****
-[INFO|trainer.py:2931] 2022-11-24 01:49:57,276 &gt;&gt;   Num examples = 2123
-[INFO|trainer.py:2934] 2022-11-24 01:49:57,276 &gt;&gt;   Batch size = 256
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>***** train metrics *****
-  epoch                    =        9.99
-  total_flos               = 100911469GF
-  train_loss               =      5.5552
-  train_runtime            =  0:15:09.33
-  train_samples            =       41190
-  train_samples_per_second =     452.966
-  train_steps_per_second   =        0.22
-</pre></div>
-</div>
-<div class="output text_html">
-<div>
-
-  <progress value='9' max='9' style='width:300px; height:20px; vertical-align: middle;'></progress>
-  [9/9 00:02]
-</div>
-</div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>***** eval metrics *****
-  epoch                   =       9.99
-  eval_accuracy           =     0.4317
-  eval_loss               =     4.4058
-  eval_runtime            = 0:00:04.00
-  eval_samples            =       2123
-  eval_samples_per_second =    530.424
-  eval_steps_per_second   =      2.249
-  perplexity              =    81.9261
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO|modelcard.py:449] 2022-11-24 01:50:02,158 &gt;&gt; Dropping the following result as it does not have all the necessary fields:
-{&#39;task&#39;: {&#39;name&#39;: &#39;Masked Language Modeling&#39;, &#39;type&#39;: &#39;fill-mask&#39;}, &#39;metrics&#39;: [{&#39;name&#39;: &#39;Accuracy&#39;, &#39;type&#39;: &#39;accuracy&#39;, &#39;value&#39;: 0.43166971849279917}]}
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 15min 44s (started: 2022-11-24 01:34:18 +00:00)
-</pre></div>
-</div>
-</div>
+</table><p></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -3083,26 +3056,16 @@ INFO:ekorpkit.models.transformer.trainers.mlm:*** Evaluate ***
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;score&#39;: 0.2782677114009857, &#39;token&#39;: 8, &#39;token_str&#39;: &#39;▁&#39;, &#39;sequence&#39;: &#39;▁ এই ▁ মসজদট র ▁ ভততপরসতর ▁ হযছল ▁ ▁ ▁ ২ ০ ১ ৫ ▁ সলর ▁ জন ▁ মস ।&#39;}
-{&#39;score&#39;: 0.04866817221045494, &#39;token&#39;: 16, &#39;token_str&#39;: &#39;০&#39;, &#39;sequence&#39;: &#39;▁ এই ▁ মসজদট র ▁ ভততপরসতর ▁ হযছল ▁ ০ ▁ ২ ০ ১ ৫ ▁ সলর ▁ জন ▁ মস ।&#39;}
-{&#39;score&#39;: 0.039430975914001465, &#39;token&#39;: 11, &#39;token_str&#39;: &#39;১&#39;, &#39;sequence&#39;: &#39;▁ এই ▁ মসজদট র ▁ ভততপরসতর ▁ হযছল ▁ ১ ▁ ২ ০ ১ ৫ ▁ সলর ▁ জন ▁ মস ।&#39;}
-{&#39;score&#39;: 0.03885406255722046, &#39;token&#39;: 17, &#39;token_str&#39;: &#39;২&#39;, &#39;sequence&#39;: &#39;▁ এই ▁ মসজদট র ▁ ভততপরসতর ▁ হযছল ▁ ২ ▁ ২ ০ ১ ৫ ▁ সলর ▁ জন ▁ মস ।&#39;}
-{&#39;score&#39;: 0.019664008170366287, &#39;token&#39;: 18, &#39;token_str&#39;: &#39;৯&#39;, &#39;sequence&#39;: &#39;▁ এই ▁ মসজদট র ▁ ভততপরসতর ▁ হযছল ▁ ৯ ▁ ২ ০ ১ ৫ ▁ সলর ▁ জন ▁ মস ।&#39;}
-time: 119 ms (started: 2022-11-24 01:55:16 +00:00)
-</pre></div>
 </div>
-</div>
-</div>
-</div>
-<div class="section" id="references">
+</section>
+<section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Unicode_equivalence">Unicode equivalence</a></p></li>
 <li><p><a class="reference external" href="https://huggingface.co/course/chapter7/6?fw=pt">Training a causal language model from scratch</a></p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

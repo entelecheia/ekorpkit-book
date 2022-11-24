@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Lab 3: Training Tokenizers &#8212; eKorpkit Tutorials</title>
     
   <!-- Loaded before other Sphinx assets -->
@@ -20,7 +21,7 @@
     href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -37,7 +38,7 @@
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -51,7 +52,7 @@ const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Lab 4: Pretraining Language Models" href="lab4-pretraining-lms.html" />
@@ -675,6 +676,11 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/language_models.html">
+     Language Models
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../intro_nlp/topic.html">
      Topic Modeling
     </a>
@@ -712,11 +718,6 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2">
     <a class="reference internal" href="../intro_nlp/word_embeddings.html">
      Word Embeddings
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../intro_nlp/language_models.html">
-     Language Models
     </a>
    </li>
    <li class="toctree-l2">
@@ -1272,12 +1273,39 @@ title="Print to PDF"
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#train-tokenizers-for-bengali">
-   Train tokenizers for Bengali
+  <a class="reference internal nav-link" href="#usage-of-tokenizer-trainer">
+   Usage of Tokenizer Trainer
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bpe-model-by-hugging-face">
+     BPE Model by Hugging Face
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#unigram-model-by-hugging-face">
+     Unigram Model by Hugging Face
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bpe-model-by-sentencepiece">
+     BPE Model by SentencePiece
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#unigram-model-by-sentencepiece">
+     Unigram Model by SentencePiece
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id2">
+     Compare the Tokenizers
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#usage-of-tokenizer-trainer">
+  <a class="reference internal nav-link" href="#id3">
    Usage of Tokenizer Trainer
   </a>
  </li>
@@ -1416,12 +1444,39 @@ title="Print to PDF"
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#train-tokenizers-for-bengali">
-   Train tokenizers for Bengali
+  <a class="reference internal nav-link" href="#usage-of-tokenizer-trainer">
+   Usage of Tokenizer Trainer
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bpe-model-by-hugging-face">
+     BPE Model by Hugging Face
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#unigram-model-by-hugging-face">
+     Unigram Model by Hugging Face
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bpe-model-by-sentencepiece">
+     BPE Model by SentencePiece
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#unigram-model-by-sentencepiece">
+     Unigram Model by SentencePiece
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id2">
+     Compare the Tokenizers
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#usage-of-tokenizer-trainer">
+  <a class="reference internal nav-link" href="#id3">
    Usage of Tokenizer Trainer
   </a>
  </li>
@@ -1435,10 +1490,10 @@ title="Print to PDF"
                 
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="lab-3-training-tokenizers">
+  <section class="tex2jax_ignore mathjax_ignore" id="lab-3-training-tokenizers">
 <h1>Lab 3: Training Tokenizers<a class="headerlink" href="#lab-3-training-tokenizers" title="Permalink to this headline">#</a></h1>
 <p><img alt="" src="../../../_images/tokenize.png" /></p>
-<div class="section" id="prepare-the-environment">
+<section id="prepare-the-environment">
 <h2>Prepare the environment<a class="headerlink" href="#prepare-the-environment" title="Permalink to this headline">#</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">pre</span> <span class="n">ekorpkit</span><span class="p">[</span><span class="n">tokenize</span><span class="p">]</span>
 </pre></div>
@@ -1485,7 +1540,7 @@ time: 253 ms (started: 2022-11-17 00:40:20 +00:00)
 </div>
 </div>
 </div>
-<div class="section" id="load-the-saved-corpora">
+<section id="load-the-saved-corpora">
 <h3>Load the saved corpora<a class="headerlink" href="#load-the-saved-corpora" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1625,8 +1680,8 @@ time: 145 ms (started: 2022-11-14 02:09:16 +00:00)
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="covert-pandas-datafame-to-huggingface-dataset">
+</section>
+<section id="covert-pandas-datafame-to-huggingface-dataset">
 <h3>Covert pandas datafame to huggingface dataset<a class="headerlink" href="#covert-pandas-datafame-to-huggingface-dataset" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1649,8 +1704,8 @@ time: 145 ms (started: 2022-11-14 02:09:16 +00:00)
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="shuffle-the-dataset">
+</section>
+<section id="shuffle-the-dataset">
 <h3>Shuffle the dataset<a class="headerlink" href="#shuffle-the-dataset" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1666,8 +1721,8 @@ time: 145 ms (started: 2022-11-14 02:09:16 +00:00)
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="split-the-dataset-into-sentences-for-training">
+</section>
+<section id="split-the-dataset-into-sentences-for-training">
 <h3>Split the dataset into sentences for training<a class="headerlink" href="#split-the-dataset-into-sentences-for-training" title="Permalink to this headline">#</a></h3>
 <p>The sentencepiece module comes with a python training API, which uses sentences in a file, one sentence per line. We will use the <code class="docutils literal notranslate"><span class="pre">sent_tokenize</span></code> function from the <code class="docutils literal notranslate"><span class="pre">nltk</span></code> package to split the text into sentences. The <code class="docutils literal notranslate"><span class="pre">sent_tokenize</span></code> function is a wrapper around the <code class="docutils literal notranslate"><span class="pre">punkt</span></code> tokenizer, which is a pre-trained sentence tokenizer. The <code class="docutils literal notranslate"><span class="pre">punkt</span></code> tokenizer is trained on the Penn Treebank corpus, which is a collection of Wall Street Journal articles. The <code class="docutils literal notranslate"><span class="pre">punkt</span></code> tokenizer is a good choice for plain English text, but it may not be the best choice for other languages.</p>
 <div class="cell docutils container">
@@ -1840,8 +1895,8 @@ time: 145 ms (started: 2022-11-14 02:09:16 +00:00)
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="sample-sentences-and-combine-them-into-a-single-file">
+</section>
+<section id="sample-sentences-and-combine-them-into-a-single-file">
 <h3>Sample sentences and combine them into a single file<a class="headerlink" href="#sample-sentences-and-combine-them-into-a-single-file" title="Permalink to this headline">#</a></h3>
 <p>If your dataset is too large, you can sample a subset of the sentence files for training. The <code class="docutils literal notranslate"><span class="pre">sample</span></code> function from the <code class="docutils literal notranslate"><span class="pre">random</span></code> module can be used to sample a subset of the files.</p>
 <p>You can use <code class="docutils literal notranslate"><span class="pre">sample_and_combine</span></code> function to sample a subset of sentence files and combine them into a single file.</p>
@@ -1873,12 +1928,12 @@ INFO:ekorpkit.tokenizers.trainers.spm:number of lines sampled: 2,998,856
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="train-tokenizers-with-hugging-face-tokenizers">
+</section>
+</section>
+<section id="train-tokenizers-with-hugging-face-tokenizers">
 <h2>Train tokenizers with Hugging Face Tokenizers<a class="headerlink" href="#train-tokenizers-with-hugging-face-tokenizers" title="Permalink to this headline">#</a></h2>
 <p><a class="reference external" href="https://huggingface.co/docs/tokenizers/quicktour">Hugging Face’s Tokenizers</a> provides a wide range of tokenizers, including BPE, WordPiece, Unigram, SentencePiece, and ByteLevel. We will use the BPE and Unigram tokenizers in this lab.</p>
-<div class="section" id="import-the-libraries-and-prepare-functions">
+<section id="import-the-libraries-and-prepare-functions">
 <h3>Import the libraries and prepare functions<a class="headerlink" href="#import-the-libraries-and-prepare-functions" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1947,8 +2002,8 @@ INFO:ekorpkit.tokenizers.trainers.spm:number of lines sampled: 2,998,856
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="train-bpe-tokenizer">
+</section>
+<section id="train-bpe-tokenizer">
 <h3>Train BPE tokenizer<a class="headerlink" href="#train-bpe-tokenizer" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1965,15 +2020,15 @@ INFO:ekorpkit.tokenizers.trainers.spm:number of lines sampled: 2,998,856
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ekorpkit <span class="se">\</span>
     project.name<span class="o">=</span>ekorpkit-book <span class="se">\</span>
     dir.workspace<span class="o">=</span>/content/drive/MyDrive/workspace <span class="se">\</span>
-    <span class="nv">verbose</span><span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
     <span class="nv">run</span><span class="o">=</span>tokenizer <span class="se">\</span>
-    <span class="nv">tokenizer</span><span class="o">=</span>train_hf <span class="se">\</span>
-    tokenizer.model_prefix<span class="o">=</span>enko_wiki <span class="se">\</span>
-    tokenizer.model_type<span class="o">=</span>bpe <span class="se">\</span>
-    tokenizer.vocab_size<span class="o">=</span><span class="m">30000</span> <span class="se">\</span>
-    tokenizer.input_files<span class="o">=</span>sampled_sentences.txt <span class="se">\</span>
-    tokenizer.input_dir<span class="o">=</span>data/tokenizers/enko_filtered_samples <span class="se">\</span>
-    tokenizer.output_dir<span class="o">=</span>tokenizers/hf/enko_wiki
+    <span class="nv">tokenizer</span><span class="o">=</span>trainer <span class="se">\</span>
+    tokenizer.name<span class="o">=</span>enkowiki <span class="se">\</span>
+    tokenizer.dataset.train_file<span class="o">=</span>enko_filtered.parquet <span class="se">\</span>
+    tokenizer.model.model_type<span class="o">=</span>bpe <span class="se">\</span>
+    tokenizer.model.vocab_size<span class="o">=</span><span class="m">30000</span> <span class="se">\</span>
+    tokenizer.model.character_coverage<span class="o">=</span><span class="m">0</span>.9995 <span class="se">\</span>
+    tokenizer.training.use_sample<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+    tokenizer.auto<span class="o">=</span>train
 </pre></div>
 </div>
 <blockquote>
@@ -2004,8 +2059,8 @@ time: 67.4 ms (started: 2022-11-13 08:47:47 +00:00)
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="train-unigram-tokenizer">
+</section>
+<section id="train-unigram-tokenizer">
 <h3>Train Unigram tokenizer<a class="headerlink" href="#train-unigram-tokenizer" title="Permalink to this headline">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model_path</span> <span class="o">=</span> <span class="n">train_tokenizer</span><span class="p">(</span><span class="s2">&quot;UNI&quot;</span><span class="p">)</span>
 </pre></div>
@@ -2014,15 +2069,15 @@ time: 67.4 ms (started: 2022-11-13 08:47:47 +00:00)
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ekorpkit <span class="se">\</span>
     project.name<span class="o">=</span>ekorpkit-book <span class="se">\</span>
     dir.workspace<span class="o">=</span>/content/drive/MyDrive/workspace <span class="se">\</span>
-    <span class="nv">verbose</span><span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
     <span class="nv">run</span><span class="o">=</span>tokenizer <span class="se">\</span>
-    <span class="nv">tokenizer</span><span class="o">=</span>train_hf <span class="se">\</span>
-    tokenizer.model_prefix<span class="o">=</span>enko_wiki <span class="se">\</span>
-    tokenizer.model_type<span class="o">=</span>unigram <span class="se">\</span>
-    tokenizer.vocab_size<span class="o">=</span><span class="m">30000</span> <span class="se">\</span>
-    tokenizer.input_files<span class="o">=</span>sampled_sentences.txt <span class="se">\</span>
-    tokenizer.input_dir<span class="o">=</span>data/tokenizers/enko_filtered_samples <span class="se">\</span>
-    tokenizer.output_dir<span class="o">=</span>tokenizers/hf/enko_wiki
+    <span class="nv">tokenizer</span><span class="o">=</span>trainer <span class="se">\</span>
+    tokenizer.name<span class="o">=</span>enkowiki <span class="se">\</span>
+    tokenizer.dataset.train_file<span class="o">=</span>enko_filtered.parquet <span class="se">\</span>
+    tokenizer.model.model_type<span class="o">=</span>unigram <span class="se">\</span>
+    tokenizer.model.vocab_size<span class="o">=</span><span class="m">30000</span> <span class="se">\</span>
+    tokenizer.training.use_sample<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+    tokenizer.batch.num_workers<span class="o">=</span><span class="m">128</span> <span class="se">\</span>
+    tokenizer.auto<span class="o">=</span>train
 </pre></div>
 </div>
 <blockquote>
@@ -2053,17 +2108,17 @@ time: 82 ms (started: 2022-11-13 08:47:51 +00:00)
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="train-tokenizers-with-google-sentencepiece-spm">
+</section>
+</section>
+<section id="train-tokenizers-with-google-sentencepiece-spm">
 <h2>Train tokenizers with Google SentencePiece (SPM)<a class="headerlink" href="#train-tokenizers-with-google-sentencepiece-spm" title="Permalink to this headline">#</a></h2>
-<div class="section" id="install-sentencepiece">
+<section id="install-sentencepiece">
 <h3>Install SentencePiece<a class="headerlink" href="#install-sentencepiece" title="Permalink to this headline">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install sentencepiece
 </pre></div>
 </div>
-</div>
-<div class="section" id="train-sentencepiece-models">
+</section>
+<section id="train-sentencepiece-models">
 <h3>Train SentencePiece models<a class="headerlink" href="#train-sentencepiece-models" title="Permalink to this headline">#</a></h3>
 <p>You can use <code class="docutils literal notranslate"><span class="pre">train_spm</span></code> function to train a SentencePiece model. The <code class="docutils literal notranslate"><span class="pre">train_spm</span></code> function takes the following arguments:</p>
 <ul class="simple">
@@ -2076,7 +2131,7 @@ time: 82 ms (started: 2022-11-13 08:47:51 +00:00)
 <li><p><code class="docutils literal notranslate"><span class="pre">num_threads</span></code>: The number of threads to use for training. The default value is <code class="docutils literal notranslate"><span class="pre">1</span></code>. The max value is <code class="docutils literal notranslate"><span class="pre">128</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">train_extremely_large_corpus</span></code>: Whether to train an extremely large corpus. The default value is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
-<div class="section" id="train-unigram-model">
+<section id="train-unigram-model">
 <h4>Train Unigram model<a class="headerlink" href="#train-unigram-model" title="Permalink to this headline">#</a></h4>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input docutils container">
@@ -2232,25 +2287,24 @@ unigram_model_trainer.cc(507) LOG(INFO) EM sub_iter=1 size=33000 obj=15.6585 num
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ekorpkit <span class="se">\</span>
     project.name<span class="o">=</span>ekorpkit-book <span class="se">\</span>
     dir.workspace<span class="o">=</span>/content/drive/MyDrive/workspace <span class="se">\</span>
-    <span class="nv">verbose</span><span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
     <span class="nv">run</span><span class="o">=</span>tokenizer <span class="se">\</span>
-    <span class="nv">tokenizer</span><span class="o">=</span>train_spm <span class="se">\</span>
-    tokenizer.model_prefix<span class="o">=</span>enko_wiki <span class="se">\</span>
-    tokenizer.model_type<span class="o">=</span>unigram <span class="se">\</span>
-    tokenizer.vocab_size<span class="o">=</span><span class="m">30000</span> <span class="se">\</span>
-    tokenizer.input_files<span class="o">=</span>sampled_sentences.txt <span class="se">\</span>
-    tokenizer.input_dir<span class="o">=</span>data/tokenizers/enko_filtered_samples <span class="se">\</span>
-    tokenizer.output_dir<span class="o">=</span>tokenizers/spm/enko_wiki <span class="se">\</span>
-    tokenizer.character_coverage<span class="o">=</span><span class="m">0</span>.9995 <span class="se">\</span>
-    tokenizer.num_workers<span class="o">=</span><span class="m">128</span>
+    <span class="nv">tokenizer</span><span class="o">=</span>trainer.spm <span class="se">\</span>
+    tokenizer.name<span class="o">=</span>enkowiki <span class="se">\</span>
+    tokenizer.dataset.train_file<span class="o">=</span>enko_filtered.parquet <span class="se">\</span>
+    tokenizer.model.model_type<span class="o">=</span>unigram <span class="se">\</span>
+    tokenizer.model.vocab_size<span class="o">=</span><span class="m">30000</span> <span class="se">\</span>
+    tokenizer.model.character_coverage<span class="o">=</span><span class="m">0</span>.9995 <span class="se">\</span>
+    tokenizer.training.use_sample<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+    tokenizer.batch.num_workers<span class="o">=</span><span class="m">128</span> <span class="se">\</span>
+    tokenizer.auto<span class="o">=</span>train
 </pre></div>
 </div>
 <blockquote>
 <div><p>took 4m 2.4s</p>
 </div></blockquote>
 <p>With 128 processors, it took 4 minutes and 2 seconds to tokenize the 2,998,856 sentences.</p>
-</div>
-<div class="section" id="load-the-trained-model">
+</section>
+<section id="load-the-trained-model">
 <h4>Load the trained model<a class="headerlink" href="#load-the-trained-model" title="Permalink to this headline">#</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2274,31 +2328,30 @@ time: 67.4 ms (started: 2022-11-13 08:48:00 +00:00)
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="train-bpe-model">
+</section>
+<section id="train-bpe-model">
 <h4>Train BPE model<a class="headerlink" href="#train-bpe-model" title="Permalink to this headline">#</a></h4>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ekorpkit <span class="se">\</span>
     project.name<span class="o">=</span>ekorpkit-book <span class="se">\</span>
     dir.workspace<span class="o">=</span>/content/drive/MyDrive/workspace <span class="se">\</span>
-    <span class="nv">verbose</span><span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
     <span class="nv">run</span><span class="o">=</span>tokenizer <span class="se">\</span>
-    <span class="nv">tokenizer</span><span class="o">=</span>train_spm <span class="se">\</span>
-    tokenizer.model_prefix<span class="o">=</span>enko_wiki <span class="se">\</span>
-    tokenizer.model_type<span class="o">=</span>bpe <span class="se">\</span>
-    tokenizer.vocab_size<span class="o">=</span><span class="m">30000</span> <span class="se">\</span>
-    tokenizer.input_files<span class="o">=</span>sampled_sentences.txt <span class="se">\</span>
-    tokenizer.input_dir<span class="o">=</span>data/tokenizers/enko_filtered_samples <span class="se">\</span>
-    tokenizer.output_dir<span class="o">=</span>tokenizers/spm/enko_wiki <span class="se">\</span>
-    tokenizer.character_coverage<span class="o">=</span><span class="m">0</span>.9995 <span class="se">\</span>
-    tokenizer.num_workers<span class="o">=</span><span class="m">128</span>
+    <span class="nv">tokenizer</span><span class="o">=</span>trainer.spm <span class="se">\</span>
+    tokenizer.name<span class="o">=</span>enkowiki <span class="se">\</span>
+    tokenizer.dataset.train_file<span class="o">=</span>enko_filtered.parquet <span class="se">\</span>
+    tokenizer.model.model_type<span class="o">=</span>bpe <span class="se">\</span>
+    tokenizer.model.vocab_size<span class="o">=</span><span class="m">30000</span> <span class="se">\</span>
+    tokenizer.model.character_coverage<span class="o">=</span><span class="m">0</span>.9995 <span class="se">\</span>
+    tokenizer.training.use_sample<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+    tokenizer.batch.num_workers<span class="o">=</span><span class="m">128</span> <span class="se">\</span>
+    tokenizer.auto<span class="o">=</span>train
 </pre></div>
 </div>
 <blockquote>
 <div><p>took 8m 41.8s</p>
 </div></blockquote>
 <p>With 128 processors, it took 8 minutes and 42 seconds to tokenize the 2,998,856 sentences.</p>
-</div>
-<div class="section" id="id1">
+</section>
+<section id="id1">
 <h4>Load the trained model<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2322,12 +2375,12 @@ time: 34.1 ms (started: 2022-11-13 08:48:11 +00:00)
 </div>
 </div>
 </div>
-</div>
-</div>
-</div>
-<div class="section" id="compare-the-tokenizers">
+</section>
+</section>
+</section>
+<section id="compare-the-tokenizers">
 <h2>Compare the Tokenizers<a class="headerlink" href="#compare-the-tokenizers" title="Permalink to this headline">#</a></h2>
-<div class="section" id="load-the-tokenizers">
+<section id="load-the-tokenizers">
 <h3>Load the tokenizers<a class="headerlink" href="#load-the-tokenizers" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2355,8 +2408,8 @@ time: 34.1 ms (started: 2022-11-13 08:48:11 +00:00)
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="analyze-the-output-of-the-tokenizers">
+</section>
+<section id="analyze-the-output-of-the-tokenizers">
 <h3>Analyze the output of the tokenizers<a class="headerlink" href="#analyze-the-output-of-the-tokenizers" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2404,8 +2457,8 @@ time: 20.8 ms (started: 2022-11-13 08:48:25 +00:00)
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="compare-the-tokens">
+</section>
+<section id="compare-the-tokens">
 <h3>Compare the Tokens<a class="headerlink" href="#compare-the-tokens" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2975,184 +3028,133 @@ time: 20.8 ms (started: 2022-11-13 08:48:25 +00:00)
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="train-tokenizers-for-bengali">
-<h2>Train tokenizers for Bengali<a class="headerlink" href="#train-tokenizers-for-bengali" title="Permalink to this headline">#</a></h2>
+</section>
+</section>
+<section id="usage-of-tokenizer-trainer">
+<h2>Usage of Tokenizer Trainer<a class="headerlink" href="#usage-of-tokenizer-trainer" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">nltk</span>
-<span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="kn">import</span> <span class="n">sent_tokenize</span>
-<span class="kn">from</span> <span class="nn">ekorpkit.tokenizers.trainers.spm</span> <span class="kn">import</span> <span class="n">export_sentence_chunk_files</span>
-<span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">Dataset</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;wiki_filtered.parquet&quot;</span><span class="p">,</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/data&quot;</span><span class="p">)</span>
+<span class="n">bnwiki_filtered</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">corpus</span> <span class="o">==</span> <span class="s2">&quot;bnwiki&quot;</span><span class="p">]</span>
 
+<span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;bnwiki_filtered.parquet&quot;</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;tokenizer=trainer&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;bnwiki&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">128</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">train_file</span> <span class="o">=</span> <span class="n">data_file</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">use_sample</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">model_type</span> <span class="o">=</span> <span class="s2">&quot;bpe&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">=</span> <span class="mi">30000</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">auto</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span>
 
-<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s2">&quot;punkt&quot;</span><span class="p">)</span>
-
-<span class="n">data</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;wiki_filtered.parquet&quot;</span><span class="p">,</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/data&quot;</span><span class="p">)</span>
-<span class="n">data_filtered</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">corpus</span> <span class="o">==</span> <span class="s2">&quot;bnwiki&quot;</span><span class="p">]</span>
-    
-<span class="n">text_column</span> <span class="o">=</span> <span class="s2">&quot;text&quot;</span>
-<span class="n">raw_dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">data_filtered</span><span class="p">[[</span><span class="n">text_column</span><span class="p">]])</span>
-
-
-<span class="c1"># shuffle the dataset</span>
-<span class="n">raw_dataset</span> <span class="o">=</span> <span class="n">raw_dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-
-<span class="n">output_dir</span> <span class="o">=</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/data/tokenizers/bn_filtered_chunk&quot;</span>
-
-<span class="n">export_sentence_chunk_files</span><span class="p">(</span>
-    <span class="n">raw_dataset</span><span class="p">,</span>
-    <span class="n">output_dir</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span>
-    <span class="n">chunk_size</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
-    <span class="n">text_column</span><span class="o">=</span><span class="n">text_column</span><span class="p">,</span>
-    <span class="n">sent_tokenize</span><span class="o">=</span><span class="n">sent_tokenize</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">bnwiki_filtered</span><span class="p">,</span> <span class="n">data_file</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">data_dir</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[nltk_data] Downloading package punkt to /root/nltk_data...
-[nltk_data]   Package punkt is already up-to-date!
-INFO:ekorpkit.io.file:Processing [1] files from [&#39;wiki_filtered.parquet&#39;]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;wiki_filtered.parquet&#39;]
 INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/data/wiki_filtered.parquet&#39;]
 INFO:ekorpkit.io.file:Loading data from /content/drive/MyDrive/workspace/projects/ekorpkit-book/data/wiki_filtered.parquet
-INFO:ekorpkit.tokenizers.trainers.spm:Writing sentence chunks to /content/drive/MyDrive/workspace/projects/ekorpkit-book/data/tokenizers/bn_filtered_chunk
+INFO:ekorpkit.io.file:Saving dataframe to /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/data/bnwiki_filtered.parquet
 </pre></div>
 </div>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "5a98776ef65f439d8148495dfc0be6e6", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "f0bfb11edc8642988f126d2deea74355", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "fa4b2e82b688456fb63d091c0511e0b5", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "bf506399037f4cf4899b636b2af0fa28", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "aca8288f303549f38982f6f0b9c1fea2", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "d451bc2e2cd94880899f0e1958c813a2", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "5f55d6b454b44e06b8b1ec173a11a323", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "49285242df204fbca016c9350d32eb7b", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "8e6ab49eeeb14403adc903da2cfd12bc", "version_major": 2, "version_minor": 0}
-</script><script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "9afa419744834776ab28f1c6be42daa6", "version_major": 2, "version_minor": 0}
-</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 15.3 s (started: 2022-11-17 00:42:04 +00:00)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 17.3 s (started: 2022-11-24 09:07:48 +00:00)
 </pre></div>
 </div>
 </div>
 </div>
+<section id="bpe-model-by-hugging-face">
+<h3>BPE Model by Hugging Face<a class="headerlink" href="#bpe-model-by-hugging-face" title="Permalink to this headline">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ekorpkit <span class="se">\</span>
+    project.name<span class="o">=</span>ekorpkit-book <span class="se">\</span>
+    dir.workspace<span class="o">=</span>/content/drive/MyDrive/workspace <span class="se">\</span>
+    <span class="nv">run</span><span class="o">=</span>tokenizer <span class="se">\</span>
+    <span class="nv">tokenizer</span><span class="o">=</span>trainer <span class="se">\</span>
+    tokenizer.name<span class="o">=</span>bnwiki <span class="se">\</span>
+    tokenizer.dataset.train_file<span class="o">=</span>bnwiki_filtered.parquet <span class="se">\</span>
+    tokenizer.model.model_type<span class="o">=</span>bpe <span class="se">\</span>
+    tokenizer.model.vocab_size<span class="o">=</span><span class="m">30000</span> <span class="se">\</span>
+    tokenizer.training.use_sample<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+    tokenizer.batch.num_workers<span class="o">=</span><span class="m">128</span> <span class="se">\</span>
+    tokenizer.auto<span class="o">=</span>train
+</pre></div>
+</div>
+</section>
+<section id="unigram-model-by-hugging-face">
+<h3>Unigram Model by Hugging Face<a class="headerlink" href="#unigram-model-by-hugging-face" title="Permalink to this headline">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ekorpkit <span class="se">\</span>
+    project.name<span class="o">=</span>ekorpkit-book <span class="se">\</span>
+    dir.workspace<span class="o">=</span>/content/drive/MyDrive/workspace <span class="se">\</span>
+    <span class="nv">run</span><span class="o">=</span>tokenizer <span class="se">\</span>
+    <span class="nv">tokenizer</span><span class="o">=</span>trainer <span class="se">\</span>
+    tokenizer.name<span class="o">=</span>bnwiki <span class="se">\</span>
+    tokenizer.dataset.train_file<span class="o">=</span>bnwiki_filtered.parquet <span class="se">\</span>
+    tokenizer.model.model_type<span class="o">=</span>unigram <span class="se">\</span>
+    tokenizer.model.vocab_size<span class="o">=</span><span class="m">30000</span> <span class="se">\</span>
+    tokenizer.training.use_sample<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+    tokenizer.batch.num_workers<span class="o">=</span><span class="m">128</span> <span class="se">\</span>
+    tokenizer.auto<span class="o">=</span>train
+</pre></div>
+</div>
+</section>
+<section id="bpe-model-by-sentencepiece">
+<h3>BPE Model by SentencePiece<a class="headerlink" href="#bpe-model-by-sentencepiece" title="Permalink to this headline">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ekorpkit <span class="se">\</span>
+    project.name<span class="o">=</span>ekorpkit-book <span class="se">\</span>
+    dir.workspace<span class="o">=</span>/content/drive/MyDrive/workspace <span class="se">\</span>
+    <span class="nv">run</span><span class="o">=</span>tokenizer <span class="se">\</span>
+    <span class="nv">tokenizer</span><span class="o">=</span>trainer.spm <span class="se">\</span>
+    tokenizer.name<span class="o">=</span>bnwiki <span class="se">\</span>
+    tokenizer.dataset.train_file<span class="o">=</span>bnwiki_filtered.parquet <span class="se">\</span>
+    tokenizer.model.model_type<span class="o">=</span>bpe <span class="se">\</span>
+    tokenizer.model.vocab_size<span class="o">=</span><span class="m">30000</span> <span class="se">\</span>
+    tokenizer.model.character_coverage<span class="o">=</span><span class="m">0</span>.9995 <span class="se">\</span>
+    tokenizer.training.use_sample<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+    tokenizer.batch.num_workers<span class="o">=</span><span class="m">128</span> <span class="se">\</span>
+    tokenizer.auto<span class="o">=</span>train
+</pre></div>
+</div>
+</section>
+<section id="unigram-model-by-sentencepiece">
+<h3>Unigram Model by SentencePiece<a class="headerlink" href="#unigram-model-by-sentencepiece" title="Permalink to this headline">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ekorpkit <span class="se">\</span>
+    project.name<span class="o">=</span>ekorpkit-book <span class="se">\</span>
+    dir.workspace<span class="o">=</span>/content/drive/MyDrive/workspace <span class="se">\</span>
+    <span class="nv">run</span><span class="o">=</span>tokenizer <span class="se">\</span>
+    <span class="nv">tokenizer</span><span class="o">=</span>trainer.spm <span class="se">\</span>
+    tokenizer.name<span class="o">=</span>bnwiki <span class="se">\</span>
+    tokenizer.dataset.train_file<span class="o">=</span>bnwiki_filtered.parquet <span class="se">\</span>
+    tokenizer.model.model_type<span class="o">=</span>unigram <span class="se">\</span>
+    tokenizer.model.vocab_size<span class="o">=</span><span class="m">30000</span> <span class="se">\</span>
+    tokenizer.model.character_coverage<span class="o">=</span><span class="m">0</span>.9995 <span class="se">\</span>
+    tokenizer.training.use_sample<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+    tokenizer.batch.num_workers<span class="o">=</span><span class="m">128</span> <span class="se">\</span>
+    tokenizer.auto<span class="o">=</span>train
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3>Compare the Tokenizers<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.tokenizers.trainers.spm</span> <span class="kn">import</span> <span class="n">sample_and_combine</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.tokenizers.trainer</span> <span class="kn">import</span> <span class="n">TokenizerTrainer</span><span class="p">,</span> <span class="n">compare_tokens</span>
 
-<span class="n">input_dir</span> <span class="o">=</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/data/tokenizers/bn_filtered_chunk&quot;</span>
-<span class="n">output_dir</span> <span class="o">=</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/data/tokenizers/bn_filtered_samples&quot;</span>
 
-<span class="n">sampled_file</span> <span class="o">=</span> <span class="n">sample_and_combine</span><span class="p">(</span>
-    <span class="n">input_dir</span><span class="o">=</span><span class="n">input_dir</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">sample_size</span><span class="o">=</span><span class="mi">5</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.tokenizers.trainers.spm:sampled files: [&#39;sent_chunk_0005.txt&#39;, &#39;sent_chunk_0008.txt&#39;, &#39;sent_chunk_0000.txt&#39;, &#39;sent_chunk_0004.txt&#39;, &#39;sent_chunk_0006.txt&#39;]
-INFO:ekorpkit.tokenizers.trainers.spm:number of lines sampled: 190,496
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "c25d32a806304d3fa86d45d78efef7ee", "version_major": 2, "version_minor": 0}
-</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.tokenizers.trainers.spm:saved sampled sentences to /content/drive/MyDrive/workspace/projects/ekorpkit-book/data/tokenizers/bn_filtered_samples/sampled_sentences.txt
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 4.08 s (started: 2022-11-17 00:42:54 +00:00)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>!ekorpkit <span class="se">\</span>
-    project.name<span class="o">=</span>ekorpkit-book <span class="se">\</span>
-    dir.workspace<span class="o">=</span>/content/drive/MyDrive/workspace <span class="se">\</span>
-    <span class="nv">verbose</span><span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
-    <span class="nv">run</span><span class="o">=</span>tokenizer <span class="se">\</span>
-    <span class="nv">tokenizer</span><span class="o">=</span>train_hf <span class="se">\</span>
-    tokenizer.model_prefix<span class="o">=</span>bn_wiki <span class="se">\</span>
-    tokenizer.model_type<span class="o">=</span>bpe <span class="se">\</span>
-    tokenizer.vocab_size<span class="o">=</span><span class="m">30000</span> <span class="se">\</span>
-    tokenizer.input_files<span class="o">=</span>sampled_sentences.txt <span class="se">\</span>
-    tokenizer.input_dir<span class="o">=</span>data/tokenizers/bn_filtered_samples <span class="se">\</span>
-    tokenizer.output_dir<span class="o">=</span>tokenizers/bn_wiki
-</pre></div>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ekorpkit <span class="se">\</span>
-    project.name<span class="o">=</span>ekorpkit-book <span class="se">\</span>
-    dir.workspace<span class="o">=</span>/content/drive/MyDrive/workspace <span class="se">\</span>
-    <span class="nv">verbose</span><span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
-    <span class="nv">run</span><span class="o">=</span>tokenizer <span class="se">\</span>
-    <span class="nv">tokenizer</span><span class="o">=</span>train_hf <span class="se">\</span>
-    tokenizer.model_prefix<span class="o">=</span>bn_wiki <span class="se">\</span>
-    tokenizer.model_type<span class="o">=</span>unigram <span class="se">\</span>
-    tokenizer.vocab_size<span class="o">=</span><span class="m">30000</span> <span class="se">\</span>
-    tokenizer.input_files<span class="o">=</span>sampled_sentences.txt <span class="se">\</span>
-    tokenizer.input_dir<span class="o">=</span>data/tokenizers/bn_filtered_samples <span class="se">\</span>
-    tokenizer.output_dir<span class="o">=</span>tokenizers/bn_wiki
-</pre></div>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ekorpkit <span class="se">\</span>
-    project.name<span class="o">=</span>ekorpkit-book <span class="se">\</span>
-    dir.workspace<span class="o">=</span>/content/drive/MyDrive/workspace <span class="se">\</span>
-    <span class="nv">verbose</span><span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
-    <span class="nv">run</span><span class="o">=</span>tokenizer <span class="se">\</span>
-    <span class="nv">tokenizer</span><span class="o">=</span>train_spm <span class="se">\</span>
-    tokenizer.model_prefix<span class="o">=</span>bn_wiki <span class="se">\</span>
-    tokenizer.model_type<span class="o">=</span>unigram <span class="se">\</span>
-    tokenizer.vocab_size<span class="o">=</span><span class="m">30000</span> <span class="se">\</span>
-    tokenizer.input_files<span class="o">=</span>sampled_sentences.txt <span class="se">\</span>
-    tokenizer.input_dir<span class="o">=</span>data/tokenizers/bn_filtered_samples <span class="se">\</span>
-    tokenizer.output_dir<span class="o">=</span>tokenizers/bn_wiki <span class="se">\</span>
-    tokenizer.character_coverage<span class="o">=</span><span class="m">0</span>.9995 <span class="se">\</span>
-    tokenizer.num_workers<span class="o">=</span><span class="m">128</span>
-</pre></div>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ekorpkit <span class="se">\</span>
-    project.name<span class="o">=</span>ekorpkit-book <span class="se">\</span>
-    dir.workspace<span class="o">=</span>/content/drive/MyDrive/workspace <span class="se">\</span>
-    <span class="nv">verbose</span><span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
-    <span class="nv">run</span><span class="o">=</span>tokenizer <span class="se">\</span>
-    <span class="nv">tokenizer</span><span class="o">=</span>train_spm <span class="se">\</span>
-    tokenizer.model_prefix<span class="o">=</span>bn_wiki <span class="se">\</span>
-    tokenizer.model_type<span class="o">=</span>bpe <span class="se">\</span>
-    tokenizer.vocab_size<span class="o">=</span><span class="m">30000</span> <span class="se">\</span>
-    tokenizer.input_files<span class="o">=</span>sampled_sentences.txt <span class="se">\</span>
-    tokenizer.input_dir<span class="o">=</span>data/tokenizers/bn_filtered_samples <span class="se">\</span>
-    tokenizer.output_dir<span class="o">=</span>tokenizers/bn_wiki <span class="se">\</span>
-    tokenizer.character_coverage<span class="o">=</span><span class="m">0</span>.9995 <span class="se">\</span>
-    tokenizer.num_workers<span class="o">=</span><span class="m">128</span>
-</pre></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tokenizers</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
-<span class="kn">import</span> <span class="nn">sentencepiece</span> <span class="k">as</span> <span class="nn">spm</span>
-
-<span class="k">def</span> <span class="nf">load_tokenizer</span><span class="p">(</span><span class="n">trainer_type</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span> <span class="n">lang</span><span class="p">):</span>
-    <span class="n">ext</span> <span class="o">=</span> <span class="s2">&quot;model&quot;</span> <span class="k">if</span> <span class="n">trainer_type</span> <span class="o">==</span> <span class="s2">&quot;spm&quot;</span> <span class="k">else</span> <span class="s2">&quot;json&quot;</span>
-        
-    <span class="n">model_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;tokenizers/</span><span class="si">{</span><span class="n">lang</span><span class="si">}</span><span class="s2">_wiki/</span><span class="si">{</span><span class="n">lang</span><span class="si">}</span><span class="s2">_wiki_</span><span class="si">{</span><span class="n">model_type</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">trainer_type</span><span class="si">}</span><span class="s2">_vocab_30000.</span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">model_file</span> <span class="o">=</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">model_file</span>
-    
+<span class="k">def</span> <span class="nf">load_tokenizer</span><span class="p">(</span><span class="n">trainer_type</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;kowiki&quot;</span><span class="p">):</span>
+    <span class="n">cfg_group</span> <span class="o">=</span> <span class="s2">&quot;tokenizer=trainer&quot;</span>
     <span class="k">if</span> <span class="n">trainer_type</span> <span class="o">==</span> <span class="s2">&quot;spm&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">spm</span><span class="o">.</span><span class="n">SentencePieceProcessor</span><span class="p">(</span><span class="n">model_file</span><span class="o">=</span><span class="n">model_file</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">Tokenizer</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">model_file</span><span class="p">)</span>
+        <span class="n">cfg_group</span> <span class="o">+=</span> <span class="s2">&quot;.spm&quot;</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">cfg_group</span><span class="p">)</span>
+    <span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">model_type</span> <span class="o">=</span> <span class="n">model_type</span>
+    <span class="n">trainer</span> <span class="o">=</span> <span class="n">TokenizerTrainer</span><span class="p">(</span><span class="o">**</span><span class="n">cfg</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">trainer</span><span class="o">.</span><span class="n">tokenizer</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 21.2 ms (started: 2022-11-17 00:57:40 +00:00)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 23.6 ms (started: 2022-11-24 09:50:10 +00:00)
 </pre></div>
 </div>
 </div>
@@ -3165,87 +3167,70 @@ INFO:ekorpkit.tokenizers.trainers.spm:number of lines sampled: 190,496
     <span class="k">for</span> <span class="n">model_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;bpe&#39;</span><span class="p">,</span> <span class="s1">&#39;unigram&#39;</span><span class="p">]:</span>
         <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model_type</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">trainer_type</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">tokenizers</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">load_tokenizer</span><span class="p">(</span><span class="n">trainer_type</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span> <span class="s2">&quot;bn&quot;</span><span class="p">)</span>    
+        <span class="n">tokenizers</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">load_tokenizer</span><span class="p">(</span><span class="n">trainer_type</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span> <span class="s2">&quot;bnwiki&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>bpe_spm
-unigram_spm
-bpe_huggingface
-unigram_huggingface
-time: 257 ms (started: 2022-11-17 00:57:40 +00:00)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+INFO:ekorpkit.base:No method defined to call
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>unigram_spm
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+INFO:ekorpkit.base:No method defined to call
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>bpe_huggingface
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+INFO:ekorpkit.base:No method defined to call
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>unigram_huggingface
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+INFO:ekorpkit.base:No method defined to call
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 5.8 s (started: 2022-11-24 09:56:55 +00:00)
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
-
-<span class="n">sampled_file</span> <span class="o">=</span> <span class="s2">&quot;data/tokenizers/bn_filtered_samples/*.txt&quot;</span>
-<span class="n">sampled_file</span> <span class="o">=</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">sampled_file</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg_group</span> <span class="o">=</span> <span class="s2">&quot;tokenizer=trainer&quot;</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">cfg_group</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;bnwiki&quot;</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">TokenizerTrainer</span><span class="p">(</span><span class="o">**</span><span class="n">cfg</span><span class="p">)</span>
 
 <span class="n">sentences</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">files</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">get_filepaths</span><span class="p">(</span><span class="n">sampled_file</span><span class="p">)</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">input_files</span>
 <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">sentences</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">())</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;number of sentences:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">sentences</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">sentences</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sentences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/data/tokenizers/bn_filtered_samples/*.txt&#39;]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+INFO:ekorpkit.base:No method defined to call
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>number of sentences: 190496
-হ্যানসেন রচিত &quot;ফার্স্ট ম্যান: দ্য লাইফ অব নিল এ.
-time: 235 ms (started: 2022-11-17 01:29:41 +00:00)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-
-<span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Tokenizes the text using the tokenizer.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">,</span> <span class="n">spm</span><span class="o">.</span><span class="n">SentencePieceProcessor</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">out_type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">tokens</span>
-
-<span class="k">def</span> <span class="nf">compare_tokens</span><span class="p">(</span><span class="n">tokenizers</span><span class="p">,</span> <span class="n">sentences</span><span class="p">):</span>
-
-    <span class="n">tokens</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">sentences</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Text: </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="c1"># tokenize the texts with the tokenizers</span>
-    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">tokenizer</span> <span class="ow">in</span> <span class="n">tokenizers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">tokens</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-    
-    <span class="n">max_len</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">name</span><span class="p">])</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">tokenizers</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-    <span class="n">diffs</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">name</span><span class="p">:</span> <span class="n">max_len</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">name</span><span class="p">])</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">tokenizers</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-    <span class="p">}</span>
-
-    <span class="n">padded_tokens</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">name</span><span class="p">:</span> <span class="n">tokens</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">diffs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">tokenizers</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-    <span class="p">}</span>
-
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">padded_tokens</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">df</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 20.6 ms (started: 2022-11-17 01:37:23 +00:00)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>number of sentences: 357833
+জোড্ডা পূর্ব বাংলাদেশের কুমিল্লা জেলার অন্তর্গত নাঙ্গলকোট উপজেলার একটি ইউনিয়ন।
+time: 1.91 s (started: 2022-11-24 09:57:01 +00:00)
 </pre></div>
 </div>
 </div>
@@ -3257,7 +3242,7 @@ time: 235 ms (started: 2022-11-17 01:29:41 +00:00)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text: সোয়াস মাইনর পেশি কটিদেশীয় কশেরুকা কলামের &quot;দুর্বল ফ্লেক্সার&quot; হিসেবে কাজ করে।
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text: জাগুয়া ইউনিয়ন বরিশাল সদর উপজেলার আওতাধীন ৬নং ইউনিয়ন পরিষদ। এ ইউনিয়নের প্রশাসনিক কার্যক্রম কোতোয়ালী মডেল থানার আওতাধীন। এটি জাতীয় সংসদের ১২৩নং নির্বাচনী এলাকা বরিশাল-৫ এর অংশ।
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -3287,229 +3272,270 @@ time: 235 ms (started: 2022-11-17 01:29:41 +00:00)
   <tbody>
     <tr>
       <th>0</th>
-      <td>▁সোয়</td>
-      <td>▁সোয়া</td>
-      <td>সযস</td>
-      <td>স</td>
+      <td>▁জাগ</td>
+      <td>▁জা</td>
+      <td>জগয</td>
+      <td>▁জগয</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>াস</td>
-      <td>স</td>
-      <td>মইনর</td>
-      <td>য</td>
+      <td>ুয়া</td>
+      <td>গুয়া</td>
+      <td>ইউনযন</td>
+      <td>▁ইউনযন</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>▁মাইনর</td>
-      <td>▁মাইনর</td>
-      <td>পশ</td>
-      <td>স</td>
+      <td>▁ইউনিয়ন</td>
+      <td>▁ইউনিয়ন</td>
+      <td>বরশল</td>
+      <td>▁বরশল</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>▁পেশ</td>
-      <td>▁পেশি</td>
-      <td>কট</td>
-      <td>মইনর</td>
+      <td>▁বরিশাল</td>
+      <td>▁বরিশাল</td>
+      <td>সদর</td>
+      <td>▁সদর</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>ি</td>
-      <td>▁ক</td>
-      <td>দশয</td>
-      <td>পশ</td>
+      <td>▁সদর</td>
+      <td>▁সদর</td>
+      <td>উপজলর</td>
+      <td>▁উপজলর</td>
     </tr>
     <tr>
       <th>5</th>
-      <td>▁কটি</td>
-      <td>টি</td>
-      <td>কশরক</td>
-      <td>ক</td>
+      <td>▁উপজেলার</td>
+      <td>▁উপজেলার</td>
+      <td>আওতধন</td>
+      <td>▁আওতধন</td>
     </tr>
     <tr>
       <th>6</th>
-      <td>দেশীয়</td>
-      <td>দেশীয়</td>
-      <td>কলমর</td>
-      <td>ট</td>
+      <td>▁আওতাধীন</td>
+      <td>▁আওতাধীন</td>
+      <td>৬ন</td>
+      <td>▁</td>
     </tr>
     <tr>
       <th>7</th>
-      <td>▁কশের</td>
-      <td>▁কশেরুকা</td>
-      <td>"</td>
-      <td>দশয</td>
+      <td>▁৬নং</td>
+      <td>▁৬নং</td>
+      <td>ইউনযন</td>
+      <td>৬</td>
     </tr>
     <tr>
       <th>8</th>
-      <td>ুকা</td>
-      <td>▁কলাম</td>
-      <td>দরবল</td>
-      <td>কশরক</td>
+      <td>▁ইউনিয়ন</td>
+      <td>▁ইউনিয়ন</td>
+      <td>পরষদ</td>
+      <td>ন</td>
     </tr>
     <tr>
       <th>9</th>
-      <td>▁কলাম</td>
-      <td>ের</td>
-      <td>ফলকসর</td>
-      <td>কলম</td>
+      <td>▁পরিষদ</td>
+      <td>▁পরিষদ</td>
+      <td>।</td>
+      <td>▁ইউনযন</td>
     </tr>
     <tr>
       <th>10</th>
-      <td>ের</td>
-      <td>▁"</td>
-      <td>"</td>
-      <td>র</td>
+      <td>।</td>
+      <td>।</td>
+      <td>এ</td>
+      <td>▁পরষদ।</td>
     </tr>
     <tr>
       <th>11</th>
-      <td>▁"</td>
-      <td>দু</td>
-      <td>হসব</td>
-      <td>"</td>
+      <td>▁এ</td>
+      <td>▁এ</td>
+      <td>ইউনযনর</td>
+      <td>▁এ</td>
     </tr>
     <tr>
       <th>12</th>
-      <td>দু</td>
-      <td>র্ব</td>
-      <td>কজ</td>
-      <td>দরবল</td>
+      <td>▁ইউনিয়নের</td>
+      <td>▁ইউনিয়নের</td>
+      <td>পরশসনক</td>
+      <td>▁ইউনযনর</td>
     </tr>
     <tr>
       <th>13</th>
-      <td>র্ব</td>
-      <td>ল</td>
-      <td>কর</td>
-      <td>ফলকস</td>
+      <td>▁প্রশাসনিক</td>
+      <td>▁প্রশাসনিক</td>
+      <td>করযকরম</td>
+      <td>▁পরশসনক</td>
     </tr>
     <tr>
       <th>14</th>
-      <td>ল</td>
-      <td>▁ফ্ল</td>
-      <td>।</td>
-      <td>র</td>
+      <td>▁কার্যক্রম</td>
+      <td>▁কার্যক্রম</td>
+      <td>কতযল</td>
+      <td>▁করযকরম</td>
     </tr>
     <tr>
       <th>15</th>
-      <td>▁ফ</td>
-      <td>েক্স</td>
-      <td></td>
-      <td>"</td>
+      <td>▁কোতোয়ালী</td>
+      <td>▁কোতোয়ালী</td>
+      <td>মডল</td>
+      <td>▁কতযল</td>
     </tr>
     <tr>
       <th>16</th>
-      <td>্লেক্স</td>
-      <td>ার</td>
-      <td></td>
-      <td>হসব</td>
+      <td>▁মডেল</td>
+      <td>▁মডেল</td>
+      <td>থনর</td>
+      <td>▁মডল</td>
     </tr>
     <tr>
       <th>17</th>
-      <td>ার</td>
-      <td>"</td>
-      <td></td>
-      <td>ক</td>
+      <td>▁থানার</td>
+      <td>▁থানার</td>
+      <td>আওতধন</td>
+      <td>▁থনর</td>
     </tr>
     <tr>
       <th>18</th>
-      <td>"</td>
-      <td>▁হিসেবে</td>
-      <td></td>
-      <td>জ</td>
+      <td>▁আওতাধীন</td>
+      <td>▁আওতাধীন</td>
+      <td>।</td>
+      <td>▁আওতধন।</td>
     </tr>
     <tr>
       <th>19</th>
-      <td>▁হিসেবে</td>
-      <td>▁কাজ</td>
-      <td></td>
-      <td>কর</td>
+      <td>।</td>
+      <td>।</td>
+      <td>এট</td>
+      <td>▁এট</td>
     </tr>
     <tr>
       <th>20</th>
-      <td>▁কাজ</td>
-      <td>▁করে</td>
-      <td></td>
-      <td>।</td>
+      <td>▁এটি</td>
+      <td>▁এটি</td>
+      <td>জতয</td>
+      <td>▁জতয</td>
     </tr>
     <tr>
       <th>21</th>
-      <td>▁করে</td>
+      <td>▁জাতীয়</td>
+      <td>▁জাতীয়</td>
+      <td>সসদর</td>
+      <td>▁সসদর</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>▁সংসদের</td>
+      <td>▁সংসদের</td>
+      <td>১২৩ন</td>
+      <td>▁</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>▁১২৩নং</td>
+      <td>▁১২</td>
+      <td>নরবচন</td>
+      <td>১২৩</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>▁নির্বাচনী</td>
+      <td>৩নং</td>
+      <td>এলক</td>
+      <td>ন</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>▁এলাকা</td>
+      <td>▁নির্বাচনী</td>
+      <td>বরশল</td>
+      <td>▁নরবচন</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>▁বরিশাল</td>
+      <td>▁এলাকা</td>
+      <td>-</td>
+      <td>▁এলক</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>-</td>
+      <td>▁বরিশাল</td>
+      <td>৫</td>
+      <td>▁বরশল-</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>৫</td>
+      <td>-</td>
+      <td>এর</td>
+      <td>৫</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>▁এর</td>
+      <td>৫</td>
+      <td>অশ</td>
+      <td>▁এর</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>▁অংশ</td>
+      <td>▁এর</td>
       <td>।</td>
+      <td>▁অশ।</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>।</td>
+      <td>▁অংশ</td>
       <td></td>
       <td></td>
     </tr>
     <tr>
-      <th>22</th>
-      <td>।</td>
+      <th>32</th>
       <td></td>
+      <td>।</td>
       <td></td>
       <td></td>
     </tr>
   </tbody>
 </table>
-</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 26.5 ms (started: 2022-11-17 01:37:23 +00:00)
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 23.3 ms (started: 2022-11-24 09:58:02 +00:00)
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="usage-of-tokenizer-trainer">
-<h2>Usage of Tokenizer Trainer<a class="headerlink" href="#usage-of-tokenizer-trainer" title="Permalink to this headline">#</a></h2>
+</section>
+</section>
+<section id="id3">
+<h2>Usage of Tokenizer Trainer<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_format=&#39;retina&#39;
-<span class="o">%</span><span class="k">load_ext</span> autotime
-<span class="o">%</span><span class="k">load_ext</span> autoreload
-<span class="o">%</span><span class="k">autoreload</span> 2
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_file</span> <span class="o">=</span><span class="s2">&quot;enko_filtered.parquet&quot;</span>
 
-<span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;tokenizer=trainer&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;enkowiki&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">128</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">train_file</span> <span class="o">=</span> <span class="n">data_file</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">use_sample</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">model_type</span> <span class="o">=</span> <span class="s2">&quot;bpe&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">=</span> <span class="mi">30000</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">auto</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span>
 
-<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;version:&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
-
-<span class="n">is_colab</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is colab?&quot;</span><span class="p">,</span> <span class="n">is_colab</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">is_colab</span><span class="p">:</span>
-    <span class="n">eKonf</span><span class="o">.</span><span class="n">mount_google_drive</span><span class="p">()</span>
-<span class="n">workspace_dir</span> <span class="o">=</span> <span class="s2">&quot;/content/drive/MyDrive/workspace&quot;</span>
-<span class="n">project_name</span> <span class="o">=</span> <span class="s2">&quot;ekorpkit-book&quot;</span>
-<span class="n">project_dir</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">set_workspace</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="n">workspace_dir</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project_name</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;project_dir:&quot;</span><span class="p">,</span> <span class="n">project_dir</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">data_dir</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">project_dir</span><span class="si">}</span><span class="s2">/data/</span><span class="si">{</span><span class="n">data_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">data_dir</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.utils.notebook:Google Colab not detected.
-INFO:ekorpkit.base:Setting EKORPKIT_WORKSPACE_ROOT to /content/drive/MyDrive/workspace
-INFO:ekorpkit.base:Setting EKORPKIT_PROJECT to ekorpkit-book
-INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.ekonf:copied /content/drive/MyDrive/workspace/projects/ekorpkit-book/data/enko_filtered.parquet to /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/data
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.40.post0.dev25
-is colab? False
-project_dir: /content/drive/MyDrive/workspace/projects/ekorpkit-book
-time: 1.38 s (started: 2022-11-24 00:52:23 +00:00)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;wiki_filtered.parquet&quot;</span><span class="p">,</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/data&quot;</span><span class="p">)</span>
-<span class="n">bnwiki_filtered</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">corpus</span> <span class="o">==</span> <span class="s2">&quot;bnwiki&quot;</span><span class="p">]</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">bnwiki_filtered</span><span class="p">,</span> <span class="s2">&quot;bnwiki_filtered.parquet&quot;</span><span class="p">,</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/data&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;wiki_filtered.parquet&#39;]
-INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/data/wiki_filtered.parquet&#39;]
-INFO:ekorpkit.io.file:Loading data from /content/drive/MyDrive/workspace/projects/ekorpkit-book/data/wiki_filtered.parquet
-INFO:ekorpkit.io.file:Saving dataframe to /content/drive/MyDrive/workspace/projects/ekorpkit-book/data/bnwiki_filtered.parquet
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 15.8 s (started: 2022-11-24 00:38:10 +00:00)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/data
+time: 1.43 s (started: 2022-11-24 10:01:24 +00:00)
 </pre></div>
 </div>
 </div>
@@ -3518,89 +3544,45 @@ INFO:ekorpkit.io.file:Saving dataframe to /content/drive/MyDrive/workspace/proje
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.tokenizers.trainer</span> <span class="kn">import</span> <span class="n">TokenizerTrainer</span>
 
-<span class="n">data_file</span> <span class="o">=</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/data/bnwiki_filtered.parquet&quot;</span>
-
-
-<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;tokenizer=trainer&quot;</span><span class="p">)</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;bnwiki&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">train_file</span> <span class="o">=</span> <span class="n">data_file</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">sample_frac</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">model_type</span> <span class="o">=</span> <span class="s2">&quot;unigram&quot;</span>
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">TokenizerTrainer</span><span class="p">(</span><span class="o">**</span><span class="n">cfg</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
-INFO:ekorpkit.base:No method defined to call
+INFO:ekorpkit.base:Calling train
+INFO:ekorpkit.io.file:Processing [61] files from [&#39;*.txt&#39;]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 1.39 s (started: 2022-11-24 00:54:13 +00:00)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">prepare_datasets</span><span class="p">()</span>
-<span class="n">trainer</span><span class="o">.</span><span class="n">export_sentence_chunks</span><span class="p">()</span>
-<span class="n">trainer</span><span class="o">.</span><span class="n">export_sample</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:datasets.builder:Using custom data configuration default-db196267fc8ef86f
-WARNING:datasets.builder:Reusing dataset parquet (/content/drive/MyDrive/workspace/.cache/parquet/default-db196267fc8ef86f/0.0.0/2a3b91fbd88a2c90d1dbbb32b460cf621d31bd5b05b934492fdef7d8d6f236ec)
-INFO:ekorpkit.datasets.config:Shuffling the dataset with seed 2457788146
-INFO:ekorpkit.tokenizers.trainer:Exported files already exist, skipping
-INFO:ekorpkit.tokenizers.trainer:sampled files: [&#39;sent_chunk_0005.txt&#39;, &#39;sent_chunk_0003.txt&#39;, &#39;sent_chunk_0006.txt&#39;, &#39;sent_chunk_0004.txt&#39;, &#39;sent_chunk_0001.txt&#39;, &#39;sent_chunk_0002.txt&#39;, &#39;sent_chunk_0008.txt&#39;, &#39;sent_chunk_0000.txt&#39;, &#39;sent_chunk_0007.txt&#39;]
-INFO:ekorpkit.tokenizers.trainer:number of lines sampled: 357,833
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "cabbdf8bb3cb4a599aa61b9657568aa1", "version_major": 2, "version_minor": 0}
-</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.tokenizers.trainer:Saved 357833 sentences to /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/bnwiki/sentence_sample/sentence_chunks_sampled.txt
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 8.82 s (started: 2022-11-24 00:54:19 +00:00)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">sample_filepath</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 22.7 ms (started: 2022-11-24 00:52:27 +00:00)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.tokenizers.trainer:saved model to /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/tokenizers/bnwiki/bnwiki_unigram_huggingface_vocab_30000.json
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.tokenizers.trainer:saved model to /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/tokenizers/enkowiki/enkowiki_unigram_huggingface_vocab_30000.json
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 1min 7s (started: 2022-11-24 00:52:28 +00:00)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 26min 6s (started: 2022-11-24 10:01:31 +00:00)
 </pre></div>
 </div>
 </div>
 </div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ekorpkit <span class="se">\</span>
+    project.name<span class="o">=</span>ekorpkit-book <span class="se">\</span>
+    dir.workspace<span class="o">=</span>/content/drive/MyDrive/workspace <span class="se">\</span>
+    <span class="nv">run</span><span class="o">=</span>tokenizer <span class="se">\</span>
+    <span class="nv">tokenizer</span><span class="o">=</span>trainer.spm <span class="se">\</span>
+    tokenizer.name<span class="o">=</span>enkowiki <span class="se">\</span>
+    tokenizer.dataset.train_file<span class="o">=</span>enko_filtered.parquet <span class="se">\</span>
+    tokenizer.model.model_type<span class="o">=</span>bpe <span class="se">\</span>
+    tokenizer.model.vocab_size<span class="o">=</span><span class="m">30000</span> <span class="se">\</span>
+    tokenizer.model.character_coverage<span class="o">=</span><span class="m">0</span>.9995 <span class="se">\</span>
+    tokenizer.training.use_sample<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+    tokenizer.batch.num_workers<span class="o">=</span><span class="m">128</span> <span class="se">\</span>
+    tokenizer.auto<span class="o">=</span>train
+</pre></div>
 </div>
-</div>
+</section>
+</section>
 
 
 <script type="application/vnd.jupyter.widget-state+json">
