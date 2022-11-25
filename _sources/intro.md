@@ -5,9 +5,9 @@
 
 ![library](library.png)
 
-## ekorpkit 【iːkɔːkɪt】 by ἐντελέχεια 【en.te.lé.kʰeː.a】
+## ekorpkit by ἐντελέχεια
 
-`entelecheia` is coined by Aristotle from ἐντελής (entelḗs, “complete, full, accomplished”) + ἔχειν (ékhein, “have, hold”). I hope that `ekorpkit` helps have your projects completed and accomplished.
+`entelecheia` 【en.te.lé.kʰeː.a】 is coined by Aristotle from ἐντελής (entelḗs, “complete, full, accomplished”) + ἔχειν (ékhein, “have, hold”). I hope that `ekorpkit` 【iːkɔːkɪt】 helps have your projects completed and accomplished.
 
 ## Introduction
 
