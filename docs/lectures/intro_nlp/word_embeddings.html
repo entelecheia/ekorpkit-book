@@ -51,8 +51,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -1372,6 +1370,33 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#glove">
    GloVe
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#improvement-over-word2vec">
+     Improvement over word2vec
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#co-occurrence-matrix">
+     Co-occurrence matrix
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#training-glove">
+     Training GloVe
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#glove-vs-word2vec">
+     GloVe vs word2vec
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#using-glove">
+     Using GloVe
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#fasttext">
@@ -1615,6 +1640,33 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#glove">
    GloVe
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#improvement-over-word2vec">
+     Improvement over word2vec
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#co-occurrence-matrix">
+     Co-occurrence matrix
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#training-glove">
+     Training GloVe
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#glove-vs-word2vec">
+     GloVe vs word2vec
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#using-glove">
+     Using GloVe
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#fasttext">
@@ -2644,6 +2696,52 @@ Prediction: micron
 <h2>GloVe<a class="headerlink" href="#glove" title="Permalink to this headline">#</a></h2>
 <p>GloVe is an unsupervised learning algorithm for obtaining vector representations for words. It is based on the co-occurrence matrix of words from a corpus.</p>
 <p>GloVe stands for Global Vectors for Word Representation. It was introduced by <span id="id12">[<a class="reference internal" href="../../about/index.html#id25" title="Jeffrey Pennington, Richard Socher, and Christopher Manning. GloVe: global vectors for word representation. In Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP), 1532–1543. Doha, Qatar, October 2014. Association for Computational Linguistics. URL: https://aclanthology.org/D14-1162, doi:10.3115/v1/D14-1162.">Pennington <em>et al.</em>, 2014</a>]</span> in 2014.</p>
+<section id="improvement-over-word2vec">
+<h3>Improvement over word2vec<a class="headerlink" href="#improvement-over-word2vec" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Word2vec uses a window-based approach, in which it only considers the local context of a word. This means that it does not consider the global context of a word.</p></li>
+<li><p>GloVe uses a global context of a word in addition to the local context. This means that it can capture the meaning of a word better than word2vec.</p></li>
+</ul>
+</section>
+<section id="co-occurrence-matrix">
+<h3>Co-occurrence matrix<a class="headerlink" href="#co-occurrence-matrix" title="Permalink to this headline">#</a></h3>
+<p>What are the global contexts of a word? The global contexts of a word are the words that co-occur with it in a corpus.</p>
+<p>For example, we have the following sentences:</p>
+<p><strong>Document 1:</strong> “All that glitters is not gold.”</p>
+<p><strong>Document 2:</strong> ” All is well that ends well.”</p>
+<p>Then, with a window size of 1, the co-occurrence matrix of the words in the corpus is:</p>
+<a class="bg-primary mb-1 reference internal image-reference" href="../../../_images/co-occurrence_matrix.png"><img alt="co-occurrence_matrix" class="bg-primary mb-1 align-center" src="../../../_images/co-occurrence_matrix.png" style="width: 500px;" /></a>
+<ul class="simple">
+<li><p>The rows and columns represent the words in the corpus.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;START&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;END&gt;</span></code> are special tokens that represent the start and end of a sentence.</p></li>
+<li><p>Since <code class="docutils literal notranslate"><span class="pre">that</span></code> and <code class="docutils literal notranslate"><span class="pre">is</span></code> occur only once in the window of <code class="docutils literal notranslate"><span class="pre">glitters</span></code>, the value of (<code class="docutils literal notranslate"><span class="pre">that</span></code>, <code class="docutils literal notranslate"><span class="pre">glitters</span></code>) and (<code class="docutils literal notranslate"><span class="pre">is</span></code>, <code class="docutils literal notranslate"><span class="pre">glitters</span></code>) is 1.</p></li>
+</ul>
+</section>
+<section id="training-glove">
+<h3>Training GloVe<a class="headerlink" href="#training-glove" title="Permalink to this headline">#</a></h3>
+<p>Glove model is a weighted least squares regression model, where the weights are the word vectors. The objective function is the sum of squared errors between the co-occurrence matrix and the dot product of the word vectors.</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{align}
+\mathcal{L} = \frac{1}{2}\sum_{i,j=1}^V f(X_{ij}) (\log X_{ij} - \mathbf{u}_i^\top \mathbf{v}_j)^2
+\end{align}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(X_{ij}\)</span> is the co-occurrence matrix, <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span> is the word vector of the <span class="math notranslate nohighlight">\(i\)</span> th word, and <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span> is the word vector of the <span class="math notranslate nohighlight">\(j\)</span> th word. The function <span class="math notranslate nohighlight">\(f\)</span> is a weighting function that is used to downweight the common words.</p>
+</section>
+<section id="glove-vs-word2vec">
+<h3>GloVe vs word2vec<a class="headerlink" href="#glove-vs-word2vec" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>GloVe is a global model, while word2vec is a local model.</p></li>
+<li><p>GloVe ouputperforms word2vec on word analogy, word similarity, and Named Entity Recognition (NER) tasks.</p></li>
+<li><p>If the nature of the problem is similar to the above tasks, then GloVe is a better choice than word2vec.</p></li>
+<li><p>Since it uses a global context, GloVe is better at capturing the meaning of rare words even on small datasets.</p></li>
+<li><p>GloVe is slower than word2vec.</p></li>
+</ul>
+</section>
+<section id="using-glove">
+<h3>Using GloVe<a class="headerlink" href="#using-glove" title="Permalink to this headline">#</a></h3>
+<p>GloVe is available to download from the <a class="reference external" href="https://nlp.stanford.edu/projects/glove/">Stanford NLP website</a>.</p>
+</section>
 </section>
 <section id="fasttext">
 <h2>FastText<a class="headerlink" href="#fasttext" title="Permalink to this headline">#</a></h2>
