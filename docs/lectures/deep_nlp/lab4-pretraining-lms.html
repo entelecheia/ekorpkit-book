@@ -2618,44 +2618,6 @@ time: 262 ms (started: 2022-11-23 06:17:35 +00:00)
 <h2>Training bnwiki_bert using MLM Trainer<a class="headerlink" href="#training-bnwiki-bert-using-mlm-trainer" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_format=&#39;retina&#39;
-<span class="o">%</span><span class="k">load_ext</span> autotime
-<span class="o">%</span><span class="k">load_ext</span> autoreload
-<span class="o">%</span><span class="k">autoreload</span> 2
-
-<span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
-
-<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;version:&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
-
-<span class="n">is_colab</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is colab?&quot;</span><span class="p">,</span> <span class="n">is_colab</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">is_colab</span><span class="p">:</span>
-    <span class="n">eKonf</span><span class="o">.</span><span class="n">mount_google_drive</span><span class="p">()</span>
-<span class="n">workspace_dir</span> <span class="o">=</span> <span class="s2">&quot;/content/drive/MyDrive/workspace&quot;</span>
-<span class="n">project_name</span> <span class="o">=</span> <span class="s2">&quot;ekorpkit-book&quot;</span>
-<span class="n">project_dir</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">set_workspace</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="n">workspace_dir</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project_name</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;project_dir:&quot;</span><span class="p">,</span> <span class="n">project_dir</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.utils.notebook:Google Colab not detected.
-INFO:ekorpkit.base:Setting EKORPKIT_WORKSPACE_ROOT to /content/drive/MyDrive/workspace
-INFO:ekorpkit.base:Setting EKORPKIT_PROJECT to ekorpkit-book
-INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.40.post0.dev29
-is colab? False
-project_dir: /content/drive/MyDrive/workspace/projects/ekorpkit-book
-time: 71.8 ms (started: 2022-11-24 11:24:31 +00:00)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.tokenizers.trainer</span> <span class="kn">import</span> <span class="n">TokenizerTrainer</span>
 
 
@@ -2678,7 +2640,7 @@ INFO:ekorpkit.base:No method defined to call
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/tokenizers/bnwiki/bnwiki_unigram_huggingface_vocab_30000.json
 /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/bnwiki/sentence_sample/sentence_chunks_sampled.txt
-time: 1.84 s (started: 2022-11-24 11:24:34 +00:00)
+time: 2.76 s (started: 2022-11-24 11:54:52 +00:00)
 </pre></div>
 </div>
 </div>
@@ -2698,36 +2660,127 @@ time: 1.84 s (started: 2022-11-24 11:24:34 +00:00)
 <span class="n">cfg</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">8</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">use_accelerator</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">num_train_epochs</span> <span class="o">=</span> <span class="mi">50</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">eval_steps</span> <span class="o">=</span><span class="mi">100</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">eval_steps</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">warmup_steps</span> <span class="o">=</span> <span class="mi">50</span>
 
-<span class="c1"># trainer = MlmTrainer(**cfg)</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">MlmTrainer</span><span class="p">(</span><span class="o">**</span><span class="n">cfg</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 1.34 s (started: 2022-11-24 11:24:37 +00:00)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2022-11-24 11:54:58.186442: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+WARNING:ekorpkit.models.transformer.trainers.mlm:Process rank: -1, device: cuda:0, n_gpu: 8, distributed training: False, 16-bits training: True
+INFO:ekorpkit.models.transformer.trainers.mlm:Training/evaluation parameters TrainingArguments(
+_n_gpu=8,
+adafactor=False,
+adam_beta1=0.9,
+adam_beta2=0.999,
+adam_epsilon=1e-08,
+auto_find_batch_size=False,
+bf16=False,
+bf16_full_eval=False,
+data_seed=None,
+dataloader_drop_last=False,
+dataloader_num_workers=0,
+dataloader_pin_memory=True,
+ddp_bucket_cap_mb=None,
+ddp_find_unused_parameters=None,
+ddp_timeout=1800,
+debug=[],
+deepspeed=None,
+disable_tqdm=False,
+do_eval=True,
+do_predict=False,
+do_train=True,
+eval_accumulation_steps=None,
+eval_delay=0,
+eval_steps=100,
+evaluation_strategy=steps,
+fp16=True,
+fp16_backend=auto,
+fp16_full_eval=False,
+fp16_opt_level=O1,
+fsdp=[],
+fsdp_min_num_params=0,
+fsdp_transformer_layer_cls_to_wrap=None,
+full_determinism=False,
+gradient_accumulation_steps=8,
+gradient_checkpointing=False,
+greater_is_better=None,
+group_by_length=False,
+half_precision_backend=auto,
+hub_model_id=None,
+hub_private_repo=False,
+hub_strategy=every_save,
+hub_token=&lt;HUB_TOKEN&gt;,
+ignore_data_skip=False,
+include_inputs_for_metrics=False,
+jit_mode_eval=False,
+label_names=None,
+label_smoothing_factor=0.0,
+learning_rate=0.0005,
+length_column_name=length,
+load_best_model_at_end=False,
+local_rank=-1,
+log_level=passive,
+log_level_replica=passive,
+log_on_each_node=True,
+logging_dir=None,
+logging_first_step=False,
+logging_nan_inf_filter=True,
+logging_steps=1000,
+logging_strategy=steps,
+lr_scheduler_type=cosine,
+max_grad_norm=1.0,
+max_steps=-1,
+metric_for_best_model=None,
+mp_parameters=,
+no_cuda=False,
+num_train_epochs=50,
+optim=adamw_hf,
+output_dir=/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/models/bnwiki/bnwiki-bert-base-uncased,
+overwrite_output_dir=True,
+past_index=-1,
+per_device_eval_batch_size=32,
+per_device_train_batch_size=32,
+prediction_loss_only=False,
+push_to_hub=False,
+push_to_hub_model_id=None,
+push_to_hub_organization=None,
+push_to_hub_token=&lt;PUSH_TO_HUB_TOKEN&gt;,
+ray_scope=last,
+remove_unused_columns=True,
+report_to=[&#39;wandb&#39;],
+resume_from_checkpoint=None,
+run_name=bnwiki,
+save_on_each_node=False,
+save_steps=5000,
+save_strategy=steps,
+save_total_limit=None,
+seed=1185224509,
+sharded_ddp=[],
+skip_memory_metrics=True,
+tf32=None,
+torchdynamo=None,
+tpu_metrics_debug=False,
+tpu_num_cores=None,
+use_ipex=False,
+use_legacy_prediction_loop=False,
+use_mps_device=False,
+warmup_ratio=0.0,
+warmup_steps=50,
+weight_decay=0.1,
+xpu_backend=None,
+)
+INFO:ekorpkit.base:No method defined to call
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 5.29 s (started: 2022-11-24 11:54:57 +00:00)
 </pre></div>
 </div>
 </div>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ekorpkit <span class="se">\</span>
-    project.name<span class="o">=</span>ekorpkit-book <span class="se">\</span>
-    dir.workspace<span class="o">=</span>/content/drive/MyDrive/workspace <span class="se">\</span>
-    <span class="nv">run</span><span class="o">=</span>transformer <span class="se">\</span>
-    +model.transformer<span class="o">=</span>mlm.trainer <span class="se">\</span>
-    model.transformer.name<span class="o">=</span>bnwiki <span class="se">\</span>
-    model.transformer.model.config_name<span class="o">=</span>bert-base-uncased <span class="se">\</span>
-    model.transformer.tokenizer.name<span class="o">=</span>bnwiki_unigram_huggingface_vocab_30000.json <span class="se">\</span>
-    model.transformer.dataset.train_file<span class="o">=</span>enko_filtered.parquet <span class="se">\</span>
-    model.transformer.dataset.max_seq_length<span class="o">=</span><span class="m">512</span> <span class="se">\</span>
-    model.transformer.dataset.num_workers<span class="o">=</span><span class="m">8</span> <span class="se">\</span>
-    model.transformer.use_accelerator<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
-    model.transformer.training.num_train_epochs<span class="o">=</span><span class="m">50</span> <span class="se">\</span>
-    model.transformer.training.eval_steps<span class="o">=</span><span class="m">100</span> <span class="se">\</span>
-    model.transformer.training.warmup_steps<span class="o">=</span><span class="m">50</span> <span class="se">\</span>
-    model.transformer.auto<span class="o">=</span>train
-</pre></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2736,12 +2789,40 @@ time: 1.84 s (started: 2022-11-24 11:24:34 +00:00)
 </div>
 </div>
 </div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ekorpkit <span class="nv">print_config</span><span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+    <span class="nv">project_name</span><span class="o">=</span>ekorpkit-book <span class="se">\</span>
+    <span class="nv">workspace_dir</span><span class="o">=</span>/content/drive/MyDrive/workspace <span class="se">\</span>
+    <span class="nv">run</span><span class="o">=</span>transformer <span class="se">\</span>
+    <span class="nv">transformer</span><span class="o">=</span>mlm.trainer <span class="se">\</span>
+    transformer.name<span class="o">=</span>bnwiki <span class="se">\</span>
+    transformer.model.config_name<span class="o">=</span>bert-base-uncased <span class="se">\</span>
+    transformer.tokenizer.name<span class="o">=</span>bnwiki_unigram_huggingface_vocab_30000.json <span class="se">\</span>
+    transformer.dataset.train_file<span class="o">=</span>bnwiki_filtered.parquet <span class="se">\</span>
+    transformer.dataset.max_seq_length<span class="o">=</span><span class="m">512</span> <span class="se">\</span>
+    transformer.dataset.num_workers<span class="o">=</span><span class="m">8</span> <span class="se">\</span>
+    transformer.use_accelerator<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+    transformer.training.num_train_epochs<span class="o">=</span><span class="m">50</span> <span class="se">\</span>
+    transformer.training.eval_steps<span class="o">=</span><span class="m">100</span> <span class="se">\</span>
+    transformer.training.warmup_steps<span class="o">=</span><span class="m">50</span> <span class="se">\</span>
+    transformer.auto<span class="o">=</span>train
+</pre></div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># perform predictions</span>
-<span class="n">example</span> <span class="o">=</span> <span class="s2">&quot;এই মসজিদটির ভিত্তিপ্রস্তর হয়েছিলো &lt;mask&gt; ২০১৫ সালের জুন মাসে।&quot;</span>
+<span class="n">example</span> <span class="o">=</span> <span class="s2">&quot;এই মসজিদটির ভিত্তিপ্রস্তর &lt;mask&gt; ২০১৫ সালের জুন মাসে।&quot;</span> <span class="c1"># হয়েছিলো</span>
 <span class="k">for</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">trainer</span><span class="o">.</span><span class="n">fill_mask</span><span class="p">(</span><span class="n">example</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;score&#39;: 0.05522403120994568, &#39;token&#39;: 8, &#39;token_str&#39;: &#39;▁&#39;, &#39;sequence&#39;: &#39;▁এই ▁মসজদট র ▁ভততপরসতর ▁ ▁ ▁ ২০১৫ ▁সলর ▁জন ▁মস ।&#39;}
+{&#39;score&#39;: 0.02941860817372799, &#39;token&#39;: 9, &#39;token_str&#39;: &#39;র&#39;, &#39;sequence&#39;: &#39;▁এই ▁মসজদট র ▁ভততপরসতর ▁ র ▁ ২০১৫ ▁সলর ▁জন ▁মস ।&#39;}
+{&#39;score&#39;: 0.016348714008927345, &#39;token&#39;: 10, &#39;token_str&#39;: &#39;,&#39;, &#39;sequence&#39;: &#39;▁এই ▁মসজদট র ▁ভততপরসতর ▁, ▁ ২০১৫ ▁সলর ▁জন ▁মস ।&#39;}
+{&#39;score&#39;: 0.012751172296702862, &#39;token&#39;: 11, &#39;token_str&#39;: &#39;▁এব&#39;, &#39;sequence&#39;: &#39;▁এই ▁মসজদট র ▁ভততপরসতর ▁ ▁এব ▁ ২০১৫ ▁সলর ▁জন ▁মস ।&#39;}
+{&#39;score&#39;: 0.01006506010890007, &#39;token&#39;: 13, &#39;token_str&#39;: &#39;.&#39;, &#39;sequence&#39;: &#39;▁এই ▁মসজদট র ▁ভততপরসতর ▁. ▁ ২০১৫ ▁সলর ▁জন ▁মস ।&#39;}
+time: 339 ms (started: 2022-11-24 23:45:48 +00:00)
 </pre></div>
 </div>
 </div>
