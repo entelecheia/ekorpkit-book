@@ -3,9 +3,12 @@
 
 [![PyPI](https://img.shields.io/pypi/v/ekorpkit?color=green)](https://badge.fury.io/py/ekorpkit) [![Jupyter Book Badge](https://jupyterbook.org/badge.svg)](https://entelecheia.github.io/ekorpkit-book/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6497226.svg)](https://doi.org/10.5281/zenodo.6497226) [![LinkedIn Badge](https://img.shields.io/badge/LinkedIn-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/entelecheia/) [![GitHub Repo stars](https://img.shields.io/github/stars/entelecheia/ekorpkit?style=social)](https://github.com/entelecheia/ekorpkit) [![GitHub followers](https://img.shields.io/github/followers/entelecheia?style=social)](https://github.com/entelecheia)
 
-
-
 ![library](library.png)
+
+## ekorpkit by ἐντελέχεια
+
+`entelecheia` 【en.te.lé.kʰeː.a】 is coined by Aristotle from ἐντελής (entelḗs, “complete, full, accomplished”) + ἔχειν (ékhein, “have, hold”). I hope that `ekorpkit` 【iːkɔːkɪt】 helps have your projects complete and accomplished.
+
 ## Introduction
 
 eKorpkit provides a flexible interface for NLP and ML research pipelines such as extraction, transformation, tokenization, training, and visualization. Its powerful config composition is backed by [Hydra](https://hydra.cc/).
