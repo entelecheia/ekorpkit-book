@@ -1528,10 +1528,10 @@ INFO:ekorpkit.base:Setting EKORPKIT_PROJECT to ekorpkit-book
 INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.40.post0.dev31
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.40.post0.dev33
 is colab? False
 project_dir: /content/drive/MyDrive/workspace/projects/ekorpkit-book
-time: 1.12 s (started: 2022-11-25 02:09:00 +00:00)
+time: 1.12 s (started: 2022-11-25 10:32:32 +00:00)
 </pre></div>
 </div>
 </div>
@@ -3379,6 +3379,44 @@ time: 946 ms (started: 2022-11-25 02:14:49 +00:00)
 <h2>Usage of Tokenizer Trainer<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_format=&#39;retina&#39;
+<span class="o">%</span><span class="k">load_ext</span> autotime
+<span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+
+<span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+
+<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;version:&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+
+<span class="n">is_colab</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is colab?&quot;</span><span class="p">,</span> <span class="n">is_colab</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">is_colab</span><span class="p">:</span>
+    <span class="n">eKonf</span><span class="o">.</span><span class="n">mount_google_drive</span><span class="p">()</span>
+<span class="n">workspace_dir</span> <span class="o">=</span> <span class="s2">&quot;/content/drive/MyDrive/workspace&quot;</span>
+<span class="n">project_name</span> <span class="o">=</span> <span class="s2">&quot;ekorpkit-book&quot;</span>
+<span class="n">project_dir</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">set_workspace</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="n">workspace_dir</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project_name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;project_dir:&quot;</span><span class="p">,</span> <span class="n">project_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.utils.notebook:Google Colab not detected.
+INFO:ekorpkit.base:Setting EKORPKIT_WORKSPACE_ROOT to /content/drive/MyDrive/workspace
+INFO:ekorpkit.base:Setting EKORPKIT_PROJECT to ekorpkit-book
+INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.40.post0.dev33
+is colab? False
+project_dir: /content/drive/MyDrive/workspace/projects/ekorpkit-book
+time: 960 ms (started: 2022-11-25 10:58:16 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_file</span> <span class="o">=</span><span class="s2">&quot;data/enko_filtered.parquet&quot;</span>
 
 <span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;tokenizer=trainer&quot;</span><span class="p">)</span>
@@ -3388,20 +3426,18 @@ time: 946 ms (started: 2022-11-25 02:14:49 +00:00)
 <span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">use_sample</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">model_type</span> <span class="o">=</span> <span class="s2">&quot;bpe&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">=</span> <span class="mi">30000</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">auto</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span>
+<span class="c1"># cfg.auto = &quot;train&quot;</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">data_dir</span><span class="p">)</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">project_dir</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">data_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">data_dir</span><span class="p">)</span>
+<span class="c1"># print(cfg.path.data_dir)</span>
+<span class="c1"># eKonf.copy(f&quot;{project_dir}/{data_file}&quot;, cfg.path.data_dir)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:root:compose config with overrides: [&#39;tokenizer=trainer&#39;]
-INFO:ekorpkit.ekonf:copied /content/drive/MyDrive/workspace/projects/ekorpkit-book/data/enko_filtered.parquet to /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/data
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/data
-time: 717 ms (started: 2022-11-25 02:15:29 +00:00)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 481 ms (started: 2022-11-25 10:58:17 +00:00)
 </pre></div>
 </div>
 </div>
@@ -3417,17 +3453,25 @@ time: 717 ms (started: 2022-11-25 02:15:29 +00:00)
 </div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
-INFO:ekorpkit.base:Calling train
-INFO:ekorpkit.io.file:Processing [61] files from [&#39;*.txt&#39;]
+INFO:ekorpkit.base:No method defined to call
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 1.08 s (started: 2022-11-25 10:58:17 +00:00)
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.tokenizers.trainer:saved model to /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/tokenizers/enkowiki/enkowiki_unigram_huggingface_vocab_30000.json
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">save_settings</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 26min 6s (started: 2022-11-24 10:01:31 +00:00)
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.batch:Saving config to /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/enkowiki/configs/enkowiki(3)_config.json
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 16 ms (started: 2022-11-25 10:58:18 +00:00)
 </pre></div>
 </div>
 </div>
