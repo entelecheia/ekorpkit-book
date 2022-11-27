@@ -1404,6 +1404,42 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#fasttext">
    FastText
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#character-n-grams">
+     Character n-grams
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#using-fasttext">
+     Using FastText
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#format">
+       Format
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#training-fasttext">
+     Training FastText
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#saving-and-loading-a-model-object">
+       Saving and loading a model object
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#wrapping-up">
+   Wrapping up
+  </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#references">
@@ -1673,6 +1709,42 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#fasttext">
    FastText
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#character-n-grams">
+     Character n-grams
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#using-fasttext">
+     Using FastText
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#format">
+       Format
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#training-fasttext">
+     Training FastText
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#saving-and-loading-a-model-object">
+       Saving and loading a model object
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#wrapping-up">
+   Wrapping up
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -2749,6 +2821,87 @@ Prediction: micron
 <h2>FastText<a class="headerlink" href="#fasttext" title="Permalink to this headline">#</a></h2>
 <p>FastText is an open-source library for learning of word representations and sentence classification. It was introduced by <span id="id13">[<a class="reference internal" href="../../about/index.html#id26" title="Piotr Bojanowski, Edouard Grave, Armand Joulin, and Tomas Mikolov. Enriching word vectors with subword information. arXiv preprint arXiv:1607.04606, 2016. URL: https://arxiv.org/pdf/1607.04606.pdf.">Bojanowski <em>et al.</em>, 2016</a>]</span> in 2016.</p>
 <p>FastText is an extension of word2vec that allows us to learn word representations for out-of-vocabulary words. It is based on the skip-gram model, but it uses character n-grams as its input and output instead of words.</p>
+<p>Word2ven and GloVe are based on the words in the corpus. Even with a very large corpus, there are still words that are not present in the corpus.</p>
+<section id="character-n-grams">
+<h3>Character n-grams<a class="headerlink" href="#character-n-grams" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Instead of using words to train the model, FastText uses character n-grams as its input and output.</p></li>
+<li><p>Word embeddings are the average of the character n-grams that make up the word.</p></li>
+<li><p>Less data is required to train the model, since the model is trained on character n-grams instead of words. A word can be its own context, yielding more information from the same amount of data.</p></li>
+</ul>
+<p>For example, the word <code class="docutils literal notranslate"><span class="pre">reading</span></code> generates the following character n-grams:</p>
+<a class="bg-primary mb-1 reference internal image-reference" href="../../../_images/character_ngrams.png"><img alt="character_ngrams" class="bg-primary mb-1 align-center" src="../../../_images/character_ngrams.png" style="width: 300px;" /></a>
+<ul class="simple">
+<li><p>Angular brackets represent the start and end of a word.</p></li>
+<li><p>Instead of using each unique n-gram as a feature, FastText uses the hash value of the n-gram as a feature. This reduces the number of features and makes the model more efficient.</p></li>
+<li><p>Original paper uses a bucket size <span class="math notranslate nohighlight">\(B\)</span> of 2 million, and a hash function <span class="math notranslate nohighlight">\(h\)</span> that maps the n-gram to an integer in the range <span class="math notranslate nohighlight">\([0, B)\)</span>.</p></li>
+<li><p>Via hashing, each n-gram is mapped to a unique integer between 0 and 2 million.</p></li>
+<li><p>The hash function is given by: <span class="math notranslate nohighlight">\(h(w) = \text{hash}(w) \mod B\)</span>, where <span class="math notranslate nohighlight">\(w\)</span> is the n-gram and <span class="math notranslate nohighlight">\(B\)</span> is the bucket size.</p></li>
+<li><p>Although the hash function is deterministic, it is not reversible. This means that the hash function cannot be used to recover the original n-gram.</p></li>
+<li><p>The word <code class="docutils literal notranslate"><span class="pre">reading</span></code> can be represented by the following vector: <span class="math notranslate nohighlight">\(\mathbf{v}_{reading} = \frac{1}{5} \sum_{i=1}^5 \mathbf{v}_{&lt;rea&gt;, &lt;ead&gt;, &lt;adi&gt;, &lt;din&gt;, &lt;ing&gt;}\)</span></p></li>
+</ul>
+</section>
+<section id="using-fasttext">
+<h3>Using FastText<a class="headerlink" href="#using-fasttext" title="Permalink to this headline">#</a></h3>
+<p>You can install FastText using the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install fasttext
+</pre></div>
+</div>
+<p>You can download the pre-trained FastText word vectors from the <a class="reference external" href="https://fasttext.cc/docs/en/english-vectors.html">FastText website</a>.</p>
+<section id="format">
+<h4>Format<a class="headerlink" href="#format" title="Permalink to this headline">#</a></h4>
+<p>The first line of the file contains the number of words in the vocabulary and the size of the vectors. Each line contains a word followed by its vectors, like in the default fastText text format. Each value is space separated. Words are ordered by descending frequency. These text models can easily be loaded in Python using the following code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">io</span>
+
+<span class="k">def</span> <span class="nf">load_vectors</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+    <span class="n">fin</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">fin</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fin</span><span class="p">:</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+    <span class="k">return</span> <span class="n">data</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="training-fasttext">
+<h3>Training FastText<a class="headerlink" href="#training-fasttext" title="Permalink to this headline">#</a></h3>
+<p>FastText can be trained using the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fasttext skipgram -input &lt;input_file&gt; -output &lt;output_file&gt;
+</pre></div>
+</div>
+<p>Or you can use the following code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fasttext</span>
+
+<span class="c1"># Skipgram model :</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">fasttext</span><span class="o">.</span><span class="n">train_unsupervised</span><span class="p">(</span><span class="s1">&#39;data.txt&#39;</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;skipgram&#39;</span><span class="p">)</span>
+
+<span class="c1"># or, cbow model :</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">fasttext</span><span class="o">.</span><span class="n">train_unsupervised</span><span class="p">(</span><span class="s1">&#39;data.txt&#39;</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;cbow&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The returned <code class="docutils literal notranslate"><span class="pre">model</span></code> object represents your learned model, and you can use it to retrieve information.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">words</span><span class="p">)</span>   <span class="c1"># list of words in dictionary</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="s1">&#39;king&#39;</span><span class="p">])</span> <span class="c1"># get the vector of the word &#39;king&#39;</span>
+</pre></div>
+</div>
+<section id="saving-and-loading-a-model-object">
+<h4>Saving and loading a model object<a class="headerlink" href="#saving-and-loading-a-model-object" title="Permalink to this headline">#</a></h4>
+<p>You can save your trained model object by calling the function <code class="docutils literal notranslate"><span class="pre">save_model</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">save_model</span><span class="p">(</span><span class="s2">&quot;model_filename.bin&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and retrieve it later thanks to the function <code class="docutils literal notranslate"><span class="pre">load_model</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">fasttext</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="s2">&quot;model_filename.bin&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="wrapping-up">
+<h2>Wrapping up<a class="headerlink" href="#wrapping-up" title="Permalink to this headline">#</a></h2>
+<p>In this lecture, we learned about word embeddings and how they are used to represent words as vectors. We also learned about the two most popular word embedding models, word2vec and GloVe. We also learned about FastText, which is an extension of word2vec that allows us to learn word representations for out-of-vocabulary words.</p>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
