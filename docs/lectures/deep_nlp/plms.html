@@ -1231,6 +1231,41 @@ title="Print to PDF"
    RoBERTa
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#albert">
+   ALBERT
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#electra">
+   ELECTRA
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#xlnet">
+   XLNet
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#t5">
+   T5
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bart">
+   BART
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#finetuning-of-plms">
+   Finetuning of PLMs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -1315,6 +1350,41 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#roberta">
    RoBERTa
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#albert">
+   ALBERT
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#electra">
+   ELECTRA
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#xlnet">
+   XLNet
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#t5">
+   T5
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bart">
+   BART
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#finetuning-of-plms">
+   Finetuning of PLMs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
   </a>
  </li>
 </ul>
@@ -1483,6 +1553,98 @@ p^*(w) \approx \prod_{i=1}^n \hat{p}_{\theta}(w_i \mid w_1, \ldots, w_{i-1})
 <li><p><strong>No next sentence prediction</strong> is used.</p></li>
 </ul>
 </li>
+</ul>
+<a class="bg-primary mb-1 reference internal image-reference" href="../../../_images/roberta.png"><img alt="rberta" class="bg-primary mb-1 align-center" src="../../../_images/roberta.png" style="width: 500px;" /></a>
+</section>
+<section id="albert">
+<h2>ALBERT<a class="headerlink" href="#albert" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>ALBERT (A Lite BERT) is a variant of BERT.</p></li>
+<li><p>Modifications to BERT:</p>
+<ul>
+<li><p><strong>Factorized embedding parameterization</strong>: use lower-dimensional parameter matrices to represent the word embeddings and the token type embeddings.</p></li>
+<li><p><strong>Cross-layer parameter sharing</strong>: share the parameters across different layers.</p></li>
+<li><p><strong>Inter-sentence coherence objective</strong>: use the sentence order prediction task to train the model.</p></li>
+</ul>
+</li>
+</ul>
+<a class="bg-primary mb-1 reference internal image-reference" href="../../../_images/albert.png"><img alt="albert" class="bg-primary mb-1 align-center" src="../../../_images/albert.png" style="width: 700px;" /></a>
+</section>
+<section id="electra">
+<h2>ELECTRA<a class="headerlink" href="#electra" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>ELECTRA (ELECtric pre-training of Language Representations) is a variant of BERT.</p></li>
+<li><p>ELECTRA uses the replaced token detection task to train the model.</p></li>
+<li><p>The generator is used to generate the masked words, and the discriminator is trained with a binary classification task to distinguish the generated words from the original words.</p></li>
+</ul>
+<a class="bg-primary mb-1 reference internal image-reference" href="../../../_images/electra.png"><img alt="electra" class="bg-primary mb-1 align-center" src="../../../_images/electra.png" style="width: 700px;" /></a>
+<ul class="simple">
+<li><p>ELECTRA shows the better performance than BERT on the GLUE benchmark.</p></li>
+</ul>
+<a class="bg-primary mb-1 reference internal image-reference" href="../../../_images/electra_result.png"><img alt="electra_result" class="bg-primary mb-1 align-center" src="../../../_images/electra_result.png" style="width: 700px;" /></a>
+</section>
+<section id="xlnet">
+<h2>XLNet<a class="headerlink" href="#xlnet" title="Permalink to this headline">#</a></h2>
+<ul>
+<li><p>XLNet (Generalized Autoregressive Pretraining for Language Understanding) is the first permutation language model.</p></li>
+<li><p>XLNet uses the permutation language modeling to train the model.</p>
+<ul class="simple">
+<li><p>It randomly permutes the input sequence and then predicts the target word using the remaining words in the sequence.</p></li>
+<li><p>Bidirectional dependency between all combinations of tokens in the sequence is learned.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/xlnet-plm.png" /></p>
+</li>
+<li><p>XLNet utilizes the Transformer-XL architecture to train the model.</p>
+<ul class="simple">
+<li><p>The Transformer-XL architecture uses the relative positional encoding to encode the position of the tokens in the sequence.</p></li>
+<li><p>It uses the segment-level recurrence to encode the dependency between the tokens in the sequence.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="t5">
+<h2>T5<a class="headerlink" href="#t5" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>T5: Text-to-Text Transfer Transformer</p></li>
+<li><p>We have the separate lecture on T5. Please refer to the lecture on T5 for more details.</p></li>
+</ul>
+<a class="bg-primary mb-1 reference internal image-reference" href="../../../_images/t5-training.png"><img alt="t5-training" class="bg-primary mb-1 align-center" src="../../../_images/t5-training.png" style="width: 400px;" /></a>
+</section>
+<section id="bart">
+<h2>BART<a class="headerlink" href="#bart" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>BART: Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension</p></li>
+<li><p>Pre-training objective: apply the denoising objective to the input sequence to generate the output sequence (i.e. masks, deletions, permutations, and insertions).</p></li>
+<li><p>Fine-tuning</p>
+<ul>
+<li><p>For classification tasks, feed the same input sequence to the encoder and the decoder and use the final decoder token for classification.</p></li>
+<li><p>For generation tasks, feed the input sequence to the encoder and use the decoder to generate the output sequence.</p></li>
+</ul>
+</li>
+</ul>
+<p><img alt="" src="../../../_images/bart.png" /></p>
+</section>
+<section id="finetuning-of-plms">
+<h2>Finetuning of PLMs<a class="headerlink" href="#finetuning-of-plms" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>Finetuning of PLMs is to fine-tune the pre-trained PLMs on the downstream tasks.</p></li>
+<li><p>We add task-specific layers (e.g. classification layer) on top of the pre-trained PLMs to perform the downstream tasks.</p></li>
+<li><p>Task-specific layers are initialized randomly and then jointly trained with the pre-trained PLMs with task-specific training data.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/finetuning.png" /></p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>Radford, A., Narasimhan, K., Salimans, T., &amp; Sutskever, I. (2018). Improving language understanding by generative pre-training. OpenAI blog</p></li>
+<li><p>Radford, A., Wu, J., Child, R., Luan, D., Amodei, D., &amp; Sutskever, I. (2019). Language models are unsupervised multitask learners. OpenAI blog, 1(8), 9.</p></li>
+<li><p>Devlin, Jacob, et al. “Bert: Pre-training of deep bidirectional transformers for language understanding.” arXiv preprint arXiv:1810.04805 (2018).</p></li>
+<li><p>Liu, Y., Yang, Z., Dyer, C., He, X., Smola, A., &amp; Hovy, E. (2019). RoBERTa: A robustly optimized BERT pretraining approach. arXiv preprint arXiv:1907.11692.</p></li>
+<li><p>Lan, Z., Chen, M., Yeyati, E., He, X., &amp; Smola, A. (2019). ALBERT: A lite BERT for self-supervised learning of language representations. arXiv preprint arXiv:1909.11942.</p></li>
+<li><p>Clark, K., Luong, M. T., Le, Q. V., &amp; Manning, C. D. (2020). ELECTRA: Pre-training text encoders as discriminators rather than generators. ICLR.</p></li>
+<li><p>Yang, Z., Dai, Z., Yang, Y., Carbonell, J., Salakhutdinov, R., &amp; Le, Q. V. (2019). XLNet: Generalized Autoregressive Pretraining for Language Understanding. NeurIPS.</p></li>
+<li><p>affel, C., Shazeer, N., Roberts, A., Lee, K., Narang, S., Matena, M., … &amp; Liu, P. J. (2020). Exploring the limits of transfer learning with a unified text-to-text transformer. JMLR.</p></li>
+<li><p>Lewis, M., Liu, Y., Goyal, N., Ontanon, S., Ba, J., &amp; Zettlemoyer, L. (2020). BART: Denoising sequence-to-sequence pre-training for natural language generation, translation, and comprehension. arXiv preprint arXiv:1910.13461.</p></li>
 </ul>
 </section>
 </section>
