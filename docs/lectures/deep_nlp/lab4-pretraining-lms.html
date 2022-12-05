@@ -870,16 +870,6 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../aiart/disco.html">
-     Disco Diffusion
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../aiart/disco_batch.html">
-     Disco Diffusion Batch Generation
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="../aiart/stable-diffusion.html">
      Stable Diffusion
     </a>
@@ -2101,15 +2091,18 @@ time: 223 ms (started: 2022-11-22 19:14:05 +00:00)
 </div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.utils.notebook:Google Colab not detected.
+INFO:ekorpkit.base:Overwriting EKORPKIT_WORKSPACE_ROOT=/workspace with /content/drive/MyDrive/workspace
 INFO:ekorpkit.base:Setting EKORPKIT_WORKSPACE_ROOT to /content/drive/MyDrive/workspace
+INFO:ekorpkit.base:Overwriting EKORPKIT_PROJECT=ekorpkit-book with ekorpkit-book
 INFO:ekorpkit.base:Setting EKORPKIT_PROJECT to ekorpkit-book
+INFO:ekorpkit.base:Overwriting EKORPKIT_PROJECT_DIR=/workspace/projects/ekorpkit-book with /content/drive/MyDrive/workspace/projects/ekorpkit-book
 INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.40.post0.dev35
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.40.post0.dev39
 is colab? False
 project_dir: /content/drive/MyDrive/workspace/projects/ekorpkit-book
-time: 967 ms (started: 2022-11-29 11:10:56 +00:00)
+time: 1.03 s (started: 2022-12-01 10:11:07 +00:00)
 </pre></div>
 </div>
 </div>
@@ -2119,30 +2112,33 @@ time: 967 ms (started: 2022-11-29 11:10:56 +00:00)
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.models.transformer.trainers</span> <span class="kn">import</span> <span class="n">MlmTrainer</span>
 
 <span class="n">train_dir</span> <span class="o">=</span> <span class="s2">&quot;outputs/enkowiki/sentence_chunks&quot;</span>
-<span class="n">tokenizer_name</span> <span class="o">=</span> <span class="s2">&quot;enkowiki_unigram_huggingface_vocab_30000.json&quot;</span>
+<span class="n">pretrained_tokenizer_file</span> <span class="o">=</span> <span class="s2">&quot;enkowiki_unigram_huggingface_vocab_30000.json&quot;</span>
 
 <span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;transformer=mlm.trainer&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;enkowiki&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">config_name</span> <span class="o">=</span> <span class="s2">&quot;bert-base-uncased&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">tokenizer_name</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">pretrained_tokenizer_file</span> <span class="o">=</span> <span class="n">pretrained_tokenizer_file</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">train_file</span> <span class="o">=</span> <span class="n">train_dir</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">max_seq_length</span> <span class="o">=</span> <span class="mi">512</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">use_accelerator</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">num_train_epochs</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">eval_steps</span> <span class="o">=</span> <span class="mi">500</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">warmup_steps</span> <span class="o">=</span> <span class="mi">100</span>
-
+<span class="c1"># eKonf.print(cfg)</span>
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">MlmTrainer</span><span class="p">(</span><span class="o">**</span><span class="n">cfg</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2022-11-29 11:10:58.019013: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2022-12-01 10:11:08.471412: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
 To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
 INFO:root:compose config with overrides: [&#39;transformer=mlm.trainer&#39;]
 INFO:root:compose config with overrides: [&#39;transformer=mlm.trainer&#39;]
-WARNING:ekorpkit.models.transformer.trainers.mlm:Process rank: -1, device: cuda:0, n_gpu: 8, distributed training: False, 16-bits training: True
-INFO:ekorpkit.models.transformer.trainers.mlm:Training/evaluation parameters TrainingArguments(
+INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+INFO:ekorpkit.base:Setting WANDB_PROJECT=ekorpkit-book
+INFO:ekorpkit.config:Using existing path: /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling
+WARNING:ekorpkit.models.transformer.trainers.base:Process rank: -1, device: cuda:0, n_gpu: 8, distributed training: False, 16-bits training: True
+INFO:ekorpkit.models.transformer.trainers.base:Training/evaluation parameters TrainingArguments(
 _n_gpu=8,
 adafactor=False,
 adam_beta1=0.9,
@@ -2229,7 +2225,7 @@ save_on_each_node=False,
 save_steps=5000,
 save_strategy=steps,
 save_total_limit=None,
-seed=3405834283,
+seed=4070460201,
 sharded_ddp=[],
 skip_memory_metrics=True,
 tf32=None,
@@ -2247,7 +2243,7 @@ xpu_backend=None,
 INFO:ekorpkit.base:No method defined to call
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 8.14 s (started: 2022-11-29 11:10:57 +00:00)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 6.47 s (started: 2022-12-01 10:11:08 +00:00)
 </pre></div>
 </div>
 </div>
@@ -2255,11 +2251,19 @@ INFO:ekorpkit.base:No method defined to call
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># trainer.train()</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">save_config</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 46.6 ms (started: 2022-11-29 10:36:06 +00:00)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.config:Saving config to /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/enkowiki/configs/enkowiki(15)_config.yaml
+INFO:ekorpkit.config:Saving config to /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/enkowiki/configs/enkowiki(15)_config.json
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;enkowiki(15)_config.yaml&#39;
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 308 ms (started: 2022-12-01 10:14:18 +00:00)
 </pre></div>
 </div>
 </div>
@@ -2271,7 +2275,7 @@ INFO:ekorpkit.base:No method defined to call
     <span class="nv">transformer</span><span class="o">=</span>mlm.trainer <span class="se">\</span>
     transformer.name<span class="o">=</span>enkowiki <span class="se">\</span>
     transformer.model.config_name<span class="o">=</span>bert-base-uncased <span class="se">\</span>
-    transformer.tokenizer.name<span class="o">=</span>enkowiki_unigram_huggingface_vocab_30000.json <span class="se">\</span>
+    transformer.tokenizer.pretrained_tokenizer_file<span class="o">=</span>enkowiki_unigram_huggingface_vocab_30000.json <span class="se">\</span>
     transformer.dataset.train_file<span class="o">=</span>outputs/enkowiki/sentence_chunks <span class="se">\</span>
     transformer.dataset.max_seq_length<span class="o">=</span><span class="m">512</span> <span class="se">\</span>
     transformer.dataset.num_workers<span class="o">=</span><span class="m">8</span> <span class="se">\</span>
@@ -2516,7 +2520,7 @@ time: 2.76 s (started: 2022-11-24 11:54:52 +00:00)
 <span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;model/transformer=mlm.trainer&quot;</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;bnwiki&quot;</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">config_name</span> <span class="o">=</span> <span class="s2">&quot;bert-base-uncased&quot;</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tk_trainer</span><span class="o">.</span><span class="n">model_path</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">pretrained_tokenizer_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tk_trainer</span><span class="o">.</span><span class="n">model_path</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">train_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tk_trainer</span><span class="o">.</span><span class="n">sample_filepath</span><span class="p">)</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">max_seq_length</span> <span class="o">=</span> <span class="mi">512</span>
 <span class="n">cfg</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">8</span>
@@ -2658,7 +2662,7 @@ INFO:ekorpkit.base:No method defined to call
     <span class="nv">transformer</span><span class="o">=</span>mlm.trainer <span class="se">\</span>
     transformer.name<span class="o">=</span>bnwiki <span class="se">\</span>
     transformer.model.config_name<span class="o">=</span>bert-base-uncased <span class="se">\</span>
-    transformer.tokenizer.name<span class="o">=</span>bnwiki_unigram_huggingface_vocab_30000.json <span class="se">\</span>
+    transformer.tokenizer.pretrained_tokenizer_file<span class="o">=</span>bnwiki_unigram_huggingface_vocab_30000.json <span class="se">\</span>
     transformer.dataset.train_file<span class="o">=</span>data/bnwiki_filtered.parquet <span class="se">\</span>
     transformer.dataset.max_seq_length<span class="o">=</span><span class="m">512</span> <span class="se">\</span>
     transformer.dataset.num_workers<span class="o">=</span><span class="m">8</span> <span class="se">\</span>
