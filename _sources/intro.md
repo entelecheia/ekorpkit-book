@@ -1,7 +1,7 @@
 # **eKo**nomic **R**esearch **P**ython Tool**kit**
 ## A NLP Library for Social Science Research
 
-[![PyPI](https://img.shields.io/pypi/v/ekorpkit?color=green)](https://badge.fury.io/py/ekorpkit) [![Jupyter Book Badge](https://jupyterbook.org/badge.svg)](https://entelecheia.github.io/ekorpkit-book/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6497226.svg)](https://doi.org/10.5281/zenodo.6497226) [![LinkedIn Badge](https://img.shields.io/badge/LinkedIn-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/entelecheia/) [![GitHub Repo stars](https://img.shields.io/github/stars/entelecheia/ekorpkit?style=social)](https://github.com/entelecheia/ekorpkit) [![GitHub followers](https://img.shields.io/github/followers/entelecheia?style=social)](https://github.com/entelecheia)
+[![PyPI](https://img.shields.io/pypi/v/ekorpkit?color=green)](https://badge.fury.io/py/ekorpkit) [![Jupyter Book Badge](https://jupyterbook.org/badge.svg)](https://entelecheia.github.io/ekorpkit-book/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6497226.svg)](https://doi.org/10.5281/zenodo.6497226) [![LinkedIn Badge](https://img.shields.io/badge/LinkedIn-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/entelecheia/) [![GitHub Repo stars](https://img.shields.io/github/stars/entelecheia/ekorpkit?style=social)](https://github.com/entelecheia/ekorpkit) [![GitHub followers](https://img.shields.io/github/followers/entelecheia?style=social)](https://github.com/entelecheia) [![GitHub last commit](https://img.shields.io/github/last-commit/entelecheia/ekorpkit-book)](https://entelecheia.github.io/ekorpkit-book/)
 
 ![library](library.png)
 
@@ -11,7 +11,7 @@
 
 ## Introduction
 
-eKorpkit provides a flexible interface for NLP and ML research pipelines such as extraction, transformation, tokenization, training, and visualization. Its powerful config composition is backed by [Hydra](https://hydra.cc/).
+eKorpkit provides a flexible interface for NLP and ML research pipelines such as extraction, transformation, tokenization, training, and visualization. Its powerful config composition is backed by [Hydra](https://hydra.cc/) and [pydantic](https://pydantic-docs.helpmanual.io). eKorpkit is designed to be easy to use, easy to extend, and easy to share.
 
 ## Key features
 
