@@ -1,0 +1,3625 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Lab 1: Preparing Wikipedia Corpora &#8212; eKorpkit Tutorials</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/ekorpkit.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Lab 2: EDA on Corpora" href="lab2-corpus-eda.html" />
+    <link rel="prev" title="Pretrained Language Models" href="plms.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-FN4GFT8HP8"></script>
+<script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){ dataLayer.push(arguments); }
+                    gtag('js', new Date());
+                    gtag('config', 'G-FN4GFT8HP8');
+                </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../_static/ekorpkit.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">eKorpkit Tutorials</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    eKonomic Research Python Toolkit
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Basics
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/index.html">
+   Getting started
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/install.html">
+     Installation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/usage.html">
+     Usage
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/features/index.html">
+   Key features
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/easy_config.html">
+     Easy Configuration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/no_boiler.html">
+     No Boilerplate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/workflows.html">
+     Workflows
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/share.html">
+     Sharable and Reproducible
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/plug.html">
+     Pluggable Architece
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tutorials
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/config/index.html">
+   Configuring ekorpkit
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/config/eKonf.html">
+     Using eKonf class
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/datasets/index.html">
+   Datasets
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/corpus.html">
+     Build and Load Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/datasets/dataset.html">
+     Build and Load Datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/pipeline.html">
+     Corpus task pipelines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/models/index.html">
+   Models
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/models/automl/index.html">
+     Auto ML
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/embeddings/index.html">
+     Word Embeddings
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/embeddings/word2vec_basics.html">
+       Word2Vec Basics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/embeddings/eval_vectors.html">
+       Evaluate pretrained embeddings
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/ngram/index.html">
+     N-Grams
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram.html">
+       N-Grams
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram_for_lexicons.html">
+       N-Gram model for ngram lexicon features
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram_for_words.html">
+       N-Gram model for unigram lexicon features
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/sentiment/index.html">
+     Sentiment Analyers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/lbsa_en.html">
+       Lexicon-based Sentiment Analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/financial_phrasebank_lm.html">
+       Evaluate LM with financial phrasebank
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/sentiment.html">
+       LM Dictionary vs. finbert vs. T5
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/models/transformers/index.html">
+     Transformers
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/pipelines/index.html">
+   Pipelines
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/pipelines/pipeline.html">
+     Instantiating pipeline
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/preprocessors/index.html">
+   Preprocessors
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/normalizer/index.html">
+     Normalizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+    <label for="toctree-checkbox-11">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/normalizer/normalizer.html">
+       Normalizers
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/segmenter/index.html">
+     Segmenters
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+    <label for="toctree-checkbox-12">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/segmenter/segmenter.html">
+       Segmenters
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/tokenizer/index.html">
+     Tokenizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+    <label for="toctree-checkbox-13">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/tokenizer/mecab.html">
+       Mecab Tokenizer
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/visualizers/index.html">
+   Visualizers
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/>
+  <label for="toctree-checkbox-14">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/visualizers/plot.html">
+     Plots
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../tutorials/workflow/index.html">
+   Workflows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Datasets
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../corpus/ekorpkot_corpus.html">
+   The eKorpkit Corpus
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Use Cases
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/fomc/index.html">
+   FOMC
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/>
+  <label for="toctree-checkbox-15">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/02_FOMC_numerical_data.html">
+     Preparing Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/03_FOMC_corpus.html">
+     Preparing Textual Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/04_FOMC_EDA_numericals.html">
+     EDA on Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/05_FOMC_features.html">
+     Visualizing Features
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/06_FOMC_AutoML.html">
+     Checking Baseline with AutoML
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/07_FOMC_sentiments.html">
+     Predicting Sentiments of FOMC Corpus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/08_FOMC_EDA_sentiments.html">
+     EDA on Sentiment Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/09_FOMC_AutoML_with_tones.html">
+     Predicting the next decisions with tones
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../usecases/bok/index.html">
+   Bank of Korea
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/edgar/index.html">
+   EDGAR
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/>
+  <label for="toctree-checkbox-16">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/edgar/predict_edgar.html">
+     Prediciting Sentiments
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/esg/index.html">
+   ESG
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" type="checkbox"/>
+  <label for="toctree-checkbox-17">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/snorkel-polarity.html">
+     Preparing polarity classification datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/rubrix.html">
+     Improving classification datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/classifiers.html">
+     Training Classifiers for ESG Ratings
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/econ_news_corpus.html">
+     Building
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       econ_news_kr
+      </span>
+     </code>
+     corpus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/predict_news.html">
+     Predicting ESG Categories and Polarities
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/rubrix_classifiers.html">
+     Preparing classifiers for active learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/predict_for_learning.html">
+     Preparing active learning data
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/esg-en/index.html">
+   ESG (English)
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" type="checkbox"/>
+  <label for="toctree-checkbox-18">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg-en/esg_corpus.html">
+     Building
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       JOCo
+      </span>
+     </code>
+     corpus
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/cointax/index.html">
+   Taxation on Cryptocurrency
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/>
+  <label for="toctree-checkbox-19">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/cointax/coin_dataset.html">
+     Improving classification datasets
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Research
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../research/esg_topics/analyst.html">
+   ESG Topic Analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../research/esg_topics/rethink_esg.html">
+   Rethinking ESG
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Lectures
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../nlp_intro/index.html">
+   Introduction to NLP
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" type="checkbox"/>
+  <label for="toctree-checkbox-20">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../nlp_intro/intro.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../nlp_intro/ekorpkit.html">
+     Getting started with ekorpkit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../nlp_intro/research.html">
+     Research Applications
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../nlp_intro/language_models.html">
+     Language Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../nlp_intro/topic.html">
+     Topic Modeling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../nlp_intro/topic_models.html">
+     Topic Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../nlp_intro/topic_coherence.html">
+     Topic Coherence Measures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../nlp_intro/sentiments.html">
+     Sentiment Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../nlp_intro/tokenization.html">
+     Tokenization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../nlp_intro/word_segmentation.html">
+     Word Segmentation and Association
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../nlp_intro/vectorization.html">
+     Vector Semantics and Representation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../nlp_intro/word_embeddings.html">
+     Word Embeddings
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../nlp_intro/lab1-corpus.html">
+     Lab 1: Preparing Wikipedia Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../nlp_intro/lab2-corpus-eda.html">
+     Lab 2: EDA on Corpora
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   Deep Learning for NLP
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" type="checkbox"/>
+  <label for="toctree-checkbox-21">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="intro.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="ekorpkit.html">
+     Getting started with ekorpkit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="zeroshot.html">
+     Zero Shot, Prompt, and Search Strategies
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="bloom.html">
+     What is BLOOM?
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="bloom_apps.html">
+     Bloom Examples
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="transformers.html">
+     Transformers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="bert.html">
+     BERT: Bidirectional Encoder Representations from Transformers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="t5.html">
+     T5: Text-To-Text Transfer Transformer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="tokenization.html">
+     Tokenization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="sentencepiece.html">
+     SentencePiece Tokenizer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="byt5.html">
+     ByT5: Towards a token-free future with pre-trained byte-to-byte models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="plms.html">
+     Pretrained Language Models
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Lab 1: Preparing Wikipedia Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lab2-corpus-eda.html">
+     Lab 2: EDA on Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lab3-train-tokenizers.html">
+     Lab 3: Training Tokenizers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lab4-pretraining-lms.html">
+     Lab 4: Pretraining Language Models
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../nlp_apps/index.html">
+   NLP Applications
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../aiart/index.html">
+   AI Art (Text-to-Image)
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" type="checkbox"/>
+  <label for="toctree-checkbox-22">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/intro.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/project-themes.html">
+     Project Themes - A Brave New World
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/dalle1.html">
+     DALL·E 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/dalle2.html">
+     DALL·E 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/imagen.html">
+     Imagen
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/dalle-mini.html">
+     DALL·E Mini
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/stable-diffusion.html">
+     Stable Diffusion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/prompt-generator.html">
+     Prompt Generator for Stable Diffusion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/textual-inversion.html">
+     Textual Inversion (Dreambooth)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/whisper.html">
+     Automatic Speech Recognition (Whisper)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/text2music.html">
+     Text to Music
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/image2music.html">
+     Image to Music
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mlops/index.html">
+   Machine Learning Systems Design
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ds/index.html">
+   Data Science for Economics and Finance
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about/index.html">
+   Bibliography
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about/cite.html">
+   Citation
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/entelecheia/ekorpkit-book/main?urlpath=tree/ekorpkit-book/docs/lectures/nlp_deep/lab1-corpus.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://colab.research.google.com/github/entelecheia/ekorpkit-book/blob/main/ekorpkit-book/docs/lectures/nlp_deep/lab1-corpus.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Colab"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../../_static/images/logo_colab.png">
+  </span>
+<span class="headerbtn__text-container">Colab</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/entelecheia/ekorpkit-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/entelecheia/ekorpkit-book/issues/new?title=Issue%20on%20page%20%2Fdocs/lectures/nlp_deep/lab1-corpus.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../../_sources/docs/lectures/nlp_deep/lab1-corpus.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prepare-the-environment">
+   Prepare the Environment
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#build-corpora-with-the-ekorpkit-configs">
+   Build corpora with the ekorpkit configs
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#wikipedia-dump">
+     Wikipedia Dump
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#fetch-the-dump-and-extract-it-to-the-data-directory">
+       Fetch the dump and extract it to the
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         data
+        </span>
+       </code>
+       directory
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#build-the-korean-wikipedia-corpus">
+     Build the Korean Wikipedia Corpus
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#build-the-corpus-by-parsing-the-wikipedia-dump">
+       Build the corpus by Parsing the Wikipedia Dump
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#build-the-english-wikipedia-corpus">
+     Build the English Wikipedia Corpus
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#build-a-wikipedia-corpus-for-other-languages">
+     Build a Wikipedia Corpus for Other Languages
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#build-a-corpus-using-cli">
+     Build a Corpus using CLI
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-the-corpus">
+   Load the Corpus
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sample-and-save-the-corpus">
+     Sample and Save the Corpus
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-corpora">
+   Load Corpora
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#checking-the-corpus-information">
+     Checking the Corpus Information
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#checking-the-corpus-data">
+     Checking the Corpus Data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concatenating-corpora">
+     Concatenating Corpora
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#save-the-concatenated-corpus">
+     Save the concatenated corpus
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Lab 1: Preparing Wikipedia Corpora</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prepare-the-environment">
+   Prepare the Environment
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#build-corpora-with-the-ekorpkit-configs">
+   Build corpora with the ekorpkit configs
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#wikipedia-dump">
+     Wikipedia Dump
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#fetch-the-dump-and-extract-it-to-the-data-directory">
+       Fetch the dump and extract it to the
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         data
+        </span>
+       </code>
+       directory
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#build-the-korean-wikipedia-corpus">
+     Build the Korean Wikipedia Corpus
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#build-the-corpus-by-parsing-the-wikipedia-dump">
+       Build the corpus by Parsing the Wikipedia Dump
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#build-the-english-wikipedia-corpus">
+     Build the English Wikipedia Corpus
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#build-a-wikipedia-corpus-for-other-languages">
+     Build a Wikipedia Corpus for Other Languages
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#build-a-corpus-using-cli">
+     Build a Corpus using CLI
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-the-corpus">
+   Load the Corpus
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sample-and-save-the-corpus">
+     Sample and Save the Corpus
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-corpora">
+   Load Corpora
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#checking-the-corpus-information">
+     Checking the Corpus Information
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#checking-the-corpus-data">
+     Checking the Corpus Data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concatenating-corpora">
+     Concatenating Corpora
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#save-the-concatenated-corpus">
+     Save the concatenated corpus
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="lab-1-preparing-wikipedia-corpora">
+<h1>Lab 1: Preparing Wikipedia Corpora<a class="headerlink" href="#lab-1-preparing-wikipedia-corpora" title="Permalink to this headline">#</a></h1>
+<p><img alt="" src="../../../_images/corpus.png" /></p>
+<section id="prepare-the-environment">
+<h2>Prepare the Environment<a class="headerlink" href="#prepare-the-environment" title="Permalink to this headline">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="o">--</span><span class="n">pre</span> <span class="n">ekorpkit</span><span class="p">[</span><span class="n">dataset</span><span class="p">,</span><span class="n">wiki</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_format=&#39;retina&#39;
+<span class="o">%</span><span class="k">load_ext</span> autotime
+<span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+
+<span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+
+<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;version:&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+
+<span class="n">is_colab</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is colab?&quot;</span><span class="p">,</span> <span class="n">is_colab</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">is_colab</span><span class="p">:</span>
+    <span class="n">eKonf</span><span class="o">.</span><span class="n">mount_google_drive</span><span class="p">()</span>
+<span class="n">workspace_dir</span> <span class="o">=</span> <span class="s2">&quot;/content/drive/MyDrive/workspace&quot;</span>
+<span class="n">project_name</span> <span class="o">=</span> <span class="s2">&quot;ekorpkit-book&quot;</span>
+<span class="n">project_dir</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">set_workspace</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="n">workspace_dir</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project_name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;project_dir:&quot;</span><span class="p">,</span> <span class="n">project_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.utils.notebook:Google Colab not detected.
+INFO:ekorpkit.base:Setting EKORPKIT_WORKSPACE_ROOT to /content/drive/MyDrive/workspace
+INFO:ekorpkit.base:Setting EKORPKIT_PROJECT to ekorpkit-book
+INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.40.post0.dev18
+is colab? False
+project_dir: /content/drive/MyDrive/workspace/projects/ekorpkit-book
+time: 1.36 s (started: 2022-11-14 01:22:37 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="build-corpora-with-the-ekorpkit-configs">
+<h2>Build corpora with the ekorpkit configs<a class="headerlink" href="#build-corpora-with-the-ekorpkit-configs" title="Permalink to this headline">#</a></h2>
+<section id="wikipedia-dump">
+<h3>Wikipedia Dump<a class="headerlink" href="#wikipedia-dump" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>The first step is to download the Wikipedia dump.</p></li>
+<li><p>The dump is a collection of all Wikipedia articles in XML format.</p></li>
+<li><p>The dump for English is available at <a class="reference external" href="https://dumps.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2">https://dumps.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2</a>.</p></li>
+<li><p>The dump is about 20.3 GB in size.</p></li>
+<li><p>For other languages, change <code class="docutils literal notranslate"><span class="pre">en</span></code> to the language code of your choice.</p></li>
+<li><p>For the detailed list of language codes, see <a class="reference external" href="https://meta.wikimedia.org/wiki/List_of_Wikipedias">https://meta.wikimedia.org/wiki/List_of_Wikipedias</a>.</p></li>
+</ul>
+<section id="fetch-the-dump-and-extract-it-to-the-data-directory">
+<h4>Fetch the dump and extract it to the <code class="docutils literal notranslate"><span class="pre">data</span></code> directory<a class="headerlink" href="#fetch-the-dump-and-extract-it-to-the-data-directory" title="Permalink to this headline">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.io.fetch.loader.wiki</span> <span class="kn">import</span> <span class="n">Wiki</span>
+
+<span class="n">wiki</span> <span class="o">=</span> <span class="n">Wiki</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="s2">&quot;ko&quot;</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
+<span class="n">wiki</span><span class="o">.</span><span class="n">download_dump</span><span class="p">()</span>
+<span class="n">wiki</span><span class="o">.</span><span class="n">extract_wiki</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Following the instructions above, you can download the dump for other languages.</p>
+</section>
+</section>
+<section id="build-the-korean-wikipedia-corpus">
+<h3>Build the Korean Wikipedia Corpus<a class="headerlink" href="#build-the-korean-wikipedia-corpus" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wiki_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;io/fetcher=wiki&quot;</span><span class="p">)</span>
+<span class="n">wiki_cfg</span><span class="o">.</span><span class="n">lang</span> <span class="o">=</span> <span class="s2">&quot;ko&quot;</span>
+<span class="n">wiki_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;kowiki&quot;</span>
+<span class="n">wiki_cfg</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">wiki_cfg</span><span class="o">.</span><span class="n">dump</span><span class="o">.</span><span class="n">dump_dir</span><span class="si">}</span><span class="s2">/extracted&quot;</span>
+<span class="n">wiki_cfg</span><span class="o">.</span><span class="n">autoload</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">wiki_cfg</span><span class="o">.</span><span class="n">force_download</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">wiki_cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">wiki_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">wiki_cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;_name_&#39;: &#39;fetcher&#39;,
+ &#39;_target_&#39;: &#39;ekorpkit.io.fetch.loader.wiki.Wiki&#39;,
+ &#39;auto&#39;: {&#39;load&#39;: False},
+ &#39;autoload&#39;: False,
+ &#39;compress&#39;: False,
+ &#39;dump&#39;: {&#39;_target_&#39;: &#39;web_download&#39;,
+          &#39;dump_dir&#39;: &#39;/content/drive/MyDrive/workspace/.cache/corpus/kowiki&#39;,
+          &#39;dump_file&#39;: &#39;kowiki.xml.bz2&#39;,
+          &#39;url&#39;: &#39;https://dumps.wikimedia.org/kowiki/latest/kowiki-latest-pages-articles.xml.bz2&#39;},
+ &#39;extract&#39;: {&#39;_target_&#39;: &#39;extract_wiki&#39;},
+ &#39;force&#39;: {&#39;download&#39;: False},
+ &#39;force_download&#39;: False,
+ &#39;lang&#39;: &#39;ko&#39;,
+ &#39;limit&#39;: -1,
+ &#39;name&#39;: &#39;kowiki&#39;,
+ &#39;num_workers&#39;: 50,
+ &#39;output_dir&#39;: &#39;/content/drive/MyDrive/workspace/.cache/corpus/kowiki/extracted&#39;,
+ &#39;output_file&#39;: None,
+ &#39;path&#39;: {&#39;cached_path&#39;: None,
+          &#39;columns&#39;: None,
+          &#39;concat_data&#39;: False,
+          &#39;data_columns&#39;: None,
+          &#39;data_dir&#39;: &#39;/content/drive/MyDrive/workspace/data/kowiki&#39;,
+          &#39;data_file&#39;: None,
+          &#39;filetype&#39;: &#39;&#39;,
+          &#39;name&#39;: &#39;kowiki&#39;,
+          &#39;output&#39;: {&#39;base_dir&#39;: &#39;/content/drive/MyDrive/workspace/.cache/corpus/kowiki/extracted&#39;,
+                     &#39;columns&#39;: None,
+                     &#39;file&#39;: None,
+                     &#39;filename&#39;: None,
+                     &#39;filepath&#39;: &#39;/content/drive/MyDrive/workspace/.cache/corpus/kowiki/extracted&#39;,
+                     &#39;filetype&#39;: &#39;&#39;,
+                     &#39;suffix&#39;: None},
+          &#39;output_dir&#39;: &#39;/content/drive/MyDrive/workspace/.cache/corpus/kowiki/extracted&#39;,
+          &#39;output_file&#39;: None,
+          &#39;root&#39;: &#39;/content/drive/MyDrive/workspace/data/kowiki&#39;,
+          &#39;suffix&#39;: None,
+          &#39;verbose&#39;: True},
+ &#39;verbose&#39;: True}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.io.fetch.loader.wiki</span> <span class="kn">import</span> <span class="n">Wiki</span>
+
+<span class="n">args</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">wiki_cfg</span><span class="p">)</span>
+<span class="n">wiki</span> <span class="o">=</span> <span class="n">Wiki</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
+<span class="n">wiki</span><span class="o">.</span><span class="n">download_dump</span><span class="p">()</span>
+<span class="n">wiki</span><span class="o">.</span><span class="n">extract_wiki</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "7f57cd7e390042ad85a99efd0b1fbafa", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Preprocessing &#39;/content/drive/MyDrive/workspace/.cache/corpus/kowiki/kowiki.xml.bz2&#39; to collect template definitions: this may take some time.
+INFO: Preprocessed 100000 pages
+INFO: Preprocessed 200000 pages
+INFO: Preprocessed 300000 pages
+INFO: Preprocessed 400000 pages
+INFO: Preprocessed 500000 pages
+INFO: Preprocessed 600000 pages
+INFO: Preprocessed 700000 pages
+INFO: Preprocessed 800000 pages
+INFO: Preprocessed 900000 pages
+INFO: Preprocessed 1000000 pages
+INFO: Preprocessed 1100000 pages
+INFO: Preprocessed 1200000 pages
+INFO: Preprocessed 1300000 pages
+INFO: Preprocessed 1400000 pages
+INFO: Preprocessed 1500000 pages
+INFO: Preprocessed 1600000 pages
+INFO: Preprocessed 1700000 pages
+INFO: Loaded 60850 templates in 214.3s
+INFO: Starting page extraction from /content/drive/MyDrive/workspace/.cache/corpus/kowiki/kowiki.xml.bz2.
+INFO: Using 50 extract processes.
+INFO: Extracted 100000 articles (2809.9 art/s)
+INFO: Extracted 200000 articles (4194.9 art/s)
+INFO: Extracted 300000 articles (4598.9 art/s)
+INFO: Extracted 400000 articles (5019.5 art/s)
+INFO: Extracted 500000 articles (5461.3 art/s)
+INFO: Extracted 600000 articles (5120.8 art/s)
+INFO: Extracted 700000 articles (5254.5 art/s)
+INFO: Extracted 800000 articles (6065.9 art/s)
+INFO: Extracted 900000 articles (19874.6 art/s)
+INFO: Extracted 1000000 articles (10843.3 art/s)
+INFO: Extracted 1100000 articles (5674.7 art/s)
+INFO: Extracted 1200000 articles (5990.6 art/s)
+INFO: Extracted 1300000 articles (5678.9 art/s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracted kowiki from dump file /content/drive/MyDrive/workspace/.cache/corpus/kowiki/kowiki.xml.bz2
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Finished 50-process extraction of 1339049 articles in 247.2s (5417.6 art/s)
+</pre></div>
+</div>
+</div>
+</div>
+<section id="build-the-corpus-by-parsing-the-wikipedia-dump">
+<h4>Build the corpus by Parsing the Wikipedia Dump<a class="headerlink" href="#build-the-corpus-by-parsing-the-wikipedia-dump" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p>The next step is to parse the Wikipedia dump and build the corpus.</p></li>
+<li><p>Extracted Wikipedia dump is in JSON Lines format, which is a line-delimited JSON format.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the list of extracted files</span>
+
+<span class="n">files</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">get_filepaths</span><span class="p">(</span><span class="s2">&quot;**/*&quot;</span><span class="p">,</span> <span class="n">wiki_cfg</span><span class="o">.</span><span class="n">output_dir</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of files: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">files</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1628] files from [&#39;**/*&#39;]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of files: 1628
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;/content/drive/MyDrive/workspace/.cache/corpus/kowiki/extracted/AH/wiki_23&#39;,
+ &#39;/content/drive/MyDrive/workspace/.cache/corpus/kowiki/extracted/AH/wiki_67&#39;,
+ &#39;/content/drive/MyDrive/workspace/.cache/corpus/kowiki/extracted/AH/wiki_05&#39;,
+ &#39;/content/drive/MyDrive/workspace/.cache/corpus/kowiki/extracted/AH/wiki_20&#39;,
+ &#39;/content/drive/MyDrive/workspace/.cache/corpus/kowiki/extracted/AH/wiki_40&#39;,
+ &#39;/content/drive/MyDrive/workspace/.cache/corpus/kowiki/extracted/AH/wiki_92&#39;,
+ &#39;/content/drive/MyDrive/workspace/.cache/corpus/kowiki/extracted/AH/wiki_42&#39;,
+ &#39;/content/drive/MyDrive/workspace/.cache/corpus/kowiki/extracted/AH/wiki_14&#39;,
+ &#39;/content/drive/MyDrive/workspace/.cache/corpus/kowiki/extracted/AH/wiki_28&#39;,
+ &#39;/content/drive/MyDrive/workspace/.cache/corpus/kowiki/extracted/AH/wiki_24&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Check the first few lines of the extracted dump.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">head</span><span class="o">=</span><span class="mi">200</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&quot;id&quot;: &quot;634327&quot;, &quot;revid&quot;: &quot;414775&quot;, &quot;url&quot;: &quot;https://ko.wikipedia.org/wiki?curid=634327&quot;, &quot;title&quot;: &quot;\uc131\uc774\uc131&quot;, &quot;text&quot;: &quot;\uc131\uc774\uc131(\u6210\u4ee5\u6027, 1595\ub144(\uc120\uc870 28\ub144
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;corpus/builtin=kowiki&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">fetcher</span> <span class="o">=</span> <span class="n">wiki_cfg</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">wiki_cfg</span><span class="o">.</span><span class="n">output_dir</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="c1"># eKonf.print(cfg.io)</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+INFO:ekorpkit.utils.notebook:shell type: ZMQInteractiveShell
+INFO:ekorpkit.base:setting environment variable CACHED_PATH_CACHE_ROOT to /content/drive/MyDrive/workspace/.cache/cached_path
+INFO:ekorpkit.base:setting environment variable KMP_DUPLICATE_LIB_OK to TRUE
+INFO:ekorpkit.base:instantiating ekorpkit.datasets.build.DatasetBuilder...
+INFO:ekorpkit.base:instantiating ekorpkit.io.fetch.loader.wiki.Wiki...
+INFO:ekorpkit.base:instantiating ekorpkit.info.stat.SummaryInfo...
+INFO:ekorpkit.info.stat:Loading info file: /content/drive/MyDrive/workspace/data/datasets/corpus/kowiki/info-kowiki.yaml
+INFO:ekorpkit.base:instantiating ekorpkit.io.load.data.load_data...
+INFO:ekorpkit.io.file:Processing [1628] files from [&#39;**/*&#39;]
+INFO:ekorpkit.io.load.data:Starting multiprocessing with 50 processes at load_data
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;category&#39;: &#39;formal&#39;,
+ &#39;column_info&#39;: {&#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;,
+                             &#39;merge_meta_on&#39;: &#39;id&#39;,
+                             &#39;text&#39;: &#39;text&#39;,
+                             &#39;timestamp&#39;: None},
+                 &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;},
+                 &#39;datetime&#39;: {&#39;columns&#39;: None,
+                              &#39;format&#39;: None,
+                              &#39;rcParams&#39;: None},
+                 &#39;meta&#39;: {&#39;curid&#39;: &#39;str&#39;,
+                          &#39;id&#39;: &#39;int&#39;,
+                          &#39;title&#39;: &#39;str&#39;,
+                          &#39;url&#39;: &#39;str&#39;},
+                 &#39;segment_separator&#39;: &#39;\\n\\n&#39;,
+                 &#39;sentence_separator&#39;: &#39;\\n&#39;,
+                 &#39;timestamp&#39;: {&#39;format&#39;: None, &#39;key&#39;: None, &#39;rcParams&#39;: None}},
+ &#39;description&#39;: &#39;위키백과, 우리 모두의 백과사전&#39;,
+ &#39;fullname&#39;: &#39;Korean Wikipedia Corpus&#39;,
+ &#39;homepage&#39;: &#39;https://ko.wikipedia.org&#39;,
+ &#39;lang&#39;: &#39;ko&#39;,
+ &#39;license&#39;: &#39;CC Attribution / Share-Alike 3.0&#39;,
+ &#39;name&#39;: &#39;kowiki&#39;,
+ &#39;version&#39;: &#39;1.0.0&#39;}
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "7f5ed8c4255f4d20b380c9d714938162", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;curid&#39;: &#39;634327&#39;, &#39;url&#39;: &#39;https://ko.wikipedia.org/wiki?curid=634327&#39;, &#39;title&#39;: &#39;성이성&#39;, &#39;text&#39;: &quot;성이성(成以性, 1595년(선조 28년) ∼ 1664년(현종 5년))은 조선 후기의 문신이자 유학자, 청백리이다. 자(字)는 여습(汝習)이고 호는 계서(溪西)이다. 본관은 창녕(昌寧). 춘향전의 실제 주인공으로 춘향전의 주인공인 몽룡은 원래 성몽룡이었다. 남원부사와 승정원승지를 지낸 성안의의 아들이다.\n강직한 간관이자 청백리이다. 그의 직계 후손들은 춘향전에 나온 &#39;금준미주 천인혈&#39;이 그가 실제로 지은 한시라고 주장한다. 호서 암행어사와 호남 암행어사로 활동, 감찰하며 부패 수령들을 봉고파직시켰다. 이것 역시 춘향전의 소재가 된다. 학맥으로는 김굉필의 손제자이자 그의 학맥을 계승한 강복성(康復誠)의 문인이다. 경상북도 출신.\n생애.\n생애 초반.\n출생과 가계.\n성이성은 경상북도 봉화군 물야면 가평리 태생으로 아버지는 창녕 성씨로 승정원승지와 군수를 지낸 성안의(成安義)이고, 어머니는 예안 김씨로 증(贈) 호조 참판에 추증(追贈)된 김계선의 딸이다.\n그는 어려서부터 그는 학업에 열중하여 13세때 그가 쓴 글을 우연히 정경세(鄭經世)가 보게 되었다. 정경세는 그의 글을 읽고 장차 크게 될 인물이라 하였다.\n수학과 남원 생활.\n어려서부터 공부를 게을리하지 않고 학문에 더욱 증진하여 조경남의 문하에서 수학하다가 뒤에 강복성(康復誠)의 문인이 되었다. 강복성은 사림의 학통인 길재-김숙자-김종직-김굉필(金宏弼)-조광조-이연경(李延慶)의 학통을 계승한 학자였다.\n1607년(선조 40) 남원부사로 부임한 아버지 성안의를 따라 갔다가 그곳에서 만난 기생과의 일화가 후일 춘향전의 주 뼈대가 되었다. 그러나 아버지 성안의가 참의로 발령되면서 기생 춘향과는 이별하게 된다. 이때 시중에는 성이성과 춘향을 소재로 한 춘향전이 희극과 인형극, 만담 등으로 확산되었는데, 양반가의 자제의 스캔들이라 하여 조선조정에서 관을 시켜서 금지하게 되자 성몽룡을 이몽룡으로 바꾸고, 성씨(姓氏)가 없던 기생인 춘향에게 성씨 성을 붙여서 시연하게 된다.\n1616년(광해군 8년) 그는 사마시 양시에 합격했는데 생원시에 합격하여 생원(生員)이 되고, 그 해에 다시 진사시에 합격하여 진사(進士)가 되었다. 그러나 광해군 때의 난세에는 벼슬길에 나아가지 않았다.\n관료 생활.\n과거 급제와 관료생활.\n1627년 (인조5년)에 식년 문과에 병과로 급제하였다.\n1635년(인조 13) 성이성은 사간원 정언이 되고 홍문관 부수찬·부교리를 거쳐 1636년 사헌부지평이 되었다. 1637년(인조 15) 호서(湖西) 지방의 암행어사로 파견되었다가 돌아왔다. 그해 성이성은 사간원 헌납이 되어 공신이며 서인당의 고관인 윤방(尹昉)·김류(金류)·심기원(沈器遠)·김자점(金自點) 등을 탄핵하여 왕을 잘못된 길로 인도했다며 오국불충(誤國不忠)의 죄를 논하기도 했다.\n암행어사 활동.\n1639년(인조 17) 호남(湖南) 지방 암행어사에 임명되어 5년간 호남 지역을 순찰하고 1644년(인조 22) 되돌아왔가. 그 뒤 1647년(인조 25) 다시 호남 암행어사 로 파견되었다.\n그러나 호남 암행어사로 부임했을 때 신분을 노출시키고 마는데 성이성은 암행을 하고 다니다가 1647년 11월 25일 순천에서 실수로 부득이 자신의 신분을 드러내고 이후에는 한양으로 돌아오게 되는데, 그는 일기에 돌아오는 길이던 12월 1일 남원에 들렀다고 적고 있다.\n생애 후반.\n1648년 여름 성이성은 전라도 담양군수로 부임해 장마철 강둑이 범람해 피해가 큰 것을 보고 2년에 걸쳐 제방을 쌓고 그 위에 나무를 심었다. 현재 관방제림으로 불리는 숲이 그가 남긴 치세의 흔적이다. 푸조나무 느티나무 팽나무 등 184그루가 전한다. 본디 제방에 나무를 심으면 나무가 바람에 흔들릴 때 제방에 해롭다 하여 심지 않았는데 성이성은 비바람에 강한 토종나무를 골라 심음으로써 이같은 상식을 엎었다. 담양군은 현재 관방제림에 산책로를 조성하여 관광객들의 발길을 모으고 있다.\n외직으로는 진주부사 · 강계부사 등 네 고을을 다스렸는데, 진주부사로 재직할 때는 서인 출신으로 경상도 암행어사로 파견된 민정중(閔鼎重)이 조사하여 그의 선치(善治)를 보고하여 특별히 왕으로부터 표리(表裏, 옷감)를 받았고, 강계부사 때에는 여진족 등의 약탈과 흉년 등으로 어려움에 처한 부민들에게 삼세(蔘稅)를 모두 면제해주어 백성들이 기뻐하였으며 부처가 환생하여 돌아왔다며 &#39;생불&#39; 또는 &#39;관서활불&#39;(關西活佛)이라며 칭송하였다. 1664년(현종 15)에 향년 70세를 일기로 사망했다.\n사후.\n고향인 봉화군 물야면 가평 1리에는 성이성을 추모하는 사당인 계서당이 건립되었다. 사후인 1695년(숙종 21) 청렴함을 인정받아 조정으로부터 청백리로 선출되었다. 증 통정대부 부제학에 추증되었다. 저서로는 &amp;lt;계서유고&amp;gt;가 있다.\n귀신 문제 해결.\n전라도 지역에 귀신이 자주 출몰한다는 곳이 있었다. 그 곳은 상인이나 과거 시험을 보러 가던 선비들이 여러 번 변을 당했는데, 성이성이 이 문제를 해결하였다 한다. 호남 암행어사가 돼서 호남 지역의 귀신이 많이 나오는 곳을 찾아가 억울함을 달래주고 문제를 해결하였고 이것 역시 입에서 입으로 전해져 설화가 되었다.\n부패 관리 파직.\n충청도 암행어사 시절 지방관리의 잘못을 발견하고 어떻게 처리했는가를 인조에게 보고한 &#39;서계&#39;가 남아있었는데 KBS 방송국이 이를 취재하였다.를 보면 세금을 과다징수한 진천현감과 생일날 과다한 잔치를 벌이고 국법을 어긴 석성현감을 적발하여 파직시켰다는 기록이 있다.\n춘향전.\n춘향전.\n그는 아버지인 남원부사 성안의가 부임할 때, 아버지의 임지를 따라 남원에서 생활하다 우연히 남원 기생 춘향을 만나게 되었다. 그러나 춘향과는 이루어지지 못했고, 이는 바로 춘향전의 모티브가 되었다. 뒤에 호남 암행어사로 부임했다가 신분을 노출하고 되돌아갈 때 남원에 들렀다. 늙은기생 여진이 찾아와 만났는데, 그는 춘향을 찾았다 한다. 그러나 그는 춘향을 만날 수 없었다.\n‘서리와 함께 난간에 앉으니 눈빛이 뜰에 하얗게 깔려있고 대나무숲이 희었다. 나는 소년시절의 일을 생각하여 밤늦도록 잠들지 못했다.’\n춘향전은 판소리, 연극, 소설의 소재가 되었으나 양반가 자제의 스캔들이라 하여, 조정에서는 양반가의 위신을 떨어뜨린다며 춘향전의 상영을 금지하였다. 할 수 없이 민중들은 성몽룡 대신 이몽룡으로 성을 바꾸어서 연극과 판소리, 소설, 구전 등으로 전하였다.\n금준미주 천인혈.\n춘향전에 나오는 금준미주 천인혈은 성이성이 지은 시 중의 하나였다. 성이성이 춘향전에 나오는 성몽룡처럼 변사또를 응징한 남원 출두 기록은 실록이나 문집에는 없다. 그러나 춘향전에 나오는 잔치연에서 이몽룡이 변학도를 질타하면서 읊은 금준미주 천인혈 로 시작되는 시조는 성이성이 짓고, 읊었다. 이는 성이성의 4대손 성섭의 저서 &amp;lt;교와문고&amp;gt;와 그의 스승 조경남이 쓴 &amp;lt;난중잡록&amp;gt;에 그의 작품으로 기록되어 있다.\n호남 암행어사가 되었을때에 호남 12고을 군수, 현감들이 잔치를 베풀었다. 이때 성이성은 암행어사가 걸인의 행색을 하고서 연회장에 나타났다. 호남의 12고을의 군수, 현감들은 그를 조롱하며 &#39;그대가 시를 지으면 종일토록 놀고 짓지 못하면 가라.&#39;고 했고, 그는 즉석에서 금준미주 천인혈 을 짓는다. 이어 전라도내 6명의 부패한 수령들을 봉고파직시킨다. 석성현감이 생일날 과다한 잔치를 벌인 것은 춘향전에 등장하는 변사또의 모티브가 되었다.&quot;, &#39;split&#39;: &#39;train&#39;, &#39;filename&#39;: &#39;wiki_23&#39;}
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.datasets.build: &gt;&gt; elapsed time to load and parse data: 0:00:10.173167
+INFO:ekorpkit.datasets.build:
+Transforming dataframe with pipeline: [&#39;reset_index&#39;, &#39;save_metadata&#39;]
+INFO:ekorpkit.pipelines.pipe:Applying pipeline: OrderedDict([(&#39;reset_index&#39;, &#39;reset_index&#39;), (&#39;save_metadata&#39;, &#39;save_metadata&#39;)])
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function reset_index at 0x7fce771d3ca0&gt;)
+INFO:ekorpkit.pipelines.pipe:Resetting index: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.reset_index&#39;}, &#39;index_column_name&#39;: &#39;id&#39;, &#39;drop_index&#39;: False, &#39;verbose&#39;: True}
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function save_metadata at 0x7fce771d35e0&gt;)
+INFO:ekorpkit.pipelines.pipe:Saving metadata: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.save_metadata&#39;}, &#39;path&#39;: {&#39;root&#39;: &#39;/content/drive/MyDrive/workspace/data/ekorpkit-book&#39;, &#39;name&#39;: &#39;ekorpkit-book&#39;, &#39;cached_path&#39;: None, &#39;filetype&#39;: None, &#39;verbose&#39;: True, &#39;data_dir&#39;: &#39;/content/drive/MyDrive/workspace/data/ekorpkit-book&#39;, &#39;data_file&#39;: None, &#39;concat_data&#39;: False, &#39;data_columns&#39;: None, &#39;columns&#39;: None, &#39;output_dir&#39;: None, &#39;output_file&#39;: None, &#39;suffix&#39;: None, &#39;output&#39;: {&#39;filename&#39;: &#39;meta-kowiki-train.parquet&#39;, &#39;base_dir&#39;: &#39;/content/drive/MyDrive/workspace/data/datasets/corpus/kowiki&#39;, &#39;filetype&#39;: &#39;.parquet&#39;, &#39;suffix&#39;: None, &#39;filepath&#39;: &#39;/content/drive/MyDrive/workspace/data/datasets/corpus/kowiki/meta-kowiki-train.parquet&#39;, &#39;columns&#39;: None, &#39;verbose&#39;: True}}, &#39;filepath&#39;: None, &#39;filetype&#39;: None, &#39;column_info&#39;: {&#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;, &#39;text&#39;: &#39;text&#39;, &#39;merge_meta_on&#39;: &#39;id&#39;, &#39;timestamp&#39;: None}, &#39;datetime&#39;: {&#39;columns&#39;: None, &#39;format&#39;: None, &#39;rcParams&#39;: None}, &#39;timestamp&#39;: {&#39;key&#39;: None, &#39;format&#39;: None, &#39;rcParams&#39;: None}, &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;}, &#39;meta&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;curid&#39;: &#39;str&#39;, &#39;url&#39;: &#39;str&#39;, &#39;title&#39;: &#39;str&#39;}, &#39;segment_separator&#39;: &#39;\\n\\n&#39;, &#39;sentence_separator&#39;: &#39;\\n&#39;}, &#39;split_name&#39;: &#39;train&#39;, &#39;verbose&#39;: True}
+INFO:ekorpkit.io.file:Saving dataframe to /content/drive/MyDrive/workspace/data/datasets/corpus/kowiki/meta-kowiki-train.parquet
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    curid                                         url title  \
+0  634327  https://ko.wikipedia.org/wiki?curid=634327   성이성   
+1  634328  https://ko.wikipedia.org/wiki?curid=634328    누타   
+2  634329  https://ko.wikipedia.org/wiki?curid=634329  공중그네   
+3  634331  https://ko.wikipedia.org/wiki?curid=634331   성몽룡   
+4  634332  https://ko.wikipedia.org/wiki?curid=634332    계서   
+
+                                                text  split filename  
+0  성이성(成以性, 1595년(선조 28년) ∼ 1664년(현종 5년))은 조선 후기의...  train  wiki_23  
+1  누타(ぬた)는 잘게 썬 생선이나 조개를 파, 채소, 미역과 함께 초된장으로 무친 요...  train  wiki_23  
+2                         공중그네(空中-)는 서커스의 기술 중 하나이다.  train  wiki_23  
+3                                                     train  wiki_23  
+4                                                     train  wiki_23  
+(1339048, 6)
+   id   curid                                         url title  \
+0   0  634327  https://ko.wikipedia.org/wiki?curid=634327   성이성   
+1   1  634328  https://ko.wikipedia.org/wiki?curid=634328    누타   
+2   2  634329  https://ko.wikipedia.org/wiki?curid=634329  공중그네   
+3   3  634331  https://ko.wikipedia.org/wiki?curid=634331   성몽룡   
+4   4  634332  https://ko.wikipedia.org/wiki?curid=634332    계서   
+
+                                                text  split filename  
+0  성이성(成以性, 1595년(선조 28년) ∼ 1664년(현종 5년))은 조선 후기의...  train  wiki_23  
+1  누타(ぬた)는 잘게 썬 생선이나 조개를 파, 채소, 미역과 함께 초된장으로 무친 요...  train  wiki_23  
+2                         공중그네(空中-)는 서커스의 기술 중 하나이다.  train  wiki_23  
+3                                                     train  wiki_23  
+4                                                     train  wiki_23  
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file: &gt;&gt; elapsed time to save data: 0:00:05.303806
+INFO:ekorpkit.io.file:Saving dataframe to /content/drive/MyDrive/workspace/data/datasets/corpus/kowiki/kowiki-train.parquet
+INFO:ekorpkit.io.file: &gt;&gt; elapsed time to save data: 0:01:05.529620
+INFO:ekorpkit.info.stat:Initializing statistics for split: train with stats: {&#39;name&#39;: &#39;train&#39;, &#39;dataset_name&#39;: &#39;kowiki&#39;, &#39;data_file&#39;: &#39;kowiki-train.parquet&#39;, &#39;meta_file&#39;: &#39;meta-kowiki-train.parquet&#39;}
+INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 230  input_split: False  merge_output: True  len(data): 1339048 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "0107206b43a242e0860b269af3744db2", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 230  input_split: False  merge_output: True  len(data): 1339048 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "e2329cb71fac4097977c1d069d21d2df", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.info.stat: &gt;&gt; elapsed time to calculate statistics before processing: 0:00:32.387224
+INFO:ekorpkit.info.stat: &gt;&gt; updated splits: {&#39;train&#39;: {&#39;name&#39;: &#39;train&#39;, &#39;dataset_name&#39;: &#39;kowiki&#39;, &#39;data_file&#39;: &#39;kowiki-train.parquet&#39;, &#39;meta_file&#39;: &#39;meta-kowiki-train.parquet&#39;, &#39;num_docs_before_processing&#39;: 1339048, &#39;num_bytes_before_processing&#39;: 801994255, &#39;num_sents&#39;: 3829874}}
+INFO:ekorpkit.datasets.build:
+Processing dataframe with pipeline: [&#39;normalize&#39;, &#39;segment&#39;, &#39;filter_length&#39;, &#39;drop_duplicates&#39;, &#39;save_samples&#39;]
+INFO:ekorpkit.pipelines.pipe:Applying pipeline: OrderedDict([(&#39;normalize&#39;, &#39;normalize&#39;), (&#39;segment&#39;, &#39;segment&#39;), (&#39;filter_length&#39;, &#39;filter_length&#39;), (&#39;drop_duplicates&#39;, &#39;drop_duplicates&#39;), (&#39;save_samples&#39;, &#39;save_samples&#39;)])
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function normalize at 0x7fce771d3ee0&gt;)
+INFO:ekorpkit.pipelines.pipe:instantiating normalizer
+INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 230  input_split: False  merge_output: True  len(data): 1339048 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "fc296ed35a05411187778930cd58d827", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to normalize: 0:00:18.489442
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function segment at 0x7fce771d30d0&gt;)
+INFO:ekorpkit.pipelines.pipe:instantiating segmenter
+INFO:ekorpkit.base:instantiating ekorpkit.preprocessors.segmenter.KSSSegmenter...
+INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 50  input_split: False  merge_output: True  len(data): 1339048 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "47e837cae0e84fd3afbde18d29b8d325", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to segment: 0:26:43.238374
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function filter_length at 0x7fce771d3280&gt;, len_bytes={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}, len_words={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_words&#39;})
+INFO:ekorpkit.pipelines.pipe:Filtering by length: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.filter_length&#39;, &#39;len_bytes&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}, &#39;len_words&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_words&#39;}}, &#39;apply_to&#39;: &#39;text&#39;, &#39;min_length&#39;: 30, &#39;max_length&#39;: None, &#39;len_func&#39;: &#39;len_bytes&#39;, &#39;len_column&#39;: &#39;num_bytes&#39;, &#39;add_len_column&#39;: True, &#39;verbose&#39;: True, &#39;use_batcher&#39;: True}
+INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 50  input_split: False  merge_output: True  len(data): 1339048 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "8224db593bbd4df298f7e3b21aabe851", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.pipelines.pipe:removed 736936 of 1339048 documents with length &lt; 30
+INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to filter length: 0:00:03.079006
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function drop_duplicates at 0x7fce771d34c0&gt;)
+INFO:ekorpkit.pipelines.pipe:Dropping duplicates: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.drop_duplicates&#39;}, &#39;apply_to&#39;: &#39;text&#39;, &#39;verbose&#39;: True}
+INFO:ekorpkit.pipelines.pipe:601641 documents after dropping 471 duplicates from [[&#39;text&#39;]]
+INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to drop duplicates: 0:00:01.811704
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function save_samples at 0x7fce771d3790&gt;)
+INFO:ekorpkit.pipelines.pipe:Saving samples: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.save_samples&#39;}, &#39;path&#39;: {&#39;root&#39;: &#39;/content/drive/MyDrive/workspace/data/ekorpkit-book&#39;, &#39;name&#39;: &#39;ekorpkit-book&#39;, &#39;cached_path&#39;: None, &#39;filetype&#39;: &#39;&#39;, &#39;verbose&#39;: True, &#39;data_dir&#39;: &#39;/content/drive/MyDrive/workspace/data/ekorpkit-book&#39;, &#39;data_file&#39;: None, &#39;concat_data&#39;: False, &#39;data_columns&#39;: None, &#39;columns&#39;: None, &#39;output_dir&#39;: None, &#39;output_file&#39;: None, &#39;suffix&#39;: None, &#39;output&#39;: {&#39;filename&#39;: &#39;sample-kowiki-train.txt&#39;, &#39;base_dir&#39;: &#39;/content/drive/MyDrive/workspace/data/datasets/corpus/kowiki&#39;, &#39;filetype&#39;: &#39;.txt&#39;, &#39;suffix&#39;: None, &#39;filepath&#39;: &#39;/content/drive/MyDrive/workspace/data/datasets/corpus/kowiki/sample-kowiki-train.txt&#39;, &#39;columns&#39;: None, &#39;verbose&#39;: True}}, &#39;apply_to&#39;: &#39;text&#39;, &#39;num_samples_to_save&#39;: 2, &#39;output_file&#39;: None, &#39;sample_length_to_print&#39;: 1000, &#39;verbose&#39;: True}
+INFO:ekorpkit.pipelines.pipe:Saved 2 samples to /content/drive/MyDrive/workspace/data/datasets/corpus/kowiki/sample-kowiki-train.txt
+INFO:ekorpkit.info.stat:Calculating statistics for split: train
+INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 50  input_split: False  merge_output: True  len(data): 601641 len(args): 5
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>----------------------------------------------------------------------------------------------------
+
+text: 
+《그랜드 점프》(, )는 슈에이샤가 발행하는 일본의 소년 만화 잡지이다.
+
+----------------------------------------------------------------------------------------------------
+text: 
+레이크파크()는 다음과 같은 뜻이 있다.
+
+----------------------------------------------------------------------------------------------------
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "9ad1bd2f771c422593c6806a64b1e700", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 50  input_split: False  merge_output: True  len(data): 601641 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "5c7df22e54b747f2a5b30a34ac406a40", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 50  input_split: False  merge_output: True  len(data): 601641 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "680500c65fed4751afcc3b87c322d043", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 50  input_split: False  merge_output: True  len(data): 601641 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "f7f4538e02534ec199de2601c80d8905", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 50  input_split: False  merge_output: True  len(data): 601641 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "fe77ec00d0ec483ebc484896f7f5f9b5", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.info.stat: &gt;&gt; elapsed time to calculate statistics: 0:00:07.233255
+INFO:ekorpkit.info.stat:Saving updated info file: /content/drive/MyDrive/workspace/data/datasets/corpus/kowiki/info-kowiki.yaml
+INFO:ekorpkit.datasets.build:
+Corpus [kowiki] is built to [/content/drive/MyDrive/workspace/data/datasets/corpus/kowiki] from [/content/drive/MyDrive/workspace/data/archive/datasets/source/kowiki]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;category&#39;: &#39;formal&#39;,
+ &#39;column_info&#39;: {&#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;,
+                             &#39;merge_meta_on&#39;: &#39;id&#39;,
+                             &#39;text&#39;: &#39;text&#39;,
+                             &#39;timestamp&#39;: None},
+                 &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;},
+                 &#39;datetime&#39;: {&#39;columns&#39;: None,
+                              &#39;format&#39;: None,
+                              &#39;rcParams&#39;: None},
+                 &#39;meta&#39;: {&#39;curid&#39;: &#39;str&#39;,
+                          &#39;id&#39;: &#39;int&#39;,
+                          &#39;title&#39;: &#39;str&#39;,
+                          &#39;url&#39;: &#39;str&#39;},
+                 &#39;segment_separator&#39;: &#39;\\n\\n&#39;,
+                 &#39;sentence_separator&#39;: &#39;\\n&#39;,
+                 &#39;timestamp&#39;: {&#39;format&#39;: None, &#39;key&#39;: None, &#39;rcParams&#39;: None}},
+ &#39;data_files&#39;: {&#39;train&#39;: &#39;kowiki-train.parquet&#39;},
+ &#39;data_files_modified&#39;: &#39;2022-10-29 06:30:41&#39;,
+ &#39;description&#39;: &#39;위키백과, 우리 모두의 백과사전&#39;,
+ &#39;fullname&#39;: &#39;Korean Wikipedia Corpus&#39;,
+ &#39;homepage&#39;: &#39;https://ko.wikipedia.org&#39;,
+ &#39;info_updated&#39;: &#39;2022-10-29 06:58:28&#39;,
+ &#39;lang&#39;: &#39;ko&#39;,
+ &#39;license&#39;: &#39;CC Attribution / Share-Alike 3.0&#39;,
+ &#39;meta_files&#39;: {&#39;train&#39;: &#39;meta-kowiki-train.parquet&#39;},
+ &#39;meta_files_modified&#39;: &#39;2022-10-29 06:29:35&#39;,
+ &#39;name&#39;: &#39;kowiki&#39;,
+ &#39;num_bytes_before_processing&#39;: 801994255,
+ &#39;num_docs&#39;: 601641,
+ &#39;num_docs_before_processing&#39;: 1339048,
+ &#39;num_segments&#39;: 601727,
+ &#39;num_sents&#39;: 6064076,
+ &#39;num_words&#39;: 74965324,
+ &#39;size_in_bytes&#39;: 800672700,
+ &#39;size_in_human_bytes&#39;: &#39;763.58 MiB&#39;,
+ &#39;splits&#39;: {&#39;train&#39;: {&#39;data_file&#39;: &#39;kowiki-train.parquet&#39;,
+                      &#39;dataset_name&#39;: &#39;kowiki&#39;,
+                      &#39;human_bytes&#39;: &#39;763.58 MiB&#39;,
+                      &#39;human_bytes_wospc&#39;: &#39;692.66 MiB&#39;,
+                      &#39;meta_file&#39;: &#39;meta-kowiki-train.parquet&#39;,
+                      &#39;name&#39;: &#39;train&#39;,
+                      &#39;num_bytes&#39;: 800672700,
+                      &#39;num_bytes_before_processing&#39;: 801994255,
+                      &#39;num_bytes_max&#39;: 417935,
+                      &#39;num_bytes_median&#39;: 348.0,
+                      &#39;num_bytes_min&#39;: 30,
+                      &#39;num_bytes_wospc&#39;: 726308931,
+                      &#39;num_docs&#39;: 601641,
+                      &#39;num_docs_before_processing&#39;: 1339048,
+                      &#39;num_segments&#39;: 601727,
+                      &#39;num_segments_median&#39;: 1.0,
+                      &#39;num_sents&#39;: 6064076,
+                      &#39;num_sents_median&#39;: 3.0,
+                      &#39;num_words&#39;: 74965324,
+                      &#39;num_words_max&#39;: 35733,
+                      &#39;num_words_median&#39;: 32.0,
+                      &#39;num_words_min&#39;: 1}},
+ &#39;version&#39;: &#39;1.0.0&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="build-the-english-wikipedia-corpus">
+<h3>Build the English Wikipedia Corpus<a class="headerlink" href="#build-the-english-wikipedia-corpus" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;corpus/builtin=enwiki&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:instantiating ekorpkit.datasets.build.DatasetBuilder...
+INFO:ekorpkit.base:instantiating ekorpkit.io.fetch.loader.wiki.Wiki...
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "c277d7ad202e4f30ae37542969cc47b4", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Preprocessing &#39;/content/drive/MyDrive/workspace/.cache/corpus/enwiki/enwiki.xml.bz2&#39; to collect template definitions: this may take some time.
+INFO: Preprocessed 100000 pages
+INFO: Preprocessed 200000 pages
+INFO: Preprocessed 300000 pages
+INFO: Preprocessed 400000 pages
+INFO: Preprocessed 500000 pages
+INFO: Preprocessed 600000 pages
+INFO: Preprocessed 700000 pages
+INFO: Preprocessed 800000 pages
+INFO: Preprocessed 900000 pages
+INFO: Preprocessed 1000000 pages
+INFO: Preprocessed 1100000 pages
+INFO: Preprocessed 1200000 pages
+INFO: Preprocessed 1300000 pages
+INFO: Preprocessed 1400000 pages
+INFO: Preprocessed 1500000 pages
+INFO: Preprocessed 1600000 pages
+INFO: Preprocessed 1700000 pages
+INFO: Preprocessed 1800000 pages
+INFO: Preprocessed 1900000 pages
+INFO: Preprocessed 2000000 pages
+INFO: Preprocessed 2100000 pages
+INFO: Preprocessed 2200000 pages
+INFO: Preprocessed 2300000 pages
+INFO: Preprocessed 2400000 pages
+INFO: Preprocessed 2500000 pages
+INFO: Preprocessed 2600000 pages
+INFO: Preprocessed 2700000 pages
+INFO: Preprocessed 2800000 pages
+INFO: Preprocessed 2900000 pages
+INFO: Preprocessed 3000000 pages
+INFO: Preprocessed 3100000 pages
+INFO: Preprocessed 3200000 pages
+INFO: Preprocessed 3300000 pages
+INFO: Preprocessed 3400000 pages
+INFO: Preprocessed 3500000 pages
+INFO: Preprocessed 3600000 pages
+INFO: Preprocessed 3700000 pages
+INFO: Preprocessed 3800000 pages
+INFO: Preprocessed 3900000 pages
+INFO: Preprocessed 4000000 pages
+INFO: Preprocessed 4100000 pages
+INFO: Preprocessed 4200000 pages
+INFO: Preprocessed 4300000 pages
+INFO: Preprocessed 4400000 pages
+INFO: Preprocessed 4500000 pages
+INFO: Preprocessed 4600000 pages
+INFO: Preprocessed 4700000 pages
+INFO: Preprocessed 4800000 pages
+INFO: Preprocessed 4900000 pages
+INFO: Preprocessed 5000000 pages
+INFO: Preprocessed 5100000 pages
+INFO: Preprocessed 5200000 pages
+INFO: Preprocessed 5300000 pages
+INFO: Preprocessed 5400000 pages
+INFO: Preprocessed 5500000 pages
+INFO: Preprocessed 5600000 pages
+INFO: Preprocessed 5700000 pages
+INFO: Preprocessed 5800000 pages
+INFO: Preprocessed 5900000 pages
+INFO: Preprocessed 6000000 pages
+INFO: Preprocessed 6100000 pages
+INFO: Preprocessed 6200000 pages
+INFO: Preprocessed 6300000 pages
+INFO: Preprocessed 6400000 pages
+INFO: Preprocessed 6500000 pages
+INFO: Preprocessed 6600000 pages
+INFO: Preprocessed 6700000 pages
+INFO: Preprocessed 6800000 pages
+INFO: Preprocessed 6900000 pages
+INFO: Preprocessed 7000000 pages
+INFO: Preprocessed 7100000 pages
+INFO: Preprocessed 7200000 pages
+INFO: Preprocessed 7300000 pages
+INFO: Preprocessed 7400000 pages
+INFO: Preprocessed 7500000 pages
+INFO: Preprocessed 7600000 pages
+INFO: Preprocessed 7700000 pages
+INFO: Preprocessed 7800000 pages
+INFO: Preprocessed 7900000 pages
+INFO: Preprocessed 8000000 pages
+INFO: Preprocessed 8100000 pages
+INFO: Preprocessed 8200000 pages
+INFO: Preprocessed 8300000 pages
+INFO: Preprocessed 8400000 pages
+INFO: Preprocessed 8500000 pages
+INFO: Preprocessed 8600000 pages
+INFO: Preprocessed 8700000 pages
+INFO: Preprocessed 8800000 pages
+INFO: Preprocessed 8900000 pages
+INFO: Preprocessed 9000000 pages
+INFO: Preprocessed 9100000 pages
+INFO: Preprocessed 9200000 pages
+INFO: Preprocessed 9300000 pages
+INFO: Preprocessed 9400000 pages
+INFO: Preprocessed 9500000 pages
+INFO: Preprocessed 9600000 pages
+INFO: Preprocessed 9700000 pages
+INFO: Preprocessed 9800000 pages
+INFO: Preprocessed 9900000 pages
+INFO: Preprocessed 10000000 pages
+INFO: Preprocessed 10100000 pages
+INFO: Preprocessed 10200000 pages
+INFO: Preprocessed 10300000 pages
+INFO: Preprocessed 10400000 pages
+INFO: Preprocessed 10500000 pages
+INFO: Preprocessed 10600000 pages
+INFO: Preprocessed 10700000 pages
+INFO: Preprocessed 10800000 pages
+INFO: Preprocessed 10900000 pages
+INFO: Preprocessed 11000000 pages
+INFO: Preprocessed 11100000 pages
+INFO: Preprocessed 11200000 pages
+INFO: Preprocessed 11300000 pages
+INFO: Preprocessed 11400000 pages
+INFO: Preprocessed 11500000 pages
+INFO: Preprocessed 11600000 pages
+INFO: Preprocessed 11700000 pages
+INFO: Preprocessed 11800000 pages
+INFO: Preprocessed 11900000 pages
+INFO: Preprocessed 12000000 pages
+INFO: Preprocessed 12100000 pages
+INFO: Preprocessed 12200000 pages
+INFO: Preprocessed 12300000 pages
+INFO: Preprocessed 12400000 pages
+INFO: Preprocessed 12500000 pages
+INFO: Preprocessed 12600000 pages
+INFO: Preprocessed 12700000 pages
+INFO: Preprocessed 12800000 pages
+INFO: Preprocessed 12900000 pages
+INFO: Preprocessed 13000000 pages
+INFO: Preprocessed 13100000 pages
+INFO: Preprocessed 13200000 pages
+INFO: Preprocessed 13300000 pages
+INFO: Preprocessed 13400000 pages
+INFO: Preprocessed 13500000 pages
+INFO: Preprocessed 13600000 pages
+INFO: Preprocessed 13700000 pages
+INFO: Preprocessed 13800000 pages
+INFO: Preprocessed 13900000 pages
+INFO: Preprocessed 14000000 pages
+INFO: Preprocessed 14100000 pages
+INFO: Preprocessed 14200000 pages
+INFO: Preprocessed 14300000 pages
+INFO: Preprocessed 14400000 pages
+INFO: Preprocessed 14500000 pages
+INFO: Preprocessed 14600000 pages
+INFO: Preprocessed 14700000 pages
+INFO: Preprocessed 14800000 pages
+INFO: Preprocessed 14900000 pages
+INFO: Preprocessed 15000000 pages
+INFO: Preprocessed 15100000 pages
+INFO: Preprocessed 15200000 pages
+INFO: Preprocessed 15300000 pages
+INFO: Preprocessed 15400000 pages
+INFO: Preprocessed 15500000 pages
+INFO: Preprocessed 15600000 pages
+INFO: Preprocessed 15700000 pages
+INFO: Preprocessed 15800000 pages
+INFO: Preprocessed 15900000 pages
+INFO: Preprocessed 16000000 pages
+INFO: Preprocessed 16100000 pages
+INFO: Preprocessed 16200000 pages
+INFO: Preprocessed 16300000 pages
+INFO: Preprocessed 16400000 pages
+INFO: Preprocessed 16500000 pages
+INFO: Preprocessed 16600000 pages
+INFO: Preprocessed 16700000 pages
+INFO: Preprocessed 16800000 pages
+INFO: Preprocessed 16900000 pages
+INFO: Preprocessed 17000000 pages
+INFO: Preprocessed 17100000 pages
+INFO: Preprocessed 17200000 pages
+INFO: Preprocessed 17300000 pages
+INFO: Preprocessed 17400000 pages
+INFO: Preprocessed 17500000 pages
+INFO: Preprocessed 17600000 pages
+INFO: Preprocessed 17700000 pages
+INFO: Preprocessed 17800000 pages
+INFO: Preprocessed 17900000 pages
+INFO: Preprocessed 18000000 pages
+INFO: Preprocessed 18100000 pages
+INFO: Preprocessed 18200000 pages
+INFO: Preprocessed 18300000 pages
+INFO: Preprocessed 18400000 pages
+INFO: Preprocessed 18500000 pages
+INFO: Preprocessed 18600000 pages
+INFO: Preprocessed 18700000 pages
+INFO: Preprocessed 18800000 pages
+INFO: Preprocessed 18900000 pages
+INFO: Preprocessed 19000000 pages
+INFO: Preprocessed 19100000 pages
+INFO: Preprocessed 19200000 pages
+INFO: Preprocessed 19300000 pages
+INFO: Preprocessed 19400000 pages
+INFO: Preprocessed 19500000 pages
+INFO: Preprocessed 19600000 pages
+INFO: Preprocessed 19700000 pages
+INFO: Preprocessed 19800000 pages
+INFO: Preprocessed 19900000 pages
+INFO: Preprocessed 20000000 pages
+INFO: Preprocessed 20100000 pages
+INFO: Preprocessed 20200000 pages
+INFO: Preprocessed 20300000 pages
+INFO: Preprocessed 20400000 pages
+INFO: Preprocessed 20500000 pages
+INFO: Preprocessed 20600000 pages
+INFO: Preprocessed 20700000 pages
+INFO: Preprocessed 20800000 pages
+INFO: Preprocessed 20900000 pages
+INFO: Preprocessed 21000000 pages
+INFO: Preprocessed 21100000 pages
+INFO: Preprocessed 21200000 pages
+INFO: Preprocessed 21300000 pages
+INFO: Preprocessed 21400000 pages
+INFO: Preprocessed 21500000 pages
+INFO: Preprocessed 21600000 pages
+INFO: Preprocessed 21700000 pages
+INFO: Preprocessed 21800000 pages
+INFO: Preprocessed 21900000 pages
+INFO: Preprocessed 22000000 pages
+INFO: Preprocessed 22100000 pages
+INFO: Preprocessed 22200000 pages
+INFO: Preprocessed 22300000 pages
+INFO: Preprocessed 22400000 pages
+INFO: Loaded 743398 templates in 4128.0s
+INFO: Starting page extraction from /content/drive/MyDrive/workspace/.cache/corpus/enwiki/enwiki.xml.bz2.
+INFO: Using 255 extract processes.
+INFO: Extracted 100000 articles (871.5 art/s)
+INFO: Extracted 200000 articles (1301.9 art/s)
+INFO: Extracted 300000 articles (1682.3 art/s)
+INFO: Extracted 400000 articles (2125.6 art/s)
+INFO: Extracted 500000 articles (2937.8 art/s)
+INFO: Extracted 600000 articles (2250.8 art/s)
+INFO: Extracted 700000 articles (2410.1 art/s)
+INFO: Extracted 800000 articles (2522.5 art/s)
+INFO: Extracted 900000 articles (2711.3 art/s)
+INFO: Extracted 1000000 articles (2833.4 art/s)
+INFO: Extracted 1100000 articles (2897.8 art/s)
+INFO: Extracted 1200000 articles (3066.2 art/s)
+INFO: Extracted 1300000 articles (2882.7 art/s)
+INFO: Extracted 1400000 articles (3082.5 art/s)
+INFO: Extracted 1500000 articles (3122.7 art/s)
+INFO: Extracted 1600000 articles (3233.5 art/s)
+INFO: Extracted 1700000 articles (3351.2 art/s)
+INFO: Extracted 1800000 articles (3320.9 art/s)
+INFO: Extracted 1900000 articles (3442.5 art/s)
+INFO: Extracted 2000000 articles (3610.9 art/s)
+INFO: Extracted 2100000 articles (3685.7 art/s)
+INFO: Extracted 2200000 articles (3482.8 art/s)
+INFO: Extracted 2300000 articles (3542.2 art/s)
+INFO: Extracted 2400000 articles (3689.0 art/s)
+INFO: Extracted 2500000 articles (3561.1 art/s)
+INFO: Extracted 2600000 articles (4044.9 art/s)
+INFO: Extracted 2700000 articles (3756.4 art/s)
+INFO: Extracted 2800000 articles (3956.3 art/s)
+INFO: Extracted 2900000 articles (3645.8 art/s)
+INFO: Extracted 3000000 articles (3730.7 art/s)
+INFO: Extracted 3100000 articles (3720.5 art/s)
+INFO: Extracted 3200000 articles (3666.6 art/s)
+INFO: Extracted 3300000 articles (3508.0 art/s)
+INFO: Extracted 3400000 articles (3750.4 art/s)
+INFO: Extracted 3500000 articles (4303.4 art/s)
+INFO: Extracted 3600000 articles (3860.7 art/s)
+INFO: Extracted 3700000 articles (4416.4 art/s)
+INFO: Extracted 3800000 articles (3974.8 art/s)
+INFO: Extracted 3900000 articles (3987.2 art/s)
+INFO: Extracted 4000000 articles (3964.6 art/s)
+INFO: Extracted 4100000 articles (4512.7 art/s)
+INFO: Extracted 4200000 articles (3996.4 art/s)
+INFO: Extracted 4300000 articles (4490.6 art/s)
+INFO: Extracted 4400000 articles (4078.6 art/s)
+INFO: Extracted 4500000 articles (4260.2 art/s)
+INFO: Extracted 4600000 articles (7377.0 art/s)
+INFO: Extracted 4700000 articles (6782.0 art/s)
+INFO: Extracted 4800000 articles (3770.2 art/s)
+INFO: Extracted 4900000 articles (3894.1 art/s)
+INFO: Extracted 5000000 articles (4019.0 art/s)
+INFO: Extracted 5100000 articles (4049.8 art/s)
+INFO: Extracted 5200000 articles (4333.3 art/s)
+INFO: Extracted 5300000 articles (3959.6 art/s)
+INFO: Extracted 5400000 articles (5211.2 art/s)
+INFO: Extracted 5500000 articles (4009.4 art/s)
+INFO: Extracted 5600000 articles (3727.2 art/s)
+INFO: Extracted 5700000 articles (3858.4 art/s)
+INFO: Extracted 5800000 articles (4163.3 art/s)
+INFO: Extracted 5900000 articles (4574.0 art/s)
+INFO: Extracted 6000000 articles (4071.1 art/s)
+INFO: Extracted 6100000 articles (4114.9 art/s)
+INFO: Extracted 6200000 articles (5213.6 art/s)
+INFO: Extracted 6300000 articles (4088.5 art/s)
+INFO: Extracted 6400000 articles (3944.6 art/s)
+INFO: Extracted 6500000 articles (3840.3 art/s)
+INFO: Extracted 6600000 articles (3751.1 art/s)
+INFO: Extracted 6700000 articles (4004.8 art/s)
+INFO: Extracted 6800000 articles (3887.9 art/s)
+INFO: Extracted 6900000 articles (3798.0 art/s)
+INFO: Extracted 7000000 articles (4286.9 art/s)
+INFO: Extracted 7100000 articles (4147.3 art/s)
+INFO: Extracted 7200000 articles (4454.0 art/s)
+INFO: Extracted 7300000 articles (3847.9 art/s)
+INFO: Extracted 7400000 articles (7826.7 art/s)
+INFO: Extracted 7500000 articles (3990.9 art/s)
+INFO: Extracted 7600000 articles (4206.6 art/s)
+INFO: Extracted 7700000 articles (6728.2 art/s)
+INFO: Extracted 7800000 articles (4828.5 art/s)
+INFO: Extracted 7900000 articles (3423.3 art/s)
+INFO: Extracted 8000000 articles (3513.2 art/s)
+INFO: Extracted 8100000 articles (4120.7 art/s)
+INFO: Extracted 8200000 articles (3569.6 art/s)
+INFO: Extracted 8300000 articles (3691.0 art/s)
+INFO: Extracted 8400000 articles (3543.7 art/s)
+INFO: Extracted 8500000 articles (3834.9 art/s)
+INFO: Extracted 8600000 articles (3731.0 art/s)
+INFO: Extracted 8700000 articles (3639.4 art/s)
+INFO: Extracted 8800000 articles (5176.8 art/s)
+INFO: Extracted 8900000 articles (3560.5 art/s)
+INFO: Extracted 9000000 articles (4012.6 art/s)
+INFO: Extracted 9100000 articles (4485.5 art/s)
+INFO: Extracted 9200000 articles (4443.0 art/s)
+INFO: Extracted 9300000 articles (4127.0 art/s)
+INFO: Extracted 9400000 articles (4374.7 art/s)
+INFO: Extracted 9500000 articles (4075.1 art/s)
+INFO: Extracted 9600000 articles (4355.9 art/s)
+INFO: Extracted 9700000 articles (4005.3 art/s)
+INFO: Extracted 9800000 articles (4151.5 art/s)
+INFO: Extracted 9900000 articles (3739.1 art/s)
+INFO: Extracted 10000000 articles (3768.4 art/s)
+INFO: Extracted 10100000 articles (4228.7 art/s)
+INFO: Extracted 10200000 articles (4101.4 art/s)
+INFO: Extracted 10300000 articles (3820.9 art/s)
+INFO: Extracted 10400000 articles (4008.2 art/s)
+INFO: Extracted 10500000 articles (3848.3 art/s)
+INFO: Extracted 10600000 articles (4143.9 art/s)
+INFO: Extracted 10700000 articles (4042.7 art/s)
+INFO: Extracted 10800000 articles (4265.0 art/s)
+INFO: Extracted 10900000 articles (4527.8 art/s)
+INFO: Extracted 11000000 articles (3844.3 art/s)
+INFO: Extracted 11100000 articles (3680.1 art/s)
+INFO: Extracted 11200000 articles (3734.3 art/s)
+INFO: Extracted 11300000 articles (3789.8 art/s)
+INFO: Extracted 11400000 articles (3790.8 art/s)
+INFO: Extracted 11500000 articles (4094.0 art/s)
+INFO: Extracted 11600000 articles (3770.5 art/s)
+INFO: Extracted 11700000 articles (3535.4 art/s)
+INFO: Extracted 11800000 articles (4217.7 art/s)
+INFO: Extracted 11900000 articles (4291.6 art/s)
+INFO: Extracted 12000000 articles (7164.3 art/s)
+INFO: Extracted 12100000 articles (3877.0 art/s)
+INFO: Extracted 12200000 articles (4946.4 art/s)
+INFO: Extracted 12300000 articles (3679.8 art/s)
+INFO: Extracted 12400000 articles (4231.1 art/s)
+INFO: Extracted 12500000 articles (3557.0 art/s)
+INFO: Extracted 12600000 articles (3693.9 art/s)
+INFO: Extracted 12700000 articles (3541.7 art/s)
+INFO: Extracted 12800000 articles (3683.8 art/s)
+INFO: Extracted 12900000 articles (3829.7 art/s)
+INFO: Extracted 13000000 articles (4193.9 art/s)
+INFO: Extracted 13100000 articles (4616.9 art/s)
+INFO: Extracted 13200000 articles (5566.1 art/s)
+INFO: Extracted 13300000 articles (3976.8 art/s)
+INFO: Extracted 13400000 articles (3769.4 art/s)
+INFO: Extracted 13500000 articles (3728.8 art/s)
+INFO: Extracted 13600000 articles (4018.4 art/s)
+INFO: Extracted 13700000 articles (3406.9 art/s)
+INFO: Extracted 13800000 articles (3471.8 art/s)
+INFO: Extracted 13900000 articles (4661.1 art/s)
+INFO: Extracted 14000000 articles (4528.6 art/s)
+INFO: Extracted 14100000 articles (3854.2 art/s)
+INFO: Extracted 14200000 articles (3824.4 art/s)
+INFO: Extracted 14300000 articles (3573.9 art/s)
+INFO: Extracted 14400000 articles (4370.3 art/s)
+INFO: Extracted 14500000 articles (3710.3 art/s)
+INFO: Extracted 14600000 articles (3770.8 art/s)
+INFO: Extracted 14700000 articles (3454.8 art/s)
+INFO: Extracted 14800000 articles (3418.1 art/s)
+INFO: Extracted 14900000 articles (3546.7 art/s)
+INFO: Extracted 15000000 articles (3663.0 art/s)
+INFO: Extracted 15100000 articles (3377.9 art/s)
+INFO: Extracted 15200000 articles (3406.2 art/s)
+INFO: Extracted 15300000 articles (3485.3 art/s)
+INFO: Extracted 15400000 articles (3469.9 art/s)
+INFO: Extracted 15500000 articles (3838.8 art/s)
+INFO: Extracted 15600000 articles (3879.4 art/s)
+INFO: Extracted 15700000 articles (3858.0 art/s)
+INFO: Extracted 15800000 articles (3391.2 art/s)
+INFO: Extracted 15900000 articles (3718.8 art/s)
+INFO: Extracted 16000000 articles (3962.4 art/s)
+INFO: Extracted 16100000 articles (3979.8 art/s)
+INFO: Extracted 16200000 articles (4694.5 art/s)
+INFO: Extracted 16300000 articles (4246.3 art/s)
+INFO: Extracted 16400000 articles (4286.6 art/s)
+INFO: Extracted 16500000 articles (4203.8 art/s)
+INFO: Extracted 16600000 articles (3595.3 art/s)
+INFO: Finished 255-process extraction of 16699989 articles in 4520.2s (3694.5 art/s)
+INFO:ekorpkit.base:instantiating ekorpkit.info.stat.SummaryInfo...
+INFO:ekorpkit.info.stat:Loading info file: /content/drive/MyDrive/workspace/data/datasets/corpus/enwiki/info-enwiki.yaml
+INFO:ekorpkit.base:instantiating ekorpkit.io.load.data.load_data...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracted enwiki from dump file /content/drive/MyDrive/workspace/.cache/corpus/enwiki/enwiki.xml.bz2
+{&#39;category&#39;: &#39;formal&#39;,
+ &#39;column_info&#39;: {&#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;,
+                             &#39;merge_meta_on&#39;: &#39;id&#39;,
+                             &#39;text&#39;: &#39;text&#39;,
+                             &#39;timestamp&#39;: None},
+                 &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;},
+                 &#39;datetime&#39;: {&#39;columns&#39;: None,
+                              &#39;format&#39;: None,
+                              &#39;rcParams&#39;: None},
+                 &#39;meta&#39;: {&#39;curid&#39;: &#39;str&#39;,
+                          &#39;id&#39;: &#39;int&#39;,
+                          &#39;title&#39;: &#39;str&#39;,
+                          &#39;url&#39;: &#39;str&#39;},
+                 &#39;segment_separator&#39;: &#39;\\n\\n&#39;,
+                 &#39;sentence_separator&#39;: &#39;\\n&#39;,
+                 &#39;timestamp&#39;: {&#39;format&#39;: None, &#39;key&#39;: None, &#39;rcParams&#39;: None}},
+ &#39;description&#39;: &#39;Wikipedia&#39;,
+ &#39;fullname&#39;: &#39;English Wikipedia Corpus&#39;,
+ &#39;homepage&#39;: &#39;https://en.wikipedia.org&#39;,
+ &#39;lang&#39;: &#39;en&#39;,
+ &#39;license&#39;: &#39;CC Attribution / Share-Alike 3.0&#39;,
+ &#39;name&#39;: &#39;enwiki&#39;,
+ &#39;version&#39;: &#39;1.0.0&#39;}
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [17144] files from [&#39;**/*&#39;]
+INFO:ekorpkit.io.load.data:Starting multiprocessing with 50 processes at load_data
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "cf7b95245a3f475e8765db440f21e0f9", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;curid&#39;: &#39;40754509&#39;, &#39;url&#39;: &#39;https://en.wikipedia.org/wiki?curid=40754509&#39;, &#39;title&#39;: &#39;Endocannabinoid transporter&#39;, &#39;text&#39;: &#39;The endocannabinoid transporters (eCBTs) are transport proteins for the endocannabinoids. Most neurotransmitters are water-soluble and require transmembrane proteins to transport them across the cell membrane. The endocannabinoids (anandamide, AEA, and 2-arachidonoylglycerol, 2-AG) on the other hand, are non-charged lipids that readily cross lipid membranes. However, since the endocannabinoids are water immiscible, protein transporters have been described that act as carriers to solubilize and transport the endocannabinoids through the aqueous cytoplasm. These include the heat shock proteins (Hsp70s) and fatty acid-binding proteins for anandamide (FABPs). FABPs such as FABP1, FABP3, FABP5, and FABP7 have been shown to bind endocannabinoids. FABP inhibitors attenuate the breakdown of anandamide by the enzyme fatty acid amide hydrolase (FAAH) in cell culture. One of these inhibitors (SB-FI-26), isolated from a virtual library of a million compounds, belongs to a class of compounds (named the &quot;truxilloids\&#39;) that act as an anti-nociceptive agent with mild anti-inflammatory activity in mice. These truxillic acids and their derivatives have been known to have anti-inflammatory and anti-nociceptive effects in mice and are active components of a Chinese herbal medicine ((−)-Incarvillateine Incarvillea sinensis) used to treat rheumatism and pain in human. The blockade of anandamide transport may, at least in part, be the mechanism through which these compounds exert their anti-nociceptive effects.\nStudies have found the involvement of cholesterol in membrane uptake and transport of anandamide. Cholesterol stimulates both the insertion of anandamide into synthetic lipid monolayers and bilayers, and its transport across bilayer membranes, suggest that besides putative anandamide protein-transporters, cholesterol could be an important component of the anandamide transport machinery, and as cholesterol-dependent modulation of CB1 cannabinoid receptors in nerve cells. The catalytic efficiency (i.e., the ratio between maximal velocity and Michaelis–Menten constant) of the AEA membrane transporter (AMT) is almost doubled compared with control cells, demonstrate that, among the proteins of the “endocannabinoid system,” only CB1 and AMT critically depend on membrane cholesterol content, an observation that may have important implications for the role of CB1 in protecting nerve cells against (endo)cannabinoid-induced apoptosis. This can be a reason, why the use of drugs to lower cholesterol is tied to a higher depression risk, and the correlation between levels and increased death rates from suicide and other violent causes.\nActivation of CB1 enhances AMT activity through increased nitric oxide synthase (NOS) activity and subsequent increase of NO production, whereas AMT activity instead is reduced by activation of the CB2 cannabinoid receptor, which inhibits NOS and NO release, also suggesting the distribution of these receptors may drive AEA directional transport through the blood-brain barrier and other endothelial cells.\nAs reviewed in 2016; &quot;Many of the AMT (EMT) proposals have fallen by the wayside.&quot; To date a transmembrane protein transporter has not been identified. &#39;, &#39;split&#39;: &#39;train&#39;, &#39;filename&#39;: &#39;wiki_23&#39;}
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.datasets.build: &gt;&gt; elapsed time to load and parse data: 0:01:36.349757
+INFO:ekorpkit.datasets.build:
+Transforming dataframe with pipeline: [&#39;reset_index&#39;, &#39;save_metadata&#39;]
+INFO:ekorpkit.pipelines.pipe:Applying pipeline: OrderedDict([(&#39;reset_index&#39;, &#39;reset_index&#39;), (&#39;save_metadata&#39;, &#39;save_metadata&#39;)])
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function reset_index at 0x7fce771d3ca0&gt;)
+INFO:ekorpkit.pipelines.pipe:Resetting index: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.reset_index&#39;}, &#39;index_column_name&#39;: &#39;id&#39;, &#39;drop_index&#39;: False, &#39;verbose&#39;: True}
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      curid                                           url  \
+0  40754509  https://en.wikipedia.org/wiki?curid=40754509   
+1  40754512  https://en.wikipedia.org/wiki?curid=40754512   
+2  40754531  https://en.wikipedia.org/wiki?curid=40754531   
+3  40754542  https://en.wikipedia.org/wiki?curid=40754542   
+4  40754545  https://en.wikipedia.org/wiki?curid=40754545   
+
+                         title  \
+0  Endocannabinoid transporter   
+1              Buddy McClinton   
+2                   Power Lock   
+3                  Mike Ballou   
+4          Philip M. Kleinfeld   
+
+                                                text  split filename  
+0  The endocannabinoid transporters (eCBTs) are t...  train  wiki_23  
+1  Buddy McClinton was a defensive back for the A...  train  wiki_23  
+2                                                     train  wiki_23  
+3  Mikell Randolph Ballou (born September 11, 194...  train  wiki_23  
+4  Philip M. Kleinfeld (June 19, 1894 – January 1...  train  wiki_23  
+(16699988, 6)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function save_metadata at 0x7fce771d35e0&gt;)
+INFO:ekorpkit.pipelines.pipe:Saving metadata: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.save_metadata&#39;}, &#39;path&#39;: {&#39;root&#39;: &#39;/content/drive/MyDrive/workspace/data/ekorpkit-book&#39;, &#39;name&#39;: &#39;ekorpkit-book&#39;, &#39;cached_path&#39;: None, &#39;filetype&#39;: None, &#39;verbose&#39;: True, &#39;data_dir&#39;: &#39;/content/drive/MyDrive/workspace/data/ekorpkit-book&#39;, &#39;data_file&#39;: None, &#39;concat_data&#39;: False, &#39;data_columns&#39;: None, &#39;columns&#39;: None, &#39;output_dir&#39;: None, &#39;output_file&#39;: None, &#39;suffix&#39;: None, &#39;output&#39;: {&#39;filename&#39;: &#39;meta-enwiki-train.parquet&#39;, &#39;base_dir&#39;: &#39;/content/drive/MyDrive/workspace/data/datasets/corpus/enwiki&#39;, &#39;filetype&#39;: &#39;.parquet&#39;, &#39;suffix&#39;: None, &#39;filepath&#39;: &#39;/content/drive/MyDrive/workspace/data/datasets/corpus/enwiki/meta-enwiki-train.parquet&#39;, &#39;columns&#39;: None, &#39;verbose&#39;: True}}, &#39;filepath&#39;: None, &#39;filetype&#39;: None, &#39;column_info&#39;: {&#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;, &#39;text&#39;: &#39;text&#39;, &#39;merge_meta_on&#39;: &#39;id&#39;, &#39;timestamp&#39;: None}, &#39;datetime&#39;: {&#39;columns&#39;: None, &#39;format&#39;: None, &#39;rcParams&#39;: None}, &#39;timestamp&#39;: {&#39;key&#39;: None, &#39;format&#39;: None, &#39;rcParams&#39;: None}, &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;}, &#39;meta&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;curid&#39;: &#39;str&#39;, &#39;url&#39;: &#39;str&#39;, &#39;title&#39;: &#39;str&#39;}, &#39;segment_separator&#39;: &#39;\\n\\n&#39;, &#39;sentence_separator&#39;: &#39;\\n&#39;}, &#39;split_name&#39;: &#39;train&#39;, &#39;verbose&#39;: True}
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   id     curid                                           url  \
+0   0  40754509  https://en.wikipedia.org/wiki?curid=40754509   
+1   1  40754512  https://en.wikipedia.org/wiki?curid=40754512   
+2   2  40754531  https://en.wikipedia.org/wiki?curid=40754531   
+3   3  40754542  https://en.wikipedia.org/wiki?curid=40754542   
+4   4  40754545  https://en.wikipedia.org/wiki?curid=40754545   
+
+                         title  \
+0  Endocannabinoid transporter   
+1              Buddy McClinton   
+2                   Power Lock   
+3                  Mike Ballou   
+4          Philip M. Kleinfeld   
+
+                                                text  split filename  
+0  The endocannabinoid transporters (eCBTs) are t...  train  wiki_23  
+1  Buddy McClinton was a defensive back for the A...  train  wiki_23  
+2                                                     train  wiki_23  
+3  Mikell Randolph Ballou (born September 11, 194...  train  wiki_23  
+4  Philip M. Kleinfeld (June 19, 1894 – January 1...  train  wiki_23  
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Saving dataframe to /content/drive/MyDrive/workspace/data/datasets/corpus/enwiki/meta-enwiki-train.parquet
+INFO:ekorpkit.io.file: &gt;&gt; elapsed time to save data: 0:01:02.858828
+INFO:ekorpkit.io.file:Saving dataframe to /content/drive/MyDrive/workspace/data/datasets/corpus/enwiki/enwiki-train.parquet
+INFO:ekorpkit.io.file: &gt;&gt; elapsed time to save data: 0:19:07.049930
+INFO:ekorpkit.info.stat:Initializing statistics for split: train with stats: {&#39;name&#39;: &#39;train&#39;, &#39;dataset_name&#39;: &#39;enwiki&#39;, &#39;data_file&#39;: &#39;enwiki-train.parquet&#39;, &#39;meta_file&#39;: &#39;meta-enwiki-train.parquet&#39;}
+INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 50  input_split: False  merge_output: True  len(data): 16699988 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "6fb24efedcf9441ba1082fe3a0bc78a4", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 50  input_split: False  merge_output: True  len(data): 16699988 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "86d4bd97a8044331a9c6b3d4269fa413", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.info.stat: &gt;&gt; elapsed time to calculate statistics before processing: 0:01:52.110589
+INFO:ekorpkit.info.stat: &gt;&gt; updated splits: {&#39;train&#39;: {&#39;name&#39;: &#39;train&#39;, &#39;dataset_name&#39;: &#39;enwiki&#39;, &#39;data_file&#39;: &#39;enwiki-train.parquet&#39;, &#39;meta_file&#39;: &#39;meta-enwiki-train.parquet&#39;, &#39;num_docs_before_processing&#39;: 16699988, &#39;num_bytes_before_processing&#39;: 15342187701, &#39;num_sents&#39;: 68973662}}
+INFO:ekorpkit.datasets.build:
+Processing dataframe with pipeline: [&#39;normalize&#39;, &#39;segment&#39;, &#39;filter_length&#39;, &#39;drop_duplicates&#39;, &#39;save_samples&#39;]
+INFO:ekorpkit.pipelines.pipe:Applying pipeline: OrderedDict([(&#39;normalize&#39;, &#39;normalize&#39;), (&#39;segment&#39;, &#39;segment&#39;), (&#39;filter_length&#39;, &#39;filter_length&#39;), (&#39;drop_duplicates&#39;, &#39;drop_duplicates&#39;), (&#39;save_samples&#39;, &#39;save_samples&#39;)])
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function normalize at 0x7fce771d3ee0&gt;)
+INFO:ekorpkit.pipelines.pipe:instantiating normalizer
+INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 50  input_split: False  merge_output: True  len(data): 16699988 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "f2f2473c1d3a46379a36bdcaf96e9645", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to normalize: 0:02:10.739667
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function segment at 0x7fce771d30d0&gt;)
+INFO:ekorpkit.pipelines.pipe:instantiating segmenter
+INFO:ekorpkit.base:instantiating ekorpkit.preprocessors.segmenter.PySBDSegmenter...
+INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 50  input_split: False  merge_output: True  len(data): 16699988 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "5463a1d8a37a4b2db98361d1b10041fe", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to segment: 0:41:02.925846
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function filter_length at 0x7fce771d3280&gt;, len_bytes={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}, len_words={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_words&#39;})
+INFO:ekorpkit.pipelines.pipe:Filtering by length: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.filter_length&#39;, &#39;len_bytes&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}, &#39;len_words&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_words&#39;}}, &#39;apply_to&#39;: &#39;text&#39;, &#39;min_length&#39;: 30, &#39;max_length&#39;: None, &#39;len_func&#39;: &#39;len_bytes&#39;, &#39;len_column&#39;: &#39;num_bytes&#39;, &#39;add_len_column&#39;: True, &#39;verbose&#39;: True, &#39;use_batcher&#39;: True}
+INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 50  input_split: False  merge_output: True  len(data): 16699988 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "f0290d5e27a1421a998ee7e30d5c824a", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.pipelines.pipe:removed 10366199 of 16699988 documents with length &lt; 30
+INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to filter length: 0:00:31.301093
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function drop_duplicates at 0x7fce771d34c0&gt;)
+INFO:ekorpkit.pipelines.pipe:Dropping duplicates: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.drop_duplicates&#39;}, &#39;apply_to&#39;: &#39;text&#39;, &#39;verbose&#39;: True}
+INFO:ekorpkit.pipelines.pipe:6327718 documents after dropping 6071 duplicates from [[&#39;text&#39;]]
+INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to drop duplicates: 0:00:44.304687
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function save_samples at 0x7fce771d3790&gt;)
+INFO:ekorpkit.pipelines.pipe:Saving samples: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.save_samples&#39;}, &#39;path&#39;: {&#39;root&#39;: &#39;/content/drive/MyDrive/workspace/data/ekorpkit-book&#39;, &#39;name&#39;: &#39;ekorpkit-book&#39;, &#39;cached_path&#39;: None, &#39;filetype&#39;: &#39;&#39;, &#39;verbose&#39;: True, &#39;data_dir&#39;: &#39;/content/drive/MyDrive/workspace/data/ekorpkit-book&#39;, &#39;data_file&#39;: None, &#39;concat_data&#39;: False, &#39;data_columns&#39;: None, &#39;columns&#39;: None, &#39;output_dir&#39;: None, &#39;output_file&#39;: None, &#39;suffix&#39;: None, &#39;output&#39;: {&#39;filename&#39;: &#39;sample-enwiki-train.txt&#39;, &#39;base_dir&#39;: &#39;/content/drive/MyDrive/workspace/data/datasets/corpus/enwiki&#39;, &#39;filetype&#39;: &#39;.txt&#39;, &#39;suffix&#39;: None, &#39;filepath&#39;: &#39;/content/drive/MyDrive/workspace/data/datasets/corpus/enwiki/sample-enwiki-train.txt&#39;, &#39;columns&#39;: None, &#39;verbose&#39;: True}}, &#39;apply_to&#39;: &#39;text&#39;, &#39;num_samples_to_save&#39;: 2, &#39;output_file&#39;: None, &#39;sample_length_to_print&#39;: 1000, &#39;verbose&#39;: True}
+INFO:ekorpkit.pipelines.pipe:Saved 2 samples to /content/drive/MyDrive/workspace/data/datasets/corpus/enwiki/sample-enwiki-train.txt
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>----------------------------------------------------------------------------------------------------
+
+text: 
+Novska railway station () is a railway station on the Novska-Tovarnik railway in Novska, Croatia. 
+There are three lines connecting Novska to Jasenovac, Okučani, and Lipovljani. 
+The railway station consists of 18 railway tracks.
+
+----------------------------------------------------------------------------------------------------
+text: 
+Zoltán Friedmanszky (22 October 1934 - 31 March 2022) was a Hungarian footballer who played as a forward. 
+He was a member of the Hungary national team at the 1958 FIFA World Cup. 
+However, he was never capped for the national team. 
+He also played for Ferencváros.
+
+----------------------------------------------------------------------------------------------------
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.info.stat:Calculating statistics for split: train
+INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 50  input_split: False  merge_output: True  len(data): 6327718 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "58c691b306684e90b52bb56b2daae536", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 50  input_split: False  merge_output: True  len(data): 6327718 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "28f26f879f57410eb478788fabae0fdd", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 50  input_split: False  merge_output: True  len(data): 6327718 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "9f6cab13c9eb4e6f874e273c7144780d", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 50  input_split: False  merge_output: True  len(data): 6327718 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "f23d1db9cd504d67b84f0882831a52dc", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 50  input_split: False  merge_output: True  len(data): 6327718 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "ae733d81c6e44f4c8a23b3965f9200d3", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.info.stat: &gt;&gt; elapsed time to calculate statistics: 0:01:53.710827
+INFO:ekorpkit.info.stat:Saving updated info file: /content/drive/MyDrive/workspace/data/datasets/corpus/enwiki/info-enwiki.yaml
+INFO:ekorpkit.datasets.build:
+Corpus [enwiki] is built to [/content/drive/MyDrive/workspace/data/datasets/corpus/enwiki] from [/content/drive/MyDrive/workspace/data/archive/datasets/source/enwiki]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;category&#39;: &#39;formal&#39;,
+ &#39;column_info&#39;: {&#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;,
+                             &#39;merge_meta_on&#39;: &#39;id&#39;,
+                             &#39;text&#39;: &#39;text&#39;,
+                             &#39;timestamp&#39;: None},
+                 &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;},
+                 &#39;datetime&#39;: {&#39;columns&#39;: None,
+                              &#39;format&#39;: None,
+                              &#39;rcParams&#39;: None},
+                 &#39;meta&#39;: {&#39;curid&#39;: &#39;str&#39;,
+                          &#39;id&#39;: &#39;int&#39;,
+                          &#39;title&#39;: &#39;str&#39;,
+                          &#39;url&#39;: &#39;str&#39;},
+                 &#39;segment_separator&#39;: &#39;\\n\\n&#39;,
+                 &#39;sentence_separator&#39;: &#39;\\n&#39;,
+                 &#39;timestamp&#39;: {&#39;format&#39;: None, &#39;key&#39;: None, &#39;rcParams&#39;: None}},
+ &#39;data_files&#39;: {&#39;train&#39;: &#39;enwiki-train.parquet&#39;},
+ &#39;data_files_modified&#39;: &#39;2022-10-29 11:04:23&#39;,
+ &#39;description&#39;: &#39;Wikipedia&#39;,
+ &#39;fullname&#39;: &#39;English Wikipedia Corpus&#39;,
+ &#39;homepage&#39;: &#39;https://en.wikipedia.org&#39;,
+ &#39;info_updated&#39;: &#39;2022-10-29 11:52:41&#39;,
+ &#39;lang&#39;: &#39;en&#39;,
+ &#39;license&#39;: &#39;CC Attribution / Share-Alike 3.0&#39;,
+ &#39;meta_files&#39;: {&#39;train&#39;: &#39;meta-enwiki-train.parquet&#39;},
+ &#39;meta_files_modified&#39;: &#39;2022-10-29 10:45:11&#39;,
+ &#39;name&#39;: &#39;enwiki&#39;,
+ &#39;num_bytes_before_processing&#39;: 15342187701,
+ &#39;num_docs&#39;: 6327718,
+ &#39;num_docs_before_processing&#39;: 16699988,
+ &#39;num_segments&#39;: 6329379,
+ &#39;num_sents&#39;: 133373574,
+ &#39;num_words&#39;: 2482445427,
+ &#39;size_in_bytes&#39;: 15381978510,
+ &#39;size_in_human_bytes&#39;: &#39;14.33 GiB&#39;,
+ &#39;splits&#39;: {&#39;train&#39;: {&#39;data_file&#39;: &#39;enwiki-train.parquet&#39;,
+                      &#39;dataset_name&#39;: &#39;enwiki&#39;,
+                      &#39;human_bytes&#39;: &#39;14.33 GiB&#39;,
+                      &#39;human_bytes_wospc&#39;: &#39;11.95 GiB&#39;,
+                      &#39;meta_file&#39;: &#39;meta-enwiki-train.parquet&#39;,
+                      &#39;name&#39;: &#39;train&#39;,
+                      &#39;num_bytes&#39;: 15381978510,
+                      &#39;num_bytes_before_processing&#39;: 15342187701,
+                      &#39;num_bytes_max&#39;: 381498,
+                      &#39;num_bytes_median&#39;: 951.0,
+                      &#39;num_bytes_min&#39;: 30,
+                      &#39;num_bytes_wospc&#39;: 12831216681,
+                      &#39;num_docs&#39;: 6327718,
+                      &#39;num_docs_before_processing&#39;: 16699988,
+                      &#39;num_segments&#39;: 6329379,
+                      &#39;num_segments_median&#39;: 1.0,
+                      &#39;num_sents&#39;: 133373574,
+                      &#39;num_sents_median&#39;: 10.0,
+                      &#39;num_words&#39;: 2482445427,
+                      &#39;num_words_max&#39;: 65724,
+                      &#39;num_words_median&#39;: 154.0,
+                      &#39;num_words_min&#39;: 1}},
+ &#39;version&#39;: &#39;1.0.0&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="build-a-wikipedia-corpus-for-other-languages">
+<h3>Build a Wikipedia Corpus for Other Languages<a class="headerlink" href="#build-a-wikipedia-corpus-for-other-languages" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;corpus/builtin=wiki&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">lang</span> <span class="o">=</span> <span class="s2">&quot;bn&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">50</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:instantiating ekorpkit.datasets.build.DatasetBuilder...
+INFO:ekorpkit.base:instantiating ekorpkit.io.fetch.loader.wiki.Wiki...
+INFO:ekorpkit.base:instantiating ekorpkit.info.stat.SummaryInfo...
+INFO:ekorpkit.info.stat:Loading info file: /content/drive/MyDrive/workspace/data/datasets/corpus/bnwiki/info-bnwiki.yaml
+INFO:ekorpkit.datasets.build:/content/drive/MyDrive/workspace/data/datasets/corpus/bnwiki/bnwiki-train.parquet already exists
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;bnwiki-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/content/drive/MyDrive/workspace/data/datasets/corpus/bnwiki/bnwiki-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from /content/drive/MyDrive/workspace/data/datasets/corpus/bnwiki/bnwiki-train.parquet
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;category&#39;: &#39;formal&#39;,
+ &#39;column_info&#39;: {&#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;,
+                             &#39;merge_meta_on&#39;: &#39;id&#39;,
+                             &#39;text&#39;: &#39;text&#39;,
+                             &#39;timestamp&#39;: None},
+                 &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;},
+                 &#39;datetime&#39;: {&#39;columns&#39;: None,
+                              &#39;format&#39;: None,
+                              &#39;rcParams&#39;: None},
+                 &#39;meta&#39;: {&#39;curid&#39;: &#39;str&#39;,
+                          &#39;id&#39;: &#39;int&#39;,
+                          &#39;title&#39;: &#39;str&#39;,
+                          &#39;url&#39;: &#39;str&#39;},
+                 &#39;segment_separator&#39;: &#39;\\n\\n&#39;,
+                 &#39;sentence_separator&#39;: &#39;\\n&#39;,
+                 &#39;timestamp&#39;: {&#39;format&#39;: None, &#39;key&#39;: None, &#39;rcParams&#39;: None}},
+ &#39;data_files&#39;: {&#39;train&#39;: &#39;bnwiki-train.parquet&#39;},
+ &#39;data_files_modified&#39;: &#39;2022-10-31 02:06:51&#39;,
+ &#39;description&#39;: &#39;Wikipedia&#39;,
+ &#39;fullname&#39;: &#39;Wikipedia Corpus (bn)&#39;,
+ &#39;homepage&#39;: &#39;https://bn.wikipedia.org&#39;,
+ &#39;info_updated&#39;: &#39;2022-10-31 02:07:26&#39;,
+ &#39;lang&#39;: &#39;bn&#39;,
+ &#39;license&#39;: &#39;CC Attribution / Share-Alike 3.0&#39;,
+ &#39;meta_files&#39;: {&#39;train&#39;: &#39;meta-bnwiki-train.parquet&#39;},
+ &#39;meta_files_modified&#39;: &#39;2022-10-31 02:05:58&#39;,
+ &#39;name&#39;: &#39;bnwiki&#39;,
+ &#39;num_bytes_before_processing&#39;: 669133776,
+ &#39;num_docs&#39;: 127833,
+ &#39;num_docs_before_processing&#39;: 348546,
+ &#39;num_segments&#39;: 127870,
+ &#39;num_sents&#39;: 1074085,
+ &#39;num_words&#39;: 36516749,
+ &#39;size_in_bytes&#39;: 668725092,
+ &#39;size_in_human_bytes&#39;: &#39;637.75 MiB&#39;,
+ &#39;splits&#39;: {&#39;train&#39;: {&#39;data_file&#39;: &#39;bnwiki-train.parquet&#39;,
+                      &#39;dataset_name&#39;: &#39;bnwiki&#39;,
+                      &#39;human_bytes&#39;: &#39;637.75 MiB&#39;,
+                      &#39;human_bytes_wospc&#39;: &#39;602.97 MiB&#39;,
+                      &#39;meta_file&#39;: &#39;meta-bnwiki-train.parquet&#39;,
+                      &#39;name&#39;: &#39;train&#39;,
+                      &#39;num_bytes&#39;: 668725092,
+                      &#39;num_bytes_before_processing&#39;: 669133776,
+                      &#39;num_bytes_max&#39;: 354024,
+                      &#39;num_bytes_median&#39;: 2621.0,
+                      &#39;num_bytes_min&#39;: 30,
+                      &#39;num_bytes_wospc&#39;: 632254760,
+                      &#39;num_docs&#39;: 127833,
+                      &#39;num_docs_before_processing&#39;: 348546,
+                      &#39;num_segments&#39;: 127870,
+                      &#39;num_segments_median&#39;: 1.0,
+                      &#39;num_sents&#39;: 1074085,
+                      &#39;num_sents_median&#39;: 5.0,
+                      &#39;num_words&#39;: 36516749,
+                      &#39;num_words_max&#39;: 18938,
+                      &#39;num_words_median&#39;: 142.0,
+                      &#39;num_words_min&#39;: 1}},
+ &#39;version&#39;: &#39;1.0.0&#39;}
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file: &gt;&gt; elapsed time to load data: 0:00:03.919305
+INFO:ekorpkit.datasets.build:
+Processing dataframe with pipeline: [&#39;normalize&#39;, &#39;filter_length&#39;, &#39;drop_duplicates&#39;, &#39;save_samples&#39;]
+INFO:ekorpkit.pipelines.pipe:Applying pipeline: OrderedDict([(&#39;normalize&#39;, &#39;normalize&#39;), (&#39;filter_length&#39;, &#39;filter_length&#39;), (&#39;drop_duplicates&#39;, &#39;drop_duplicates&#39;), (&#39;save_samples&#39;, &#39;save_samples&#39;)])
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function normalize at 0x7fc6497bc700&gt;)
+INFO:ekorpkit.pipelines.pipe:instantiating normalizer
+INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 230  input_split: False  merge_output: True  len(data): 348546 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "8645040a03674eef9bb6b4e6207a28ff", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to normalize: 0:00:20.737039
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function filter_length at 0x7fc655201f70&gt;, len_bytes={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}, len_words={&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_words&#39;})
+INFO:ekorpkit.pipelines.pipe:Filtering by length: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.filter_length&#39;, &#39;len_bytes&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}, &#39;len_words&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_words&#39;}}, &#39;apply_to&#39;: &#39;text&#39;, &#39;min_length&#39;: 30, &#39;max_length&#39;: None, &#39;len_func&#39;: &#39;len_bytes&#39;, &#39;len_column&#39;: &#39;num_bytes&#39;, &#39;add_len_column&#39;: True, &#39;verbose&#39;: True, &#39;use_batcher&#39;: True}
+INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 230  input_split: False  merge_output: True  len(data): 348546 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "61b44a0945e8481380e63a3d4ce24f49", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.pipelines.pipe:removed 220674 of 348546 documents with length &lt; 30
+INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to filter length: 0:00:01.750412
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function drop_duplicates at 0x7fc655201dc0&gt;)
+INFO:ekorpkit.pipelines.pipe:Dropping duplicates: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.drop_duplicates&#39;}, &#39;apply_to&#39;: &#39;text&#39;, &#39;verbose&#39;: True}
+INFO:ekorpkit.pipelines.pipe:127833 documents after dropping 39 duplicates from [[&#39;text&#39;]]
+INFO:ekorpkit.pipelines.pipe: &gt;&gt; elapsed time to drop duplicates: 0:00:01.292660
+INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function save_samples at 0x7fc655201ee0&gt;)
+INFO:ekorpkit.pipelines.pipe:Saving samples: {&#39;_func_&#39;: {&#39;_partial_&#39;: True, &#39;_target_&#39;: &#39;ekorpkit.pipelines.pipe.save_samples&#39;}, &#39;path&#39;: {&#39;root&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/ekorpkit-book&#39;, &#39;name&#39;: &#39;ekorpkit-book&#39;, &#39;cached_path&#39;: None, &#39;filetype&#39;: &#39;&#39;, &#39;verbose&#39;: True, &#39;data_dir&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/ekorpkit-book/data&#39;, &#39;data_file&#39;: None, &#39;concat_data&#39;: False, &#39;data_columns&#39;: None, &#39;columns&#39;: None, &#39;output_dir&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/ekorpkit-book/outputs&#39;, &#39;output_file&#39;: None, &#39;suffix&#39;: None, &#39;output&#39;: {&#39;filename&#39;: &#39;sample-bnwiki-train.txt&#39;, &#39;base_dir&#39;: &#39;/content/drive/MyDrive/workspace/data/datasets/corpus/bnwiki&#39;, &#39;filetype&#39;: &#39;.txt&#39;, &#39;suffix&#39;: None, &#39;filepath&#39;: &#39;/content/drive/MyDrive/workspace/data/datasets/corpus/bnwiki/sample-bnwiki-train.txt&#39;, &#39;columns&#39;: None, &#39;verbose&#39;: True}}, &#39;apply_to&#39;: &#39;text&#39;, &#39;num_samples_to_save&#39;: 2, &#39;output_file&#39;: None, &#39;sample_length_to_print&#39;: 1000, &#39;verbose&#39;: True}
+INFO:ekorpkit.pipelines.pipe:Saved 2 samples to /content/drive/MyDrive/workspace/data/datasets/corpus/bnwiki/sample-bnwiki-train.txt
+INFO:ekorpkit.info.stat:Calculating statistics for split: train
+INFO:ekorpkit.base:Using batcher with minibatch size: 556
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 556  procs: 230  input_split: False  merge_output: True  len(data): 127833 len(args): 5
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>----------------------------------------------------------------------------------------------------
+
+text: 
+উম্মে হানি বিনতে আবি তালিব (আরবি فاختة بنت أبي طالب) হযরত মুহাম্মাদ সাঃ এর চাচাত বোন ছিলেন। উম্মে হানি আবু তালিবের কন্যা ছিলেন। তিনি একজন হাদিস বর্ণনাকারী সাহাবা ছিলেন।
+নাম ও বংশ পরিচয়.
+উম্মে হানি বিনতে আবি তালিব এর আসল ছিলো ফাখিতা মতান্তরে হিন্দ। তার পিতার নাম আবু তালিব ইবনে আবদুল মুত্তালিব ও মাতার নাম ছিলো ফাতিমা বিনতে আসাদ। তিনি জাফর,আকিল ও আলীর সহোদরা ছিলেন।
+উম্মে হানির কয়েকজন সন্তানের নাম হলো:
+ইসলাম পূর্ব সময়.
+তার বাল্যকালের কথা তেমন কিছু জানা যায় না। তবে মহানবী হযরত মুহাম্মাদ সাঃ এর নবুওয়াত প্রাপ্তির পূর্বে চাচা আবু তালিবের নিকট উম্মে হানির বিয়ের প্রস্তাব পাঠান। একই সময়হুবায়রা ইবনে আমর ইবনে আয়িয আল মাখযুমিও উম্মে হানিকে বিয়ে করতে চান। আবু তালিব হুবায়রার প্রস্তাব গ্রহণ করে উম্মে হানিকে তার সাথে বিয়ে দেন। এবং হযরত মুহাম্মাদ সাঃ কে বললেন, &quot;ভাতিজা! আমরা তার সাথে বৈবাহিক সম্পর্ক করেছি। সম্মানীয়দের সমকক্ষ সম্মানীয়রাই হয়ে থাকে।&quot; 
+মক্কা বিজয়ের দিন ও ইসলাম গ্রহণ.
+ইমাম আয যাহাবি বলেছেন, উম্মে হানি মক্কা বিজয়ের দিন ইসলাম গ্রহণ করেছেন। মক্কা বিজয়ের দিন উম্মে হানির ইসলামের গ...
+
+----------------------------------------------------------------------------------------------------
+text: 
+কুনাহান্ধু ( দিভেহি : ކުނަހަންދޫ) লামু প্রবালপ্রাচীরের একটি জন অধ্যুষিত দ্বীপ।
+ভূগোল.
+দেশের রাজধানী মালে থেকে দ্বীপটি দক্ষিণে অবস্থিত।
+
+----------------------------------------------------------------------------------------------------
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "790dedb723304e06a12899280bf91825", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Using batcher with minibatch size: 556
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 556  procs: 230  input_split: False  merge_output: True  len(data): 127833 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "72f3b7067c554f29a0659d9c3568f031", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Using batcher with minibatch size: 556
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 556  procs: 230  input_split: False  merge_output: True  len(data): 127833 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "ccea34933fba4c18b38f5995fb9e0283", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Using batcher with minibatch size: 556
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 556  procs: 230  input_split: False  merge_output: True  len(data): 127833 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "8e0db64274ad4e4fb5898011aad1d032", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Using batcher with minibatch size: 556
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 556  procs: 230  input_split: False  merge_output: True  len(data): 127833 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "25704de20b7a40e2a940cf9a4f1714ed", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.info.stat: &gt;&gt; elapsed time to calculate statistics: 0:00:05.268952
+INFO:ekorpkit.info.stat:Saving updated info file: /content/drive/MyDrive/workspace/data/datasets/corpus/bnwiki/info-bnwiki.yaml
+INFO:ekorpkit.datasets.build:
+Corpus [bnwiki] is built to [/content/drive/MyDrive/workspace/data/datasets/corpus/bnwiki] from [/content/drive/MyDrive/workspace/data/archive/datasets/source/bnwiki]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;category&#39;: &#39;formal&#39;,
+ &#39;column_info&#39;: {&#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;,
+                             &#39;merge_meta_on&#39;: &#39;id&#39;,
+                             &#39;text&#39;: &#39;text&#39;,
+                             &#39;timestamp&#39;: None},
+                 &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;},
+                 &#39;datetime&#39;: {&#39;columns&#39;: None,
+                              &#39;format&#39;: None,
+                              &#39;rcParams&#39;: None},
+                 &#39;meta&#39;: {&#39;curid&#39;: &#39;str&#39;,
+                          &#39;id&#39;: &#39;int&#39;,
+                          &#39;title&#39;: &#39;str&#39;,
+                          &#39;url&#39;: &#39;str&#39;},
+                 &#39;segment_separator&#39;: &#39;\\n\\n&#39;,
+                 &#39;sentence_separator&#39;: &#39;\\n&#39;,
+                 &#39;timestamp&#39;: {&#39;format&#39;: None, &#39;key&#39;: None, &#39;rcParams&#39;: None}},
+ &#39;data_files&#39;: {&#39;train&#39;: &#39;bnwiki-train.parquet&#39;},
+ &#39;data_files_modified&#39;: &#39;2022-11-04 06:36:13&#39;,
+ &#39;description&#39;: &#39;Wikipedia&#39;,
+ &#39;fullname&#39;: &#39;Wikipedia Corpus (bn)&#39;,
+ &#39;homepage&#39;: &#39;https://bn.wikipedia.org&#39;,
+ &#39;info_updated&#39;: &#39;2022-11-04 08:17:09&#39;,
+ &#39;lang&#39;: &#39;bn&#39;,
+ &#39;license&#39;: &#39;CC Attribution / Share-Alike 3.0&#39;,
+ &#39;meta_files&#39;: {&#39;train&#39;: &#39;meta-bnwiki-train.parquet&#39;},
+ &#39;meta_files_modified&#39;: &#39;2022-11-04 06:36:13&#39;,
+ &#39;name&#39;: &#39;bnwiki&#39;,
+ &#39;num_bytes_before_processing&#39;: 669133776,
+ &#39;num_docs&#39;: 127833,
+ &#39;num_docs_before_processing&#39;: 348546,
+ &#39;num_segments&#39;: 127870,
+ &#39;num_sents&#39;: 1074085,
+ &#39;num_words&#39;: 36516749,
+ &#39;size_in_bytes&#39;: 668725092,
+ &#39;size_in_human_bytes&#39;: &#39;637.75 MiB&#39;,
+ &#39;splits&#39;: {&#39;train&#39;: {&#39;data_file&#39;: &#39;bnwiki-train.parquet&#39;,
+                      &#39;dataset_name&#39;: &#39;bnwiki&#39;,
+                      &#39;human_bytes&#39;: &#39;637.75 MiB&#39;,
+                      &#39;human_bytes_wospc&#39;: &#39;602.97 MiB&#39;,
+                      &#39;meta_file&#39;: &#39;meta-bnwiki-train.parquet&#39;,
+                      &#39;name&#39;: &#39;train&#39;,
+                      &#39;num_bytes&#39;: 668725092,
+                      &#39;num_bytes_before_processing&#39;: 669133776,
+                      &#39;num_bytes_max&#39;: 354024,
+                      &#39;num_bytes_median&#39;: 2621.0,
+                      &#39;num_bytes_min&#39;: 30,
+                      &#39;num_bytes_wospc&#39;: 632254760,
+                      &#39;num_docs&#39;: 127833,
+                      &#39;num_docs_before_processing&#39;: 348546,
+                      &#39;num_segments&#39;: 127870,
+                      &#39;num_segments_median&#39;: 1.0,
+                      &#39;num_sents&#39;: 1074085,
+                      &#39;num_sents_median&#39;: 5.0,
+                      &#39;num_words&#39;: 36516749,
+                      &#39;num_words_max&#39;: 18938,
+                      &#39;num_words_median&#39;: 142.0,
+                      &#39;num_words_min&#39;: 1}},
+ &#39;version&#39;: &#39;1.0.0&#39;}
+time: 41.5 s (started: 2022-11-04 08:16:28 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="build-a-corpus-using-cli">
+<h3>Build a Corpus using CLI<a class="headerlink" href="#build-a-corpus-using-cli" title="Permalink to this headline">#</a></h3>
+<p>To build more efficiently with multiple processors, it is preferable to use CLI (command line interface) tools.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ekorpkit <span class="se">\</span>
+    project.name<span class="o">=</span>ekorpkit-book <span class="se">\</span>
+    dir.workspace<span class="o">=</span>/content/drive/MyDrive/workspace <span class="se">\</span>
+    <span class="nv">verbose</span><span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+    <span class="nv">num_workers</span><span class="o">=</span><span class="m">1</span> <span class="se">\</span>
+    <span class="nv">run</span><span class="o">=</span>corpus.builtin <span class="se">\</span>
+    corpus/builtin<span class="o">=</span>wiki <span class="se">\</span>
+    corpus.builtin.lang<span class="o">=</span><span class="s2">&quot;bn&quot;</span> <span class="se">\</span>
+    corpus.builtin.io.force.summarize<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+    corpus.builtin.io.force.preprocess<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+    corpus.builtin.io.force.build<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+    corpus.builtin.io.force.download<span class="o">=</span><span class="nb">false</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="load-the-corpus">
+<h2>Load the Corpus<a class="headerlink" href="#load-the-corpus" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;corpus&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;enwiki&quot;</span>
+<span class="n">enwiki</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">enwiki</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.datasets.base:Loaded info file: /content/drive/MyDrive/workspace/data/datasets/corpus/enwiki/info-enwiki.yaml
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;enwiki-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/content/drive/MyDrive/workspace/data/datasets/corpus/enwiki/enwiki-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from /content/drive/MyDrive/workspace/data/datasets/corpus/enwiki/enwiki-train.parquet
+INFO:ekorpkit.info.column:index: index, index of data: None, columns: [&#39;id&#39;, &#39;text&#39;, &#39;split&#39;, &#39;filename&#39;], id: [&#39;id&#39;]
+INFO:ekorpkit.info.column:Adding id [split] to [&#39;id&#39;]
+INFO:ekorpkit.info.column:Added id [split], now [&#39;id&#39;, &#39;split&#39;]
+INFO:ekorpkit.info.column:Added a column [split] with value [train]
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;meta-enwiki-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/content/drive/MyDrive/workspace/data/datasets/corpus/enwiki/meta-enwiki-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from /content/drive/MyDrive/workspace/data/datasets/corpus/enwiki/meta-enwiki-train.parquet
+INFO:ekorpkit.info.column:Added a column [split] with value [train]
+INFO:ekorpkit.info.column:No timestamp key found
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Corpus : enwiki
+time: 1min 48s (started: 2022-11-04 02:24:13 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">enwiki</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;category&#39;: &#39;formal&#39;,
+ &#39;column_info&#39;: {&#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;,
+                             &#39;merge_meta_on&#39;: &#39;id&#39;,
+                             &#39;text&#39;: &#39;text&#39;,
+                             &#39;timestamp&#39;: None},
+                 &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;},
+                 &#39;datetime&#39;: {&#39;columns&#39;: None,
+                              &#39;format&#39;: None,
+                              &#39;rcParams&#39;: None},
+                 &#39;meta&#39;: {&#39;curid&#39;: &#39;str&#39;,
+                          &#39;id&#39;: &#39;int&#39;,
+                          &#39;title&#39;: &#39;str&#39;,
+                          &#39;url&#39;: &#39;str&#39;},
+                 &#39;segment_separator&#39;: &#39;\\n\\n&#39;,
+                 &#39;sentence_separator&#39;: &#39;\\n&#39;,
+                 &#39;timestamp&#39;: {&#39;format&#39;: None, &#39;key&#39;: None, &#39;rcParams&#39;: None}},
+ &#39;data_files&#39;: {&#39;train&#39;: &#39;enwiki-train.parquet&#39;},
+ &#39;data_files_modified&#39;: &#39;2022-10-29 11:04:23&#39;,
+ &#39;description&#39;: &#39;Wikipedia&#39;,
+ &#39;fullname&#39;: &#39;English Wikipedia Corpus&#39;,
+ &#39;homepage&#39;: &#39;https://en.wikipedia.org&#39;,
+ &#39;info_updated&#39;: &#39;2022-10-29 11:52:41&#39;,
+ &#39;lang&#39;: &#39;en&#39;,
+ &#39;license&#39;: &#39;CC Attribution / Share-Alike 3.0&#39;,
+ &#39;meta_files&#39;: {&#39;train&#39;: &#39;meta-enwiki-train.parquet&#39;},
+ &#39;meta_files_modified&#39;: &#39;2022-10-29 10:45:11&#39;,
+ &#39;name&#39;: &#39;enwiki&#39;,
+ &#39;num_bytes_before_processing&#39;: 15342187701,
+ &#39;num_docs&#39;: 6327718,
+ &#39;num_docs_before_processing&#39;: 16699988,
+ &#39;num_segments&#39;: 6329379,
+ &#39;num_sents&#39;: 133373574,
+ &#39;num_words&#39;: 2482445427,
+ &#39;size_in_bytes&#39;: 15381978510,
+ &#39;size_in_human_bytes&#39;: &#39;14.33 GiB&#39;,
+ &#39;splits&#39;: {&#39;train&#39;: {&#39;data_file&#39;: &#39;enwiki-train.parquet&#39;,
+                      &#39;dataset_name&#39;: &#39;enwiki&#39;,
+                      &#39;human_bytes&#39;: &#39;14.33 GiB&#39;,
+                      &#39;human_bytes_wospc&#39;: &#39;11.95 GiB&#39;,
+                      &#39;meta_file&#39;: &#39;meta-enwiki-train.parquet&#39;,
+                      &#39;name&#39;: &#39;train&#39;,
+                      &#39;num_bytes&#39;: 15381978510,
+                      &#39;num_bytes_before_processing&#39;: 15342187701,
+                      &#39;num_bytes_max&#39;: 381498,
+                      &#39;num_bytes_median&#39;: 951.0,
+                      &#39;num_bytes_min&#39;: 30,
+                      &#39;num_bytes_wospc&#39;: 12831216681,
+                      &#39;num_docs&#39;: 6327718,
+                      &#39;num_docs_before_processing&#39;: 16699988,
+                      &#39;num_segments&#39;: 6329379,
+                      &#39;num_segments_median&#39;: 1.0,
+                      &#39;num_sents&#39;: 133373574,
+                      &#39;num_sents_median&#39;: 10.0,
+                      &#39;num_words&#39;: 2482445427,
+                      &#39;num_words_max&#39;: 65724,
+                      &#39;num_words_median&#39;: 154.0,
+                      &#39;num_words_min&#39;: 1}},
+ &#39;version&#39;: &#39;1.0.0&#39;}
+time: 9.73 ms (started: 2022-11-04 02:26:02 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<section id="sample-and-save-the-corpus">
+<h3>Sample and Save the Corpus<a class="headerlink" href="#sample-and-save-the-corpus" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">enwiki</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Concatenating 1 dataframes
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 16699988 entries, 0 to 16699987
+Data columns (total 4 columns):
+ #   Column    Dtype 
+---  ------    ----- 
+ 0   id        int64 
+ 1   text      object
+ 2   split     object
+ 3   filename  object
+dtypes: int64(1), object(3)
+memory usage: 509.6+ MB
+time: 674 ms (started: 2022-11-04 02:26:53 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">enwiki</span><span class="o">.</span><span class="n">splits</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">enwiki</span><span class="o">.</span><span class="n">splits</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="n">enwiki</span><span class="o">.</span><span class="n">save_as</span><span class="p">(</span><span class="s2">&quot;enwiki_sampled&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">enwiki</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">info</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 230  input_split: False  merge_output: True  len(data): 834999 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "0e3ea29e7b364842a4b184e1308d1e46", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 230  input_split: False  merge_output: True  len(data): 834999 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "51014da3b50e4e08a2b1462c5eada79e", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 230  input_split: False  merge_output: True  len(data): 834999 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "5d998f89b6a447818bcca0baf2fe9648", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 230  input_split: False  merge_output: True  len(data): 834999 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "4d36de70b54643a3a9a945186bb1ce80", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Using batcher with minibatch size: 1000
+INFO:ekorpkit.utils.batch.batcher: backend: joblib  minibatch_size: 1000  procs: 230  input_split: False  merge_output: True  len(data): 834999 len(args): 5
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "f1abcd90a3774627bd1635f40ab89c81", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.info.stat: &gt;&gt; elapsed time to calculate statistics: 0:04:32.445424
+INFO:ekorpkit.io.file:Saving dataframe to /content/drive/MyDrive/workspace/data/datasets/corpus/enwiki_sampled/enwiki_sampled-train.parquet
+INFO:ekorpkit.io.file:Concatenating 1 dataframes
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 834999 entries, 0 to 834998
+Data columns (total 4 columns):
+ #   Column    Non-Null Count   Dtype 
+---  ------    --------------   ----- 
+ 0   id        834999 non-null  int64 
+ 1   text      834999 non-null  object
+ 2   split     834999 non-null  object
+ 3   filename  834999 non-null  object
+dtypes: int64(1), object(3)
+memory usage: 25.5+ MB
+None
+time: 5min 34s (started: 2022-11-04 02:27:31 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="load-corpora">
+<h2>Load Corpora<a class="headerlink" href="#load-corpora" title="Permalink to this headline">#</a></h2>
+<p>You can load several corpora at once and merge them into a single corpus.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;corpus=corpora&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;enwiki_sampled&quot;</span><span class="p">,</span> <span class="s2">&quot;kowiki&quot;</span><span class="p">,</span> <span class="s2">&quot;bnwiki&quot;</span><span class="p">]</span>
+<span class="c1"># cfg.data_dir = &#39;../data&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">auto</span><span class="o">.</span><span class="n">load</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">crps</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">crps</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+INFO:ekorpkit.utils.notebook:shell type: ZMQInteractiveShell
+INFO:ekorpkit.base:setting environment variable CACHED_PATH_CACHE_ROOT to /content/drive/MyDrive/workspace/.cache/cached_path
+INFO:ekorpkit.base:setting environment variable KMP_DUPLICATE_LIB_OK to TRUE
+INFO:ekorpkit.datasets.corpora:processing enwiki_sampled
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;enwiki_sampled-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/content/drive/MyDrive/workspace/data/datasets/corpus/enwiki_sampled/enwiki_sampled-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from /content/drive/MyDrive/workspace/data/datasets/corpus/enwiki_sampled/enwiki_sampled-train.parquet
+INFO:ekorpkit.info.column:index: index, index of data: index, columns: [&#39;id&#39;, &#39;text&#39;, &#39;split&#39;, &#39;filename&#39;], id: [&#39;id&#39;]
+INFO:ekorpkit.info.column:Adding id [split] to [&#39;id&#39;]
+INFO:ekorpkit.info.column:Added id [split], now [&#39;id&#39;, &#39;split&#39;]
+INFO:ekorpkit.info.column:Added a column [split] with value [train]
+WARNING:ekorpkit.datasets.base:File enwiki_sampled-dev.parquet not found.
+WARNING:ekorpkit.datasets.base:File enwiki_sampled-test.parquet not found.
+INFO:ekorpkit.datasets.corpus:No metadata files found
+INFO:ekorpkit.info.column:No timestamp key found
+INFO:ekorpkit.datasets.corpora:processing kowiki
+INFO:ekorpkit.datasets.base:Loaded info file: /content/drive/MyDrive/workspace/data/datasets/corpus/kowiki/info-kowiki.yaml
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;kowiki-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/content/drive/MyDrive/workspace/data/datasets/corpus/kowiki/kowiki-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from /content/drive/MyDrive/workspace/data/datasets/corpus/kowiki/kowiki-train.parquet
+INFO:ekorpkit.info.column:index: index, index of data: None, columns: [&#39;id&#39;, &#39;text&#39;, &#39;split&#39;, &#39;filename&#39;], id: [&#39;id&#39;]
+INFO:ekorpkit.info.column:Adding id [split] to [&#39;id&#39;]
+INFO:ekorpkit.info.column:Added id [split], now [&#39;id&#39;, &#39;split&#39;]
+INFO:ekorpkit.info.column:Added a column [split] with value [train]
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;meta-kowiki-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/content/drive/MyDrive/workspace/data/datasets/corpus/kowiki/meta-kowiki-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from /content/drive/MyDrive/workspace/data/datasets/corpus/kowiki/meta-kowiki-train.parquet
+INFO:ekorpkit.info.column:Added a column [split] with value [train]
+INFO:ekorpkit.info.column:No timestamp key found
+INFO:ekorpkit.datasets.corpora:processing bnwiki
+INFO:ekorpkit.datasets.base:Loaded info file: /content/drive/MyDrive/workspace/data/datasets/corpus/bnwiki/info-bnwiki.yaml
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;bnwiki-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/content/drive/MyDrive/workspace/data/datasets/corpus/bnwiki/bnwiki-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from /content/drive/MyDrive/workspace/data/datasets/corpus/bnwiki/bnwiki-train.parquet
+INFO:ekorpkit.info.column:index: index, index of data: None, columns: [&#39;id&#39;, &#39;text&#39;, &#39;split&#39;, &#39;filename&#39;], id: [&#39;id&#39;]
+INFO:ekorpkit.info.column:Adding id [split] to [&#39;id&#39;]
+INFO:ekorpkit.info.column:Added id [split], now [&#39;id&#39;, &#39;split&#39;]
+INFO:ekorpkit.info.column:Added a column [split] with value [train]
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;meta-bnwiki-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/content/drive/MyDrive/workspace/data/datasets/corpus/bnwiki/meta-bnwiki-train.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from /content/drive/MyDrive/workspace/data/datasets/corpus/bnwiki/meta-bnwiki-train.parquet
+INFO:ekorpkit.info.column:Added a column [split] with value [train]
+INFO:ekorpkit.info.column:No timestamp key found
+INFO:ekorpkit.datasets.corpora:&gt;&gt;&gt; Elapsed time: 0:00:17.370715 &lt;&lt;&lt; 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Corpora
+----------
+enwiki_sampled
+kowiki
+bnwiki
+
+time: 18.8 s (started: 2022-11-04 03:20:27 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<section id="checking-the-corpus-information">
+<h3>Checking the Corpus Information<a class="headerlink" href="#checking-the-corpus-information" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">crps</span><span class="p">[</span><span class="s2">&quot;kowiki&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;category&#39;: &#39;formal&#39;,
+ &#39;column_info&#39;: {&#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;,
+                             &#39;merge_meta_on&#39;: &#39;id&#39;,
+                             &#39;text&#39;: &#39;text&#39;,
+                             &#39;timestamp&#39;: None},
+                 &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;},
+                 &#39;datetime&#39;: {&#39;columns&#39;: None,
+                              &#39;format&#39;: None,
+                              &#39;rcParams&#39;: None},
+                 &#39;meta&#39;: {&#39;curid&#39;: &#39;str&#39;,
+                          &#39;id&#39;: &#39;int&#39;,
+                          &#39;title&#39;: &#39;str&#39;,
+                          &#39;url&#39;: &#39;str&#39;},
+                 &#39;segment_separator&#39;: &#39;\\n\\n&#39;,
+                 &#39;sentence_separator&#39;: &#39;\\n&#39;,
+                 &#39;timestamp&#39;: {&#39;format&#39;: None, &#39;key&#39;: None, &#39;rcParams&#39;: None}},
+ &#39;data_files&#39;: {&#39;train&#39;: &#39;kowiki-train.parquet&#39;},
+ &#39;data_files_modified&#39;: &#39;2022-10-29 06:30:41&#39;,
+ &#39;description&#39;: &#39;위키백과, 우리 모두의 백과사전&#39;,
+ &#39;fullname&#39;: &#39;Korean Wikipedia Corpus&#39;,
+ &#39;homepage&#39;: &#39;https://ko.wikipedia.org&#39;,
+ &#39;info_updated&#39;: &#39;2022-10-29 06:58:28&#39;,
+ &#39;lang&#39;: &#39;ko&#39;,
+ &#39;license&#39;: &#39;CC Attribution / Share-Alike 3.0&#39;,
+ &#39;meta_files&#39;: {&#39;train&#39;: &#39;meta-kowiki-train.parquet&#39;},
+ &#39;meta_files_modified&#39;: &#39;2022-10-29 06:29:35&#39;,
+ &#39;name&#39;: &#39;kowiki&#39;,
+ &#39;num_bytes_before_processing&#39;: 801994255,
+ &#39;num_docs&#39;: 601641,
+ &#39;num_docs_before_processing&#39;: 1339048,
+ &#39;num_segments&#39;: 601727,
+ &#39;num_sents&#39;: 6064076,
+ &#39;num_words&#39;: 74965324,
+ &#39;size_in_bytes&#39;: 800672700,
+ &#39;size_in_human_bytes&#39;: &#39;763.58 MiB&#39;,
+ &#39;splits&#39;: {&#39;train&#39;: {&#39;data_file&#39;: &#39;kowiki-train.parquet&#39;,
+                      &#39;dataset_name&#39;: &#39;kowiki&#39;,
+                      &#39;human_bytes&#39;: &#39;763.58 MiB&#39;,
+                      &#39;human_bytes_wospc&#39;: &#39;692.66 MiB&#39;,
+                      &#39;meta_file&#39;: &#39;meta-kowiki-train.parquet&#39;,
+                      &#39;name&#39;: &#39;train&#39;,
+                      &#39;num_bytes&#39;: 800672700,
+                      &#39;num_bytes_before_processing&#39;: 801994255,
+                      &#39;num_bytes_max&#39;: 417935,
+                      &#39;num_bytes_median&#39;: 348.0,
+                      &#39;num_bytes_min&#39;: 30,
+                      &#39;num_bytes_wospc&#39;: 726308931,
+                      &#39;num_docs&#39;: 601641,
+                      &#39;num_docs_before_processing&#39;: 1339048,
+                      &#39;num_segments&#39;: 601727,
+                      &#39;num_segments_median&#39;: 1.0,
+                      &#39;num_sents&#39;: 6064076,
+                      &#39;num_sents_median&#39;: 3.0,
+                      &#39;num_words&#39;: 74965324,
+                      &#39;num_words_max&#39;: 35733,
+                      &#39;num_words_median&#39;: 32.0,
+                      &#39;num_words_min&#39;: 1}},
+ &#39;version&#39;: &#39;1.0.0&#39;}
+time: 8.71 ms (started: 2022-11-04 03:20:46 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="checking-the-corpus-data">
+<h3>Checking the Corpus Data<a class="headerlink" href="#checking-the-corpus-data" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">crps</span><span class="p">[</span><span class="s2">&quot;kowiki&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Concatenating 1 dataframes
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>성이성(成以性, 1595년(선조 28년) ∼ 1664년(현종 5년))은 조선 후기의 문신이자 유학자, 청백리이다. 자(字)는 여습(汝習)이고 호는 계서(溪西)이다. 본관은 창녕(昌寧). 춘향전의 실제 주인공으로 춘향전의 주인공인 몽룡은 원래 성몽룡이었다. 남원부사와 승정원승지를 지낸 성안의의 아들이다.
+강직한 간관이자 청백리이다. 그의 직계 후손들은 춘향전에 나온 &#39;금준미주 천인혈&#39;이 그가 실제로 지은 한시라고 주장한다. 호서 암행어사와 호남 암행어사로 활동, 감찰하며 부패 수령들을 봉고파직시켰다. 이것 역시 춘향전의 소재가 된다. 학맥으로는 김굉필의 손제자이자 그의 학맥을 계승한 강복성(康復誠)의 문인이다. 경상북도 출신.
+생애.
+생애 초반.
+출생과 가계.
+성이성은 경상북도 봉화군 물야면 가평리 태생으로 아버지는 창녕 성씨로 승정원승지와 군수를 지낸 성안의(成安義)이고, 어머니는 예안 김씨로 증(贈) 호조 참판에 추증(追贈)된 김계선의 딸이다.
+그는 어려서부터 그는 학업에 열중하여 13세때 그가 쓴 글을 우연히 정경세(鄭經世)가 보게 되었다. 정경세는 그의 글을 읽고 장차 크게 될 인물이라 하였다.
+수학과 남원 생활.
+어려서부터 공부를 게을리하지 않고 학문에 더욱 증진하여 조경남의 문하에서 수학하다가 뒤에 강복성(康復誠)의 문인이 되었다. 강복성은 사림의 학통인 길재-김숙자-김종직-김굉필(金宏弼)-조광조-이연경(李延慶)의 학통을 계승한 학자였다.
+1607년(선조 40) 남원부사로 부임한 아버지 성안의를 따라 갔다가 그곳에서 만난 기생과의 일화가 후일 춘향전의 주 뼈대가 되었다. 그러나 아버지 성안의가 참의로 발령되면서 기생 춘향과는 이별하게 된다. 이때 시중에는 성이성과 춘향을 소재로 한 춘향전이 희극과 인형극, 만담 등으로 확산되었는데, 양반가의 자제의 스캔들이라 하여 조선조정에서 관을 시켜서 금지하게 되자 성몽룡을 이몽룡으로 바꾸고, 성씨(姓氏)가 없던 기생인 춘향에게 성씨 성을 붙여서 시연하게 된다.
+1616년(광해군 8년) 그는 사마시 양시에 합격했는데 생원시에 합격하여 생원(生員)이 되고, 그 해에 다시 진사시에 합격하여 진사(進士)가 되었다. 그러나 광해군 때의 난세에는 벼슬길에 나아가지 않았다.
+관료 생활.
+과거 급제와 관료생활.
+1627년 (인조5년)에 식년 문과에 병과로 급제하였다.
+1635년(인조 13) 성이성은 사간원 정언이 되고 홍문관 부수찬·부교리를 거쳐 1636년 사헌부지평이 되었다. 1637년(인조 15) 호서(湖西) 지방의 암행어사로 파견되었다가 돌아왔다. 그해 성이성은 사간원 헌납이 되어 공신이며 서인당의 고관인 윤방(尹昉)·김류(金류)·심기원(沈器遠)·김자점(金自點) 등을 탄핵하여 왕을 잘못된 길로 인도했다며 오국불충(誤國不忠)의 죄를 논하기도 했다.
+암행어사 활동.
+1639년(인조 17) 호남(湖南) 지방 암행어사에 임명되어 5년간 호남 지역을 순찰하고 1644년(인조 22) 되돌아왔가. 그 뒤 1647년(인조 25) 다시 호남 암행어사 로 파견되었다.
+그러나 호남 암행어사로 부임했을 때 신분을 노출시키고 마는데 성이성은 암행을 하고 다니다가 1647년 11월 25일 순천에서 실수로 부득이 자신의 신분을 드러내고 이후에는 한양으로 돌아오게 되는데, 그는 일기에 돌아오는 길이던 12월 1일 남원에 들렀다고 적고 있다.
+생애 후반.
+1648년 여름 성이성은 전라도 담양군수로 부임해 장마철 강둑이 범람해 피해가 큰 것을 보고 2년에 걸쳐 제방을 쌓고 그 위에 나무를 심었다. 현재 관방제림으로 불리는 숲이 그가 남긴 치세의 흔적이다. 푸조나무 느티나무 팽나무 등 184그루가 전한다. 본디 제방에 나무를 심으면 나무가 바람에 흔들릴 때 제방에 해롭다 하여 심지 않았는데 성이성은 비바람에 강한 토종나무를 골라 심음으로써 이같은 상식을 엎었다. 담양군은 현재 관방제림에 산책로를 조성하여 관광객들의 발길을 모으고 있다.
+외직으로는 진주부사 · 강계부사 등 네 고을을 다스렸는데, 진주부사로 재직할 때는 서인 출신으로 경상도 암행어사로 파견된 민정중(閔鼎重)이 조사하여 그의 선치(善治)를 보고하여 특별히 왕으로부터 표리(表裏, 옷감)를 받았고, 강계부사 때에는 여진족 등의 약탈과 흉년 등으로 어려움에 처한 부민들에게 삼세(蔘稅)를 모두 면제해주어 백성들이 기뻐하였으며 부처가 환생하여 돌아왔다며 &#39;생불&#39; 또는 &#39;관서활불&#39;(關西活佛)이라며 칭송하였다. 1664년(현종 15)에 향년 70세를 일기로 사망했다.
+사후.
+고향인 봉화군 물야면 가평 1리에는 성이성을 추모하는 사당인 계서당이 건립되었다. 사후인 1695년(숙종 21) 청렴함을 인정받아 조정으로부터 청백리로 선출되었다. 증 통정대부 부제학에 추증되었다. 저서로는 &amp;lt;계서유고&amp;gt;가 있다.
+귀신 문제 해결.
+전라도 지역에 귀신이 자주 출몰한다는 곳이 있었다. 그 곳은 상인이나 과거 시험을 보러 가던 선비들이 여러 번 변을 당했는데, 성이성이 이 문제를 해결하였다 한다. 호남 암행어사가 돼서 호남 지역의 귀신이 많이 나오는 곳을 찾아가 억울함을 달래주고 문제를 해결하였고 이것 역시 입에서 입으로 전해져 설화가 되었다.
+부패 관리 파직.
+충청도 암행어사 시절 지방관리의 잘못을 발견하고 어떻게 처리했는가를 인조에게 보고한 &#39;서계&#39;가 남아있었는데 KBS 방송국이 이를 취재하였다.를 보면 세금을 과다징수한 진천현감과 생일날 과다한 잔치를 벌이고 국법을 어긴 석성현감을 적발하여 파직시켰다는 기록이 있다.
+춘향전.
+춘향전.
+그는 아버지인 남원부사 성안의가 부임할 때, 아버지의 임지를 따라 남원에서 생활하다 우연히 남원 기생 춘향을 만나게 되었다. 그러나 춘향과는 이루어지지 못했고, 이는 바로 춘향전의 모티브가 되었다. 뒤에 호남 암행어사로 부임했다가 신분을 노출하고 되돌아갈 때 남원에 들렀다. 늙은기생 여진이 찾아와 만났는데, 그는 춘향을 찾았다 한다. 그러나 그는 춘향을 만날 수 없었다.
+‘서리와 함께 난간에 앉으니 눈빛이 뜰에 하얗게 깔려있고 대나무숲이 희었다. 나는 소년시절의 일을 생각하여 밤늦도록 잠들지 못했다.’
+춘향전은 판소리, 연극, 소설의 소재가 되었으나 양반가 자제의 스캔들이라 하여, 조정에서는 양반가의 위신을 떨어뜨린다며 춘향전의 상영을 금지하였다. 할 수 없이 민중들은 성몽룡 대신 이몽룡으로 성을 바꾸어서 연극과 판소리, 소설, 구전 등으로 전하였다.
+금준미주 천인혈.
+춘향전에 나오는 금준미주 천인혈은 성이성이 지은 시 중의 하나였다. 성이성이 춘향전에 나오는 성몽룡처럼 변사또를 응징한 남원 출두 기록은 실록이나 문집에는 없다. 그러나 춘향전에 나오는 잔치연에서 이몽룡이 변학도를 질타하면서 읊은 금준미주 천인혈 로 시작되는 시조는 성이성이 짓고, 읊었다. 이는 성이성의 4대손 성섭의 저서 &amp;lt;교와문고&amp;gt;와 그의 스승 조경남이 쓴 &amp;lt;난중잡록&amp;gt;에 그의 작품으로 기록되어 있다.
+호남 암행어사가 되었을때에 호남 12고을 군수, 현감들이 잔치를 베풀었다. 이때 성이성은 암행어사가 걸인의 행색을 하고서 연회장에 나타났다. 호남의 12고을의 군수, 현감들은 그를 조롱하며 &#39;그대가 시를 지으면 종일토록 놀고 짓지 못하면 가라.&#39;고 했고, 그는 즉석에서 금준미주 천인혈 을 짓는다. 이어 전라도내 6명의 부패한 수령들을 봉고파직시킨다. 석성현감이 생일날 과다한 잔치를 벌인 것은 춘향전에 등장하는 변사또의 모티브가 되었다.
+time: 51.7 ms (started: 2022-11-04 03:20:46 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">crps</span><span class="p">[</span><span class="s2">&quot;bnwiki&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Concatenating 1 dataframes
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>শ্যামাদাস মুখোপাধ্যায় (২২ জুন ১৮৬৬ - ৮ মে ১৯৩৭) ছিলেন একজন ভারতীয় বাঙালি গণিতবিদ। তিনি ইউক্লিডিয় জ্যামিতির মুখোপাধ্যায়ের উপপাদ্য এবং চতুর্শীর্ষ উপপাদ্য (Four-vertex theorem) উপস্থাপনের জন্য পরিচিত। তিনি ভারতের প্রথম গণিতবিদ হিসেবে ডক্টরেট ডিগ্রী অর্জন করেন।
+জন্ম ও শিক্ষাজীবন.
+শ্যামাদাস মুখোপাধ্যায় ১৮৬৬ খ্রিষ্টাব্দের ২২ জুন পশ্চিমবঙ্গের হুগলি জেলার হরিপাল ব্লকে জন্মগ্রহণ করেন। তার বাবা বাবু গঙ্গা কান্ত মুখোপাধ্যায় রাজ্য বিচার বিভাগে নিযুক্ত ছিলেন। চাকরি সূত্রে তাকে বিভিন্ন স্থানে স্থানান্তরিত করা হওয়ায় শ্যামাদাস মুখোপাধ্যায়কে বিভিন্ন সময়ে বিভিন্ন শিক্ষা প্রতিষ্ঠানে শিক্ষা গ্রহণ করতে হয়। তিনি হুগলি কলেজ থেকে স্নাতক হন। তিনি ১৮৯০ খ্রিষ্টাব্দে কলকাতার প্রেসিডেন্সি কলেজ থেকে গণিত বিষয়ে এমএ ডিগ্রি অর্জন করেন। তিনি ১৯০৯ খ্রিষ্টাব্দে তার গাণিতিক তত্ত্বালোচনা &quot;অন দ্যা ইনফিনিটেসিমাল এনালিসিস অফ এন আর্ক&quot;-এর জন্য কলকাতা বিশ্ববিদ্যালয় থেকে গ্রিফিত পুরস্কার পান। তিনি ১৯১০ খ্রিষ্টাব্দে তার নিজস্ব ডিফারেনশিয়াল জ্যামিতির উপরে কলকাতা বিশ্ববিদ্যালয় থেকে পিএইচডি ডিগ্রি লাভ করেন। তার থিসিসের নাম ছিল &quot;Parametric Coefficients in the Differential Geometry of Curves in an N-space&quot;।
+কর্মজীবন.
+শ্যামাদাস মুখোপাধ্যায় কলকাতায় বঙ্গবাসী কলেজে কিছু বছর কাজ করার পর বেথুন কলেজে যোগদান করেন, যেখানে তিনি গণিত ছাড়াও ইংরেজি সাহিত্য ও দর্শনশাস্ত্রে শিক্ষা দিতেন। ১৯০৪ খ্রিষ্টাব্দে তাকে প্রেসিডেন্সি কলেজে স্থানান্তর করা হয়। সেখানে তিনি ১৯১২ খ্রিষ্টাব্দ পর্যন্ত আট সেখানে শিক্ষকতা করেন। ১৯১২খ্রিষ্টাব্দে কলকাতা বিশ্ববিদ্যালয়ের তৎকালীন উপাচার্য স্যার আশুতোষ মুখার্জী, শ্যামাদাস মুখোপাধ্যায়কে কলকাতা বিশ্ববিদ্যালয়ে নতুন বিশুদ্ধ গণিত বিভাগে যোগদানের জন্য আমন্ত্রণ জানান। শ্যামাদাস মুখোপাধ্যায় সেই আমন্ত্রণে সেখানে যোগ দেন। ১৯৩২ খ্রিষ্টাব্দে তিনি কলকাতা গাণিতিক সমিতির সভাপতি নির্বাচিত হন। তিনি আমৃত্যু এই পদে ছিলেন। ১৯৩৭ খ্রিষ্টাব্দের ৮ মে হৃদরোগের আক্রান্ত হয়ে তিনি মারা যান।
+গবেষণা.
+শ্যামাদাস মুখোপাধ্যায় সম্ভবত স্নাতককালে তার হুগলি কলেজের শিক্ষক উইলিয়াম বুথের জ্যামিতি বিষয়ক গবেষণা দ্বারা অনুপ্রাণিত হয়েছিলেন। ডক্টর মুখোপাধ্যায়ের গবেষণা মূলত অ-ইউক্লিডিয়ান জ্যামিতি, ডিফারেনশিয়াল জ্যামিতি এবং চতুর্মাত্রিক স্থানের স্টেরিওস্কোপিক উপস্থাপনার জন্য গুরুত্বপূর্ণ ছিল।
+তিনি দুটি গুরুত্বপূর্ণ উপপাদ্য উপস্থাপন করেন। প্রথম উপপাদ্যটি হল- “&quot;the minimum number of cyclic points on a convex oval is 4&quot;’’ (একটি উত্তল ডিম্বাকৃতিতে সাইক্লিক পয়েন্টের সর্বনিম্ন সংখ্যা হল ৪) এবং দ্বিতীয়টি হল- “&quot;the minimum number of sextactic points on a convex oval is 6&quot;” (একটি উত্তল ডিম্বাকৃতিতে সেক্সট্যাকটিক পয়েন্টের সর্বনিম্ন সংখ্যা হল ৬)। এই দুটি উপপাদ্য প্রথম প্রকাশিত হয় ১৯০৯ খ্রিস্টাব্দে কলকাতা গাণিতিক সমিতির বুলেটিনে। কিন্তু সেই সময় এই দুটি গুরুত্বপূর্ণ তত্ত্বকে গুরুত্ব দেওয়া হয়নি। শুধুমাত্র বিশিষ্ট ফরাসি গণিতবিদ জাক আদামার ডক্টর মুখোপাধ্যায়ের গবেষণার গুরুত্ব উপলব্ধি করে কোলেজ দ্য ফ্রঁসে তত্ত্ব দুটির কথা উল্লেখ করেন। অনেক বছর পরে, এই তত্ত্ব দুটি ইউরোপে পুনরায় আবিষ্কৃত হয়। জার্মান জ্যামিতিবেত্তা Wilhelm Blaschke শ্যামাদাস মুখোপাধ্যায়কে প্রথম উপপাদ্যটির প্রথম প্রমাণের জন্য উপযুক্ত সম্মান দিয়েছেন। জ্যামিতির আধুনিক সাহিত্যে এই তত্ত্বটি এখন অপ্রত্যাশিতভাবে উদ্ধৃত করা হয়েছে &quot;মুখোপাধ্যায়ের চতুর্শীর্ষ উপপাদ্য&quot; নামে।
+পরবর্তীতে শ্যামাদাস মুখোপাধ্যায় এই দুটি উপপাদ্যের সাধারণীকরণ করেন। প্রথম উপপাদ্যের সাধারণ বক্তব্যটি হল “&quot;If a circle C intersects an oval V in 2n points (n 2) then there exists at least 2n cyclic points in order on V, of alternately contrary signs, provided the oval has continuity of order 3&quot;”। দ্বিতীয় উপপাদ্যের সাধারণ বক্তব্যটি হল “&quot;If a conic C intersects an oval V in 2n points (n&amp;gt; or = 2), then there exist at least 2n sextactic points in order on V, which are alternatively positive and negative, provided V has continuity of order 5&quot;”। এইভাবে তিনি আগের তত্ত্ব দুটিকে আরো শক্তভাবে প্রতিষ্ঠা করেন।
+time: 10.3 ms (started: 2022-11-04 03:20:46 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="concatenating-corpora">
+<h3>Concatenating Corpora<a class="headerlink" href="#concatenating-corpora" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crps</span><span class="o">.</span><span class="n">concat_corpora</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Concatenating 1 dataframes
+INFO:ekorpkit.info.column:Adding id [corpus] to [&#39;id&#39;]
+INFO:ekorpkit.info.column:Added id [corpus], now [&#39;id&#39;, &#39;corpus&#39;]
+INFO:ekorpkit.info.column:Added a column [corpus] with value [enwiki_sampled]
+INFO:ekorpkit.io.file:Concatenating 1 dataframes
+INFO:ekorpkit.info.column:Added a column [corpus] with value [kowiki]
+INFO:ekorpkit.info.column:Added a column [corpus] with value [kowiki]
+INFO:ekorpkit.io.file:Concatenating 1 dataframes
+INFO:ekorpkit.info.column:Added a column [corpus] with value [bnwiki]
+INFO:ekorpkit.info.column:Added a column [corpus] with value [bnwiki]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 296 ms (started: 2022-11-04 03:20:47 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crps</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>text</th>
+      <th>split</th>
+      <th>filename</th>
+      <th>corpus</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>4915400</td>
+      <td></td>
+      <td>train</td>
+      <td>wiki_92</td>
+      <td>enwiki_sampled</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>7644961</td>
+      <td>Anaissini is a tribe of click beetles in the f...</td>
+      <td>train</td>
+      <td>wiki_49</td>
+      <td>enwiki_sampled</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>6658552</td>
+      <td>The Vicky Metcalf Award for Literature for You...</td>
+      <td>train</td>
+      <td>wiki_24</td>
+      <td>enwiki_sampled</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>16385169</td>
+      <td>Shri Shivabalayogi Maharaj (24 January 1935 – ...</td>
+      <td>train</td>
+      <td>wiki_36</td>
+      <td>enwiki_sampled</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>11081255</td>
+      <td>Eylex Films Pvt is a chain of multiplex and si...</td>
+      <td>train</td>
+      <td>wiki_94</td>
+      <td>enwiki_sampled</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2522588</th>
+      <td>348541</td>
+      <td>মোহাম্মদ সেলিম (জন্ম: ১৫ অক্টোবর, ১৯৮১) খুলনার...</td>
+      <td>train</td>
+      <td>wiki_34</td>
+      <td>bnwiki</td>
+    </tr>
+    <tr>
+      <th>2522589</th>
+      <td>348542</td>
+      <td></td>
+      <td>train</td>
+      <td>wiki_34</td>
+      <td>bnwiki</td>
+    </tr>
+    <tr>
+      <th>2522590</th>
+      <td>348543</td>
+      <td>দেশি কামিলা (বৈজ্ঞানিক নাম: "Congresox talabon...</td>
+      <td>train</td>
+      <td>wiki_34</td>
+      <td>bnwiki</td>
+    </tr>
+    <tr>
+      <th>2522591</th>
+      <td>348544</td>
+      <td></td>
+      <td>train</td>
+      <td>wiki_34</td>
+      <td>bnwiki</td>
+    </tr>
+    <tr>
+      <th>2522592</th>
+      <td>348545</td>
+      <td>বাথাইল নদী বাংলাদেশের উত্তর-পূর্বাঞ্চলের কিশোর...</td>
+      <td>train</td>
+      <td>wiki_34</td>
+      <td>bnwiki</td>
+    </tr>
+  </tbody>
+</table>
+<p>2522593 rows × 5 columns</p>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 13.4 ms (started: 2022-11-04 03:20:47 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crps</span><span class="o">.</span><span class="n">metadata</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>curid</th>
+      <th>url</th>
+      <th>title</th>
+      <th>split</th>
+      <th>corpus</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>634327</td>
+      <td>https://ko.wikipedia.org/wiki?curid=634327</td>
+      <td>성이성</td>
+      <td>train</td>
+      <td>kowiki</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>634328</td>
+      <td>https://ko.wikipedia.org/wiki?curid=634328</td>
+      <td>누타</td>
+      <td>train</td>
+      <td>kowiki</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>634329</td>
+      <td>https://ko.wikipedia.org/wiki?curid=634329</td>
+      <td>공중그네</td>
+      <td>train</td>
+      <td>kowiki</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>634331</td>
+      <td>https://ko.wikipedia.org/wiki?curid=634331</td>
+      <td>성몽룡</td>
+      <td>train</td>
+      <td>kowiki</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>634332</td>
+      <td>https://ko.wikipedia.org/wiki?curid=634332</td>
+      <td>계서</td>
+      <td>train</td>
+      <td>kowiki</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>1687589</th>
+      <td>348541</td>
+      <td>554487</td>
+      <td>https://bn.wikipedia.org/wiki?curid=554487</td>
+      <td>মোহাম্মদ সেলিম</td>
+      <td>train</td>
+      <td>bnwiki</td>
+    </tr>
+    <tr>
+      <th>1687590</th>
+      <td>348542</td>
+      <td>554493</td>
+      <td>https://bn.wikipedia.org/wiki?curid=554493</td>
+      <td>Mohammad Salim</td>
+      <td>train</td>
+      <td>bnwiki</td>
+    </tr>
+    <tr>
+      <th>1687591</th>
+      <td>348543</td>
+      <td>554495</td>
+      <td>https://bn.wikipedia.org/wiki?curid=554495</td>
+      <td>দেশি কামিলা</td>
+      <td>train</td>
+      <td>bnwiki</td>
+    </tr>
+    <tr>
+      <th>1687592</th>
+      <td>348544</td>
+      <td>554501</td>
+      <td>https://bn.wikipedia.org/wiki?curid=554501</td>
+      <td>Congresox talabonoides</td>
+      <td>train</td>
+      <td>bnwiki</td>
+    </tr>
+    <tr>
+      <th>1687593</th>
+      <td>348545</td>
+      <td>554504</td>
+      <td>https://bn.wikipedia.org/wiki?curid=554504</td>
+      <td>বাথাইল নদী</td>
+      <td>train</td>
+      <td>bnwiki</td>
+    </tr>
+  </tbody>
+</table>
+<p>1687594 rows × 6 columns</p>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 7.47 ms (started: 2022-11-04 03:20:47 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="save-the-concatenated-corpus">
+<h3>Save the concatenated corpus<a class="headerlink" href="#save-the-concatenated-corpus" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">crps</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;wiki_corpus.parquet&quot;</span><span class="p">,</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/data&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Saving dataframe to /content/drive/MyDrive/workspace/projects/ekorpkit-book/data/wiki_corpus.parquet
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 2min 56s (started: 2022-11-04 03:20:47 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./docs/lectures/nlp_deep"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="plms.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Pretrained Language Models</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="lab2-corpus-eda.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Lab 2: EDA on Corpora</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Young Joon Lee<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

@@ -1,1 +1,1 @@
-# Applications of NLP
+# NLP Applications
