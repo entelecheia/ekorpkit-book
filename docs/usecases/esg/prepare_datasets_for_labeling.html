@@ -1,0 +1,2251 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Preparing active learning data &#8212; eKorpkit Tutorials</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/ekorpkit.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Putting them together in a pipeline" href="all_in_one_pipeline.html" />
+    <link rel="prev" title="Cross validating datasets" href="cross_validate_datasets.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-FN4GFT8HP8"></script>
+<script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){ dataLayer.push(arguments); }
+                    gtag('js', new Date());
+                    gtag('config', 'G-FN4GFT8HP8');
+                </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../_static/ekorpkit.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">eKorpkit Tutorials</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    eKonomic Research Python Toolkit
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Basics
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/index.html">
+   Getting started
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/install.html">
+     Installation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/usage.html">
+     Usage
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/features/index.html">
+   Key features
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/easy_config.html">
+     Easy Configuration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/no_boiler.html">
+     No Boilerplate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/workflows.html">
+     Workflows
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/share.html">
+     Sharable and Reproducible
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/plug.html">
+     Pluggable Architece
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tutorials
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/config/index.html">
+   Configuring ekorpkit
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/config/eKonf.html">
+     Using eKonf class
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/datasets/index.html">
+   Datasets
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/corpus.html">
+     Build and Load Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/datasets/dataset.html">
+     Build and Load Datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/pipeline.html">
+     Corpus task pipelines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/models/index.html">
+   Models
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/models/automl/index.html">
+     Auto ML
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/embeddings/index.html">
+     Word Embeddings
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/embeddings/word2vec_basics.html">
+       Word2Vec Basics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/embeddings/eval_vectors.html">
+       Evaluate pretrained embeddings
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/ngram/index.html">
+     N-Grams
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram.html">
+       N-Grams
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram_for_lexicons.html">
+       N-Gram model for ngram lexicon features
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram_for_words.html">
+       N-Gram model for unigram lexicon features
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/sentiment/index.html">
+     Sentiment Analyers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/lbsa_en.html">
+       Lexicon-based Sentiment Analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/financial_phrasebank_lm.html">
+       Evaluate LM with financial phrasebank
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/sentiment.html">
+       LM Dictionary vs. finbert vs. T5
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/models/transformers/index.html">
+     Transformers
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/pipelines/index.html">
+   Pipelines
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/pipelines/pipeline.html">
+     Instantiating pipeline
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/preprocessors/index.html">
+   Preprocessors
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/normalizer/index.html">
+     Normalizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+    <label for="toctree-checkbox-11">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/normalizer/normalizer.html">
+       Normalizers
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/segmenter/index.html">
+     Segmenters
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+    <label for="toctree-checkbox-12">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/segmenter/segmenter.html">
+       Segmenters
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/tokenizer/index.html">
+     Tokenizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+    <label for="toctree-checkbox-13">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/tokenizer/mecab.html">
+       Mecab Tokenizer
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/visualizers/index.html">
+   Visualizers
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/>
+  <label for="toctree-checkbox-14">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/visualizers/plot.html">
+     Plots
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../tutorials/workflow/index.html">
+   Workflows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Datasets
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../corpus/ekorpkot_corpus.html">
+   The eKorpkit Corpus
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Use Cases
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../fomc/index.html">
+   FOMC
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/>
+  <label for="toctree-checkbox-15">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fomc/02_FOMC_numerical_data.html">
+     Preparing Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fomc/03_FOMC_corpus.html">
+     Preparing Textual Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fomc/04_FOMC_EDA_numericals.html">
+     EDA on Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fomc/05_FOMC_features.html">
+     Visualizing Features
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fomc/06_FOMC_AutoML.html">
+     Checking Baseline with AutoML
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fomc/07_FOMC_sentiments.html">
+     Predicting Sentiments of FOMC Corpus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fomc/08_FOMC_EDA_sentiments.html">
+     EDA on Sentiment Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fomc/09_FOMC_AutoML_with_tones.html">
+     Predicting the next decisions with tones
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../bok/index.html">
+   Bank of Korea
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../edgar/index.html">
+   EDGAR
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/>
+  <label for="toctree-checkbox-16">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../edgar/predict_edgar.html">
+     Prediciting Sentiments
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   ESG
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" type="checkbox"/>
+  <label for="toctree-checkbox-17">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="prepare_datasets.html">
+     Preparing training datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="improve_datasets.html">
+     Improving classification datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="train_classifiers.html">
+     Training Classifiers for ESG Ratings
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="build_news_corpus.html">
+     Building
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       econ_news_kr
+      </span>
+     </code>
+     corpus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="predict_esg_classes.html">
+     Predicting ESG Categories and Polarities
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="cross_validate_datasets.html">
+     Cross validating datasets
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Preparing active learning data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="all_in_one_pipeline.html">
+     Putting them together in a pipeline
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../esg-en/index.html">
+   ESG (English)
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" type="checkbox"/>
+  <label for="toctree-checkbox-18">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../esg-en/esg_corpus.html">
+     Building
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       JOCo
+      </span>
+     </code>
+     corpus
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../cointax/index.html">
+   Taxation on Cryptocurrency
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/>
+  <label for="toctree-checkbox-19">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../cointax/coin_dataset.html">
+     Improving classification datasets
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Research
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../research/esg_topics/analyst.html">
+   ESG Topic Analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../research/esg_topics/rethink_esg.html">
+   Rethinking ESG
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Lectures
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../lectures/nlp_intro/index.html">
+   Introduction to NLP
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" type="checkbox"/>
+  <label for="toctree-checkbox-20">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/intro.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/ekorpkit.html">
+     Getting started with ekorpkit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/research.html">
+     Research Applications
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/language_models.html">
+     Language Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/topic.html">
+     Topic Modeling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/topic_models.html">
+     Topic Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/topic_coherence.html">
+     Topic Coherence Measures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/sentiments.html">
+     Sentiment Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/tokenization.html">
+     Tokenization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/word_segmentation.html">
+     Word Segmentation and Association
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/vectorization.html">
+     Vector Semantics and Representation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/word_embeddings.html">
+     Word Embeddings
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/lab1-corpus.html">
+     Lab 1: Preparing Wikipedia Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/lab2-corpus-eda.html">
+     Lab 2: EDA on Corpora
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../lectures/nlp_deep/index.html">
+   Deep Learning for NLP
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" type="checkbox"/>
+  <label for="toctree-checkbox-21">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/intro.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/ekorpkit.html">
+     Getting started with ekorpkit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/zeroshot.html">
+     Zero Shot, Prompt, and Search Strategies
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/bloom.html">
+     What is BLOOM?
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/bloom_apps.html">
+     Bloom Examples
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/transformers.html">
+     Transformers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/bert.html">
+     BERT: Bidirectional Encoder Representations from Transformers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/t5.html">
+     T5: Text-To-Text Transfer Transformer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/tokenization.html">
+     Tokenization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/sentencepiece.html">
+     SentencePiece Tokenizer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/byt5.html">
+     ByT5: Towards a token-free future with pre-trained byte-to-byte models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/plms.html">
+     Pretrained Language Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/lab1-corpus.html">
+     Lab 1: Preparing Wikipedia Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/lab2-corpus-eda.html">
+     Lab 2: EDA on Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/lab3-train-tokenizers.html">
+     Lab 3: Training Tokenizers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/lab4-pretraining-lms.html">
+     Lab 4: Pretraining Language Models
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../lectures/nlp_apps/index.html">
+   NLP Applications
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../lectures/aiart/index.html">
+   AI Art (Text-to-Image)
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" type="checkbox"/>
+  <label for="toctree-checkbox-22">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/intro.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/project-themes.html">
+     Project Themes - A Brave New World
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/dalle1.html">
+     DALL·E 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/dalle2.html">
+     DALL·E 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/imagen.html">
+     Imagen
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/dalle-mini.html">
+     DALL·E Mini
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/stable-diffusion.html">
+     Stable Diffusion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/prompt-generator.html">
+     Prompt Generator for Stable Diffusion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/textual-inversion.html">
+     Textual Inversion (Dreambooth)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/whisper.html">
+     Automatic Speech Recognition (Whisper)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/text2music.html">
+     Text to Music
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/image2music.html">
+     Image to Music
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../lectures/mlops/index.html">
+   Machine Learning Systems Design
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" type="checkbox"/>
+  <label for="toctree-checkbox-23">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/mlops/dev-env.html">
+     Development Environment
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/mlops/dotfiles.html">
+     Dotfiles
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../lectures/ds/index.html">
+   Data Science for Economics and Finance
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about/index.html">
+   Bibliography
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about/cite.html">
+   Citation
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/entelecheia/ekorpkit-book/main?urlpath=tree/ekorpkit-book/docs/usecases/esg/prepare_datasets_for_labeling.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://colab.research.google.com/github/entelecheia/ekorpkit-book/blob/main/ekorpkit-book/docs/usecases/esg/prepare_datasets_for_labeling.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Colab"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../../_static/images/logo_colab.png">
+  </span>
+<span class="headerbtn__text-container">Colab</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/entelecheia/ekorpkit-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/entelecheia/ekorpkit-book/issues/new?title=Issue%20on%20page%20%2Fdocs/usecases/esg/prepare_datasets_for_labeling.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../../_sources/docs/usecases/esg/prepare_datasets_for_labeling.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-data">
+   Load data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-company-code-info">
+   Load company code info
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#filter-out-invalid-data">
+   Filter out invalid data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#predict-polarities">
+   Predict polarities
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#predicting-categories">
+   Predicting categories
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#import-data-to-labelstudio">
+   Import data to labelstudio
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Preparing active learning data</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-data">
+   Load data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-company-code-info">
+   Load company code info
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#filter-out-invalid-data">
+   Filter out invalid data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#predict-polarities">
+   Predict polarities
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#predicting-categories">
+   Predicting categories
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#import-data-to-labelstudio">
+   Import data to labelstudio
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="preparing-active-learning-data">
+<h1>Preparing active learning data<a class="headerlink" href="#preparing-active-learning-data" title="Permalink to this headline">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+
+<span class="k">if</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">():</span>
+    <span class="n">eKonf</span><span class="o">.</span><span class="n">mount_google_drive</span><span class="p">()</span>
+<span class="n">ws</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">set_workspace</span><span class="p">(</span>
+    <span class="n">workspace</span><span class="o">=</span><span class="s2">&quot;/workspace&quot;</span><span class="p">,</span> 
+    <span class="n">project</span><span class="o">=</span><span class="s2">&quot;ekorpkit-book/exmaples&quot;</span><span class="p">,</span> 
+    <span class="n">task</span><span class="o">=</span><span class="s2">&quot;esg&quot;</span><span class="p">,</span> 
+    <span class="n">log_level</span><span class="o">=</span><span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;version:&quot;</span><span class="p">,</span> <span class="n">ws</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;project_dir:&quot;</span><span class="p">,</span> <span class="n">ws</span><span class="o">.</span><span class="n">project_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.utils.notebook:Google Colab not detected.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.40.post0.dev58
+project_dir: /workspace/projects/ekorpkit-book/exmaples
+time: 493 ms (started: 2022-12-17 00:29:17 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="load-data">
+<h2>Load data<a class="headerlink" href="#load-data" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">ws</span><span class="o">.</span><span class="n">project_dir</span> <span class="o">/</span> <span class="s2">&quot;esg/data/econ_news_kr/news_slice/&quot;</span>
+
+<span class="n">chunk_data</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span>
+    <span class="s2">&quot;econ_news_kr_chunks_*_20220911.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">,</span> <span class="n">concatenate</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">chunk_data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">chunk_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1833910, 3)
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>text</th>
+      <th>chunk_id</th>
+      <th>filename</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>△ 사진 설명 : 경자년 새해가 밝았다  제각각 삶터에서 묵묵히 노력하는 대한민국...</td>
+      <td>0</td>
+      <td>02100101.20200101001103001.txt</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>"청년 벤처기업가들한테 진짜로 미안했어요  부끄럽고 " 지난해 12월 29일 서울...</td>
+      <td>0</td>
+      <td>02100101.20200101001253001.txt</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>오늘부터 30년 후면 2050년이다  30년 전인 1990년을 전후하여 세계는 독...</td>
+      <td>0</td>
+      <td>02100101.20200101001855001.txt</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>◆ 2020 경제기상도 / 환율 ◆ 지난해 미·중 무역분쟁이라는 대형 변수로 출렁...</td>
+      <td>0</td>
+      <td>02100101.20200101040159002.txt</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>◆ 2020 경제기상도 / 업종별 전망 (반도체) ◆ 지난해 미·중 무역분쟁과 공...</td>
+      <td>0</td>
+      <td>02100101.20200101040200001.txt</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 15.8 s (started: 2022-12-17 00:30:03 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chunk_data</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+Int64Index: 1833910 entries, 0 to 785336
+Data columns (total 3 columns):
+ #   Column    Dtype 
+---  ------    ----- 
+ 0   text      object
+ 1   chunk_id  int64 
+ 2   filename  object
+dtypes: int64(1), object(2)
+memory usage: 56.0+ MB
+time: 3.92 ms (started: 2022-12-10 07:20:55 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="load-company-code-info">
+<h2>Load company code info<a class="headerlink" href="#load-company-code-info" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;io/loader=plaintext_parser&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_sources</span> <span class="o">=</span> <span class="s2">&quot;econ_news_kr_chunks*.txt&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">item</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;filename&quot;</span><span class="p">,</span> <span class="n">codes</span><span class="o">=</span><span class="s2">&quot;codes&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">split</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">data_key</span> <span class="o">=</span> <span class="s2">&quot;codes&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">progress_per</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">code_info</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="o">**</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">code_info</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:root:compose config with overrides: [&#39;+io/loader=plaintext_parser&#39;]
+INFO:ekorpkit.base:setting environment variable CACHED_PATH_CACHE_ROOT to /root/.ekorpkit/.cache/cached_path
+INFO:ekorpkit.base:setting environment variable KMP_DUPLICATE_LIB_OK to TRUE
+INFO:ekorpkit.io.file:Processing [3] files from [&#39;econ_news_kr_chunks*.txt&#39;]
+INFO:ekorpkit.io.load.data:==&gt; processing 1/3 files &lt;==
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 37495
+INFO:ekorpkit.io.load.data:==&gt; processing 2/3 files &lt;==
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 108675
+INFO:ekorpkit.io.load.data:==&gt; processing 3/3 files &lt;==
+INFO:ekorpkit.io.parse.json:Number of data in the contents: 97506
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;filename&#39;: &#39;econ_news_kr_chunks_2022_code_20220911.txt&#39;, &#39;codes&#39;: &#39;02100101.20220101002520005,1,005380&#39;}
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>filename</th>
+      <th>codes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>243671</th>
+      <td>econ_news_kr_chunks_2020_code_20220911.txt</td>
+      <td>02100851.20201231110236001,1,032640</td>
+    </tr>
+    <tr>
+      <th>243672</th>
+      <td>econ_news_kr_chunks_2020_code_20220911.txt</td>
+      <td>02100851.20201231111427001,1,035720</td>
+    </tr>
+    <tr>
+      <th>243673</th>
+      <td>econ_news_kr_chunks_2020_code_20220911.txt</td>
+      <td>02100851.20201231132917001,0,011200</td>
+    </tr>
+    <tr>
+      <th>243674</th>
+      <td>econ_news_kr_chunks_2020_code_20220911.txt</td>
+      <td>02100851.20201231164457001,0,000660</td>
+    </tr>
+    <tr>
+      <th>243675</th>
+      <td>econ_news_kr_chunks_2020_code_20220911.txt</td>
+      <td>02100851.20201231204324001,0,068270</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 24.9 s (started: 2022-12-10 07:21:05 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">code_info_available</span> <span class="o">=</span> <span class="n">code_info</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">code_info_available</span><span class="p">[</span><span class="s2">&quot;filename&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">code_info_available</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">str</span><span class="p">[:</span><span class="mi">26</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span>
+<span class="n">code_info_available</span><span class="p">[</span><span class="s2">&quot;codes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">code_info_available</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">str</span><span class="p">[</span><span class="mi">27</span><span class="p">:]</span>
+<span class="n">code_info_available</span><span class="p">[</span><span class="s2">&quot;codes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">code_info_available</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+<span class="n">code_info_available</span><span class="p">[</span><span class="s2">&quot;chunk_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">code_info_available</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="n">code_info_available</span><span class="p">[</span><span class="s2">&quot;codes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">code_info_available</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+<span class="n">code_info_available</span><span class="p">[</span><span class="s2">&quot;num_codes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">code_info_available</span><span class="p">[</span><span class="s2">&quot;codes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">len</span><span class="p">)</span>
+<span class="n">code_info_available</span> <span class="o">=</span> <span class="n">code_info_available</span><span class="o">.</span><span class="n">explode</span><span class="p">(</span><span class="s2">&quot;codes&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">code_info_available</span><span class="p">,</span> <span class="s2">&quot;econ_news_code_info_available_20220911.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">code_info_available</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">code_info_available</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Saving dataframe to ../data/econ_news_kr/news_slice/econ_news_code_info_available_20220911.parquet
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(258537, 4)
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 258537 entries, 0 to 258536
+Data columns (total 4 columns):
+ #   Column     Non-Null Count   Dtype 
+---  ------     --------------   ----- 
+ 0   filename   258537 non-null  object
+ 1   codes      258537 non-null  object
+ 2   chunk_id   258537 non-null  int64 
+ 3   num_codes  258537 non-null  int64 
+dtypes: int64(2), object(2)
+memory usage: 7.9+ MB
+time: 1.39 s (started: 2022-12-10 07:21:44 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filtered_data</span> <span class="o">=</span> <span class="n">chunk_data</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">code_info_available</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;filename&quot;</span><span class="p">,</span> <span class="s2">&quot;chunk_id&quot;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span>
+<span class="p">)</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;filename&quot;</span><span class="p">,</span> <span class="s2">&quot;chunk_id&quot;</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;codes&quot;</span><span class="p">]</span>
+<span class="n">filtered_data</span> <span class="o">=</span> <span class="n">filtered_data</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">filtered_data</span><span class="p">,</span> <span class="s2">&quot;econ_news_filtered_20220911.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">filtered_data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">filtered_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Saving dataframe to ../data/econ_news_kr/news_slice/econ_news_filtered_20220911.parquet
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(267111, 4)
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>filename</th>
+      <th>chunk_id</th>
+      <th>text</th>
+      <th>codes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>02100101.20200101040200001.txt</td>
+      <td>0</td>
+      <td>◆ 2020 경제기상도 / 업종별 전망 (반도체) ◆ 지난해 미·중 무역분쟁과 공...</td>
+      <td>000660</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>02100101.20200101040200001.txt</td>
+      <td>1</td>
+      <td>지난해 3분기 반도체 부문 영업이익 3조500억원으로 3조원대에 간신히 턱걸이한 ...</td>
+      <td>005930</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>02100101.20200101040200002.txt</td>
+      <td>0</td>
+      <td>◆ 2020 경제기상도 / 업종별 전망 (가전) ◆ TV, 냉장고, 세탁기 등 전...</td>
+      <td>005930</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>02100101.20200101040200002.txt</td>
+      <td>0</td>
+      <td>◆ 2020 경제기상도 / 업종별 전망 (가전) ◆ TV, 냉장고, 세탁기 등 전...</td>
+      <td>066570</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>02100101.20200101040201001.txt</td>
+      <td>1</td>
+      <td>디스플레이 업계 등에서는 삼성과 LG가 글로벌 디스플레이 시장에서 중국 업체의 L...</td>
+      <td>003550</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 24.3 s (started: 2022-12-10 07:21:48 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="filter-out-invalid-data">
+<h2>Filter out invalid data<a class="headerlink" href="#filter-out-invalid-data" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">overrides</span><span class="o">=</span><span class="p">[</span>
+    <span class="s1">&#39;+model/transformer=classification&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;+model/transformer/pretrained=ekonelectra-base&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;model/transformer=classification&#39;</span><span class="p">,</span> <span class="n">overrides</span><span class="p">)</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;esg_invalid&quot;</span>
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;pipeline&#39;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;esg_invalid_20220911&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s1">&#39;econ_news_filtered_20220911.parquet&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">_pipeline_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;predict&#39;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model_cfg</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">-preds.parquet&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">invalid_preds_df</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">invalid_preds_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function predict at 0x7f2e20d95a60&gt;)
+INFO:ekorpkit.base:No method defined to call
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "d571c5f1ed20425d83fe8eee63d9462d", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Token indices sequence length is longer than the specified maximum sequence length for this model (522 &gt; 512). Running this sequence through the model will result in indexing errors
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "0f780c039fce417aac3fd54107d1ef14", "version_major": 2, "version_minor": 0}
+</script><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>filename</th>
+      <th>chunk_id</th>
+      <th>text</th>
+      <th>codes</th>
+      <th>pred_labels</th>
+      <th>raw_preds</th>
+      <th>pred_probs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>02100101.20200101040200001.txt</td>
+      <td>0</td>
+      <td>◆ 2020 경제기상도 / 업종별 전망 (반도체) ◆ 지난해 미·중 무역분쟁과 공...</td>
+      <td>000660</td>
+      <td>Discarded</td>
+      <td>{'Discarded': 0.1799878992578683, 'Validated':...</td>
+      <td>0.206845</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>02100101.20200101040200001.txt</td>
+      <td>1</td>
+      <td>지난해 3분기 반도체 부문 영업이익 3조500억원으로 3조원대에 간신히 턱걸이한 ...</td>
+      <td>005930</td>
+      <td>Discarded</td>
+      <td>{'Discarded': 0.6575677396177281, 'Validated':...</td>
+      <td>0.657568</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>02100101.20200101040200002.txt</td>
+      <td>0</td>
+      <td>◆ 2020 경제기상도 / 업종별 전망 (가전) ◆ TV, 냉장고, 세탁기 등 전...</td>
+      <td>005930</td>
+      <td>Discarded</td>
+      <td>{'Discarded': 0.13758843340302507, 'Validated'...</td>
+      <td>0.156780</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>02100101.20200101040200002.txt</td>
+      <td>0</td>
+      <td>◆ 2020 경제기상도 / 업종별 전망 (가전) ◆ TV, 냉장고, 세탁기 등 전...</td>
+      <td>066570</td>
+      <td>Discarded</td>
+      <td>{'Discarded': 0.13758843340302507, 'Validated'...</td>
+      <td>0.156780</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>02100101.20200101040201001.txt</td>
+      <td>1</td>
+      <td>디스플레이 업계 등에서는 삼성과 LG가 글로벌 디스플레이 시장에서 중국 업체의 L...</td>
+      <td>003550</td>
+      <td>Discarded</td>
+      <td>{'Discarded': 0.5148541733920216, 'Validated':...</td>
+      <td>0.514854</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;filename&quot;</span><span class="p">,</span> <span class="s2">&quot;chunk_id&quot;</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;codes&quot;</span><span class="p">]</span>
+<span class="n">valid_data</span> <span class="o">=</span> <span class="n">invalid_preds_df</span><span class="p">[</span>
+    <span class="n">invalid_preds_df</span><span class="o">.</span><span class="n">pred_labels</span> <span class="o">==</span> <span class="s2">&quot;Validated&quot;</span>
+<span class="p">][</span><span class="n">cols</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">valid_data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;esg_news_valid_20220911.parquet&quot;</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">valid_data</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(115784, 4)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="predict-polarities">
+<h2>Predict polarities<a class="headerlink" href="#predict-polarities" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">overrides</span><span class="o">=</span><span class="p">[</span>
+    <span class="s1">&#39;+model/transformer=classification&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;+model/transformer/pretrained=ekonelectra-base&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;model/transformer=classification&#39;</span><span class="p">,</span> <span class="n">overrides</span><span class="p">)</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;esg_cv_polarity&quot;</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;pipeline&#39;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;esg_news_polarities_20220911&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s1">&#39;esg_news_valid_20220911.parquet&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">_pipeline_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;predict&#39;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model_cfg</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">-preds.parquet&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">preds_df</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">preds_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function predict at 0x7f2e20d95a60&gt;)
+INFO:ekorpkit.base:No method defined to call
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "dc3318a70fdf46a0840992162c843fb1", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Token indices sequence length is longer than the specified maximum sequence length for this model (1492 &gt; 512). Running this sequence through the model will result in indexing errors
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "61d9b5fc4a4245ba8442a385aca2068d", "version_major": 2, "version_minor": 0}
+</script><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>filename</th>
+      <th>chunk_id</th>
+      <th>text</th>
+      <th>codes</th>
+      <th>pred_labels</th>
+      <th>raw_preds</th>
+      <th>pred_probs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>5</th>
+      <td>02100101.20200101040202001.txt</td>
+      <td>0</td>
+      <td>◆ 2020 경제기상도 / 업종별 전망 (자동차) ◆ 지난해 국내 자동차 시장은 ...</td>
+      <td>000270</td>
+      <td>Negative</td>
+      <td>{'Neutral': 0.22110844002351862, 'Positive': 0...</td>
+      <td>0.717613</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>02100101.20200101040206003.txt</td>
+      <td>0</td>
+      <td>◆ 2020 경제기상도 / 업종별 전망 (유통) ◆ 2020년은 국내 대표 온·오...</td>
+      <td>139480</td>
+      <td>Neutral</td>
+      <td>{'Neutral': 0.8255044887345607, 'Positive': 0....</td>
+      <td>0.825504</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>02100101.20200101060214001.txt</td>
+      <td>0</td>
+      <td>[Pulse로 배우는 영작문-762] 'Pulse로 배우는 영작문'으로 영문 뉴스...</td>
+      <td>005380</td>
+      <td>Neutral</td>
+      <td>{'Neutral': 0.11524808398723353, 'Positive': 0...</td>
+      <td>0.126036</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>02100101.20200101183234001.txt</td>
+      <td>0</td>
+      <td>제네시스의 첫 번째 스포츠유틸리티차량(SUV) 모델인 GV80가 역동적이면서 우아...</td>
+      <td>005380</td>
+      <td>Neutral</td>
+      <td>{'Neutral': 0.2245705448013361, 'Positive': 0....</td>
+      <td>0.271877</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>02100101.20200101184423001.txt</td>
+      <td>0</td>
+      <td>◆ 2020 유통대전 ① ◆ 유통기업 '빅(Big)2' 롯데쇼핑과 이마트의 새 수...</td>
+      <td>139480</td>
+      <td>Neutral</td>
+      <td>{'Neutral': 0.9101777918673029, 'Positive': 0....</td>
+      <td>0.910178</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="predicting-categories">
+<h2>Predicting categories<a class="headerlink" href="#predicting-categories" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">overrides</span><span class="o">=</span><span class="p">[</span>
+    <span class="s1">&#39;+model/transformer=classification&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;+model/transformer/pretrained=ekonelectra-base&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;model/transformer=classification&#39;</span><span class="p">,</span> <span class="n">overrides</span><span class="p">)</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;esg_cv_topics&quot;</span>
+<span class="n">model_cfg</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;pipeline&#39;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;esg_news_topics_20220911&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="s1">&#39;esg_news_valid_20220911.parquet&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">_pipeline_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;predict&#39;</span><span class="p">]</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model_cfg</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">-preds.parquet&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">category_preds_df</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<span class="n">category_preds_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Applying pipe: functools.partial(&lt;function predict at 0x7f2e20d95a60&gt;)
+INFO:ekorpkit.base:No method defined to call
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "b6cb087cbb014dfcb0010b542aa78613", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Token indices sequence length is longer than the specified maximum sequence length for this model (1492 &gt; 512). Running this sequence through the model will result in indexing errors
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "5cfc6e86370640c0bbb269b68782baf9", "version_major": 2, "version_minor": 0}
+</script><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>filename</th>
+      <th>chunk_id</th>
+      <th>text</th>
+      <th>codes</th>
+      <th>pred_labels</th>
+      <th>raw_preds</th>
+      <th>pred_probs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>5</th>
+      <td>02100101.20200101040202001.txt</td>
+      <td>0</td>
+      <td>◆ 2020 경제기상도 / 업종별 전망 (자동차) ◆ 지난해 국내 자동차 시장은 ...</td>
+      <td>000270</td>
+      <td>S-고용</td>
+      <td>{'S-고용': 0.9784880492636585, 'E-환경영향': 0.00082...</td>
+      <td>0.978488</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>02100101.20200101040206003.txt</td>
+      <td>0</td>
+      <td>◆ 2020 경제기상도 / 업종별 전망 (유통) ◆ 2020년은 국내 대표 온·오...</td>
+      <td>139480</td>
+      <td>S-소비자</td>
+      <td>{'S-고용': 0.22015353503574592, 'E-환경영향': 0.0088...</td>
+      <td>0.559892</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>02100101.20200101060214001.txt</td>
+      <td>0</td>
+      <td>[Pulse로 배우는 영작문-762] 'Pulse로 배우는 영작문'으로 영문 뉴스...</td>
+      <td>005380</td>
+      <td>S-소비자</td>
+      <td>{'S-고용': 0.000642749081254596, 'E-환경영향': 0.002...</td>
+      <td>0.223181</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>02100101.20200101183234001.txt</td>
+      <td>0</td>
+      <td>제네시스의 첫 번째 스포츠유틸리티차량(SUV) 모델인 GV80가 역동적이면서 우아...</td>
+      <td>005380</td>
+      <td>S-소비자</td>
+      <td>{'S-고용': 0.0018075713776912943, 'E-환경영향': 0.00...</td>
+      <td>0.330156</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>02100101.20200101184423001.txt</td>
+      <td>0</td>
+      <td>◆ 2020 유통대전 ① ◆ 유통기업 '빅(Big)2' 롯데쇼핑과 이마트의 새 수...</td>
+      <td>139480</td>
+      <td>S-고용</td>
+      <td>{'S-고용': 0.9527512959359385, 'E-환경영향': 0.00096...</td>
+      <td>0.952751</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="import-data-to-labelstudio">
+<h2>Import data to labelstudio<a class="headerlink" href="#import-data-to-labelstudio" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">ws</span><span class="o">.</span><span class="n">project_dir</span> <span class="o">/</span> <span class="s2">&quot;data/econ_news_kr/news_slice/&quot;</span>
+
+<span class="n">polarity_preds_df</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;esg_news_polarities_20220911-preds.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+<span class="n">category_preds_df</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;esg_news_topics_20220911-preds.parquet&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_news_polarities_20220911-preds.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/projects/ekorpkit-book/exmaples/esg/data/econ_news_kr/news_slice/esg_news_polarities_20220911-preds.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from /workspace/projects/ekorpkit-book/exmaples/esg/data/econ_news_kr/news_slice/esg_news_polarities_20220911-preds.parquet
+INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_news_topics_20220911-preds.parquet&#39;]
+INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/projects/ekorpkit-book/exmaples/esg/data/econ_news_kr/news_slice/esg_news_topics_20220911-preds.parquet&#39;]
+INFO:ekorpkit.io.file:Loading data from /workspace/projects/ekorpkit-book/exmaples/esg/data/econ_news_kr/news_slice/esg_news_topics_20220911-preds.parquet
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 3.03 s (started: 2022-12-10 08:34:51 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">polarity_data</span> <span class="o">=</span> <span class="n">polarity_preds_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">category_preds_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+        <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;pred_labels&quot;</span><span class="p">:</span> <span class="s2">&quot;category_preds&quot;</span><span class="p">}</span>
+    <span class="p">)[[</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="s1">&#39;chunk_id&#39;</span><span class="p">,</span> <span class="s1">&#39;codes&#39;</span><span class="p">,</span> <span class="s1">&#39;category_preds&#39;</span><span class="p">]],</span>
+    <span class="n">on</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="s1">&#39;chunk_id&#39;</span><span class="p">,</span> <span class="s1">&#39;codes&#39;</span><span class="p">]</span>
+<span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;raw_preds&#39;</span><span class="p">])</span>
+<span class="n">category_data</span> <span class="o">=</span> <span class="n">category_preds_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">polarity_preds_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+        <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;pred_labels&quot;</span><span class="p">:</span> <span class="s2">&quot;polarity_preds&quot;</span><span class="p">}</span>
+    <span class="p">)[[</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="s1">&#39;chunk_id&#39;</span><span class="p">,</span> <span class="s1">&#39;codes&#39;</span><span class="p">,</span> <span class="s1">&#39;polarity_preds&#39;</span><span class="p">]],</span>
+    <span class="n">on</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="s1">&#39;chunk_id&#39;</span><span class="p">,</span> <span class="s1">&#39;codes&#39;</span><span class="p">]</span>
+<span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;raw_preds&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 235 ms (started: 2022-12-10 08:34:54 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.io.fetch.labelstudio</span> <span class="kn">import</span> <span class="n">LabelStudio</span>
+
+<span class="c1"># cfg = eKonf.compose(&quot;io/fetcher=labelstudio&quot;)</span>
+<span class="c1"># eKonf.print(cfg)</span>
+<span class="n">ls</span> <span class="o">=</span> <span class="n">LabelStudio</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:root:compose config with overrides: [&#39;+io/fetcher=labelstudio&#39;]
+INFO:ekorpkit.config:Initalized batch: labelstudio(2) in /workspace/projects/ekorpkit-book/exmaples/esg/data
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 756 ms (started: 2022-12-10 08:34:54 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">project_list</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">list_projects</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13: ESG Topic Classification (Sep 2022)
+12: ESG Polarity Classification (Sep 2022)
+3: ESG Topic Classification
+2: ESG Polarity Classification
+time: 1.1 s (started: 2022-12-10 08:34:55 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ls</span><span class="o">.</span><span class="n">delete_project</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">label_config</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">&lt;View&gt;</span>
+<span class="s2">  &lt;Header value=&quot;Choose text sentiment:&quot;/&gt;</span>
+<span class="s2">  &lt;Text name=&quot;text&quot; value=&quot;$text&quot;/&gt;</span>
+<span class="s2">  &lt;Choices name=&quot;sentiment&quot; toName=&quot;text&quot; choice=&quot;single&quot; showInline=&quot;true&quot;&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;Positive&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;Negative&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;Neutral&quot;/&gt;</span>
+<span class="s2">  &lt;/Choices&gt;</span>
+<span class="s2">&lt;/View&gt;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">project</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">create_project</span><span class="p">(</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;ESG Polarity Classification (Sep 2022)&quot;</span><span class="p">,</span>
+    <span class="n">label_config</span><span class="o">=</span><span class="n">label_config</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#D55C9D&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pred_file</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">dataframe_to_predictions</span><span class="p">(</span>
+    <span class="n">polarity_data</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span>
+    <span class="n">prediction_file</span><span class="o">=</span><span class="s2">&quot;polarity_preds.json&quot;</span><span class="p">,</span>
+    <span class="n">choices_name</span><span class="o">=</span><span class="s2">&quot;sentiment&quot;</span><span class="p">,</span>
+    <span class="n">model_version</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="c1"># ls.import_file(pred_file, project_id=12)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.fetch.labelstudio:/workspace/projects/ekorpkit-book/exmaples/esg/data/outputs/labelstudio/labelstudio(2)_polarity_preds.json is saved
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 7.08 s (started: 2022-12-10 08:34:59 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">label_config</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">&lt;View&gt;</span>
+<span class="s2">  &lt;Header value=&quot;Choose ESG topic clas:&quot;/&gt;</span>
+<span class="s2">  &lt;Text name=&quot;text&quot; value=&quot;$text&quot;/&gt;</span>
+<span class="s2">  &lt;Choices name=&quot;sentiment&quot; toName=&quot;text&quot; choice=&quot;single&quot; showInline=&quot;true&quot;&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;E-기후변화&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;E-환경영향&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;E-환경혁신&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;S-재해/안전관리&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;S-고용&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;S-기업(공급망)동반성장/상생&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;S-사회공헌&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;S-소비자&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;G-지배구조&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;G-기업윤리/불공정/소송&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;UNKNOWN&quot;/&gt;</span>
+<span class="s2">  &lt;/Choices&gt;</span>
+<span class="s2">&lt;/View&gt;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">project</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">create_project</span><span class="p">(</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;ESG Topic Classification (Sep 2022)&quot;</span><span class="p">,</span>
+    <span class="n">label_config</span><span class="o">=</span><span class="n">label_config</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#51AAFD&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">project</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="n">project</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pred_file</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">dataframe_to_predictions</span><span class="p">(</span>
+    <span class="n">category_data</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span>
+    <span class="n">prediction_file</span><span class="o">=</span><span class="s2">&quot;category_preds.json&quot;</span><span class="p">,</span>
+    <span class="n">choices_name</span><span class="o">=</span><span class="s2">&quot;sentiment&quot;</span><span class="p">,</span>
+    <span class="n">model_version</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="c1"># ls.import_file(pred_file, project_id=project[&quot;id&quot;])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.fetch.labelstudio:/workspace/projects/ekorpkit-book/exmaples/esg/data/outputs/labelstudio/labelstudio(2)_category_preds.json is saved
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 7.16 s (started: 2022-12-10 08:35:06 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">label_config</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">&lt;View&gt;</span>
+<span class="s2">  &lt;Header value=&quot;Choose text sentiment:&quot;/&gt;</span>
+<span class="s2">  &lt;Text name=&quot;text&quot; value=&quot;$text&quot;/&gt;</span>
+<span class="s2">  &lt;Choices name=&quot;sentiment&quot; toName=&quot;text&quot; choice=&quot;single&quot; showInline=&quot;true&quot;&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;Positive&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;Negative&quot;/&gt;</span>
+<span class="s2">    &lt;Choice value=&quot;Neutral&quot;/&gt;</span>
+<span class="s2">  &lt;/Choices&gt;</span>
+<span class="s2">&lt;/View&gt;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">project</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">create_project</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;ESG Polarity Classification (Sep 2022)&quot;</span><span class="p">,</span> <span class="n">label_config</span><span class="o">=</span><span class="n">label_config</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./docs/usecases/esg"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="cross_validate_datasets.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Cross validating datasets</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="all_in_one_pipeline.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Putting them together in a pipeline</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Young Joon Lee<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

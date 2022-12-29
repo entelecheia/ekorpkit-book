@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Word Embeddings &#8212; eKorpkit Tutorials</title>
     
   <!-- Loaded before other Sphinx assets -->
@@ -21,7 +20,7 @@
     href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -38,7 +37,7 @@
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -52,7 +51,7 @@ const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -547,7 +546,7 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="../../usecases/esg/prepare_datasets.html">
-     Preparing polarity classification datasets
+     Preparing training datasets
     </a>
    </li>
    <li class="toctree-l2">
@@ -577,13 +576,18 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../usecases/esg/preapre_cv_datasets.html">
-     Preparing cross validated datasets
+    <a class="reference internal" href="../../usecases/esg/cross_validate_datasets.html">
+     Cross validating datasets
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../usecases/esg/prepare_ls_datasets.html">
+    <a class="reference internal" href="../../usecases/esg/prepare_datasets_for_labeling.html">
      Preparing active learning data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/all_in_one_pipeline.html">
+     Putting them together in a pipeline
     </a>
    </li>
   </ul>
@@ -1774,10 +1778,10 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="word-embeddings">
+  <div class="tex2jax_ignore mathjax_ignore section" id="word-embeddings">
 <h1>Word Embeddings<a class="headerlink" href="#word-embeddings" title="Permalink to this headline">#</a></h1>
 <p><img alt="" src="../../../_images/embeddings.png" /></p>
-<section id="what-are-word-embeddings">
+<div class="section" id="what-are-word-embeddings">
 <h2>What are word embeddings?<a class="headerlink" href="#what-are-word-embeddings" title="Permalink to this headline">#</a></h2>
 <p>Word embeddings are a way of representing words as vectors. The vectors are learned from text data and are able to capture some of the semantic and systactic information of the words.</p>
 <p>For example, the word <code class="docutils literal notranslate"><span class="pre">cat</span></code> is similar to <code class="docutils literal notranslate"><span class="pre">dog</span></code> from the following sentences:</p>
@@ -1810,8 +1814,8 @@ title="Print to PDF"
 </ul>
 </li>
 </ul>
-</section>
-<section id="categorical-embeddings">
+</div>
+<div class="section" id="categorical-embeddings">
 <h2>Categorical Embeddings<a class="headerlink" href="#categorical-embeddings" title="Permalink to this headline">#</a></h2>
 <p><img alt="" src="../../../_images/110.png" /></p>
 <p>Categorical embeddings are a way of representing categorical variables as vectors.</p>
@@ -1826,7 +1830,7 @@ title="Print to PDF"
 <li><p>PCA applied to the dummy variables <span class="math notranslate nohighlight">\(X\)</span> to get a lower-dimensional vector representation of <span class="math notranslate nohighlight">\(\tilde{X}\)</span>.</p></li>
 <li><p>Regress <span class="math notranslate nohighlight">\(Y\)</span> on <span class="math notranslate nohighlight">\(X\)</span>, predict <span class="math notranslate nohighlight">\(\hat{Y}(X_i)\)</span>, use that as a feature in a new model.</p></li>
 </ol>
-<section id="an-embedding-layer-is-matrix-multiplication">
+<div class="section" id="an-embedding-layer-is-matrix-multiplication">
 <h3>An embedding layer is matrix multiplication:<a class="headerlink" href="#an-embedding-layer-is-matrix-multiplication" title="Permalink to this headline">#</a></h3>
 <div class="math notranslate nohighlight">
 \[
@@ -1855,16 +1859,16 @@ title="Print to PDF"
 </ul>
 </li>
 </ul>
-</section>
-<section id="embedding-layers-versus-dense-layers">
+</div>
+<div class="section" id="embedding-layers-versus-dense-layers">
 <h3>Embedding Layers versus Dense Layers<a class="headerlink" href="#embedding-layers-versus-dense-layers" title="Permalink to this headline">#</a></h3>
 <p>An embedding layer is statistically equivalent to a fully-connected dense layer with one-hot vectors as input and linear activation.</p>
 <ul class="simple">
 <li><p>Embedding layers are much faster for many categories (&gt;~50)</p></li>
 </ul>
-</section>
-</section>
-<section id="id1">
+</div>
+</div>
+<div class="section" id="id1">
 <h2>Word Embeddings<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
 <blockquote>
 <div><p>Word embeddings are neural network layers that map words to dense vectors.</p>
@@ -1886,7 +1890,7 @@ title="Print to PDF"
 <p><span class="math notranslate nohighlight">\(\mathbf{E}\)</span> a matrix of word vectors. The column associated with the word at <span class="math notranslate nohighlight">\(j\)</span> is selected by the dot-product with one-hot vector <span class="math notranslate nohighlight">\(w_j\)</span>.</p>
 <p><span class="math notranslate nohighlight">\(\mathbf{X}\)</span> is flattened into an <span class="math notranslate nohighlight">\(L * n_E\)</span> vector for input to the next layer.</p>
 <p><img alt="" src="../../../_images/44.png" /></p>
-<section id="why-do-we-need-neural-networks-for-word-embeddings">
+<div class="section" id="why-do-we-need-neural-networks-for-word-embeddings">
 <h3>Why do we need neural networks for word embeddings?<a class="headerlink" href="#why-do-we-need-neural-networks-for-word-embeddings" title="Permalink to this headline">#</a></h3>
 <p>There are a lot of shallow algorithms that work well for clustering.</p>
 <ul class="simple">
@@ -1902,9 +1906,9 @@ title="Print to PDF"
 <li><p>They create a mapping of discrete words to continuous vectors.</p></li>
 <li><p>They solve the curse of dimensionality.</p></li>
 </ul>
-</section>
-</section>
-<section id="neural-language-models">
+</div>
+</div>
+<div class="section" id="neural-language-models">
 <h2>Neural Language Models<a class="headerlink" href="#neural-language-models" title="Permalink to this headline">#</a></h2>
 <p>Word embeddings were proposed by <span id="id2">[<a class="reference internal" href="../../about/index.html#id23" title="Yoshua Bengio, Réjean Ducharme, Pascal Vincent, and Christian Jauvin. A neural probabilistic language model. Journal of Machine Learning Research, 3:1137–1155, 2003. URL: https://jmlr.org/papers/volume3/bengio03a/bengio03a.pdf.">Bengio <em>et al.</em>, 2003</a>]</span> as a way to represent words as vectors.</p>
 <p>Bengio’s method could train a neural network such that each training sentence could inform the model about a number of semantically available neighboring words, which was known as <code class="docutils literal notranslate"><span class="pre">distributed</span> <span class="pre">representation</span> <span class="pre">of</span> <span class="pre">words</span></code>. The nueural network preserved relationships between words in terms of their contexts (semantic and syntactic).</p>
@@ -1923,7 +1927,7 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-<section id="step-1-indexing-the-words">
+<div class="section" id="step-1-indexing-the-words">
 <h3>Step 1: Indexing the words.<a class="headerlink" href="#step-1-indexing-the-words" title="Permalink to this headline">#</a></h3>
 <p>For each word in the sentence, we assign an index.</p>
 <div class="cell docutils container">
@@ -1943,8 +1947,8 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-</section>
-<section id="step-2-building-the-model">
+</div>
+<div class="section" id="step-2-building-the-model">
 <h3>Step 2: Building the model.<a class="headerlink" href="#step-2-building-the-model" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>An embedding layer is a lookup table that maps each word to a vector.</p></li>
@@ -1991,8 +1995,8 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-</section>
-<section id="step-3-loss-and-optimization-function">
+</div>
+<div class="section" id="step-3-loss-and-optimization-function">
 <h3>Step 3: Loss and optimization function.<a class="headerlink" href="#step-3-loss-and-optimization-function" title="Permalink to this headline">#</a></h3>
 <p>Now that we have the model, we need to define the loss function and the optimization function.</p>
 <p>We are using the cross-entropy loss function and the Adam optimizer.</p>
@@ -2015,8 +2019,8 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-</section>
-<section id="step-4-training-the-model">
+</div>
+<div class="section" id="step-4-training-the-model">
 <h3>Step 4: Training the model.<a class="headerlink" href="#step-4-training-the-model" title="Permalink to this headline">#</a></h3>
 <p>Finally, we train the model.</p>
 <div class="cell docutils container">
@@ -2089,8 +2093,8 @@ Epoch: 5000 cost = 0.462459
 </div>
 </div>
 </div>
-</section>
-<section id="summary">
+</div>
+<div class="section" id="summary">
 <h3>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Word embeddings are a way to represent words as low-dimensional dense vectors.</p></li>
@@ -2099,14 +2103,14 @@ Epoch: 5000 cost = 0.462459
 <li><p>They try to preserve the semantic and syntactic relationships between words.</p></li>
 </ul>
 <p><img alt="" src="../../../_images/w2v.png" /></p>
-</section>
-</section>
-<section id="word2vec">
+</div>
+</div>
+<div class="section" id="word2vec">
 <h2>Word2Vec<a class="headerlink" href="#word2vec" title="Permalink to this headline">#</a></h2>
 <p>Word2Vec is a neural network architecture that was proposed by <span id="id3">[<a class="reference internal" href="../../about/index.html#id24" title="Tomas Mikolov, Ilya Sutskever, Kai Chen, Greg S Corrado, and Jeff Dean. Distributed representations of words and phrases and their compositionality. Advances in neural information processing systems, 2013.">Mikolov <em>et al.</em>, 2013</a>]</span> in 2013. It is a shallow, two-layer neural network that is trained to reconstruct linguistic contexts of words.</p>
 <p>The problem of the previous neural network is that it is computationally expensive to train. The hidden layer computes probability distribution for all the words in the vocabulary. This is because the output layer is a fully connected layer.</p>
 <p>Word2Vec solves this problem by using a single output neuron. This is achieved by using a <code class="docutils literal notranslate"><span class="pre">hierarchical</span> <span class="pre">softmax</span></code> or <code class="docutils literal notranslate"><span class="pre">negative</span> <span class="pre">sampling</span></code> method.</p>
-<section id="main-idea">
+<div class="section" id="main-idea">
 <h3>Main idea<a class="headerlink" href="#main-idea" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Use a <code class="docutils literal notranslate"><span class="pre">binary</span> <span class="pre">classifier</span></code> to predict which words appear in the context of (i.e. near) a target word.</p></li>
@@ -2114,8 +2118,8 @@ Epoch: 5000 cost = 0.462459
 <li><p>Words that appear in similar contexts (that have high distributional similarity) will have very similar vector representations.</p></li>
 <li><p>These models can be trained on large amounts of raw text (and pre-trained embeddings can be downloaded).</p></li>
 </ul>
-</section>
-<section id="negative-sampling">
+</div>
+<div class="section" id="negative-sampling">
 <h3>Negative sampling<a class="headerlink" href="#negative-sampling" title="Permalink to this headline">#</a></h3>
 <p>Train a binary classifier that decides whether a target word t appears in the context of other words <span class="math notranslate nohighlight">\(c_{1..k}\)</span></p>
 <ul class="simple">
@@ -2125,16 +2129,16 @@ Epoch: 5000 cost = 0.462459
 <li><p>Train a <code class="docutils literal notranslate"><span class="pre">binary</span> <span class="pre">logistic</span> <span class="pre">regression</span></code> classifier to distinguish these cases</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">weights</span></code> of this classifier depend on the <code class="docutils literal notranslate"><span class="pre">similarity</span></code> of t and the words in <span class="math notranslate nohighlight">\(c_{1..k}\)</span></p></li>
 </ul>
-</section>
-<section id="two-models">
+</div>
+<div class="section" id="two-models">
 <h3>Two models<a class="headerlink" href="#two-models" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p><strong>Continuous Bag of Words (CBOW)</strong>: predicts the target word from the context words.</p></li>
 <li><p><strong>Skip-gram</strong>: predicts the context words from the target word.</p></li>
 </ul>
 <p><img alt="" src="../../../_images/cbow_skip-gram.png" /></p>
-</section>
-<section id="when-to-use-the-skip-gram-model-and-when-to-use-cbow">
+</div>
+<div class="section" id="when-to-use-the-skip-gram-model-and-when-to-use-cbow">
 <h3>When to use the skip-gram model and when to use CBOW?<a class="headerlink" href="#when-to-use-the-skip-gram-model-and-when-to-use-cbow" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>CBOW is faster to train than skip-gram.</p></li>
@@ -2143,16 +2147,16 @@ Epoch: 5000 cost = 0.462459
 <li><p>Skip-gram works better with small datasets.</p></li>
 <li><p>Therefore, the choice of model depends on the kind of problem you are trying to solve.</p></li>
 </ul>
-</section>
-</section>
-<section id="skip-gram-model">
+</div>
+</div>
+<div class="section" id="skip-gram-model">
 <h2>Skip-gram model<a class="headerlink" href="#skip-gram-model" title="Permalink to this headline">#</a></h2>
 <p>The skip-gram model is the same as the CBOW model with one difference: it predicts the context words from the target word.</p>
 <p>In the above figure, <span class="math notranslate nohighlight">\(w[t]\)</span> is the target word, and <span class="math notranslate nohighlight">\(w[t-2], w[t-1], w[t+1], w[t+2]\)</span> are the context words, where <span class="math notranslate nohighlight">\(t\)</span> is the location of the target word in the sentence.</p>
 <p>The model predicts the probability of a word being a context word given the target word. The output probabilities explain how likely a word is to be close to the target word.</p>
 <p>This shallow neural network architecture is called a <code class="docutils literal notranslate"><span class="pre">skip-gram</span></code> model because it predicts the context words from the target word.</p>
 <p>We don’t use this trained network for prediction. Instead, we use the weights of the embedding layer as the word embeddings.</p>
-<section id="input-output-hidden-layer">
+<div class="section" id="input-output-hidden-layer">
 <h3>Input/output/hidden layer<a class="headerlink" href="#input-output-hidden-layer" title="Permalink to this headline">#</a></h3>
 <p>How do we represent a single target word as a large vector?</p>
 <ul class="simple">
@@ -2164,8 +2168,8 @@ Epoch: 5000 cost = 0.462459
 <li><p>The dimensions of the hidden layer are <span class="math notranslate nohighlight">\(d \times V\)</span>, where <span class="math notranslate nohighlight">\(V\)</span> is the size of the vocabulary.</p></li>
 </ul>
 <p><img alt="" src="../../../_images/skip-gram.png" /></p>
-</section>
-<section id="step-0-prepare-the-data">
+</div>
+<div class="section" id="step-0-prepare-the-data">
 <h3>Step 0: Prepare the data<a class="headerlink" href="#step-0-prepare-the-data" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2192,8 +2196,8 @@ Epoch: 5000 cost = 0.462459
 </div>
 </div>
 </div>
-</section>
-<section id="step-1-setting-target-and-context-variable">
+</div>
+<div class="section" id="step-1-setting-target-and-context-variable">
 <h3>Step 1: Setting target and context variable<a class="headerlink" href="#step-1-setting-target-and-context-variable" title="Permalink to this headline">#</a></h3>
 <p>Since skipgram takes a single context word and n number of target variables, we just need to flip the CBOW from the previous model.</p>
 <p>when the window size is 1, we take one word before and after the target word.</p>
@@ -2246,8 +2250,8 @@ Epoch: 5000 cost = 0.462459
 </div>
 </div>
 </div>
-</section>
-<section id="id4">
+</div>
+<div class="section" id="id4">
 <h3>Step 2: Building the model<a class="headerlink" href="#id4" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2276,8 +2280,8 @@ Epoch: 5000 cost = 0.462459
 </div>
 </div>
 </div>
-</section>
-<section id="id5">
+</div>
+<div class="section" id="id5">
 <h3>Step 3: Loss and optimization function<a class="headerlink" href="#id5" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2305,8 +2309,8 @@ Epoch: 5000 cost = 0.462459
 </div>
 </div>
 </div>
-</section>
-<section id="id6">
+</div>
+<div class="section" id="id6">
 <h3>Step 4: Training the model<a class="headerlink" href="#id6" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2371,8 +2375,8 @@ Epoch: 150000 cost = 2.791655
 </div>
 </div>
 </div>
-</section>
-<section id="visualizing-the-embeddings">
+</div>
+<div class="section" id="visualizing-the-embeddings">
 <h3>Visualizing the embeddings<a class="headerlink" href="#visualizing-the-embeddings" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2396,8 +2400,8 @@ Epoch: 150000 cost = 2.791655
 <img alt="../../../_images/word_embeddings_37_0.png" src="../../../_images/word_embeddings_37_0.png" />
 </div>
 </div>
-</section>
-<section id="evaluation">
+</div>
+<div class="section" id="evaluation">
 <h3>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2462,14 +2466,14 @@ Epoch: 150000 cost = 2.791655
 </div>
 </div>
 <p>The skip-gram model increases computational complexity because it has to predict nearby words based on the number of neighboring words. The more distant words tend to be slightly less related to the current word.</p>
-</section>
-</section>
-<section id="continuous-bag-of-words-cbow">
+</div>
+</div>
+<div class="section" id="continuous-bag-of-words-cbow">
 <h2>Continuous Bag of Words (CBOW)<a class="headerlink" href="#continuous-bag-of-words-cbow" title="Permalink to this headline">#</a></h2>
 <p>The CBOW model predicts the target word from the context words.</p>
 <p>This model reduces the complexity of calculating the probability distribution for all the words in the vocabulary to the <span class="math notranslate nohighlight">\(\log_2(V)\)</span> complexity of calculating the probability distribution for the target word.</p>
 <p><img alt="" src="../../../_images/cbow_skip-gram.png" /></p>
-<section id="architecture">
+<div class="section" id="architecture">
 <h3>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">#</a></h3>
 <a class="bg-primary mb-1 reference internal image-reference" href="../../../_images/cbow.png"><img alt="cbow" class="bg-primary mb-1 align-center" src="../../../_images/cbow.png" style="width: 350px;" /></a>
 <ul class="simple">
@@ -2480,8 +2484,8 @@ Epoch: 150000 cost = 2.791655
 <li><p>This vector is passed through a softmax layer to get the probability distribution of the target word.</p></li>
 <li><p>The learned weights of the softmax layer are the word embeddings.</p></li>
 </ul>
-</section>
-<section id="step-1-define-a-function-to-create-a-context-and-a-target-word">
+</div>
+<div class="section" id="step-1-define-a-function-to-create-a-context-and-a-target-word">
 <h3>Step 1: Define a function to create a context and a target word<a class="headerlink" href="#step-1-define-a-function-to-create-a-context-and-a-target-word" title="Permalink to this headline">#</a></h3>
 <p>Define a function to create a context window with n words from the right and left of the target word.</p>
 <p>The function should take two arguments: data and window size. The window size will define how many words we are supposed to take from the right and from the left.</p>
@@ -2529,8 +2533,8 @@ Epoch: 150000 cost = 2.791655
 </div>
 </div>
 </div>
-</section>
-<section id="step-2-build-the-model">
+</div>
+<div class="section" id="step-2-build-the-model">
 <h3>Step 2: Build the model<a class="headerlink" href="#step-2-build-the-model" title="Permalink to this headline">#</a></h3>
 <p>In the CBOW model, we reduce the hidden layer to only one. So all together we have: an embedding layer, a hidden layer which passes through the ReLU layer, and an output layer.</p>
 <p>The context words index is fed into the embedding layers, which is then passed through the hidden layer followed by the nonlinear activation layer, i.e. ReLU, and finally we get the output.</p>
@@ -2567,8 +2571,8 @@ Epoch: 150000 cost = 2.791655
 </div>
 </div>
 </div>
-</section>
-<section id="id7">
+</div>
+<div class="section" id="id7">
 <h3>Step 3: Loss and optimization function.<a class="headerlink" href="#id7" title="Permalink to this headline">#</a></h3>
 <p>We are using the cross-entropy loss function and the SGD optimizer. You can also use the Adam optimizer.</p>
 <div class="cell docutils container">
@@ -2600,8 +2604,8 @@ Epoch: 150000 cost = 2.791655
 </div>
 </div>
 </div>
-</section>
-<section id="id8">
+</div>
+<div class="section" id="id8">
 <h3>Step 4: Training the model.<a class="headerlink" href="#id8" title="Permalink to this headline">#</a></h3>
 <p>Finally, we train the model.</p>
 <p><code class="docutils literal notranslate"><span class="pre">words_to_vector</span></code> turns words into numbers.</p>
@@ -2636,8 +2640,8 @@ Epoch: 49, Loss: 4.151697635650635
 </div>
 </div>
 </div>
-</section>
-<section id="id9">
+</div>
+<div class="section" id="id9">
 <h3>Visualizing the embeddings<a class="headerlink" href="#id9" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2660,8 +2664,8 @@ Epoch: 49, Loss: 4.151697635650635
 <img alt="../../../_images/word_embeddings_56_0.png" src="../../../_images/word_embeddings_56_0.png" />
 </div>
 </div>
-</section>
-<section id="id10">
+</div>
+<div class="section" id="id10">
 <h3>Evaluation<a class="headerlink" href="#id10" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2721,11 +2725,11 @@ Prediction: micron
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="improving-predictive-functions">
+</div>
+</div>
+<div class="section" id="improving-predictive-functions">
 <h2>Improving predictive functions<a class="headerlink" href="#improving-predictive-functions" title="Permalink to this headline">#</a></h2>
-<section id="softmax">
+<div class="section" id="softmax">
 <h3>Softmax<a class="headerlink" href="#softmax" title="Permalink to this headline">#</a></h3>
 <p>The equation for the softmax function is:</p>
 <div class="math notranslate nohighlight">
@@ -2737,16 +2741,16 @@ Prediction: micron
 <p>where <span class="math notranslate nohighlight">\(x_i\)</span> is the score of the target word <span class="math notranslate nohighlight">\(w_i\)</span> and <span class="math notranslate nohighlight">\(c\)</span> is the context words.</p>
 <p>The complexity of the softmax function is <span class="math notranslate nohighlight">\(\mathcal{O}(n)\)</span>, where <span class="math notranslate nohighlight">\(n\)</span> is the number of words in the vocabulary.</p>
 <p>With a large vocabulary, say 100,000 words, the softmax function becomes very expensive to compute. For each word (<span class="math notranslate nohighlight">\(w_i\)</span>), we have to compute the exponential of the score of each word in the vocabulary (<span class="math notranslate nohighlight">\(x_j\)</span>) and then sum them up. This is <span class="math notranslate nohighlight">\(\mathcal{O}(n)\)</span>.</p>
-</section>
-<section id="hierarchical-softmax">
+</div>
+<div class="section" id="hierarchical-softmax">
 <h3>Hierarchical softmax<a class="headerlink" href="#hierarchical-softmax" title="Permalink to this headline">#</a></h3>
 <p>Hierarchical softmax is a method to reduce the complexity of the softmax function. It is a tree-based data structure that is used to represent the vocabulary.</p>
 <p>Hierarchical softmax was introduced by Morin and Bengio in 2005, as an alternative to the full softmax function, where it replaces it with a hierarchical layer. It borrows the technique from the binary huffman tree, which reduces the complexity of calculating the probability from <span class="math notranslate nohighlight">\(\mathcal{O}(n)\)</span> to <span class="math notranslate nohighlight">\(\mathcal{O}(\log_2(n))\)</span>.</p>
 <p>The hierarchical softmax is a binary tree, where each node represents a word in the vocabulary. The root node represents the entire vocabulary. The left child represents the words that are less frequent than the parent node, and the right child represents the words that are more frequent than the parent node.</p>
 <p>The probability of a word <span class="math notranslate nohighlight">\(w_i\)</span> is the product of the probabilities of the nodes on the path from the root to the leaf node that represents <span class="math notranslate nohighlight">\(w_i\)</span>.</p>
 <p>In the huffman tree, we no longer calculate the output embeddings <span class="math notranslate nohighlight">\(w^\prime\)</span>. Instead, we calculate the probability of turning right or left at each node.</p>
-</section>
-<section id="noise-contrastive-estimation">
+</div>
+<div class="section" id="noise-contrastive-estimation">
 <h3>Noise-contrastive estimation<a class="headerlink" href="#noise-contrastive-estimation" title="Permalink to this headline">#</a></h3>
 <p>Noise-contrastive estimation (NCE) is an approximation method to reduce the complexity of the softmax function. It is a sampling-based method that is used to approximate the softmax function.</p>
 <p>NCE takes an unnormalised multinomial function (i.e. the function that has multiple labels and its output has not been passed through a softmax layer), and converts it to a binary logistic regression.</p>
@@ -2763,8 +2767,8 @@ Prediction: micron
 <p>where <span class="math notranslate nohighlight">\(w_i\)</span> is the <span class="math notranslate nohighlight">\(i\)</span>th negative sample.</p>
 <p>As we increase the number of noise samples <span class="math notranslate nohighlight">\(k\)</span>, the NCE derivative approaches the likelihood gradient, or the softmax function of the normalised model.</p>
 <p>In conclusion, NCE is a way of learning a data distribution by comparing it against a noise distribution, and modifying the learning parameters such that the model <span class="math notranslate nohighlight">\(P_{\theta}\)</span> is closer to the noise <span class="math notranslate nohighlight">\(P_{\text{data}}\)</span>.</p>
-</section>
-<section id="id11">
+</div>
+<div class="section" id="id11">
 <h3>Negative sampling<a class="headerlink" href="#id11" title="Permalink to this headline">#</a></h3>
 <p>Negative sampling is a sampling-based method that is used to approximate the softmax function. It simplifies the NCE method by removing the need to calculate the noise distribution <span class="math notranslate nohighlight">\(Q\)</span>.</p>
 <p>Negative sampling gets rid of the noise distribution <span class="math notranslate nohighlight">\(Q\)</span> and uses a single noise sample <span class="math notranslate nohighlight">\(w_j\)</span> for each target word <span class="math notranslate nohighlight">\(w_t\)</span>.</p>
@@ -2776,20 +2780,20 @@ Prediction: micron
 \end{align}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\sigma\)</span> is the sigmoid function.</p>
-</section>
-</section>
-<section id="glove">
+</div>
+</div>
+<div class="section" id="glove">
 <h2>GloVe<a class="headerlink" href="#glove" title="Permalink to this headline">#</a></h2>
 <p>GloVe is an unsupervised learning algorithm for obtaining vector representations for words. It is based on the co-occurrence matrix of words from a corpus.</p>
 <p>GloVe stands for Global Vectors for Word Representation. It was introduced by <span id="id12">[<a class="reference internal" href="../../about/index.html#id25" title="Jeffrey Pennington, Richard Socher, and Christopher Manning. GloVe: global vectors for word representation. In Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP), 1532–1543. Doha, Qatar, October 2014. Association for Computational Linguistics. URL: https://aclanthology.org/D14-1162, doi:10.3115/v1/D14-1162.">Pennington <em>et al.</em>, 2014</a>]</span> in 2014.</p>
-<section id="improvement-over-word2vec">
+<div class="section" id="improvement-over-word2vec">
 <h3>Improvement over word2vec<a class="headerlink" href="#improvement-over-word2vec" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Word2vec uses a window-based approach, in which it only considers the local context of a word. This means that it does not consider the global context of a word.</p></li>
 <li><p>GloVe uses a global context of a word in addition to the local context. This means that it can capture the meaning of a word better than word2vec.</p></li>
 </ul>
-</section>
-<section id="co-occurrence-matrix">
+</div>
+<div class="section" id="co-occurrence-matrix">
 <h3>Co-occurrence matrix<a class="headerlink" href="#co-occurrence-matrix" title="Permalink to this headline">#</a></h3>
 <p>What are the global contexts of a word? The global contexts of a word are the words that co-occur with it in a corpus.</p>
 <p>For example, we have the following sentences:</p>
@@ -2802,8 +2806,8 @@ Prediction: micron
 <li><p><code class="docutils literal notranslate"><span class="pre">&lt;START&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;END&gt;</span></code> are special tokens that represent the start and end of a sentence.</p></li>
 <li><p>Since <code class="docutils literal notranslate"><span class="pre">that</span></code> and <code class="docutils literal notranslate"><span class="pre">is</span></code> occur only once in the window of <code class="docutils literal notranslate"><span class="pre">glitters</span></code>, the value of (<code class="docutils literal notranslate"><span class="pre">that</span></code>, <code class="docutils literal notranslate"><span class="pre">glitters</span></code>) and (<code class="docutils literal notranslate"><span class="pre">is</span></code>, <code class="docutils literal notranslate"><span class="pre">glitters</span></code>) is 1.</p></li>
 </ul>
-</section>
-<section id="training-glove">
+</div>
+<div class="section" id="training-glove">
 <h3>Training GloVe<a class="headerlink" href="#training-glove" title="Permalink to this headline">#</a></h3>
 <p>Glove model is a weighted least squares regression model, where the weights are the word vectors. The objective function is the sum of squared errors between the co-occurrence matrix and the dot product of the word vectors.</p>
 <div class="math notranslate nohighlight">
@@ -2813,8 +2817,8 @@ Prediction: micron
 \end{align}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(X_{ij}\)</span> is the co-occurrence matrix, <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span> is the word vector of the <span class="math notranslate nohighlight">\(i\)</span> th word, and <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span> is the word vector of the <span class="math notranslate nohighlight">\(j\)</span> th word. The function <span class="math notranslate nohighlight">\(f\)</span> is a weighting function that is used to downweight the common words.</p>
-</section>
-<section id="glove-vs-word2vec">
+</div>
+<div class="section" id="glove-vs-word2vec">
 <h3>GloVe vs word2vec<a class="headerlink" href="#glove-vs-word2vec" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>GloVe is a global model, while word2vec is a local model.</p></li>
@@ -2823,18 +2827,18 @@ Prediction: micron
 <li><p>Since it uses a global context, GloVe is better at capturing the meaning of rare words even on small datasets.</p></li>
 <li><p>GloVe is slower than word2vec.</p></li>
 </ul>
-</section>
-<section id="using-glove">
+</div>
+<div class="section" id="using-glove">
 <h3>Using GloVe<a class="headerlink" href="#using-glove" title="Permalink to this headline">#</a></h3>
 <p>GloVe is available to download from the <a class="reference external" href="https://nlp.stanford.edu/projects/glove/">Stanford NLP website</a>.</p>
-</section>
-</section>
-<section id="fasttext">
+</div>
+</div>
+<div class="section" id="fasttext">
 <h2>FastText<a class="headerlink" href="#fasttext" title="Permalink to this headline">#</a></h2>
 <p>FastText is an open-source library for learning of word representations and sentence classification. It was introduced by <span id="id13">[<a class="reference internal" href="../../about/index.html#id26" title="Piotr Bojanowski, Edouard Grave, Armand Joulin, and Tomas Mikolov. Enriching word vectors with subword information. arXiv preprint arXiv:1607.04606, 2016. URL: https://arxiv.org/pdf/1607.04606.pdf.">Bojanowski <em>et al.</em>, 2016</a>]</span> in 2016.</p>
 <p>FastText is an extension of word2vec that allows us to learn word representations for out-of-vocabulary words. It is based on the skip-gram model, but it uses character n-grams as its input and output instead of words.</p>
 <p>Word2vec and GloVe are based on the words in the corpus. Even with a very large corpus, there are still words that are not present in the corpus.</p>
-<section id="character-n-grams">
+<div class="section" id="character-n-grams">
 <h3>Character n-grams<a class="headerlink" href="#character-n-grams" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Instead of using words to train the model, FastText uses character n-grams as its input and output.</p></li>
@@ -2852,15 +2856,15 @@ Prediction: micron
 <li><p>Although the hash function is deterministic, it is not reversible. This means that the hash function cannot be used to recover the original n-gram.</p></li>
 <li><p>The word <code class="docutils literal notranslate"><span class="pre">reading</span></code> can be represented by the following vector: <span class="math notranslate nohighlight">\(\mathbf{v}_{reading} = \frac{1}{5} \sum_{i=1}^5 \mathbf{v}_{&lt;rea&gt;, &lt;ead&gt;, &lt;adi&gt;, &lt;din&gt;, &lt;ing&gt;}\)</span></p></li>
 </ul>
-</section>
-<section id="using-fasttext">
+</div>
+<div class="section" id="using-fasttext">
 <h3>Using FastText<a class="headerlink" href="#using-fasttext" title="Permalink to this headline">#</a></h3>
 <p>You can install FastText using the following command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install fasttext
 </pre></div>
 </div>
 <p>You can download the pre-trained FastText word vectors from the <a class="reference external" href="https://fasttext.cc/docs/en/english-vectors.html">FastText website</a>.</p>
-<section id="format">
+<div class="section" id="format">
 <h4>Format<a class="headerlink" href="#format" title="Permalink to this headline">#</a></h4>
 <p>The first line of the file contains the number of words in the vocabulary and the size of the vectors. Each line contains a word followed by its vectors, like in the default fastText text format. Each value is space separated. Words are ordered by descending frequency. These text models can easily be loaded in Python using the following code:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">io</span>
@@ -2875,9 +2879,9 @@ Prediction: micron
     <span class="k">return</span> <span class="n">data</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="training-fasttext">
+</div>
+</div>
+<div class="section" id="training-fasttext">
 <h3>Training FastText<a class="headerlink" href="#training-fasttext" title="Permalink to this headline">#</a></h3>
 <p>FastText can be trained using the following command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fasttext skipgram -input &lt;input_file&gt; -output &lt;output_file&gt;
@@ -2898,7 +2902,7 @@ Prediction: micron
 <span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="s1">&#39;king&#39;</span><span class="p">])</span> <span class="c1"># get the vector of the word &#39;king&#39;</span>
 </pre></div>
 </div>
-<section id="saving-and-loading-a-model-object">
+<div class="section" id="saving-and-loading-a-model-object">
 <h4>Saving and loading a model object<a class="headerlink" href="#saving-and-loading-a-model-object" title="Permalink to this headline">#</a></h4>
 <p>You can save your trained model object by calling the function <code class="docutils literal notranslate"><span class="pre">save_model</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">save_model</span><span class="p">(</span><span class="s2">&quot;model_filename.bin&quot;</span><span class="p">)</span>
@@ -2908,14 +2912,14 @@ Prediction: micron
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">fasttext</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="s2">&quot;model_filename.bin&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-</section>
-</section>
-<section id="wrapping-up">
+</div>
+</div>
+</div>
+<div class="section" id="wrapping-up">
 <h2>Wrapping up<a class="headerlink" href="#wrapping-up" title="Permalink to this headline">#</a></h2>
 <p>In this lecture, we learned about word embeddings and how they are used to represent words as vectors. We also learned about the two most popular word embedding models, word2vec and GloVe. We also learned about FastText, which is an extension of word2vec that allows us to learn word representations for out-of-vocabulary words.</p>
-</section>
-<section id="references">
+</div>
+<div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://arxiv.org/abs/1301.3781">Word2Vec</a></p></li>
@@ -2924,8 +2928,8 @@ Prediction: micron
 <li><p><a class="reference external" href="http://christopher5106.github.io/deep/learning/2020/04/02/fasttext_pretrained_embeddings_subword_word_representations.html">Get FastText representation from pretrained embeddings with subword information</a></p></li>
 <li><p><a class="reference external" href="https://neptune.ai/blog/word-embeddings-guide">The Ultimate Guide to Word Embeddings</a></p></li>
 </ul>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

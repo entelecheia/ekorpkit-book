@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lab 3: Training Tokenizers &#8212; eKorpkit Tutorials</title>
     
   <!-- Loaded before other Sphinx assets -->
@@ -21,7 +20,7 @@
     href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -38,7 +37,7 @@
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -52,7 +51,7 @@ const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Lab 4: Pretraining Language Models" href="lab4-pretraining-lms.html" />
@@ -545,7 +544,7 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="../../usecases/esg/prepare_datasets.html">
-     Preparing polarity classification datasets
+     Preparing training datasets
     </a>
    </li>
    <li class="toctree-l2">
@@ -575,13 +574,18 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../usecases/esg/preapre_cv_datasets.html">
-     Preparing cross validated datasets
+    <a class="reference internal" href="../../usecases/esg/cross_validate_datasets.html">
+     Cross validating datasets
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../usecases/esg/prepare_ls_datasets.html">
+    <a class="reference internal" href="../../usecases/esg/prepare_datasets_for_labeling.html">
      Preparing active learning data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/all_in_one_pipeline.html">
+     Putting them together in a pipeline
     </a>
    </li>
   </ul>
@@ -1502,22 +1506,17 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="lab-3-training-tokenizers">
+  <div class="tex2jax_ignore mathjax_ignore section" id="lab-3-training-tokenizers">
 <h1>Lab 3: Training Tokenizers<a class="headerlink" href="#lab-3-training-tokenizers" title="Permalink to this headline">#</a></h1>
 <p><img alt="" src="../../../_images/tokenize.png" /></p>
-<section id="prepare-the-environment">
+<div class="section" id="prepare-the-environment">
 <h2>Prepare the environment<a class="headerlink" href="#prepare-the-environment" title="Permalink to this headline">#</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">pre</span> <span class="n">ekorpkit</span><span class="p">[</span><span class="n">tokenize</span><span class="p">]</span>
 </pre></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_format=&#39;retina&#39;
-<span class="o">%</span><span class="k">load_ext</span> autotime
-<span class="o">%</span><span class="k">load_ext</span> autoreload
-<span class="o">%</span><span class="k">autoreload</span> 2
-
-<span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
 
 <span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;version:&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
@@ -1528,31 +1527,55 @@ title="Print to PDF"
     <span class="n">eKonf</span><span class="o">.</span><span class="n">mount_google_drive</span><span class="p">()</span>
 <span class="n">workspace_dir</span> <span class="o">=</span> <span class="s2">&quot;/content/drive/MyDrive/workspace&quot;</span>
 <span class="n">project_name</span> <span class="o">=</span> <span class="s2">&quot;ekorpkit-book&quot;</span>
-<span class="n">project_dir</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">set_workspace</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="n">workspace_dir</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project_name</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;project_dir:&quot;</span><span class="p">,</span> <span class="n">project_dir</span><span class="p">)</span>
+<span class="n">ws</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">set_workspace</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="n">workspace_dir</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project_name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;project_dir:&quot;</span><span class="p">,</span> <span class="n">ws</span><span class="o">.</span><span class="n">project_dir</span><span class="p">)</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">envs</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.utils.notebook:Google Colab not detected.
-INFO:ekorpkit.base:Setting EKORPKIT_WORKSPACE_ROOT to /content/drive/MyDrive/workspace
-INFO:ekorpkit.base:Setting EKORPKIT_PROJECT to ekorpkit-book
-INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+INFO:ekorpkit.base:Set environment variable EKORPKIT_WORKSPACE_ROOT=/content/drive/MyDrive/workspace
+INFO:ekorpkit.base:Set environment variable EKORPKIT_PROJECT_DIR=/content/drive/MyDrive/workspace/projects/ekorpkit-book
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.40.post0.dev35
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.40.post0.dev51
 is colab? False
-project_dir: /content/drive/MyDrive/workspace/projects/ekorpkit-book
-time: 1.04 s (started: 2022-11-29 10:47:16 +00:00)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:root:compose config with overrides: [&#39;+project=default&#39;]
+INFO:ekorpkit.base:There are no arguments to initilize a config, using default config.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>project_dir: /content/drive/MyDrive/workspace/projects/ekorpkit-book
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;EKORPKIT_CONFIG_DIR&#39;: &#39;/workspace/projects/ekorpkit-book/config&#39;,
+ &#39;EKORPKIT_WORKSPACE_ROOT&#39;: &#39;/content/drive/MyDrive/workspace&#39;,
+ &#39;EKORPKIT_PROJECT&#39;: &#39;ekorpkit-book&#39;,
+ &#39;EKORPKIT_PROJECT_DIR&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book&#39;,
+ &#39;EKORPKIT_DATA_DIR&#39;: None,
+ &#39;EKORPKIT_LOG_LEVEL&#39;: &#39;INFO&#39;,
+ &#39;NUM_WORKERS&#39;: 230,
+ &#39;KMP_DUPLICATE_LIB_OK&#39;: &#39;TRUE&#39;,
+ &#39;CUDA_DEVICE_ORDER&#39;: None,
+ &#39;CUDA_VISIBLE_DEVICES&#39;: None,
+ &#39;WANDB_PROJECT&#39;: None,
+ &#39;WANDB_DISABLED&#39;: None,
+ &#39;LABEL_STUDIO_SERVER&#39;: &#39;http://ekorpkit-labelstudio:8080&#39;,
+ &#39;CACHED_PATH_CACHE_ROOT&#39;: None}
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 936 ms (started: 2022-12-13 04:56:08 +00:00)
 </pre></div>
 </div>
 </div>
 </div>
-<section id="load-the-saved-corpora">
+<div class="section" id="load-the-saved-corpora">
 <h3>Load the saved corpora<a class="headerlink" href="#load-the-saved-corpora" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;enko_filtered.parquet&quot;</span><span class="p">,</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/data&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;enko_filtered.parquet&quot;</span><span class="p">,</span> <span class="n">ws</span><span class="o">.</span><span class="n">project_dir</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span><span class="p">)</span>
 <span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1661,7 +1684,7 @@ INFO:ekorpkit.io.file:Loading data from /content/drive/MyDrive/workspace/project
     </tr>
   </tbody>
 </table>
-</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 3.3 s (started: 2022-11-14 02:09:12 +00:00)
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 3.17 s (started: 2022-12-13 00:32:31 +00:00)
 </pre></div>
 </div>
 </div>
@@ -1688,8 +1711,8 @@ time: 145 ms (started: 2022-11-14 02:09:16 +00:00)
 </div>
 </div>
 </div>
-</section>
-<section id="covert-pandas-datafame-to-huggingface-dataset">
+</div>
+<div class="section" id="covert-pandas-datafame-to-huggingface-dataset">
 <h3>Covert pandas datafame to huggingface dataset<a class="headerlink" href="#covert-pandas-datafame-to-huggingface-dataset" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1712,8 +1735,8 @@ time: 145 ms (started: 2022-11-14 02:09:16 +00:00)
 </div>
 </div>
 </div>
-</section>
-<section id="shuffle-the-dataset">
+</div>
+<div class="section" id="shuffle-the-dataset">
 <h3>Shuffle the dataset<a class="headerlink" href="#shuffle-the-dataset" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1729,8 +1752,8 @@ time: 145 ms (started: 2022-11-14 02:09:16 +00:00)
 </div>
 </div>
 </div>
-</section>
-<section id="split-the-dataset-into-sentences-for-training">
+</div>
+<div class="section" id="split-the-dataset-into-sentences-for-training">
 <h3>Split the dataset into sentences for training<a class="headerlink" href="#split-the-dataset-into-sentences-for-training" title="Permalink to this headline">#</a></h3>
 <p>The sentencepiece module comes with a python training API, which uses sentences in a file, one sentence per line. We will use the <code class="docutils literal notranslate"><span class="pre">sent_tokenize</span></code> function from the <code class="docutils literal notranslate"><span class="pre">nltk</span></code> package to split the text into sentences. The <code class="docutils literal notranslate"><span class="pre">sent_tokenize</span></code> function is a wrapper around the <code class="docutils literal notranslate"><span class="pre">punkt</span></code> tokenizer, which is a pre-trained sentence tokenizer. The <code class="docutils literal notranslate"><span class="pre">punkt</span></code> tokenizer is trained on the Penn Treebank corpus, which is a collection of Wall Street Journal articles. The <code class="docutils literal notranslate"><span class="pre">punkt</span></code> tokenizer is a good choice for plain English text, but it may not be the best choice for other languages.</p>
 <div class="cell docutils container">
@@ -1903,8 +1926,8 @@ time: 145 ms (started: 2022-11-14 02:09:16 +00:00)
 </div>
 </div>
 </div>
-</section>
-<section id="sample-sentences-and-combine-them-into-a-single-file">
+</div>
+<div class="section" id="sample-sentences-and-combine-them-into-a-single-file">
 <h3>Sample sentences and combine them into a single file<a class="headerlink" href="#sample-sentences-and-combine-them-into-a-single-file" title="Permalink to this headline">#</a></h3>
 <p>If your dataset is too large, you can sample a subset of the sentence files for training. The <code class="docutils literal notranslate"><span class="pre">sample</span></code> function from the <code class="docutils literal notranslate"><span class="pre">random</span></code> module can be used to sample a subset of the files.</p>
 <p>You can use <code class="docutils literal notranslate"><span class="pre">sample_and_combine</span></code> function to sample a subset of sentence files and combine them into a single file.</p>
@@ -1936,12 +1959,12 @@ INFO:ekorpkit.tokenizers.trainers.spm:number of lines sampled: 2,998,856
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="train-tokenizers-with-hugging-face-tokenizers">
+</div>
+</div>
+<div class="section" id="train-tokenizers-with-hugging-face-tokenizers">
 <h2>Train tokenizers with Hugging Face Tokenizers<a class="headerlink" href="#train-tokenizers-with-hugging-face-tokenizers" title="Permalink to this headline">#</a></h2>
 <p><a class="reference external" href="https://huggingface.co/docs/tokenizers/quicktour">Hugging Face’s Tokenizers</a> provides a wide range of tokenizers, including BPE, WordPiece, Unigram, SentencePiece, and ByteLevel. We will use the BPE and Unigram tokenizers in this lab.</p>
-<section id="import-the-libraries-and-prepare-functions">
+<div class="section" id="import-the-libraries-and-prepare-functions">
 <h3>Import the libraries and prepare functions<a class="headerlink" href="#import-the-libraries-and-prepare-functions" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2010,8 +2033,8 @@ INFO:ekorpkit.tokenizers.trainers.spm:number of lines sampled: 2,998,856
 </div>
 </div>
 </div>
-</section>
-<section id="train-bpe-tokenizer">
+</div>
+<div class="section" id="train-bpe-tokenizer">
 <h3>Train BPE tokenizer<a class="headerlink" href="#train-bpe-tokenizer" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2067,8 +2090,8 @@ time: 67.4 ms (started: 2022-11-13 08:47:47 +00:00)
 </div>
 </div>
 </div>
-</section>
-<section id="train-unigram-tokenizer">
+</div>
+<div class="section" id="train-unigram-tokenizer">
 <h3>Train Unigram tokenizer<a class="headerlink" href="#train-unigram-tokenizer" title="Permalink to this headline">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model_path</span> <span class="o">=</span> <span class="n">train_tokenizer</span><span class="p">(</span><span class="s2">&quot;UNI&quot;</span><span class="p">)</span>
 </pre></div>
@@ -2116,17 +2139,17 @@ time: 82 ms (started: 2022-11-13 08:47:51 +00:00)
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="train-tokenizers-with-google-sentencepiece-spm">
+</div>
+</div>
+<div class="section" id="train-tokenizers-with-google-sentencepiece-spm">
 <h2>Train tokenizers with Google SentencePiece (SPM)<a class="headerlink" href="#train-tokenizers-with-google-sentencepiece-spm" title="Permalink to this headline">#</a></h2>
-<section id="install-sentencepiece">
+<div class="section" id="install-sentencepiece">
 <h3>Install SentencePiece<a class="headerlink" href="#install-sentencepiece" title="Permalink to this headline">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install sentencepiece
 </pre></div>
 </div>
-</section>
-<section id="train-sentencepiece-models">
+</div>
+<div class="section" id="train-sentencepiece-models">
 <h3>Train SentencePiece models<a class="headerlink" href="#train-sentencepiece-models" title="Permalink to this headline">#</a></h3>
 <p>You can use <code class="docutils literal notranslate"><span class="pre">train_spm</span></code> function to train a SentencePiece model. The <code class="docutils literal notranslate"><span class="pre">train_spm</span></code> function takes the following arguments:</p>
 <ul class="simple">
@@ -2139,7 +2162,7 @@ time: 82 ms (started: 2022-11-13 08:47:51 +00:00)
 <li><p><code class="docutils literal notranslate"><span class="pre">num_threads</span></code>: The number of threads to use for training. The default value is <code class="docutils literal notranslate"><span class="pre">1</span></code>. The max value is <code class="docutils literal notranslate"><span class="pre">128</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">train_extremely_large_corpus</span></code>: Whether to train an extremely large corpus. The default value is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
-<section id="train-unigram-model">
+<div class="section" id="train-unigram-model">
 <h4>Train Unigram model<a class="headerlink" href="#train-unigram-model" title="Permalink to this headline">#</a></h4>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input docutils container">
@@ -2186,8 +2209,8 @@ time: 82 ms (started: 2022-11-13 08:47:51 +00:00)
 <div><p>took 4m 2.4s</p>
 </div></blockquote>
 <p>With 128 processors, it took 4 minutes and 2 seconds to tokenize the 2,998,856 sentences.</p>
-</section>
-<section id="load-the-trained-model">
+</div>
+<div class="section" id="load-the-trained-model">
 <h4>Load the trained model<a class="headerlink" href="#load-the-trained-model" title="Permalink to this headline">#</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2211,8 +2234,8 @@ time: 67.4 ms (started: 2022-11-13 08:48:00 +00:00)
 </div>
 </div>
 </div>
-</section>
-<section id="train-bpe-model">
+</div>
+<div class="section" id="train-bpe-model">
 <h4>Train BPE model<a class="headerlink" href="#train-bpe-model" title="Permalink to this headline">#</a></h4>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ekorpkit <span class="se">\</span>
     project.name<span class="o">=</span>ekorpkit-book <span class="se">\</span>
@@ -2233,8 +2256,8 @@ time: 67.4 ms (started: 2022-11-13 08:48:00 +00:00)
 <div><p>took 8m 41.8s</p>
 </div></blockquote>
 <p>With 128 processors, it took 8 minutes and 42 seconds to tokenize the 2,998,856 sentences.</p>
-</section>
-<section id="id1">
+</div>
+<div class="section" id="id1">
 <h4>Load the trained model<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2258,12 +2281,12 @@ time: 34.1 ms (started: 2022-11-13 08:48:11 +00:00)
 </div>
 </div>
 </div>
-</section>
-</section>
-</section>
-<section id="compare-the-tokenizers">
+</div>
+</div>
+</div>
+<div class="section" id="compare-the-tokenizers">
 <h2>Compare the Tokenizers<a class="headerlink" href="#compare-the-tokenizers" title="Permalink to this headline">#</a></h2>
-<section id="load-the-tokenizers">
+<div class="section" id="load-the-tokenizers">
 <h3>Load the tokenizers<a class="headerlink" href="#load-the-tokenizers" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2291,8 +2314,8 @@ time: 34.1 ms (started: 2022-11-13 08:48:11 +00:00)
 </div>
 </div>
 </div>
-</section>
-<section id="analyze-the-output-of-the-tokenizers">
+</div>
+<div class="section" id="analyze-the-output-of-the-tokenizers">
 <h3>Analyze the output of the tokenizers<a class="headerlink" href="#analyze-the-output-of-the-tokenizers" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2340,8 +2363,8 @@ time: 20.8 ms (started: 2022-11-13 08:48:25 +00:00)
 </div>
 </div>
 </div>
-</section>
-<section id="compare-the-tokens">
+</div>
+<div class="section" id="compare-the-tokens">
 <h3>Compare the Tokens<a class="headerlink" href="#compare-the-tokens" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2911,9 +2934,9 @@ time: 20.8 ms (started: 2022-11-13 08:48:25 +00:00)
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="usage-of-tokenizer-trainer">
+</div>
+</div>
+<div class="section" id="usage-of-tokenizer-trainer">
 <h2>Usage of Tokenizer Trainer<a class="headerlink" href="#usage-of-tokenizer-trainer" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2947,7 +2970,7 @@ INFO:ekorpkit.io.file:Saving dataframe to /content/drive/MyDrive/workspace/proje
 </div>
 </div>
 </div>
-<section id="bpe-model-by-hugging-face">
+<div class="section" id="bpe-model-by-hugging-face">
 <h3>BPE Model by Hugging Face<a class="headerlink" href="#bpe-model-by-hugging-face" title="Permalink to this headline">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ekorpkit <span class="se">\</span>
     <span class="nv">project_name</span><span class="o">=</span>ekorpkit-book <span class="se">\</span>
@@ -2963,8 +2986,8 @@ INFO:ekorpkit.io.file:Saving dataframe to /content/drive/MyDrive/workspace/proje
     tokenizer.auto<span class="o">=</span>train
 </pre></div>
 </div>
-</section>
-<section id="unigram-model-by-hugging-face">
+</div>
+<div class="section" id="unigram-model-by-hugging-face">
 <h3>Unigram Model by Hugging Face<a class="headerlink" href="#unigram-model-by-hugging-face" title="Permalink to this headline">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ekorpkit <span class="se">\</span>
     <span class="nv">project_name</span><span class="o">=</span>ekorpkit-book <span class="se">\</span>
@@ -2980,8 +3003,8 @@ INFO:ekorpkit.io.file:Saving dataframe to /content/drive/MyDrive/workspace/proje
     tokenizer.auto<span class="o">=</span>train
 </pre></div>
 </div>
-</section>
-<section id="bpe-model-by-sentencepiece">
+</div>
+<div class="section" id="bpe-model-by-sentencepiece">
 <h3>BPE Model by SentencePiece<a class="headerlink" href="#bpe-model-by-sentencepiece" title="Permalink to this headline">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ekorpkit <span class="se">\</span>
     <span class="nv">project_name</span><span class="o">=</span>ekorpkit-book <span class="se">\</span>
@@ -2998,8 +3021,8 @@ INFO:ekorpkit.io.file:Saving dataframe to /content/drive/MyDrive/workspace/proje
     tokenizer.auto<span class="o">=</span>train
 </pre></div>
 </div>
-</section>
-<section id="unigram-model-by-sentencepiece">
+</div>
+<div class="section" id="unigram-model-by-sentencepiece">
 <h3>Unigram Model by SentencePiece<a class="headerlink" href="#unigram-model-by-sentencepiece" title="Permalink to this headline">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ekorpkit <span class="se">\</span>
     <span class="nv">project_name</span><span class="o">=</span>ekorpkit-book <span class="se">\</span>
@@ -3016,8 +3039,8 @@ INFO:ekorpkit.io.file:Saving dataframe to /content/drive/MyDrive/workspace/proje
     tokenizer.auto<span class="o">=</span>train
 </pre></div>
 </div>
-</section>
-<section id="id2">
+</div>
+<div class="section" id="id2">
 <h3>Compare the Tokenizers<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -3499,9 +3522,9 @@ time: 980 ms (started: 2022-11-29 10:48:22 +00:00)
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="id3">
+</div>
+</div>
+<div class="section" id="id3">
 <h2>Usage of Tokenizer Trainer<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -3642,8 +3665,8 @@ INFO:ekorpkit.config:Saving config to /content/drive/MyDrive/workspace/projects/
     tokenizer.auto<span class="o">=</span>train
 </pre></div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
 <script type="application/vnd.jupyter.widget-state+json">

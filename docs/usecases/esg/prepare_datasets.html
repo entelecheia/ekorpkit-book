@@ -4,9 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
-    <title>Preparing polarity classification datasets &#8212; eKorpkit Tutorials</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Preparing training datasets &#8212; eKorpkit Tutorials</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -21,7 +20,7 @@
     href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -38,7 +37,7 @@
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -52,7 +51,7 @@ const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Improving classification datasets" href="improve_datasets.html" />
@@ -545,7 +544,7 @@ const thebe_selector_output = ".output, .cell_output"
   <ul class="current">
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     Preparing polarity classification datasets
+     Preparing training datasets
     </a>
    </li>
    <li class="toctree-l2">
@@ -575,13 +574,18 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="preapre_cv_datasets.html">
-     Preparing cross validated datasets
+    <a class="reference internal" href="cross_validate_datasets.html">
+     Cross validating datasets
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="prepare_ls_datasets.html">
+    <a class="reference internal" href="prepare_datasets_for_labeling.html">
      Preparing active learning data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="all_in_one_pipeline.html">
+     Putting them together in a pipeline
     </a>
    </li>
   </ul>
@@ -1210,7 +1214,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Preparing polarity classification datasets</h1>
+                <h1>Preparing training datasets</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -1262,80 +1266,49 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="preparing-polarity-classification-datasets">
-<h1>Preparing polarity classification datasets<a class="headerlink" href="#preparing-polarity-classification-datasets" title="Permalink to this headline">#</a></h1>
-<div class="cell docutils container">
+  <div class="tex2jax_ignore mathjax_ignore section" id="preparing-training-datasets">
+<h1>Preparing training datasets<a class="headerlink" href="#preparing-training-datasets" title="Permalink to this headline">#</a></h1>
+<div class="cell tag_hide-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
 
-<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;version:&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
-
-<span class="n">is_colab</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is colab?&quot;</span><span class="p">,</span> <span class="n">is_colab</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">is_colab</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">():</span>
     <span class="n">eKonf</span><span class="o">.</span><span class="n">mount_google_drive</span><span class="p">()</span>
-<span class="n">workspace_dir</span> <span class="o">=</span> <span class="s2">&quot;/workspace&quot;</span>
-<span class="n">project_name</span> <span class="o">=</span> <span class="s2">&quot;ekorpkit-book/exmaples/esg&quot;</span>
-<span class="n">ws</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">set_workspace</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="n">workspace_dir</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project_name</span><span class="p">)</span>
+<span class="n">ws</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">set_workspace</span><span class="p">(</span>
+    <span class="n">workspace</span><span class="o">=</span><span class="s2">&quot;/workspace&quot;</span><span class="p">,</span> 
+    <span class="n">project</span><span class="o">=</span><span class="s2">&quot;ekorpkit-book/exmaples&quot;</span><span class="p">,</span> 
+    <span class="n">task</span><span class="o">=</span><span class="s2">&quot;esg&quot;</span><span class="p">,</span> 
+    <span class="n">log_level</span><span class="o">=</span><span class="s2">&quot;INFO&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;version:&quot;</span><span class="p">,</span> <span class="n">ws</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;project_dir:&quot;</span><span class="p">,</span> <span class="n">ws</span><span class="o">.</span><span class="n">project_dir</span><span class="p">)</span>
-<span class="n">ws</span><span class="o">.</span><span class="n">envs</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.utils.notebook:Google Colab not detected.
-INFO:ekorpkit.base:Set environment variable EKORPKIT_PROJECT=ekorpkit-book/exmaples/esg
-INFO:ekorpkit.base:Set environment variable EKORPKIT_PROJECT_DIR=/workspace/projects/ekorpkit-book/exmaples/esg
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Set environment variable EKORPKIT_DATA_ROOT=/workspace/data
+INFO:ekorpkit.base:Set environment variable CACHED_PATH_CACHE_ROOT=/workspace/.cache/cached_path
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.40.post0.dev49
-is colab? False
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:root:compose config with overrides: [&#39;project=default&#39;]
-INFO:ekorpkit.base:There are no arguments to initilize a config, using default config.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>project_dir: /workspace/projects/ekorpkit-book/exmaples/esg
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;EKORPKIT_CONFIG_DIR&#39;: &#39;/workspace/projects/ekorpkit-book/config&#39;,
- &#39;EKORPKIT_WORKSPACE_ROOT&#39;: &#39;/workspace&#39;,
- &#39;EKORPKIT_PROJECT&#39;: &#39;ekorpkit-book/exmaples/esg&#39;,
- &#39;EKORPKIT_PROJECT_DIR&#39;: &#39;/workspace/projects/ekorpkit-book/exmaples/esg&#39;,
- &#39;EKORPKIT_DATA_DIR&#39;: None,
- &#39;EKORPKIT_LOG_LEVEL&#39;: &#39;INFO&#39;,
- &#39;NUM_WORKERS&#39;: 230,
- &#39;KMP_DUPLICATE_LIB_OK&#39;: &#39;TRUE&#39;,
- &#39;CUDA_DEVICE_ORDER&#39;: None,
- &#39;CUDA_VISIBLE_DEVICES&#39;: None,
- &#39;WANDB_PROJECT&#39;: None,
- &#39;WANDB_DISABLED&#39;: None,
- &#39;LABEL_STUDIO_SERVER&#39;: &#39;http://ekorpkit-labelstudio:8080&#39;}
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 1.1 s (started: 2022-12-10 11:51:20 +00:00)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.40.post0.dev57
+project_dir: /workspace/projects/ekorpkit-book/exmaples
+time: 955 ms (started: 2022-12-16 04:03:41 +00:00)
 </pre></div>
 </div>
 </div>
 </div>
-<section id="fetch-the-labeled-dataset-from-the-labelstudio-server">
+<div class="section" id="fetch-the-labeled-dataset-from-the-labelstudio-server">
 <h2>Fetch the labeled dataset from the labelstudio server<a class="headerlink" href="#fetch-the-labeled-dataset-from-the-labelstudio-server" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.io.fetch.labelstudio</span> <span class="kn">import</span> <span class="n">LabelStudio</span>
 
-<span class="n">ls</span> <span class="o">=</span> <span class="n">LabelStudio</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;esg_polarity_labels&quot;</span><span class="p">)</span>
+<span class="n">ls</span> <span class="o">=</span> <span class="n">LabelStudio</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:root:compose config with overrides: [&#39;+io/fetcher=labelstudio&#39;]
-INFO:ekorpkit.config:Initalized batch: esg_polarity_labels(1) in /workspace/projects/ekorpkit-book/exmaples/esg/data
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 758 ms (started: 2022-12-10 11:21:18 +00:00)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 644 ms (started: 2022-12-16 04:04:13 +00:00)
 </pre></div>
 </div>
 </div>
@@ -1351,38 +1324,28 @@ INFO:ekorpkit.config:Initalized batch: esg_polarity_labels(1) in /workspace/proj
 12: ESG Polarity Classification (Sep 2022)
 3: ESG Topic Classification
 2: ESG Polarity Classification
-time: 1.12 s (started: 2022-12-10 11:21:19 +00:00)
+time: 1.12 s (started: 2022-12-16 04:04:20 +00:00)
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">json_path</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">export_annotations</span><span class="p">(</span><span class="n">project_id</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.fetch.labelstudio:fetching http://ekorpkit-labelstudio:8080/api/projects/12/export with {&#39;exportType&#39;: &#39;JSON&#39;} to /workspace/projects/ekorpkit-book/exmaples/esg/data/outputs/esg_polarity_labels/esg_polarity_labels(1)_annotations.json
-INFO:ekorpkit.io.fetch.labelstudio:/workspace/projects/ekorpkit-book/exmaples/esg/data/outputs/esg_polarity_labels/esg_polarity_labels(1)_annotations.json is downloaded
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 5.55 s (started: 2022-12-10 11:21:20 +00:00)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">esg_polarity_data</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">annotations_to_dataframe</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ls</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;esg_polarity_labels&quot;</span>
+<span class="n">esg_polarity_data</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">export_annotations</span><span class="p">(</span><span class="n">project_id</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">esg_polarity_data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="n">esg_polarity_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Saving dataframe to /workspace/projects/ekorpkit-book/exmaples/esg/data/outputs/esg_polarity_labels/esg_polarity_labels(1)_export.parquet
-INFO:ekorpkit.config:Saving config to /workspace/projects/ekorpkit-book/exmaples/esg/data/outputs/esg_polarity_labels/configs/esg_polarity_labels(1)_config.yaml
-INFO:ekorpkit.config:Saving config to /workspace/projects/ekorpkit-book/exmaples/esg/data/outputs/esg_polarity_labels/configs/esg_polarity_labels(1)_config.json
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.fetch.labelstudio:fetching http://ekorpkit-labelstudio:8080/api/projects/12/export with {&#39;exportType&#39;: &#39;JSON&#39;} to /workspace/projects/ekorpkit-book/exmaples/esg/outputs/esg_polarity_labels/esg_polarity_labels(2)_annotations.json
+INFO:ekorpkit.io.fetch.labelstudio:/workspace/projects/ekorpkit-book/exmaples/esg/outputs/esg_polarity_labels/esg_polarity_labels(2)_annotations.json is downloaded
+INFO:ekorpkit.io.file:Saving dataframe to /workspace/projects/ekorpkit-book/exmaples/esg/outputs/esg_polarity_labels/esg_polarity_labels(2)_export.parquet
+INFO:ekorpkit.config:Saving config to /workspace/projects/ekorpkit-book/exmaples/esg/outputs/esg_polarity_labels/configs/esg_polarity_labels(2)_config.yaml
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1158, 6)
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1459,18 +1422,30 @@ INFO:ekorpkit.config:Saving config to /workspace/projects/ekorpkit-book/exmaples
     </tr>
   </tbody>
 </table>
-</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 666 ms (started: 2022-12-10 11:21:26 +00:00)
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 6.1 s (started: 2022-12-16 04:04:22 +00:00)
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ls</span><span class="o">.</span><span class="n">data</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ls</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;esg_topic_labels&quot;</span>
+<span class="n">esg_topic_data</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">export_annotations</span><span class="p">(</span><span class="n">project_id</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">esg_topic_data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">esg_topic_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.fetch.labelstudio:fetching http://ekorpkit-labelstudio:8080/api/projects/13/export with {&#39;exportType&#39;: &#39;JSON&#39;} to /workspace/projects/ekorpkit-book/exmaples/esg/outputs/esg_topic_labels/esg_topic_labels(2)_annotations.json
+INFO:ekorpkit.io.fetch.labelstudio:/workspace/projects/ekorpkit-book/exmaples/esg/outputs/esg_topic_labels/esg_topic_labels(2)_annotations.json is downloaded
+INFO:ekorpkit.io.file:Saving dataframe to /workspace/projects/ekorpkit-book/exmaples/esg/outputs/esg_topic_labels/esg_topic_labels(2)_export.parquet
+INFO:ekorpkit.config:Saving config to /workspace/projects/ekorpkit-book/exmaples/esg/outputs/esg_topic_labels/configs/esg_topic_labels(2)_config.yaml
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(576, 6)
+</pre></div>
+</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1500,274 +1475,73 @@ INFO:ekorpkit.config:Saving config to /workspace/projects/ekorpkit-book/exmaples
   <tbody>
     <tr>
       <th>0</th>
-      <td>97756</td>
-      <td>세계 백신 생산의 60%를 담당한 인도가 자국 코로나19 확산 탓에 기능을 못하는 ...</td>
-      <td>20328</td>
-      <td>3</td>
+      <td>201831</td>
+      <td>지역&gt;충남 | 경제&gt;금융_재테크 | 지역&gt;울산 [머니투데이 구경민 기자] 미래에셋...</td>
+      <td>20337</td>
+      <td>1</td>
       <td>prediction</td>
-      <td>Neutral</td>
+      <td>S-사회공헌</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>97667</td>
-      <td>美서 한미 백신기업 파트너십 행사 개최 22일(현지시간) 미국 워싱턴 DC에서 열...</td>
-      <td>20327</td>
-      <td>3</td>
+      <td>201600</td>
+      <td>패밀리 오피스 분야 전락적 MOU 이창헌(앞줄 오른쪽) 한국M&amp;A거래소 회장과 류...</td>
+      <td>20336</td>
+      <td>1</td>
       <td>prediction</td>
-      <td>Neutral</td>
+      <td>UNKNOWN</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>97650</td>
-      <td>[머니투데이 워싱턴=공동취재단 , 서울=이소은 기자] 삼성바이오로직스가 22일(이...</td>
-      <td>20326</td>
-      <td>3</td>
+      <td>201319</td>
+      <td>01%)를 미래에셋증권과 이음프라이빗에쿼티(PE) 컨소시엄에 4500억원에 매각하기...</td>
+      <td>20335</td>
+      <td>1</td>
       <td>prediction</td>
-      <td>Neutral</td>
+      <td>UNKNOWN</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>97627</td>
-      <td>영국표준협회 ISO22301 취득 2018년 1·2공장 국내 첫 인증후 최근 3공...</td>
-      <td>20325</td>
-      <td>3</td>
+      <td>200829</td>
+      <td>다이렉트 IRP 운용·자산관리 수수료 전부 면제를 통한 비용부담 해소 은행 및 보...</td>
+      <td>20334</td>
+      <td>1</td>
       <td>prediction</td>
-      <td>Neutral</td>
+      <td>UNKNOWN</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>97593</td>
-      <td>경구용 치료제 2만 명분 이미 확보 식품의약품안전처가 경구용 코로나19 치료제(먹...</td>
-      <td>20324</td>
-      <td>3</td>
-      <td>prediction</td>
-      <td>Neutral</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>1153</th>
-      <td>88550</td>
-      <td>산업통상자원부는 현대글로비스와 LG화학의 전기차 택시에 대한 배터리 대여사업을 승인...</td>
-      <td>18884</td>
-      <td>2</td>
-      <td>prediction</td>
-      <td>Neutral</td>
-    </tr>
-    <tr>
-      <th>1154</th>
-      <td>88439</td>
-      <td>[헤럴드경제 정세희 기자]신학철 LG화학 부회장은 “동시대를 앞서나가는 디지털 전...</td>
-      <td>18883</td>
-      <td>2</td>
-      <td>prediction</td>
-      <td>Positive</td>
-    </tr>
-    <tr>
-      <th>1155</th>
-      <td>88413</td>
-      <td>갈등의 골이 깊어지면서 '시계제로' 상태에 빠진 아시아나항공 인수전이 무산될 가능성...</td>
-      <td>18609</td>
+      <td>199893</td>
+      <td>1999년 12월 자본금 500억원에 설립된 미래에셋증권은 약 20년 만에 200배...</td>
+      <td>20333</td>
       <td>1</td>
       <td>prediction</td>
-      <td>Negative</td>
-    </tr>
-    <tr>
-      <th>1156</th>
-      <td>88407</td>
-      <td>그간 경남도와 창원시는 주력산업인 제조업의 성장이 둔화하면서 어려운 시기를 겪었으나...</td>
-      <td>18608</td>
-      <td>1</td>
-      <td>prediction</td>
-      <td>Positive</td>
-    </tr>
-    <tr>
-      <th>1157</th>
-      <td>88382</td>
-      <td>이와 함께 지난 7일 한샘은 삼성전자와 전략적 사업협력 업무협약(MOU)을 체결한...</td>
-      <td>18607</td>
-      <td>1</td>
-      <td>prediction</td>
-      <td>Neutral</td>
+      <td>G-지배구조</td>
     </tr>
   </tbody>
 </table>
-<p>1158 rows × 6 columns</p>
-</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 7.09 ms (started: 2022-12-10 11:21:27 +00:00)
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 3.42 s (started: 2022-12-16 04:04:28 +00:00)
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ls</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">ls</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">annotator</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span>
-</pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id</th>
-      <th>text</th>
-      <th>annot_id</th>
-      <th>annotator</th>
-      <th>origin</th>
-      <th>labels</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>97756</td>
-      <td>세계 백신 생산의 60%를 담당한 인도가 자국 코로나19 확산 탓에 기능을 못하는 ...</td>
-      <td>20328</td>
-      <td>3</td>
-      <td>prediction</td>
-      <td>Neutral</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>97667</td>
-      <td>美서 한미 백신기업 파트너십 행사 개최 22일(현지시간) 미국 워싱턴 DC에서 열...</td>
-      <td>20327</td>
-      <td>3</td>
-      <td>prediction</td>
-      <td>Neutral</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>97650</td>
-      <td>[머니투데이 워싱턴=공동취재단 , 서울=이소은 기자] 삼성바이오로직스가 22일(이...</td>
-      <td>20326</td>
-      <td>3</td>
-      <td>prediction</td>
-      <td>Neutral</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>97627</td>
-      <td>영국표준협회 ISO22301 취득 2018년 1·2공장 국내 첫 인증후 최근 3공...</td>
-      <td>20325</td>
-      <td>3</td>
-      <td>prediction</td>
-      <td>Neutral</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>97593</td>
-      <td>경구용 치료제 2만 명분 이미 확보 식품의약품안전처가 경구용 코로나19 치료제(먹...</td>
-      <td>20324</td>
-      <td>3</td>
-      <td>prediction</td>
-      <td>Neutral</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>1150</th>
-      <td>88690</td>
-      <td>특히 SK이노베이션은 배터리 사업만 물적분할했던 LG화학과 달리 주요 사업부를 모두...</td>
-      <td>18887</td>
-      <td>2</td>
-      <td>prediction</td>
-      <td>Negative</td>
-    </tr>
-    <tr>
-      <th>1151</th>
-      <td>88602</td>
-      <td>차동석 LG화학 최고재무책임자(CFO·부사장)는 “대내외 불확실성 속에서도 리콜 사...</td>
-      <td>18886</td>
-      <td>2</td>
-      <td>prediction</td>
-      <td>Neutral</td>
-    </tr>
-    <tr>
-      <th>1152</th>
-      <td>88569</td>
-      <td>태광산업이 LG화학과 손잡고 10년 만에 대규모 신규 투자를 실시한다  최근 코로...</td>
-      <td>18885</td>
-      <td>2</td>
-      <td>prediction</td>
-      <td>Neutral</td>
-    </tr>
-    <tr>
-      <th>1153</th>
-      <td>88550</td>
-      <td>산업통상자원부는 현대글로비스와 LG화학의 전기차 택시에 대한 배터리 대여사업을 승인...</td>
-      <td>18884</td>
-      <td>2</td>
-      <td>prediction</td>
-      <td>Neutral</td>
-    </tr>
-    <tr>
-      <th>1154</th>
-      <td>88439</td>
-      <td>[헤럴드경제 정세희 기자]신학철 LG화학 부회장은 “동시대를 앞서나가는 디지털 전...</td>
-      <td>18883</td>
-      <td>2</td>
-      <td>prediction</td>
-      <td>Positive</td>
-    </tr>
-  </tbody>
-</table>
-<p>1146 rows × 6 columns</p>
-</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 7.16 ms (started: 2022-12-10 11:21:27 +00:00)
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="snorkel-labelmodel">
+<div class="section" id="snorkel-labelmodel">
 <h2>Snorkel LabelModel<a class="headerlink" href="#snorkel-labelmodel" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.tasks.label.snorkel</span> <span class="kn">import</span> <span class="n">BaseSnorkel</span>
-
-<span class="n">model_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;task/label=snorkel&quot;</span><span class="p">)</span>
-<span class="n">model_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;esg_polarity_snorkel&quot;</span>
-<span class="c1"># eKonf.print(model_cfg)</span>
 
 <span class="n">snorkel</span> <span class="o">=</span> <span class="n">BaseSnorkel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;esg_polarity_snorkel&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:root:compose config with overrides: [&#39;+task/label=snorkel&#39;]
-INFO:root:compose config with overrides: [&#39;+task/label=snorkel&#39;]
-INFO:ekorpkit.config:Initalized batch: esg_polarity_snorkel(0) in /workspace/projects/ekorpkit-book/exmaples/esg/data
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.config:Init batch - Batch name: esg_polarity_snorkel, Batch num: 2
+INFO:ekorpkit.config:Init batch - Batch name: esg_polarity_snorkel, Batch num: 2
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 2.37 s (started: 2022-12-10 11:51:22 +00:00)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 640 ms (started: 2022-12-14 11:40:17 +00:00)
 </pre></div>
 </div>
 </div>
@@ -1776,7 +1550,7 @@ INFO:ekorpkit.config:Initalized batch: esg_polarity_snorkel(0) in /workspace/pro
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;/workspace/projects/ekorpkit-book/exmaples/esg/data/outputs/esg_polarity_labels/esg_polarity_labels(1)_export.parquet&quot;</span>
 
-<span class="n">snorkel</span><span class="o">.</span><span class="n">load_datasets</span><span class="p">(</span><span class="n">data_file</span><span class="o">=</span><span class="n">data_file</span><span class="p">,</span> <span class="n">test_split_ratio</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">12345</span><span class="p">)</span>
+<span class="n">snorkel</span><span class="o">.</span><span class="n">load_datasets</span><span class="p">(</span><span class="n">data_files</span><span class="o">=</span><span class="n">data_file</span><span class="p">,</span> <span class="n">test_split_ratio</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">12345</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1786,18 +1560,22 @@ INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/projects/ekorpk
 INFO:ekorpkit.io.file:Loading data from /workspace/projects/ekorpkit-book/exmaples/esg/data/outputs/esg_polarity_labels/esg_polarity_labels(1)_export.parquet
 INFO:ekorpkit.datasets.config:Splitting the dataframe into train and test with ratio 0.2
 INFO:ekorpkit.datasets.config:Train data: (926, 7), Test data: (232, 7)
+INFO:ekorpkit.datasets.config:Shuffling the dataframe with seed 12345
+INFO:ekorpkit.datasets.config:Train data: (926, 7)
+INFO:ekorpkit.datasets.config:Test data: (232, 7)
+INFO:ekorpkit.io.file:Concatenating 2 dataframes
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 29.2 ms (started: 2022-12-10 11:51:24 +00:00)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 23.6 ms (started: 2022-12-14 11:40:18 +00:00)
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="writing-labeling-functions">
+</div>
+<div class="section" id="writing-labeling-functions">
 <h2>Writing Labeling Functions<a class="headerlink" href="#writing-labeling-functions" title="Permalink to this headline">#</a></h2>
 <p>Each crowdworker can be thought of as a single labeling function, as each worker labels a subset of data points, and may have errors or conflicting labels with other workers / labeling functions. Labeling fucntions will simply return the label the worker submitted for a given text, and abstain if they didn’t submit a label for it.</p>
-<section id="crowdworker-labeling-functions">
+<div class="section" id="crowdworker-labeling-functions">
 <h3>Crowdworker labeling functions<a class="headerlink" href="#crowdworker-labeling-functions" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1829,7 +1607,7 @@ INFO:ekorpkit.datasets.config:Train data: (926, 7), Test data: (232, 7)
         self.__worker_lfs__ = worker_lfs
         return worker_lfs
 
-time: 1.18 ms (started: 2022-12-10 11:51:24 +00:00)
+time: 1.34 ms (started: 2022-12-13 10:56:35 +00:00)
 </pre></div>
 </div>
 </div>
@@ -1841,6 +1619,9 @@ time: 1.18 ms (started: 2022-12-10 11:51:24 +00:00)
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Concatenating 2 dataframes
+</pre></div>
+</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1871,9 +1652,9 @@ time: 1.18 ms (started: 2022-12-10 11:51:24 +00:00)
   <tbody>
     <tr>
       <th>0</th>
-      <td>97756</td>
-      <td>세계 백신 생산의 60%를 담당한 인도가 자국 코로나19 확산 탓에 기능을 못하는 ...</td>
-      <td>20328</td>
+      <td>99621</td>
+      <td>31일 김동관 한화솔루션 전략부문 대표는 P4G 기본세션 에너지부문 '더 푸르른 지...</td>
+      <td>19868</td>
       <td>3</td>
       <td>prediction</td>
       <td>Neutral</td>
@@ -1881,43 +1662,43 @@ time: 1.18 ms (started: 2022-12-10 11:51:24 +00:00)
     </tr>
     <tr>
       <th>1</th>
-      <td>97667</td>
-      <td>美서 한미 백신기업 파트너십 행사 개최 22일(현지시간) 미국 워싱턴 DC에서 열...</td>
-      <td>20327</td>
-      <td>3</td>
+      <td>90918</td>
+      <td>김 변호사는 2001년 LG화학이 화학분야 중간지주회사인 LG CI를 인적 분할할 ...</td>
+      <td>18929</td>
+      <td>2</td>
       <td>prediction</td>
       <td>Neutral</td>
       <td>1</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>97650</td>
-      <td>[머니투데이 워싱턴=공동취재단 , 서울=이소은 기자] 삼성바이오로직스가 22일(이...</td>
-      <td>20326</td>
+      <td>108056</td>
+      <td>[머니투데이 김성은 기자] 한화솔루션의 그린에너지 사업부문인 한화큐셀이 글로벌 기...</td>
+      <td>19926</td>
       <td>3</td>
       <td>prediction</td>
-      <td>Neutral</td>
-      <td>1</td>
+      <td>Positive</td>
+      <td>2</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>97627</td>
-      <td>영국표준협회 ISO22301 취득 2018년 1·2공장 국내 첫 인증후 최근 3공...</td>
-      <td>20325</td>
-      <td>3</td>
+      <td>90740</td>
+      <td>2차전지 분야에서도 LG화학(현재는 LG에너지솔루션으로 분사)의 법인세 부담률은 ...</td>
+      <td>18927</td>
+      <td>2</td>
       <td>prediction</td>
       <td>Neutral</td>
       <td>1</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>97593</td>
-      <td>경구용 치료제 2만 명분 이미 확보 식품의약품안전처가 경구용 코로나19 치료제(먹...</td>
-      <td>20324</td>
+      <td>93872</td>
+      <td>김동관, P4G 정상회의 기조연설에서 기업 역할 강조 [아시아경제 황윤주 기자] ...</td>
+      <td>19823</td>
       <td>3</td>
       <td>prediction</td>
-      <td>Neutral</td>
-      <td>1</td>
+      <td>Positive</td>
+      <td>2</td>
     </tr>
     <tr>
       <th>...</th>
@@ -1931,9 +1712,9 @@ time: 1.18 ms (started: 2022-12-10 11:51:24 +00:00)
     </tr>
     <tr>
       <th>1153</th>
-      <td>88550</td>
-      <td>산업통상자원부는 현대글로비스와 LG화학의 전기차 택시에 대한 배터리 대여사업을 승인...</td>
-      <td>18884</td>
+      <td>102985</td>
+      <td>MIT 등 주요 10여개 대학 석·박사 및 학부생 대상 신학철 LG화학(05191...</td>
+      <td>19106</td>
       <td>2</td>
       <td>prediction</td>
       <td>Neutral</td>
@@ -1941,48 +1722,48 @@ time: 1.18 ms (started: 2022-12-10 11:51:24 +00:00)
     </tr>
     <tr>
       <th>1154</th>
-      <td>88439</td>
-      <td>[헤럴드경제 정세희 기자]신학철 LG화학 부회장은 “동시대를 앞서나가는 디지털 전...</td>
-      <td>18883</td>
+      <td>108198</td>
+      <td>18일 금융투자 업계에 따르면 LG화학은 17일 오후 4시 주주와 투자자를 대상으로...</td>
+      <td>19198</td>
+      <td>2</td>
+      <td>prediction</td>
+      <td>Neutral</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1155</th>
+      <td>89454</td>
+      <td>LG화학은 오는 16일까지 중국 선전(深圳)에서 열리는 '차이나플라스 2021'에...</td>
+      <td>18904</td>
       <td>2</td>
       <td>prediction</td>
       <td>Positive</td>
       <td>2</td>
     </tr>
     <tr>
-      <th>1155</th>
-      <td>88413</td>
-      <td>갈등의 골이 깊어지면서 '시계제로' 상태에 빠진 아시아나항공 인수전이 무산될 가능성...</td>
-      <td>18609</td>
-      <td>1</td>
-      <td>prediction</td>
-      <td>Negative</td>
-      <td>0</td>
-    </tr>
-    <tr>
       <th>1156</th>
-      <td>88407</td>
-      <td>그간 경남도와 창원시는 주력산업인 제조업의 성장이 둔화하면서 어려운 시기를 겪었으나...</td>
-      <td>18608</td>
-      <td>1</td>
+      <td>128683</td>
+      <td>[아시아경제 황윤주 기자] LG화학의 유럽 폴란드 공장이 지속가능경영의 모범사례로...</td>
+      <td>19628</td>
+      <td>2</td>
       <td>prediction</td>
       <td>Positive</td>
       <td>2</td>
     </tr>
     <tr>
       <th>1157</th>
-      <td>88382</td>
-      <td>이와 함께 지난 7일 한샘은 삼성전자와 전략적 사업협력 업무협약(MOU)을 체결한...</td>
-      <td>18607</td>
-      <td>1</td>
+      <td>109789</td>
+      <td>한화솔루션은 오는 7월부터 2년 간 총 48t(톤)의 수소를 공급한다  또 이후 충...</td>
+      <td>19939</td>
+      <td>3</td>
       <td>prediction</td>
-      <td>Neutral</td>
-      <td>1</td>
+      <td>Positive</td>
+      <td>2</td>
     </tr>
   </tbody>
 </table>
 <p>1158 rows × 7 columns</p>
-</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 8.53 ms (started: 2022-12-10 11:51:24 +00:00)
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 8.95 ms (started: 2022-12-14 11:41:05 +00:00)
 </pre></div>
 </div>
 </div>
@@ -1997,7 +1778,7 @@ time: 1.18 ms (started: 2022-12-10 11:51:24 +00:00)
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.tasks.label.snorkel:Number of workers: 3
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 2.78 ms (started: 2022-12-10 11:51:24 +00:00)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 3.54 ms (started: 2022-12-13 10:56:38 +00:00)
 </pre></div>
 </div>
 </div>
@@ -2010,12 +1791,12 @@ time: 1.18 ms (started: 2022-12-10 11:51:24 +00:00)
 </div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.tasks.label.snorkel:Applying worker lfs to train data
-100%|██████████| 926/926 [00:00&lt;00:00, 35666.37it/s]
+100%|██████████| 926/926 [00:00&lt;00:00, 34148.60it/s]
 INFO:ekorpkit.tasks.label.snorkel:Applying worker lfs to test data
-100%|██████████| 232/232 [00:00&lt;00:00, 34586.05it/s]
+100%|██████████| 232/232 [00:00&lt;00:00, 33436.83it/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 38.9 ms (started: 2022-12-10 11:51:24 +00:00)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 40.2 ms (started: 2022-12-13 10:56:39 +00:00)
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -2098,14 +1879,14 @@ INFO:ekorpkit.tasks.label.snorkel:Applying worker lfs to test data
     </tr>
   </tbody>
 </table>
-</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 13.4 ms (started: 2022-12-10 11:51:24 +00:00)
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 13.8 ms (started: 2022-12-13 10:56:40 +00:00)
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="train-labelmodel-and-generate-probabilistic-labels">
+</div>
+</div>
+<div class="section" id="train-labelmodel-and-generate-probabilistic-labels">
 <h2>Train LabelModel And Generate Probabilistic Labels<a class="headerlink" href="#train-labelmodel-and-generate-probabilistic-labels" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2114,10 +1895,10 @@ INFO:ekorpkit.tasks.label.snorkel:Applying worker lfs to test data
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 100/100 [00:00&lt;00:00, 158.23epoch/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 100/100 [00:01&lt;00:00, 86.08epoch/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 661 ms (started: 2022-12-10 11:51:25 +00:00)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 1.19 s (started: 2022-12-13 10:56:43 +00:00)
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -2134,7 +1915,7 @@ INFO:ekorpkit.tasks.label.snorkel:Applying worker lfs to test data
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LabelModel Accuracy for train: 1.000
 LabelModel Accuracy for test: 1.000
-time: 5.44 ms (started: 2022-12-10 11:51:26 +00:00)
+time: 5.52 ms (started: 2022-12-13 10:56:45 +00:00)
 </pre></div>
 </div>
 </div>
@@ -2146,13 +1927,12 @@ time: 5.44 ms (started: 2022-12-10 11:51:26 +00:00)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 1158/1158 [00:00&lt;00:00, 37556.57it/s]
-INFO:ekorpkit.io.file:Saving dataframe to /workspace/projects/ekorpkit-book/exmaples/esg/data/outputs/esg_polarity_snorkel/esg_polarity_snorkel(0)_preds.parquet
-INFO:ekorpkit.config:Saving config to /workspace/projects/ekorpkit-book/exmaples/esg/data/outputs/esg_polarity_snorkel/configs/esg_polarity_snorkel(0)_config.yaml
-INFO:ekorpkit.config:Saving config to /workspace/projects/ekorpkit-book/exmaples/esg/data/outputs/esg_polarity_snorkel/configs/esg_polarity_snorkel(0)_config.json
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 1158/1158 [00:00&lt;00:00, 37554.83it/s]
+INFO:ekorpkit.io.file:Saving dataframe to /workspace/projects/ekorpkit-book/exmaples/esg/data/outputs/esg_polarity_snorkel/esg_polarity_snorkel(1)_preds.parquet
+INFO:ekorpkit.config:Saving config to /workspace/projects/ekorpkit-book/exmaples/esg/data/outputs/esg_polarity_snorkel/configs/esg_polarity_snorkel(1)_config.yaml
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 329 ms (started: 2022-12-10 11:51:27 +00:00)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 581 ms (started: 2022-12-13 10:56:48 +00:00)
 </pre></div>
 </div>
 </div>
@@ -2165,7 +1945,7 @@ INFO:ekorpkit.config:Saving config to /workspace/projects/ekorpkit-book/exmaples
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Saving dataframe to /workspace/projects/ekorpkit-book/exmaples/esg/data/outputs/esg_polarity_snorkel/esg_polarity_snorkel(0)_preds.parquet
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.io.file:Saving dataframe to /workspace/projects/ekorpkit-book/exmaples/esg/data/outputs/esg_polarity_snorkel/esg_polarity_snorkel(1)_preds.parquet
 INFO:ekorpkit.io.file:Processing [1] files from [&#39;esg_polarity_snorkel(0)_preds.parquet&#39;]
 INFO:ekorpkit.io.file:Loading 1 dataframes from [&#39;/workspace/projects/ekorpkit-book/exmaples/esg/data/outputs/esg_polarity_snorkel/esg_polarity_snorkel(0)_preds.parquet&#39;]
 INFO:ekorpkit.io.file:Loading data from /workspace/projects/ekorpkit-book/exmaples/esg/data/outputs/esg_polarity_snorkel/esg_polarity_snorkel(0)_preds.parquet
@@ -2264,13 +2044,13 @@ INFO:ekorpkit.io.file:Loading data from /workspace/projects/ekorpkit-book/exmapl
   </tbody>
 </table>
 <p>1158 rows × 3 columns</p>
-</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 136 ms (started: 2022-12-10 11:52:57 +00:00)
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 140 ms (started: 2022-12-13 10:56:54 +00:00)
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="build-a-dataset-using-the-data-generated-by-the-label-model">
+</div>
+<div class="section" id="build-a-dataset-using-the-data-generated-by-the-label-model">
 <h2>Build a dataset using the data generated by the label model<a class="headerlink" href="#build-a-dataset-using-the-data-generated-by-the-label-model" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2345,8 +2125,8 @@ INFO:ekorpkit.io.file:Saving dataframe to ../data/esg/esg_polarity_kr/esg_polari
 </div>
 </div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
 <script type="application/vnd.jupyter.widget-state+json">

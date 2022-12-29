@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Word Segmentation and Association &#8212; eKorpkit Tutorials</title>
     
   <!-- Loaded before other Sphinx assets -->
@@ -21,7 +20,7 @@
     href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -38,7 +37,7 @@
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -52,7 +51,7 @@ const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -547,7 +546,7 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="../../usecases/esg/prepare_datasets.html">
-     Preparing polarity classification datasets
+     Preparing training datasets
     </a>
    </li>
    <li class="toctree-l2">
@@ -577,13 +576,18 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../usecases/esg/preapre_cv_datasets.html">
-     Preparing cross validated datasets
+    <a class="reference internal" href="../../usecases/esg/cross_validate_datasets.html">
+     Cross validating datasets
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../usecases/esg/prepare_ls_datasets.html">
+    <a class="reference internal" href="../../usecases/esg/prepare_datasets_for_labeling.html">
      Preparing active learning data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/all_in_one_pipeline.html">
+     Putting them together in a pipeline
     </a>
    </li>
   </ul>
@@ -1372,10 +1376,10 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="word-segmentation-and-association">
+  <div class="tex2jax_ignore mathjax_ignore section" id="word-segmentation-and-association">
 <h1>Word Segmentation and Association<a class="headerlink" href="#word-segmentation-and-association" title="Permalink to this headline">#</a></h1>
 <p><img alt="" src="../../../_images/entelecheia_associaltion_vs_segmentation.png" /></p>
-<section id="word-segmentation">
+<div class="section" id="word-segmentation">
 <h2>Word Segmentation<a class="headerlink" href="#word-segmentation" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p><strong>Word segmentation</strong> is the task of splitting a string of characters into words.</p></li>
@@ -1386,8 +1390,8 @@ title="Print to PDF"
 <li><p>Humans can easily segment a string of characters into words, even though there is no space between words.</p></li>
 <li><p>For example, we can easily segment the string of characters <code class="docutils literal notranslate"><span class="pre">Ilikechocolate</span></code> into words <code class="docutils literal notranslate"><span class="pre">I</span> <span class="pre">like</span> <span class="pre">chocolate</span></code>.</p></li>
 </ul>
-</section>
-<section id="why-should-we-segment-words">
+</div>
+<div class="section" id="why-should-we-segment-words">
 <h2>Why should we segment words?<a class="headerlink" href="#why-should-we-segment-words" title="Permalink to this headline">#</a></h2>
 <p>There are many applications that require word segmentation, even in English.</p>
 <ul class="simple">
@@ -1405,8 +1409,8 @@ title="Print to PDF"
 <li><p>Automatic CamelCasing of programming variables.</p></li>
 <li><p>Speech recognition: Speech recognition systems may not properly recognize spaces between words.</p></li>
 </ul>
-</section>
-<section id="generating-segment-variants">
+</div>
+<div class="section" id="generating-segment-variants">
 <h2>Generating segment variants<a class="headerlink" href="#generating-segment-variants" title="Permalink to this headline">#</a></h2>
 <p>We can generate all possible segment variants of a string of characters. Each distinct segment variant is called a <strong>composition</strong>.</p>
 <ul class="simple">
@@ -1418,7 +1422,7 @@ title="Print to PDF"
 <ul class="simple">
 <li><p>The best segmentation is the one that has the highest probability.</p></li>
 </ul>
-<section id="naive-recursive-algorithm">
+<div class="section" id="naive-recursive-algorithm">
 <h3>Naive Recursive Algorithm<a class="headerlink" href="#naive-recursive-algorithm" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>The naive recursive algorithm is to generate all possible compositions and evaluate them.</p></li>
@@ -1499,8 +1503,8 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-</section>
-<section id="dynamic-programming">
+</div>
+<div class="section" id="dynamic-programming">
 <h3>Dynamic Programming<a class="headerlink" href="#dynamic-programming" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Dynamic programming is a technique to solve a problem by breaking it into subproblems and storing the results of subproblems to avoid computing the same results again.</p></li>
@@ -1517,8 +1521,8 @@ title="Print to PDF"
     <span class="k">return</span> <span class="p">[</span><span class="n">string</span><span class="p">]</span>
 </pre></div>
 </div>
-</section>
-<section id="triangular-matrix">
+</div>
+<div class="section" id="triangular-matrix">
 <h3>Triangular Matrix<a class="headerlink" href="#triangular-matrix" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>The dynamic programming algorithm can be implemented using a triangular matrix.</p></li>
@@ -1526,8 +1530,8 @@ title="Print to PDF"
 <li><p>A triangular matrix of parts with increasing length is generated and organized in a circular buffer.</p></li>
 <li><p>This allows a constant amount of memory to be used for the algorithm.</p></li>
 </ul>
-</section>
-<section id="maximum-matching-algorithm">
+</div>
+<div class="section" id="maximum-matching-algorithm">
 <h3>Maximum Matching Algorithm<a class="headerlink" href="#maximum-matching-algorithm" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>If we have all known words in a dictionary, we can use the maximum matching algorithm to segment a sentence.</p></li>
@@ -1541,8 +1545,8 @@ title="Print to PDF"
 </ol>
 </li>
 </ul>
-</section>
-<section id="unknown-words">
+</div>
+<div class="section" id="unknown-words">
 <h3>Unknown Words<a class="headerlink" href="#unknown-words" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>We can not rely on the dictionary to segment all words.</p></li>
@@ -1550,9 +1554,9 @@ title="Print to PDF"
 <li><p>Even in these cases, we want to segment the words into meaningful parts.</p></li>
 <li><p>Therefore, we have to estimate the probability of any possible segmentation.</p></li>
 </ul>
-</section>
-</section>
-<section id="evaluation-of-compositions">
+</div>
+</div>
+<div class="section" id="evaluation-of-compositions">
 <h2>Evaluation of Compositions<a class="headerlink" href="#evaluation-of-compositions" title="Permalink to this headline">#</a></h2>
 <ul>
 <li><p>Generally, we can evaluate a composition by calculating the probability of the composition.</p></li>
@@ -1567,8 +1571,8 @@ title="Print to PDF"
 <li><p>At word boundary, the uncertainty of the segmentation increases.</p></li>
 <li><p>By measuring the uncertainty, we can evaluate the composition.</p></li>
 </ul>
-</section>
-<section id="uncertainty-of-word-boundaries">
+</div>
+<div class="section" id="uncertainty-of-word-boundaries">
 <h2>Uncertainty of word boundaries<a class="headerlink" href="#uncertainty-of-word-boundaries" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p>The uncertainty of word boundaries can be measured by the entropy of the word boundary.</p></li>
@@ -1579,7 +1583,7 @@ title="Print to PDF"
 <li><p>The latter is the countinous version of the former.</p></li>
 </ul>
 <p><img alt="" src="../../../_images/branching_entropy_uncertainty.png" /></p>
-<section id="accessor-variety">
+<div class="section" id="accessor-variety">
 <h3>Accessor Variety<a class="headerlink" href="#accessor-variety" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>The accessor variety (AV) defines that the uncertainty of a sub-sequence is the number of different words that can be formed by adding a sub-sequence to the sub-sequence.</p></li>
@@ -1604,8 +1608,8 @@ title="Print to PDF"
 <li><p>Threshold values can be used to determine the word boundaries.</p></li>
 <li><p>The threshold values can be determined by the corpus.</p></li>
 </ul>
-</section>
-<section id="branching-entropy">
+</div>
+<div class="section" id="branching-entropy">
 <h3>Branching Entropy<a class="headerlink" href="#branching-entropy" title="Permalink to this headline">#</a></h3>
 <p><strong>Assumption 1</strong>: The uncertainty of successive tokens increases at word boundaries.</p>
 <ul>
@@ -1653,9 +1657,9 @@ title="Print to PDF"
 </li>
 </ul>
 <p><img alt="" src="../../../_images/branching_entropy.png" /></p>
-</section>
-</section>
-<section id="word-segmentation-in-practice">
+</div>
+</div>
+<div class="section" id="word-segmentation-in-practice">
 <h2>Word Segmentation in Practice<a class="headerlink" href="#word-segmentation-in-practice" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1846,7 +1850,7 @@ Top 10 subwords: [(&#39;▁&#39;, 114), (&#39;e&#39;, 63), (&#39;p&#39;, 59), (&
 </div>
 </div>
 </div>
-<section id="word-segmentation-for-korean">
+<div class="section" id="word-segmentation-for-korean">
 <h3>Word Segmentation for Korean<a class="headerlink" href="#word-segmentation-for-korean" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2001,8 +2005,8 @@ Top 10 subwords: [(&#39;▁&#39;, 70), (&#39;방&#39;, 15), (&#39;가&#39;, 12),
 <img alt="../../../_images/word_segmentation_42_0.png" src="../../../_images/word_segmentation_42_0.png" />
 </div>
 </div>
-</section>
-<section id="working-with-news-article-samples">
+</div>
+<div class="section" id="working-with-news-article-samples">
 <h3>Working with news article samples<a class="headerlink" href="#working-with-news-article-samples" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2171,16 +2175,16 @@ Top 10 subwords: [(&#39;▁&#39;, 26177132), (&#39;e&#39;, 7246161), (&#39;t&#39
 <img alt="../../../_images/word_segmentation_53_0.png" src="../../../_images/word_segmentation_53_0.png" />
 </div>
 </div>
-</section>
-</section>
-<section id="references">
+</div>
+</div>
+<div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://lovit.github.io/nlp/2018/04/09/branching_entropy_accessor_variety/">Uncertanty to word boundary; Accessor Variety &amp; Branching Entropy</a></p></li>
 <li><p><a class="reference external" href="https://medium.com/towards-data-science/fast-word-segmentation-for-noisy-text-2c2c41f9e8da">Fast Word Segmentation of Noisy Text</a></p></li>
 </ul>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

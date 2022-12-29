@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lab 4: Pretraining Language Models &#8212; eKorpkit Tutorials</title>
     
   <!-- Loaded before other Sphinx assets -->
@@ -21,7 +20,7 @@
     href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -38,7 +37,7 @@
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -52,7 +51,7 @@ const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="NLP Applications" href="../nlp_apps/index.html" />
@@ -545,7 +544,7 @@ const thebe_selector_output = ".output, .cell_output"
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="../../usecases/esg/prepare_datasets.html">
-     Preparing polarity classification datasets
+     Preparing training datasets
     </a>
    </li>
    <li class="toctree-l2">
@@ -575,13 +574,18 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../usecases/esg/preapre_cv_datasets.html">
-     Preparing cross validated datasets
+    <a class="reference internal" href="../../usecases/esg/cross_validate_datasets.html">
+     Cross validating datasets
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../usecases/esg/prepare_ls_datasets.html">
+    <a class="reference internal" href="../../usecases/esg/prepare_datasets_for_labeling.html">
      Preparing active learning data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/all_in_one_pipeline.html">
+     Putting them together in a pipeline
     </a>
    </li>
   </ul>
@@ -1428,7 +1432,7 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="lab-4-pretraining-language-models">
+  <div class="tex2jax_ignore mathjax_ignore section" id="lab-4-pretraining-language-models">
 <h1>Lab 4: Pretraining Language Models<a class="headerlink" href="#lab-4-pretraining-language-models" title="Permalink to this headline">#</a></h1>
 <p><img alt="" src="../../../_images/train.png" /></p>
 <p>Now that we have our dataset and tokenizer, in this lab, we will train a language model on a large corpus of text from scratch.</p>
@@ -1526,14 +1530,14 @@ time: 893 ms (started: 2022-11-21 01:06:46 +00:00)
 </div>
 </div>
 </div>
-<section id="unicode-normalization">
+<div class="section" id="unicode-normalization">
 <h2>Unicode Normalization<a class="headerlink" href="#unicode-normalization" title="Permalink to this headline">#</a></h2>
 <p>One little thing to note is that we will need to normalize our text before training our language model. This is because the same character can be represented in different ways. For example, the character “é” can be represented as “e” followed by a combining accent character, or as a single character.</p>
-<section id="tl-dr">
+<div class="section" id="tl-dr">
 <h3>TL;DR<a class="headerlink" href="#tl-dr" title="Permalink to this headline">#</a></h3>
 <p>Use <code class="docutils literal notranslate"><span class="pre">NFKC</span></code> normalization to normalize your text before training your language model.</p>
-</section>
-<section id="unicode-normalization-forms">
+</div>
+<div class="section" id="unicode-normalization-forms">
 <h3>Unicode Normalization Forms<a class="headerlink" href="#unicode-normalization-forms" title="Permalink to this headline">#</a></h3>
 <p>There are four normalization forms:</p>
 <ul class="simple">
@@ -1548,8 +1552,8 @@ time: 893 ms (started: 2022-11-21 01:06:46 +00:00)
 <li><p>The length of the string is changed or not: NFC and NFKC always produce a string of the same length or shorter, while NFD and NFKD may produce a string that is longer.</p></li>
 <li><p>The original string is changed or not: NFC and NFD always produce a string that is identical to the original string, while NFKC and NFKD may produce a string that is different from the original string.</p></li>
 </ul>
-</section>
-<section id="unicode-normalization-in-python">
+</div>
+<div class="section" id="unicode-normalization-in-python">
 <h3>Unicode Normalization in Python<a class="headerlink" href="#unicode-normalization-in-python" title="Permalink to this headline">#</a></h3>
 <p>In Python, you can use the <code class="docutils literal notranslate"><span class="pre">unicodedata</span></code> module to normalize your text. The <code class="docutils literal notranslate"><span class="pre">unicodedata.normalize</span></code> function takes two arguments:</p>
 <ul class="simple">
@@ -1579,12 +1583,12 @@ time: 23.8 ms (started: 2022-11-19 10:16:57 +00:00)
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="bert-pretraining">
+</div>
+</div>
+<div class="section" id="bert-pretraining">
 <h2>BERT Pretraining<a class="headerlink" href="#bert-pretraining" title="Permalink to this headline">#</a></h2>
 <p>In this lab, we will train a BERT-like model using masked-language modeling, one of the two pretraining tasks used in the original BERT paper.</p>
-<section id="what-is-bert">
+<div class="section" id="what-is-bert">
 <h3>What is BERT?<a class="headerlink" href="#what-is-bert" title="Permalink to this headline">#</a></h3>
 <p>BERT is a large-scale language model that was trained on the English Wikipedia using a masked-language modeling objective. The model was then fine-tuned on a variety of downstream tasks, including question answering, natural language inference, and sentiment analysis. BERT was the first large-scale language model to be pre-trained using a deep bidirectional architecture and outperformed previous language models on a variety of tasks.</p>
 <p>BERT was originally pre-trained on 1 Million Steps with a global batch size of 256.</p>
@@ -1592,17 +1596,17 @@ time: 23.8 ms (started: 2022-11-19 10:16:57 +00:00)
 <div><p>“We train with batch size of 256 sequences (256 sequences * 512 tokens = 128,000 tokens/batch) for 1,000,000 steps, which is approximately 40 epochs over the 3.3 billion word corpus.”</p>
 </div></blockquote>
 <p>For more information, see the lecture notes on BERT.</p>
-</section>
-<section id="masked-language-modeling-mlm">
+</div>
+<div class="section" id="masked-language-modeling-mlm">
 <h3>Masked-Language Modeling (MLM)<a class="headerlink" href="#masked-language-modeling-mlm" title="Permalink to this headline">#</a></h3>
 <p>Masked-language modeling is a pretraining task where we mask some of the input tokens and train the model to predict the original value of the masked tokens. For example, if we have the sentence “The dog ate the apple”, we can mask the word “ate” and train the model to predict the original value of the masked token. The model will then learn to predict the original value of the masked tokens based on the context of the sentence.</p>
 <p>Example:</p>
 <blockquote>
 <div><p>Input: “The dog [MASK] the apple”</p>
 </div></blockquote>
-</section>
-</section>
-<section id="preprocessing-the-dataset">
+</div>
+</div>
+<div class="section" id="preprocessing-the-dataset">
 <h2>Preprocessing the Dataset<a class="headerlink" href="#preprocessing-the-dataset" title="Permalink to this headline">#</a></h2>
 <p>Before training our language model, we need to preprocess our dataset. We will use our tokenizer to tokenize our dataset and then convert the tokens to their IDs. If we have a sentence that is longer than the maximum sequence length, we will truncate the sentence. If the sentence is shorter than the maximum sequence length, we will pad the sentence with the padding token.</p>
 <p>Unlike the original BERT paper, we will not use the WordPiece tokenization algorithm. Instead, we will use the <code class="docutils literal notranslate"><span class="pre">unigram</span></code> tokenization algorithm.</p>
@@ -1662,7 +1666,7 @@ Vocab size: 30000
 </div>
 </div>
 </div>
-<section id="load-the-tokenizer">
+<div class="section" id="load-the-tokenizer">
 <h3>Load the tokenizer<a class="headerlink" href="#load-the-tokenizer" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1698,8 +1702,8 @@ time: 59.6 ms (started: 2022-11-21 01:03:21 +00:00)
 </div>
 </div>
 </div>
-</section>
-<section id="load-the-dataset">
+</div>
+<div class="section" id="load-the-dataset">
 <h3>Load the dataset<a class="headerlink" href="#load-the-dataset" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1730,8 +1734,8 @@ WARNING:datasets.builder:Reusing dataset text (/workspace/data/tbts/.cache/huggi
 </div>
 </div>
 </div>
-</section>
-<section id="tokenize-the-dataset">
+</div>
+<div class="section" id="tokenize-the-dataset">
 <h3>Tokenize the dataset<a class="headerlink" href="#tokenize-the-dataset" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1802,9 +1806,9 @@ WARNING:datasets.builder:Reusing dataset text (/workspace/data/tbts/.cache/huggi
 </div>
 </div>
 <p>We have 137,816,832 tokens in our dataset. For reference, the original BERT paper used 3.2 billion tokens, and GPT-3 uses 300 billion tokens.</p>
-</section>
-</section>
-<section id="initializing-a-new-model">
+</div>
+</div>
+<div class="section" id="initializing-a-new-model">
 <h2>Initializing a New Model<a class="headerlink" href="#initializing-a-new-model" title="Permalink to this headline">#</a></h2>
 <p>We will initialize a new model using the <code class="docutils literal notranslate"><span class="pre">bert-base-uncased</span></code> configuration. We will then save the configuration to a file so that we can use it later when we load the model.</p>
 <div class="cell docutils container">
@@ -1859,7 +1863,7 @@ time: 2.07 s (started: 2022-11-19 11:23:15 +00:00)
 </div>
 </div>
 </div>
-<section id="set-up-a-datacollator">
+<div class="section" id="set-up-a-datacollator">
 <h3>Set up a DataCollator<a class="headerlink" href="#set-up-a-datacollator" title="Permalink to this headline">#</a></h3>
 <p>Before we can start training, we need to set up a data collator that will be used to collate the batches of data. We will use the <code class="docutils literal notranslate"><span class="pre">DataCollatorForLanguageModeling</span></code> data collator, which will take care of masking the tokens and padding the sequences.</p>
 <div class="cell docutils container">
@@ -1883,8 +1887,8 @@ To enable them in other operations, rebuild TensorFlow with the appropriate comp
 </div>
 </div>
 </div>
-</section>
-<section id="load-the-tokenized-dataset">
+</div>
+<div class="section" id="load-the-tokenized-dataset">
 <h3>Load the Tokenized Dataset<a class="headerlink" href="#load-the-tokenized-dataset" title="Permalink to this headline">#</a></h3>
 <p>Our dataset is already tokenized, there are 268,366 examples in our dataset.</p>
 <div class="cell docutils container">
@@ -1929,12 +1933,12 @@ time: 70 ms (started: 2022-11-21 01:24:35 +00:00)
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="training-the-model">
+</div>
+</div>
+<div class="section" id="training-the-model">
 <h2>Training the Model<a class="headerlink" href="#training-the-model" title="Permalink to this headline">#</a></h2>
 <p>We will configure the training arguments and then set up a trainer to train our model.</p>
-<section id="configure-the-training-arguments">
+<div class="section" id="configure-the-training-arguments">
 <h3>Configure the Training Arguments<a class="headerlink" href="#configure-the-training-arguments" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1978,8 +1982,8 @@ time: 70 ms (started: 2022-11-21 01:24:35 +00:00)
 </div>
 </div>
 </div>
-</section>
-<section id="train-the-model">
+</div>
+<div class="section" id="train-the-model">
 <h3>Train the Model<a class="headerlink" href="#train-the-model" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2007,9 +2011,9 @@ time: 47.9 ms (started: 2022-11-19 11:34:51 +00:00)
 </div>
 </div>
 <p>It took 6h 33m 0.0s to train our model for 40 epochs.</p>
-</section>
-</section>
-<section id="testing-the-model">
+</div>
+</div>
+<div class="section" id="testing-the-model">
 <h2>Testing the Model<a class="headerlink" href="#testing-the-model" title="Permalink to this headline">#</a></h2>
 <p>We will load our model and test it on a few examples.</p>
 <div class="cell docutils container">
@@ -2091,8 +2095,8 @@ time: 223 ms (started: 2022-11-22 19:14:05 +00:00)
 </div>
 </div>
 </div>
-</section>
-<section id="usage-of-mlm-trainer">
+</div>
+<div class="section" id="usage-of-mlm-trainer">
 <h2>Usage of MLM Trainer<a class="headerlink" href="#usage-of-mlm-trainer" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2402,8 +2406,8 @@ time: 314 ms (started: 2022-11-29 10:36:06 +00:00)
 </div>
 </div>
 </div>
-</section>
-<section id="training-bnwiki-bert-using-mlm-trainer">
+</div>
+<div class="section" id="training-bnwiki-bert-using-mlm-trainer">
 <h2>Training bnwiki_bert using MLM Trainer<a class="headerlink" href="#training-bnwiki-bert-using-mlm-trainer" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2616,15 +2620,15 @@ time: 339 ms (started: 2022-11-24 23:45:48 +00:00)
 </div>
 </div>
 </div>
-</section>
-<section id="references">
+</div>
+<div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Unicode_equivalence">Unicode equivalence</a></p></li>
 <li><p><a class="reference external" href="https://huggingface.co/course/chapter7/6?fw=pt">Training a causal language model from scratch</a></p></li>
 </ul>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

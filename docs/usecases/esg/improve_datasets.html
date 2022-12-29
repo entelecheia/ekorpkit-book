@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Improving classification datasets &#8212; eKorpkit Tutorials</title>
     
   <!-- Loaded before other Sphinx assets -->
@@ -21,7 +20,7 @@
     href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -38,7 +37,7 @@
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -52,11 +51,11 @@ const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Training Classifiers for ESG Ratings" href="train_classifiers.html" />
-    <link rel="prev" title="Preparing polarity classification datasets" href="prepare_datasets.html" />
+    <link rel="prev" title="Preparing training datasets" href="prepare_datasets.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -545,7 +544,7 @@ const thebe_selector_output = ".output, .cell_output"
   <ul class="current">
    <li class="toctree-l2">
     <a class="reference internal" href="prepare_datasets.html">
-     Preparing polarity classification datasets
+     Preparing training datasets
     </a>
    </li>
    <li class="toctree-l2 current active">
@@ -575,13 +574,18 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="preapre_cv_datasets.html">
-     Preparing cross validated datasets
+    <a class="reference internal" href="cross_validate_datasets.html">
+     Cross validating datasets
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="prepare_ls_datasets.html">
+    <a class="reference internal" href="prepare_datasets_for_labeling.html">
      Preparing active learning data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="all_in_one_pipeline.html">
+     Putting them together in a pipeline
     </a>
    </li>
   </ul>
@@ -1262,67 +1266,169 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="improving-classification-datasets">
+  <div class="tex2jax_ignore mathjax_ignore section" id="improving-classification-datasets">
 <h1>Improving classification datasets<a class="headerlink" href="#improving-classification-datasets" title="Permalink to this headline">#</a></h1>
-<div class="cell docutils container">
+<div class="cell tag_hide-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_format=&#39;retina&#39;
-<span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
 
-<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;WARNING&quot;</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;version:&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is notebook?&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_notebook</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is colab?&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;environment variables:&quot;</span><span class="p">)</span>
-<span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">env</span><span class="p">()</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span>
+
+<span class="n">is_colab</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is colab?&quot;</span><span class="p">,</span> <span class="n">is_colab</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">is_colab</span><span class="p">:</span>
+    <span class="n">eKonf</span><span class="o">.</span><span class="n">mount_google_drive</span><span class="p">()</span>
+<span class="n">workspace_dir</span> <span class="o">=</span> <span class="s2">&quot;/workspace&quot;</span>
+<span class="n">project_name</span> <span class="o">=</span> <span class="s2">&quot;ekorpkit-book/exmaples/esg&quot;</span>
+<span class="n">ws</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">set_workspace</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="n">workspace_dir</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project_name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;project_dir:&quot;</span><span class="p">,</span> <span class="n">ws</span><span class="o">.</span><span class="n">project_dir</span><span class="p">)</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">envs</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.38+26.g3d56094
-is notebook? True
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.utils.notebook:Google Colab not detected.
+INFO:ekorpkit.base:Set environment variable EKORPKIT_PROJECT=ekorpkit-book/exmaples/esg
+INFO:ekorpkit.base:Set environment variable EKORPKIT_PROJECT_DIR=/workspace/projects/ekorpkit-book/exmaples/esg
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.40.post0.dev50
 is colab? False
-environment variables:
-{&#39;CUDA_DEVICE_ORDER&#39;: None,
- &#39;CUDA_VISIBLE_DEVICES&#39;: None,
- &#39;EKORPKIT_CONFIG_DIR&#39;: &#39;/workspace/projects/ekorpkit-book/config&#39;,
- &#39;EKORPKIT_DATA_DIR&#39;: None,
- &#39;EKORPKIT_LOG_LEVEL&#39;: &#39;WARNING&#39;,
- &#39;EKORPKIT_PROJECT&#39;: &#39;ekorpkit-book&#39;,
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:root:compose config with overrides: [&#39;project=default&#39;]
+INFO:ekorpkit.base:There are no arguments to initilize a config, using default config.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>project_dir: /workspace/projects/ekorpkit-book/exmaples/esg
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;EKORPKIT_CONFIG_DIR&#39;: &#39;/workspace/projects/ekorpkit-book/config&#39;,
  &#39;EKORPKIT_WORKSPACE_ROOT&#39;: &#39;/workspace&#39;,
+ &#39;EKORPKIT_PROJECT&#39;: &#39;ekorpkit-book/exmaples/esg&#39;,
+ &#39;EKORPKIT_PROJECT_DIR&#39;: &#39;/workspace/projects/ekorpkit-book/exmaples/esg&#39;,
+ &#39;EKORPKIT_DATA_DIR&#39;: None,
+ &#39;EKORPKIT_LOG_LEVEL&#39;: &#39;INFO&#39;,
+ &#39;NUM_WORKERS&#39;: 230,
  &#39;KMP_DUPLICATE_LIB_OK&#39;: &#39;TRUE&#39;,
- &#39;NUM_WORKERS&#39;: 230}
+ &#39;CUDA_DEVICE_ORDER&#39;: None,
+ &#39;CUDA_VISIBLE_DEVICES&#39;: None,
+ &#39;WANDB_PROJECT&#39;: None,
+ &#39;WANDB_DISABLED&#39;: None,
+ &#39;LABEL_STUDIO_SERVER&#39;: &#39;http://ekorpkit-labelstudio:8080&#39;,
+ &#39;CACHED_PATH_CACHE_ROOT&#39;: None}
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 1.1 s (started: 2022-12-12 10:24:03 +00:00)
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell tag_hide-cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;../data/esg&quot;</span>
-</pre></div>
-</div>
-</div>
-</div>
-<section id="preparing-esg-topics-dataset">
+<div class="section" id="preparing-esg-topics-dataset">
 <h2>Preparing <code class="docutils literal notranslate"><span class="pre">esg_topics</span></code> dataset<a class="headerlink" href="#preparing-esg-topics-dataset" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s1">&#39;dataset&#39;</span><span class="p">)</span>
 <span class="n">ds_cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;esg_topics&#39;</span>
 <span class="n">ds_cfg</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s1">&#39;/workspace/data/datasets/simple&#39;</span>
-<span class="n">ds</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">ds_cfg</span><span class="p">)</span>
-<span class="n">labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">splits</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">ds_cfg</span><span class="p">)</span>
+<span class="c1"># ds = eKonf.instantiate(ds_cfg)</span>
+<span class="c1"># labels = list(ds.splits[&#39;train&#39;].labels.unique())</span>
+<span class="c1"># print(labels)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
-INFO:ekorpkit.base:setting environment variable CACHED_PATH_CACHE_ROOT to /workspace/.cache/cached_path
-INFO:ekorpkit.base:setting environment variable KMP_DUPLICATE_LIB_OK to TRUE
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:root:compose config with overrides: [&#39;dataset=default&#39;]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;S-기업(공급망)동반성장/상생&#39;, &#39;G-지배구조&#39;, &#39;G-기업윤리/불공정/소송&#39;, &#39;G-주주환원&#39;, &#39;S-소비자&#39;, &#39;E-신재생에너지 발전&#39;, &#39;S-사회공헌&#39;, &#39;S-기술혁신&#39;, &#39;S-인적자본&#39;, &#39;E-환경영향&#39;, &#39;E-기후변화&#39;, &#39;S-산업재해/안전관리&#39;, &#39;G-정보공시&#39;, &#39;E-환경혁신&#39;, &#39;S-노조/노사&#39;, &#39;E-원자력발전&#39;]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;_target_&#39;: &#39;ekorpkit.datasets.dataset.Dataset&#39;,
+ &#39;auto&#39;: {&#39;build&#39;: False, &#39;load&#39;: True},
+ &#39;column_info&#39;: {&#39;_target_&#39;: &#39;ekorpkit.info.column.DatasetInfo&#39;,
+                 &#39;columns&#39;: {&#39;id&#39;: &#39;id&#39;, &#39;text&#39;: &#39;text&#39;},
+                 &#39;data&#39;: {&#39;id&#39;: &#39;int&#39;, &#39;text&#39;: &#39;str&#39;},
+                 &#39;datetime&#39;: {&#39;columns&#39;: None,
+                              &#39;format&#39;: None,
+                              &#39;rcParams&#39;: None}},
+ &#39;data_dir&#39;: &#39;/workspace/data/datasets/simple&#39;,
+ &#39;filetype&#39;: &#39;.parquet&#39;,
+ &#39;force&#39;: {&#39;build&#39;: False},
+ &#39;info&#39;: {&#39;_target_&#39;: &#39;ekorpkit.info.stat.SummaryInfo&#39;,
+          &#39;aggregate_info&#39;: {&#39;num_examples&#39;: &#39;num_examples&#39;,
+                             &#39;size_in_bytes&#39;: &#39;num_bytes&#39;},
+          &#39;data_dir&#39;: &#39;/workspace/data/datasets/simple&#39;,
+          &#39;info_file&#39;: &#39;info-esg_topics.yaml&#39;,
+          &#39;info_list&#39;: [&#39;name&#39;,
+                        &#39;fullname&#39;,
+                        &#39;domain&#39;,
+                        &#39;task&#39;,
+                        &#39;lang&#39;,
+                        &#39;description&#39;,
+                        &#39;license&#39;,
+                        &#39;homepage&#39;,
+                        &#39;version&#39;,
+                        &#39;num_examples&#39;,
+                        &#39;size_in_bytes&#39;,
+                        &#39;size_in_human_bytes&#39;,
+                        &#39;data_files_modified&#39;,
+                        &#39;info_updated&#39;,
+                        &#39;data_files&#39;,
+                        &#39;column_info&#39;],
+          &#39;key_columns&#39;: None,
+          &#39;modified_info&#39;: {&#39;data_files_modified&#39;: &#39;data_file&#39;},
+          &#39;name&#39;: &#39;esg_topics&#39;,
+          &#39;stats&#39;: {&#39;_func_&#39;: {&#39;len_bytes&#39;: {&#39;_partial_&#39;: True,
+                                             &#39;_target_&#39;: &#39;ekorpkit.utils.func.len_bytes&#39;}},
+                    &#39;_partial_&#39;: True,
+                    &#39;_target_&#39;: &#39;ekorpkit.info.stat.summary_stats&#39;,
+                    &#39;agg_funcs&#39;: {&#39;num_bytes&#39;: [&#39;count&#39;,
+                                                &#39;sum&#39;,
+                                                &#39;median&#39;,
+                                                &#39;max&#39;,
+                                                &#39;min&#39;]},
+                    &#39;convert_to_humanbytes&#39;: {&#39;num_bytes&#39;: &#39;human_bytes&#39;},
+                    &#39;key_columns&#39;: None,
+                    &#39;num_columns&#39;: {&#39;num_bytes&#39;: &#39;len_bytes&#39;},
+                    &#39;num_workers&#39;: 1,
+                    &#39;rename_columns&#39;: {&#39;num_bytes_count&#39;: &#39;num_examples&#39;,
+                                       &#39;num_bytes_sum&#39;: &#39;num_bytes&#39;},
+                    &#39;text_keys&#39;: &#39;text&#39;},
+          &#39;update_files_info&#39;: {&#39;data_files&#39;: &#39;data_file&#39;,
+                                &#39;meta_files&#39;: &#39;meta_file&#39;},
+          &#39;update_info&#39;: [&#39;fullname&#39;,
+                          &#39;lang&#39;,
+                          &#39;domain&#39;,
+                          &#39;task&#39;,
+                          &#39;description&#39;,
+                          &#39;license&#39;,
+                          &#39;homepage&#39;,
+                          &#39;version&#39;],
+          &#39;verbose&#39;: False},
+ &#39;name&#39;: &#39;esg_topics&#39;,
+ &#39;path&#39;: {&#39;cache&#39;: {&#39;cache_dir&#39;: &#39;/root/.ekorpkit/.cache&#39;,
+                    &#39;extract_archive&#39;: True,
+                    &#39;force_extract&#39;: False,
+                    &#39;path&#39;: None,
+                    &#39;return_parent_dir&#39;: True,
+                    &#39;uri&#39;: None,
+                    &#39;verbose&#39;: False},
+          &#39;cached_path&#39;: None,
+          &#39;columns&#39;: None,
+          &#39;concat_data&#39;: False,
+          &#39;data_columns&#39;: None,
+          &#39;data_dir&#39;: &#39;/workspace/data/datasets/simple&#39;,
+          &#39;data_file&#39;: None,
+          &#39;filetype&#39;: &#39;.parquet&#39;,
+          &#39;name&#39;: &#39;esg_topics&#39;,
+          &#39;output_dir&#39;: &#39;/root/.ekorpkit/projects/ekorpkit-book/exmaples/esg/esg_topics/outputs&#39;,
+          &#39;output_file&#39;: None,
+          &#39;root&#39;: &#39;/root/.ekorpkit/projects/ekorpkit-book/exmaples/esg/esg_topics&#39;,
+          &#39;suffix&#39;: None,
+          &#39;verbose&#39;: False},
+ &#39;use_name_as_subdir&#39;: True,
+ &#39;verbose&#39;: False}
+time: 599 ms (started: 2022-12-12 10:27:28 +00:00)
 </pre></div>
 </div>
 </div>
@@ -1405,8 +1511,8 @@ INFO:ekorpkit.base:setting environment variable KMP_DUPLICATE_LIB_OK to TRUE
 </div>
 </div>
 </div>
-</section>
-<section id="cross-validation-of-esg-topics-dataset">
+</div>
+<div class="section" id="cross-validation-of-esg-topics-dataset">
 <h2>Cross validation of <code class="docutils literal notranslate"><span class="pre">esg_topics</span></code> dataset<a class="headerlink" href="#cross-validation-of-esg-topics-dataset" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1691,8 +1797,8 @@ To disable this warning, you can either:
 {"model_id": "c9b8337f62ac4440ba28dba4122738d8", "version_major": 2, "version_minor": 0}
 </script></div>
 </div>
-</section>
-<section id="use-rubrix-to-find-potential-label-errors">
+</div>
+<div class="section" id="use-rubrix-to-find-potential-label-errors">
 <h2>Use rubrix to find potential label errors<a class="headerlink" href="#use-rubrix-to-find-potential-label-errors" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1785,8 +1891,8 @@ INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.en
 </div>
 </div>
 </div>
-</section>
-<section id="saving-the-re-labelled-dataset">
+</div>
+<div class="section" id="saving-the-re-labelled-dataset">
 <h2>Saving the re-labelled dataset<a class="headerlink" href="#saving-the-re-labelled-dataset" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1859,8 +1965,8 @@ INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.en
 </div>
 </div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
 <script type="application/vnd.jupyter.widget-state+json">
@@ -1899,7 +2005,7 @@ INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.en
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Preparing polarity classification datasets</p>
+            <p class="prev-next-title">Preparing training datasets</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="train_classifiers.html" title="next page">
