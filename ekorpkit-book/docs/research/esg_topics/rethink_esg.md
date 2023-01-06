@@ -16,108 +16,108 @@ To sum up, financial institutions should provide financing and a clearing house 
 
 ## Presentations
 
-![](figs/rethinking_esg/Slide1.png)
+![](../figs/rethinking_esg/Slide1.png)
 
 ---
 
-![](figs/rethinking_esg/Slide2.png)
+![](../figs/rethinking_esg/Slide2.png)
 
 ---
 
-![](figs/rethinking_esg/Slide3.png)
+![](../figs/rethinking_esg/Slide3.png)
 
 ---
 
-![](figs/rethinking_esg/Slide4.png)
+![](../figs/rethinking_esg/Slide4.png)
 
 ---
 
-![](figs/rethinking_esg/Slide5.png)
+![](../figs/rethinking_esg/Slide5.png)
 
 ---
 
-![](figs/rethinking_esg/Slide6.png)
+![](../figs/rethinking_esg/Slide6.png)
 
 ---
 
-![](figs/rethinking_esg/Slide7.png)
+![](../figs/rethinking_esg/Slide7.png)
 
 ---
 
-![](figs/rethinking_esg/Slide8.png)
+![](../figs/rethinking_esg/Slide8.png)
 
 ---
 
-![](figs/rethinking_esg/Slide9.png)
+![](../figs/rethinking_esg/Slide9.png)
 
 ---
 
-![](figs/rethinking_esg/Slide10.png)
+![](../figs/rethinking_esg/Slide10.png)
 
 ---
 
-![](figs/rethinking_esg/Slide11.png)
+![](../figs/rethinking_esg/Slide11.png)
 
 ---
 
-![](figs/rethinking_esg/Slide12.png)
+![](../figs/rethinking_esg/Slide12.png)
 
 ---
 
-![](figs/rethinking_esg/Slide13.png)
+![](../figs/rethinking_esg/Slide13.png)
 
 ---
 
-![](figs/rethinking_esg/Slide14.png)
+![](../figs/rethinking_esg/Slide14.png)
 
 ---
 
-![](figs/rethinking_esg/Slide15.png)
+![](../figs/rethinking_esg/Slide15.png)
 
 ---
 
-![](figs/rethinking_esg/Slide16.png)
+![](../figs/rethinking_esg/Slide16.png)
 
 ---
 
-![](figs/rethinking_esg/Slide17.png)
+![](../figs/rethinking_esg/Slide17.png)
 
 ---
 
-![](figs/rethinking_esg/Slide18.png)
+![](../figs/rethinking_esg/Slide18.png)
 
 ---
 
-![](figs/rethinking_esg/Slide19.png)
+![](../figs/rethinking_esg/Slide19.png)
 
 ---
 
-![](figs/rethinking_esg/Slide20.png)
+![](../figs/rethinking_esg/Slide20.png)
 
 ---
 
-![](figs/rethinking_esg/Slide21.png)
+![](../figs/rethinking_esg/Slide21.png)
 
 ---
 
-![](figs/rethinking_esg/Slide22.png)
+![](../figs/rethinking_esg/Slide22.png)
 
 ---
 
-![](figs/rethinking_esg/Slide23.png)
+![](../figs/rethinking_esg/Slide23.png)
 
 ---
 
-![](figs/rethinking_esg/Slide24.png)
+![](../figs/rethinking_esg/Slide24.png)
 
 ---
 
-![](figs/rethinking_esg/Slide25.png)
+![](../figs/rethinking_esg/Slide25.png)
 
 ---
 
-![](figs/rethinking_esg/Slide26.png)
+![](../figs/rethinking_esg/Slide26.png)
 
 ---
 
-![](figs/rethinking_esg/Slide27.png)
+![](../figs/rethinking_esg/Slide27.png)

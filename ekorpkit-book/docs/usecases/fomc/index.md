@@ -8,7 +8,7 @@ FOMC has eight regular meetings to determine the monetary policy. It publishes p
 
 At each meeting, the policy makers decide on monetary policy and publish the decision along with their view on the current economic situation and forecast, including the  Forward Guidance since 2012. The central banks intend to indicate their potential future monetary policy in their publications as market communication. 
 
-```{figure} ./figs/FomcMeetings.png
+```{figure} ../figs/fomc/FomcMeetings.png
 ---
 width: 800px
 name: fig-FomcMeetings
@@ -18,7 +18,7 @@ Available data between FOMC meetings (by [Yuki Takahashi](https://towardsdatasci
 
 This project aims to apply NLP to those texts published by FOMC to find latent features. All data used in this analysis are publicly available. 
 
-```{figure} ./figs/process.png
+```{figure} ../figs/fomc/process.png
 ---
 width: 800px
 name: fig-FomcProcess
