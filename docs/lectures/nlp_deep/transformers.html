@@ -53,6 +53,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="BERT: Bidirectional Encoder Representations from Transformers" href="bert.html" />
@@ -1556,7 +1558,7 @@ title="Print to PDF"
 <ul class="simple">
 <li><p>One of its strengths is also its weakness, the calculation of attention is very expensive.</p></li>
 <li><p>The attention mechanism is very expensive because it requires a lot of computation.</p></li>
-<li><p>In order to calculate the attention of each word with respect to all the others I have to perform $N^2$ calculations.</p></li>
+<li><p>In order to calculate the attention of each word with respect to all the others I have to perform <span class="math notranslate nohighlight">\(N^2\)</span> calculations.</p></li>
 <li><p>Graphically you can imagine a matrix that has to be filled with the attention values of each word compared to any other word.</p></li>
 <li><p>Optionally and usually on the decoder, it is possible to calculate the masked attention to avoid the calculation of the attention of a word with respect to the following words.</p></li>
 <li><p>The masked attention is a mechanism that allows you to calculate the attention of a word with respect to the previous words.</p></li>
@@ -1600,8 +1602,8 @@ title="Print to PDF"
 <ul class="simple">
 <li><p>A first solution would be to use all the pixels of the image and pass them to the transformer.</p></li>
 <li><p>This solution is not very efficient because it would require a lot of computation.</p></li>
-<li><p>The calculation of attention has a complexity equal to $O(N^2)$, where $N$ is the number of pixels.</p></li>
-<li><p>This means that the calculation of attention would require $O(N^4)$ calculations.</p></li>
+<li><p>The calculation of attention has a complexity equal to <span class="math notranslate nohighlight">\(O(N^2)\)</span>, where <span class="math notranslate nohighlight">\(N\)</span> is the number of pixels.</p></li>
+<li><p>This means that the calculation of attention would require <span class="math notranslate nohighlight">\(O(N^4)\)</span> calculations.</p></li>
 <li><p>This is not a viable solution because it would require a lot of computation.</p></li>
 </ul>
 <p><img alt="" src="../../../_images/vit-pixels.gif" /></p>
@@ -1629,8 +1631,8 @@ title="Print to PDF"
 <p>The authors of Transformer in Transformer (TnT) <span id="id5">[<a class="reference internal" href="../../about/index.html#id10" title="Kai Han, An Xiao, Enhua Wu, Jianyuan Guo, Chunjing Xu, and Yunhe Wang. Transformer in transformer. Advances in Neural Information Processing Systems, 34:15908–15919, 2021.">Han <em>et al.</em>, 2021</a>]</span> point out because the arrangement of pixels within a portion of the image to be analyzed is certain information we would not want to lose in order to make a quality prediction.</p>
 <ul class="simple">
 <li><p>Their proposal is then to take each individual patch (pxp) of the image, which are themselves images on 3 RGB channels, and transform it into a c-channel tensor.</p></li>
-<li><p>This tensor is then divided into $p^\prime$ parts with $p^\prime&lt;p$, in the example $p^\prime=4$.</p></li>
-<li><p>This yields $p’$ vectors in $c$ dimensions.</p></li>
+<li><p>This tensor is then divided into <span class="math notranslate nohighlight">\(p^\prime\)</span> parts with <span class="math notranslate nohighlight">\(p^\prime&lt;p\)</span>, in the example <span class="math notranslate nohighlight">\(p^\prime=4\)</span>.</p></li>
+<li><p>This yields <span class="math notranslate nohighlight">\(p’\)</span> vectors in <span class="math notranslate nohighlight">\(c\)</span> dimensions.</p></li>
 <li><p>These vectors now contain information about the arrangement of pixels within the patch.</p></li>
 <li><p>They are then concatenated and linearly projected in order to make them the same size as the vector obtained from the linear projection of the original patch and combined with it.</p></li>
 <li><p>By doing this the authors have managed to further improve performance on various computer vision tasks.</p></li>

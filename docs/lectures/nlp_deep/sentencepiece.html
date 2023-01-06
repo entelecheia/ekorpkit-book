@@ -53,6 +53,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="ByT5: Towards a token-free future with pre-trained byte-to-byte models" href="byt5.html" />
@@ -1690,55 +1692,60 @@ trainer_interface.cc(697) LOG(INFO) Saving vocabs: m.vocab
 <section id="subword-regularization">
 <h2>Subword Regularization<a class="headerlink" href="#subword-regularization" title="Permalink to this headline">#</a></h2>
 <ul>
-<li><p>Given a sequence of unigrams $X = (x_1, x_2, \cdots, x_n)$, the probability of the sequence $X$ is given by the product of the unigram conditional probabilities by the Bayes chain rule:</p>
-<p>$$
-P(X) = p(x_1) p(x_2 | x_1) \cdots p(x_n | x_1, \cdots, x_{n-1}) = \prod_{i=1}^n p(x_i | x_1, \cdots, x_{i-1})
-$$</p>
+<li><p>Given a sequence of unigrams <span class="math notranslate nohighlight">\(X = (x_1, x_2, \cdots, x_n)\)</span>, the probability of the sequence <span class="math notranslate nohighlight">\(X\)</span> is given by the product of the unigram conditional probabilities by the Bayes chain rule:</p>
+<div class="math notranslate nohighlight">
+\[
+  P(X) = p(x_1) p(x_2 | x_1) \cdots p(x_n | x_1, \cdots, x_{n-1}) = \prod_{i=1}^n p(x_i | x_1, \cdots, x_{i-1})
+  \]</div>
 </li>
-<li><p>In the problem of Neural Machine Translation, the probability of $P(Y|X)$ is given by the product of the conditional probabilities of the target sequence $Y$ given the source sequence $X$:</p>
-<p>$$
-P(Y|X;\theta) = \prod_{i=1}^n P(y_i | \mathbf{x}, y_{&lt;i}; \theta)
-$$</p>
-<p>where the lower case variables represent the actual tokens, and the upper case variables represent the sequence of tokens. $\theta$ is the model parameter.</p>
+<li><p>In the problem of Neural Machine Translation, the probability of <span class="math notranslate nohighlight">\(P(Y|X)\)</span> is given by the product of the conditional probabilities of the target sequence <span class="math notranslate nohighlight">\(Y\)</span> given the source sequence <span class="math notranslate nohighlight">\(X\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+  P(Y|X;\theta) = \prod_{i=1}^n P(y_i | \mathbf{x}, y_{&lt;i}; \theta)
+  \]</div>
+<p>where the lower case variables represent the actual tokens, and the upper case variables represent the sequence of tokens. <span class="math notranslate nohighlight">\(\theta\)</span> is the model parameter.</p>
 </li>
 </ul>
 <ul>
-<li><p>This formula is not actually correct, since $X$ and $Y$ can be formed by an exponentailly large number of possible subword sequences.</p></li>
+<li><p>This formula is not actually correct, since <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> can be formed by an exponentailly large number of possible subword sequences.</p></li>
 <li><p>For example, the word <code class="docutils literal notranslate"><span class="pre">hello</span></code> can be segmented in a number of ways, e.g., <code class="docutils literal notranslate"><span class="pre">h</span> <span class="pre">e</span> <span class="pre">l</span> <span class="pre">l</span> <span class="pre">o</span></code>, <code class="docutils literal notranslate"><span class="pre">he</span> <span class="pre">ll</span> <span class="pre">o</span></code>, <code class="docutils literal notranslate"><span class="pre">hel</span> <span class="pre">lo</span></code>, <code class="docutils literal notranslate"><span class="pre">hell</span> <span class="pre">o</span></code>, <code class="docutils literal notranslate"><span class="pre">hello</span></code>.</p></li>
-<li><p>Therefore, we should replace $X$ and $Y$ on the left with a specific sequence of subwords, $\mathbf{x}$ and $\mathbf{y}$, respectively.</p></li>
-<li><p>The cost function for NMT is given by sum of the expected log-likelihood of the target sequence $\mathbf{y}$ given the source sequence $\mathbf{x}$:</p>
-<p>$$
-\mathcal{L}(\theta) = - \sum_{s=1}^{|D|} \mathbb{E}_{\substack{\mathbf{x} \sim P(\mathbf{x}|X^{(s)}) \ \mathbf{y} \sim P(\mathbf{y}|Y^{(s)})}} \log P(\mathbf{y}|\mathbf{x};\theta)
-$$</p>
+<li><p>Therefore, we should replace <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> on the left with a specific sequence of subwords, <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{y}\)</span>, respectively.</p></li>
+<li><p>The cost function for NMT is given by sum of the expected log-likelihood of the target sequence <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> given the source sequence <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+  \mathcal{L}(\theta) = - \sum_{s=1}^{|D|} \mathbb{E}_{\substack{\mathbf{x} \sim P(\mathbf{x}|X^{(s)}) \\ \mathbf{y} \sim P(\mathbf{y}|Y^{(s)})}} \log P(\mathbf{y}|\mathbf{x};\theta)
+  \end{split}\]</div>
 </li>
 <li><p>This formula looks intimidating, but it is actually quite simple.</p></li>
-<li><p>In practice, we can approximate the expected log-likelihood of a single training example $(\mathbf{x}, \mathbf{y})$.</p></li>
+<li><p>In practice, we can approximate the expected log-likelihood of a single training example <span class="math notranslate nohighlight">\((\mathbf{x}, \mathbf{y})\)</span>.</p></li>
 </ul>
 </section>
 <section id="how-to-train-sentencepiece">
 <h2>How to train SentencePiece<a class="headerlink" href="#how-to-train-sentencepiece" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p>Assume that we have a large collection of bigrams, greater than what we ultimately want to use in our model.</p></li>
-<li><p>To train a SentencePiece model, we want to maximize the probability of obtaining a particular tokenization $X = (x_1, x_2, \cdots, x_n)$ of the corpus, given the unigram probabilities $p(x_i), p(x_2), \cdots, p(x_n)$.</p></li>
-<li><p>The actual tokenization $X$ is not observed, we only observe the un-tokenized sequence $X$.</p></li>
+<li><p>To train a SentencePiece model, we want to maximize the probability of obtaining a particular tokenization <span class="math notranslate nohighlight">\(X = (x_1, x_2, \cdots, x_n)\)</span> of the corpus, given the unigram probabilities <span class="math notranslate nohighlight">\(p(x_i), p(x_2), \cdots, p(x_n)\)</span>.</p></li>
+<li><p>The actual tokenization <span class="math notranslate nohighlight">\(X\)</span> is not observed, we only observe the un-tokenized sequence <span class="math notranslate nohighlight">\(X\)</span>.</p></li>
 <li><p>This is a classic problem of maximum likelihood estimation, and we can solve it by the EM algorithm.</p></li>
-<li><p>The problem is that thte $x_i$ are all of different lengths, and we cannot apply the EM algorithm directly.</p></li>
+<li><p>The problem is that thte <span class="math notranslate nohighlight">\(x_i\)</span> are all of different lengths, and we cannot apply the EM algorithm directly.</p></li>
 <li><p>Instead, we should use a Bayesian approach to solve this problem.</p></li>
 </ul>
 <p>The SentencePiece training objective is given by the following equation:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \mathcal{L}(\theta) = - \sum_{s=1}^{|D|} \log P(X^{(s)}) = - \sum_{s=1}^{|D|} \log (\sum_{\mathbf{x} \in S(\mathbf{x})} P(\mathbf{x}) )
-$$</p>
-<p>where the $\mathbf{x}$ is a unigram sequence, and $S(\mathbf{x})$ is the set of all possible sequences that can be generated from $\mathbf{x}$.</p>
+\]</div>
+<p>where the <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is a unigram sequence, and <span class="math notranslate nohighlight">\(S(\mathbf{x})\)</span> is the set of all possible sequences that can be generated from <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>.</p>
 <p>The steps are as follows:</p>
 <ol>
-<li><p>Initialize the unigram probabilities $p(x_i)$. The frequency of each unigram is used as the initial value.</p></li>
-<li><p>M-step: Compute the most likely sequence $\mathbf{x}$ given the current unigram probabilities $p(x_i)$.</p></li>
-<li><p>E-step: Given the current most likely sequence $\mathbf{x}$, update the unigram probabilities $p(x_i)$. In Bayesian setting, the unigram probabilities are defined as:</p>
-<p>$$
-p(x_i | \mathbf{x}) = \frac{c_i}{\sum_{j=1}^{|V|} c_j} \implies \frac{e^{\psi(c_i)}}{\sum_{j=1}^{|V|} e^{\psi(c_j)}} = \frac{e^{\psi(c_i)}}{e^{\psi(\sum_{j=1}^{|V|} c_j)}} = \frac{e^{\psi(c_i)}}{e^{\psi(c_1) + \cdots + \psi(c_n)}}
-$$</p>
-<p>where $c_i$ is the frequency of the unigram $x_i$ in the corpus, $|V|$ is the size of the vocabulary, and $\psi(c_i)$ is the digamma function.</p>
+<li><p>Initialize the unigram probabilities <span class="math notranslate nohighlight">\(p(x_i)\)</span>. The frequency of each unigram is used as the initial value.</p></li>
+<li><p>M-step: Compute the most likely sequence <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> given the current unigram probabilities <span class="math notranslate nohighlight">\(p(x_i)\)</span>.</p></li>
+<li><p>E-step: Given the current most likely sequence <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, update the unigram probabilities <span class="math notranslate nohighlight">\(p(x_i)\)</span>. In Bayesian setting, the unigram probabilities are defined as:</p>
+<div class="math notranslate nohighlight">
+\[
+   p(x_i | \mathbf{x}) = \frac{c_i}{\sum_{j=1}^{|V|} c_j} \implies \frac{e^{\psi(c_i)}}{\sum_{j=1}^{|V|} e^{\psi(c_j)}} = \frac{e^{\psi(c_i)}}{e^{\psi(\sum_{j=1}^{|V|} c_j)}} = \frac{e^{\psi(c_i)}}{e^{\psi(c_1) + \cdots + \psi(c_n)}}
+   \]</div>
+<p>where <span class="math notranslate nohighlight">\(c_i\)</span> is the frequency of the unigram <span class="math notranslate nohighlight">\(x_i\)</span> in the corpus, <span class="math notranslate nohighlight">\(|V|\)</span> is the size of the vocabulary, and <span class="math notranslate nohighlight">\(\psi(c_i)\)</span> is the digamma function.</p>
 </li>
 <li><p>Repeat the M-step and E-step until the unigram probabilities converge. The log-likelihood is monotonically increasing, so we can stop the training when the log-likelihood does not increase for a certain number of iterations.</p></li>
 </ol>
@@ -1753,7 +1760,7 @@ $$</p>
 </div>
 </div>
 <ul class="simple">
-<li><p>Initialize the unigram probabilities $p(x_i)$. The frequency of each unigram is used as the initial value.</p></li>
+<li><p>Initialize the unigram probabilities <span class="math notranslate nohighlight">\(p(x_i)\)</span>. The frequency of each unigram is used as the initial value.</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1776,7 +1783,7 @@ $$</p>
 </div>
 </div>
 <ul class="simple">
-<li><p>M-step: Compute the most likely sequence $\mathbf{x}$ given the current unigram probabilities $p(x_i)$.</p></li>
+<li><p>M-step: Compute the most likely sequence <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> given the current unigram probabilities <span class="math notranslate nohighlight">\(p(x_i)\)</span>.</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1794,7 +1801,7 @@ $$</p>
 </div>
 </div>
 <ul class="simple">
-<li><p>E-step: Given the current most likely sequence $\mathbf{x}$, update the unigram probabilities $p(x_i)$.</p></li>
+<li><p>E-step: Given the current most likely sequence <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, update the unigram probabilities <span class="math notranslate nohighlight">\(p(x_i)\)</span>.</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1849,10 +1856,10 @@ $$</p>
 <li><p>If all of the subwords were of the same length, we could apply the Viterbi algorithm to find the optimal segmentation.</p></li>
 <li><p>The Viterbi algorithm is a dynamic programming algorithm that finds the most likely sequence of states, given a sequence of observations and a model of the transition probabilities between states and the emission probabilities of the observations given the states.</p>
 <ul>
-<li><p>You have some hidden states $z_1, z_2, \cdots, z_n$, and you want to transition from $z_1 \rightarrow z_2 \rightarrow \cdots \rightarrow z_n$, and you know the transition matrix $A_{ij}$, giving the probability of transitioning from $z_i^{(1)}$ to $z_j^{(2)}$, where $i$ and $j$ are the hidden states, and the superscript indicates the sequence order.</p></li>
+<li><p>You have some hidden states <span class="math notranslate nohighlight">\(z_1, z_2, \cdots, z_n\)</span>, and you want to transition from <span class="math notranslate nohighlight">\(z_1 \rightarrow z_2 \rightarrow \cdots \rightarrow z_n\)</span>, and you know the transition matrix <span class="math notranslate nohighlight">\(A_{ij}\)</span>, giving the probability of transitioning from <span class="math notranslate nohighlight">\(z_i^{(1)}\)</span> to <span class="math notranslate nohighlight">\(z_j^{(2)}\)</span>, where <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> are the hidden states, and the superscript indicates the sequence order.</p></li>
 </ul>
 </li>
-<li><p>The problem is that $A$ is not between adjacent states.</p></li>
+<li><p>The problem is that <span class="math notranslate nohighlight">\(A\)</span> is not between adjacent states.</p></li>
 </ul>
 <ul>
 <li><p>Consider tokenizing the word <code class="docutils literal notranslate"><span class="pre">hello</span></code> given the subwords {<code class="docutils literal notranslate"><span class="pre">he</span></code>, <code class="docutils literal notranslate"><span class="pre">h</span></code>, <code class="docutils literal notranslate"><span class="pre">ll</span></code>, <code class="docutils literal notranslate"><span class="pre">e</span></code>, <code class="docutils literal notranslate"><span class="pre">o</span></code>, <code class="docutils literal notranslate"><span class="pre">hell</span></code>}.</p></li>
@@ -1868,9 +1875,10 @@ $$</p>
 <ul>
 <li><p>There are three arrows that can lead to the state (4), a red, a blue, and a green arrow.</p></li>
 <li><p>The highest probability at the state (4) is just the best path from the previous state, plus the probability of the transition.</p>
-<p>$$
-p_i = \max_{j \le i} (p_j p_{j \rightarrow i})
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+    p_i = \max_{j \le i} (p_j p_{j \rightarrow i})
+    \]</div>
 </li>
 </ul>
 </li>

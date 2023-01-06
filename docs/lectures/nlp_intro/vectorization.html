@@ -53,6 +53,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Word Embeddings" href="word_embeddings.html" />
@@ -1339,12 +1341,24 @@ title="Print to PDF"
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#computing-pmi-of-w-and-c">
-     Computing PMI of $w$ and $c$:
+     Computing PMI of
+     <span class="math notranslate nohighlight">
+      \(w\)
+     </span>
+     and
+     <span class="math notranslate nohighlight">
+      \(c\)
+     </span>
+     :
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#using-a-fixed-window-of-pm-k-words">
-       Using a fixed window of $\pm k$ words
+       Using a fixed window of
+       <span class="math notranslate nohighlight">
+        \(\pm k\)
+       </span>
+       words
       </a>
      </li>
     </ul>
@@ -1513,12 +1527,24 @@ title="Print to PDF"
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#computing-pmi-of-w-and-c">
-     Computing PMI of $w$ and $c$:
+     Computing PMI of
+     <span class="math notranslate nohighlight">
+      \(w\)
+     </span>
+     and
+     <span class="math notranslate nohighlight">
+      \(c\)
+     </span>
+     :
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#using-a-fixed-window-of-pm-k-words">
-       Using a fixed window of $\pm k$ words
+       Using a fixed window of
+       <span class="math notranslate nohighlight">
+        \(\pm k\)
+       </span>
+       words
       </a>
      </li>
     </ul>
@@ -1754,26 +1780,27 @@ title="Print to PDF"
 </li>
 <li><p>Compute the <code class="docutils literal notranslate"><span class="pre">semantic</span> <span class="pre">similarity</span> <span class="pre">of</span> <span class="pre">words</span></code> by measuring the <code class="docutils literal notranslate"><span class="pre">similarity</span> <span class="pre">of</span> <span class="pre">their</span> <span class="pre">context</span> <span class="pre">vectors</span></code></p></li>
 </ul>
-<p>Distributional similarities represent each word $w$ as a vector $v_w$ of context counts:</p>
-<p>$$w = (w_1 , \ldots , w_N ) \in R^N$$</p>
-<p>in a vector space $R^N$ where $N$ is the number of contexts.</p>
+<p>Distributional similarities represent each word <span class="math notranslate nohighlight">\(w\)</span> as a vector <span class="math notranslate nohighlight">\(v_w\)</span> of context counts:</p>
+<div class="math notranslate nohighlight">
+\[w = (w_1 , \ldots , w_N ) \in R^N\]</div>
+<p>in a vector space <span class="math notranslate nohighlight">\(R^N\)</span> where <span class="math notranslate nohighlight">\(N\)</span> is the number of contexts.</p>
 <ul class="simple">
-<li><p>each dimension $i$ represents a different context $c_i$</p></li>
-<li><p>each element $v_{w,i}$ captures how strongly $w$ is associated with context $c_i$</p></li>
-<li><p>$v_{w,i}$ is the co-occurrence count of $w$ and $c_i$</p></li>
+<li><p>each dimension <span class="math notranslate nohighlight">\(i\)</span> represents a different context <span class="math notranslate nohighlight">\(c_i\)</span></p></li>
+<li><p>each element <span class="math notranslate nohighlight">\(v_{w,i}\)</span> captures how strongly <span class="math notranslate nohighlight">\(w\)</span> is associated with context <span class="math notranslate nohighlight">\(c_i\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(v_{w,i}\)</span> is the co-occurrence count of <span class="math notranslate nohighlight">\(w\)</span> and <span class="math notranslate nohighlight">\(c_i\)</span></p></li>
 </ul>
 </section>
 <section id="the-information-retrieval-perspective-the-term-document-matrix">
 <h3>The Information Retrieval perspective: The Term-Document Matrix<a class="headerlink" href="#the-information-retrieval-perspective-the-term-document-matrix" title="Permalink to this headline">#</a></h3>
-<p>In information retrieval, we search a collection of $N$ documents for $M$ terms:</p>
+<p>In information retrieval, we search a collection of <span class="math notranslate nohighlight">\(N\)</span> documents for <span class="math notranslate nohighlight">\(M\)</span> terms:</p>
 <ul class="simple">
-<li><p>We can represent each <code class="docutils literal notranslate"><span class="pre">word</span></code> in the vocabulary $V$ as an $N$-dimensional vector $v_w$ where $v_{w,i}$ is the <code class="docutils literal notranslate"><span class="pre">frequency</span></code> of the word $w$ in document $i$.</p></li>
-<li><p>Conversely, we can represent each <code class="docutils literal notranslate"><span class="pre">document</span></code> as an $M$-dimensional vector $v_d$ where $v_{d,j}$ is the <code class="docutils literal notranslate"><span class="pre">frequency</span></code> of the term $t_j$ in document $d$.</p></li>
+<li><p>We can represent each <code class="docutils literal notranslate"><span class="pre">word</span></code> in the vocabulary <span class="math notranslate nohighlight">\(V\)</span> as an <span class="math notranslate nohighlight">\(N\)</span>-dimensional vector <span class="math notranslate nohighlight">\(v_w\)</span> where <span class="math notranslate nohighlight">\(v_{w,i}\)</span> is the <code class="docutils literal notranslate"><span class="pre">frequency</span></code> of the word <span class="math notranslate nohighlight">\(w\)</span> in document <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+<li><p>Conversely, we can represent each <code class="docutils literal notranslate"><span class="pre">document</span></code> as an <span class="math notranslate nohighlight">\(M\)</span>-dimensional vector <span class="math notranslate nohighlight">\(v_d\)</span> where <span class="math notranslate nohighlight">\(v_{d,j}\)</span> is the <code class="docutils literal notranslate"><span class="pre">frequency</span></code> of the term <span class="math notranslate nohighlight">\(t_j\)</span> in document <span class="math notranslate nohighlight">\(d\)</span>.</p></li>
 </ul>
-<p>Finding the <code class="docutils literal notranslate"><span class="pre">most</span> <span class="pre">relevant</span></code> documents for a query $q$ is equivalent to finding the <code class="docutils literal notranslate"><span class="pre">most</span> <span class="pre">similar</span></code> documents to the query vector $v_q$.</p>
+<p>Finding the <code class="docutils literal notranslate"><span class="pre">most</span> <span class="pre">relevant</span></code> documents for a query <span class="math notranslate nohighlight">\(q\)</span> is equivalent to finding the <code class="docutils literal notranslate"><span class="pre">most</span> <span class="pre">similar</span></code> documents to the query vector <span class="math notranslate nohighlight">\(v_q\)</span>.</p>
 <ul class="simple">
 <li><p>Queries are also documents, so we can use the same vector representation for queries and documents.</p></li>
-<li><p>Use the similarity of the query vector $v_q$ to the document vectors $v_d$ to rank the documents.</p></li>
+<li><p>Use the similarity of the query vector <span class="math notranslate nohighlight">\(v_q\)</span> to the document vectors <span class="math notranslate nohighlight">\(v_d\)</span> to rank the documents.</p></li>
 <li><p>Documents are similar to queries if they have similar terms.</p></li>
 </ul>
 </section>
@@ -1813,13 +1840,13 @@ title="Print to PDF"
 <p>There are many ways to define a context:</p>
 <p><strong>Contexts defined by nearby words:</strong></p>
 <ul class="simple">
-<li><p>How often does the word $w_i$ occur within a window of $k$ words of the word $w_j$?</p></li>
-<li><p>Or, how often do the words $w_i$ and $w_j$ occur in the same document or sentence?</p></li>
+<li><p>How often does the word <span class="math notranslate nohighlight">\(w_i\)</span> occur within a window of <span class="math notranslate nohighlight">\(k\)</span> words of the word <span class="math notranslate nohighlight">\(w_j\)</span>?</p></li>
+<li><p>Or, how often do the words <span class="math notranslate nohighlight">\(w_i\)</span> and <span class="math notranslate nohighlight">\(w_j\)</span> occur in the same document or sentence?</p></li>
 <li><p>This yields fairly broad thematic similarities between words.</p></li>
 </ul>
 <p><strong>Contexts defined by <code class="docutils literal notranslate"><span class="pre">grammtical</span> <span class="pre">relations</span></code>:</strong></p>
 <ul class="simple">
-<li><p>How often does the word $w_i$ occur as the <code class="docutils literal notranslate"><span class="pre">subject</span></code> of the word $w_j$?</p></li>
+<li><p>How often does the word <span class="math notranslate nohighlight">\(w_i\)</span> occur as the <code class="docutils literal notranslate"><span class="pre">subject</span></code> of the word <span class="math notranslate nohighlight">\(w_j\)</span>?</p></li>
 <li><p>This requires a <code class="docutils literal notranslate"><span class="pre">grammatical</span> <span class="pre">parser</span></code> to identify the grammatical relations between words.</p></li>
 <li><p>This yields more <code class="docutils literal notranslate"><span class="pre">fine-grained</span></code> similarities between words.</p></li>
 </ul>
@@ -1827,7 +1854,7 @@ title="Print to PDF"
 <section id="using-nearby-words-as-contexts">
 <h3>Using nearby words as contexts<a class="headerlink" href="#using-nearby-words-as-contexts" title="Permalink to this headline">#</a></h3>
 <ol class="simple">
-<li><p>Define a fixed vocabulary of $N$ context words $c_1 , \ldots , c_N$</p></li>
+<li><p>Define a fixed vocabulary of <span class="math notranslate nohighlight">\(N\)</span> context words <span class="math notranslate nohighlight">\(c_1 , \ldots , c_N\)</span></p></li>
 </ol>
 <ul class="simple">
 <li><p>Contexts words should occur frequently enough in the corpus that you can get reliable counts.</p></li>
@@ -1837,14 +1864,14 @@ title="Print to PDF"
 <li><p>Define what <code class="docutils literal notranslate"><span class="pre">nearby</span></code> means:</p></li>
 </ol>
 <ul class="simple">
-<li><p>For example, we can define a <code class="docutils literal notranslate"><span class="pre">window</span></code> of $k$ words on either side of the word $w_j$.</p></li>
+<li><p>For example, we can define a <code class="docutils literal notranslate"><span class="pre">window</span></code> of <span class="math notranslate nohighlight">\(k\)</span> words on either side of the word <span class="math notranslate nohighlight">\(w_j\)</span>.</p></li>
 </ul>
 <ol class="simple">
-<li><p>Count the number of times each context word $c_i$ occurs within a window of $k$ words of the word $w_j$.</p></li>
-<li><p>Define how to transform the co-occurrence counts into a vector representation of the word $w_j$.</p></li>
+<li><p>Count the number of times each context word <span class="math notranslate nohighlight">\(c_i\)</span> occurs within a window of <span class="math notranslate nohighlight">\(k\)</span> words of the word <span class="math notranslate nohighlight">\(w_j\)</span>.</p></li>
+<li><p>Define how to transform the co-occurrence counts into a vector representation of the word <span class="math notranslate nohighlight">\(w_j\)</span>.</p></li>
 </ol>
 <ul class="simple">
-<li><p>For example, we can use the (positive) <code class="docutils literal notranslate"><span class="pre">PMI</span></code> of the word $w_j$ and the context word $c_i$.</p></li>
+<li><p>For example, we can use the (positive) <code class="docutils literal notranslate"><span class="pre">PMI</span></code> of the word <span class="math notranslate nohighlight">\(w_j\)</span> and the context word <span class="math notranslate nohighlight">\(c_i\)</span>.</p></li>
 </ul>
 <ol class="simple">
 <li><p>Compute the similarity between words by measuring the similarity of their context vectors.</p></li>
@@ -1858,7 +1885,7 @@ title="Print to PDF"
 <p><img alt="" src="../../../_images/43.png" /></p>
 <p>Resulting word-word matrix:</p>
 <ul class="simple">
-<li><p>$f(w, c)$ = how often does word w appear in context $c$:</p></li>
+<li><p><span class="math notranslate nohighlight">\(f(w, c)\)</span> = how often does word w appear in context <span class="math notranslate nohighlight">\(c\)</span>:</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">information</span></code> appeared six times in the context of <code class="docutils literal notranslate"><span class="pre">data</span></code></p></li>
 </ul>
 <p><img alt="" src="../../../_images/53.png" /></p>
@@ -1866,29 +1893,29 @@ title="Print to PDF"
 <section id="defining-co-occurrences">
 <h3>Defining co-occurrences:<a class="headerlink" href="#defining-co-occurrences" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">Within</span> <span class="pre">a</span> <span class="pre">fixed</span> <span class="pre">window</span></code>: $c_i$ occurs within $\pm n$ words of $w$</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Within</span> <span class="pre">a</span> <span class="pre">fixed</span> <span class="pre">window</span></code>: <span class="math notranslate nohighlight">\(c_i\)</span> occurs within <span class="math notranslate nohighlight">\(\pm n\)</span> words of <span class="math notranslate nohighlight">\(w\)</span></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Within</span> <span class="pre">the</span> <span class="pre">same</span> <span class="pre">sentence</span></code>: requires sentence boundaries</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">By</span> <span class="pre">grammatical</span> <span class="pre">relations</span></code>: $c_i$ occurs as a subject/object/modifier/… of verb $w$ (requires parsing - and separate features for each relation)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">By</span> <span class="pre">grammatical</span> <span class="pre">relations</span></code>: <span class="math notranslate nohighlight">\(c_i\)</span> occurs as a subject/object/modifier/… of verb <span class="math notranslate nohighlight">\(w\)</span> (requires parsing - and separate features for each relation)</p></li>
 </ul>
 </section>
 <section id="representing-co-occurrences">
 <h3>Representing co-occurrences:<a class="headerlink" href="#representing-co-occurrences" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>$f_i$ as<code class="docutils literal notranslate"> <span class="pre">binary</span> <span class="pre">features</span></code> (1,0): $w$ does/does not occur with $c_i$</p></li>
-<li><p>$f_i$ as frequencies: $w$ occurs $n$ times with $c_i$</p></li>
-<li><p>$f_i$ as probabilities: e.g. $f_i$ is the probability that $c_i$ is the subject of $w$.</p></li>
+<li><p><span class="math notranslate nohighlight">\(f_i\)</span> as<code class="docutils literal notranslate"> <span class="pre">binary</span> <span class="pre">features</span></code> (1,0): <span class="math notranslate nohighlight">\(w\)</span> does/does not occur with <span class="math notranslate nohighlight">\(c_i\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(f_i\)</span> as frequencies: <span class="math notranslate nohighlight">\(w\)</span> occurs <span class="math notranslate nohighlight">\(n\)</span> times with <span class="math notranslate nohighlight">\(c_i\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(f_i\)</span> as probabilities: e.g. <span class="math notranslate nohighlight">\(f_i\)</span> is the probability that <span class="math notranslate nohighlight">\(c_i\)</span> is the subject of <span class="math notranslate nohighlight">\(w\)</span>.</p></li>
 </ul>
 </section>
 <section id="getting-co-occurrence-counts">
 <h3>Getting co-occurrence counts<a class="headerlink" href="#getting-co-occurrence-counts" title="Permalink to this headline">#</a></h3>
 <p>Co-occurrence as a <code class="docutils literal notranslate"><span class="pre">binary</span></code> feature:</p>
 <ul class="simple">
-<li><p>Does word $w$ ever appear in the context $c$? (1 = yes/0 = no)</p></li>
+<li><p>Does word <span class="math notranslate nohighlight">\(w\)</span> ever appear in the context <span class="math notranslate nohighlight">\(c\)</span>? (1 = yes/0 = no)</p></li>
 </ul>
 <p><img alt="" src="../../../_images/62.png" /></p>
 <p>Co-occurrence as a frequency count:</p>
 <ul class="simple">
-<li><p>How often does word $w$ appear in the context $c$? (0,1,2,… times)</p></li>
+<li><p>How often does word <span class="math notranslate nohighlight">\(w\)</span> appear in the context <span class="math notranslate nohighlight">\(c\)</span>? (0,1,2,… times)</p></li>
 </ul>
 <p><img alt="" src="../../../_images/72.png" /></p>
 </section>
@@ -1900,42 +1927,47 @@ title="Print to PDF"
 <li><p>We need to identify when co-occurrence counts are higher than we would expect by chance.</p></li>
 </ul>
 <p>We can use pointwise mutual information (PMI) values instead of raw frequency counts:</p>
-<p>$$ PMI(w,c) = \log \frac{p(w,c)}{p(w)p(c)} $$</p>
+<div class="math notranslate nohighlight">
+\[ PMI(w,c) = \log \frac{p(w,c)}{p(w)p(c)} \]</div>
 <p><img alt="" src="../../../_images/83.png" /></p>
 </section>
 <section id="computing-pmi-of-w-and-c">
-<h3>Computing PMI of $w$ and $c$:<a class="headerlink" href="#computing-pmi-of-w-and-c" title="Permalink to this headline">#</a></h3>
+<h3>Computing PMI of <span class="math notranslate nohighlight">\(w\)</span> and <span class="math notranslate nohighlight">\(c\)</span>:<a class="headerlink" href="#computing-pmi-of-w-and-c" title="Permalink to this headline">#</a></h3>
 <section id="using-a-fixed-window-of-pm-k-words">
-<h4>Using a fixed window of $\pm k$ words<a class="headerlink" href="#using-a-fixed-window-of-pm-k-words" title="Permalink to this headline">#</a></h4>
+<h4>Using a fixed window of <span class="math notranslate nohighlight">\(\pm k\)</span> words<a class="headerlink" href="#using-a-fixed-window-of-pm-k-words" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
-<li><p>$N$: How many tokens does the corpus contain?</p></li>
-<li><p>$f(w) \le N$: How often does $w$ occur?</p></li>
-<li><p>$f(w, c) \le f(w)$: How often does $w$ occur with $c$ in its window?</p></li>
-<li><p>$f(c) = \sum_w f(w, c)$: How many tokens have $c$ in their window?</p></li>
+<li><p><span class="math notranslate nohighlight">\(N\)</span>: How many tokens does the corpus contain?</p></li>
+<li><p><span class="math notranslate nohighlight">\(f(w) \le N\)</span>: How often does <span class="math notranslate nohighlight">\(w\)</span> occur?</p></li>
+<li><p><span class="math notranslate nohighlight">\(f(w, c) \le f(w)\)</span>: How often does <span class="math notranslate nohighlight">\(w\)</span> occur with <span class="math notranslate nohighlight">\(c\)</span> in its window?</p></li>
+<li><p><span class="math notranslate nohighlight">\(f(c) = \sum_w f(w, c)\)</span>: How many tokens have <span class="math notranslate nohighlight">\(c\)</span> in their window?</p></li>
 </ul>
-<p>$$p(w) = \frac{f{w}}{N}, p(c) = \frac{f(c)}{N}, p(w,c) = \frac{f(w,c)}{N}$$</p>
-<p>$$PMI(w,c) = \log \frac{p(w,c)}{p(w)p(c)}$$</p>
+<div class="math notranslate nohighlight">
+\[p(w) = \frac{f{w}}{N}, p(c) = \frac{f(c)}{N}, p(w,c) = \frac{f(w,c)}{N}\]</div>
+<div class="math notranslate nohighlight">
+\[PMI(w,c) = \log \frac{p(w,c)}{p(w)p(c)}\]</div>
 <p>Positive Pointwise Mutual Information</p>
 <p>PMI is negative when words co-occur less than expected by chance.</p>
 <ul class="simple">
 <li><p>This is unreliable without huge corpora:</p></li>
-<li><p>With $P(w ) \approx P(w2 ) \approx 10^{−6}$ , we can’t estimate whether $P(w_1 , w_2 )$ is significantly different from $10^{−12}$</p></li>
+<li><p>With <span class="math notranslate nohighlight">\(P(w ) \approx P(w2 ) \approx 10^{−6}\)</span> , we can’t estimate whether <span class="math notranslate nohighlight">\(P(w_1 , w_2 )\)</span> is significantly different from <span class="math notranslate nohighlight">\(10^{−12}\)</span></p></li>
 </ul>
 <p>We often just use positive PMI values, and replace all negative PMI values with 0:</p>
 <p>Positive Pointwise Mutual Information (PPMI):</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \text{PPMI}(w, c) = PMI, \text{ if } \text{PMI}(w, c) \gt 0
-$$</p>
-<p>$$
+\]</div>
+<div class="math notranslate nohighlight">
+\[
 \text{PPMI}(w, c) = 0, \text{ if } \text{PMI}(w, c) \le 0
-$$</p>
+\]</div>
 <p>PMI and smoothing</p>
 <p>PMI is biased towards infrequent events:</p>
 <ul class="simple">
-<li><p>If $P(w, c) = P(w) = P(c)$, then $\text{PMI}(w, c) = \log (\frac{1}{P(w)})$</p></li>
-<li><p>So $\text{PMI}(w, c)$ is larger for rare words $w$ with low $P(w)$.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(P(w, c) = P(w) = P(c)\)</span>, then <span class="math notranslate nohighlight">\(\text{PMI}(w, c) = \log (\frac{1}{P(w)})\)</span></p></li>
+<li><p>So <span class="math notranslate nohighlight">\(\text{PMI}(w, c)\)</span> is larger for rare words <span class="math notranslate nohighlight">\(w\)</span> with low <span class="math notranslate nohighlight">\(P(w)\)</span>.</p></li>
 </ul>
-<p>Simple remedy: <code class="docutils literal notranslate"><span class="pre">Add-k</span> <span class="pre">smoothing</span></code> of $P(w, c), P(w), P(c)$ pushes all PMI values towards zero.</p>
+<p>Simple remedy: <code class="docutils literal notranslate"><span class="pre">Add-k</span> <span class="pre">smoothing</span></code> of <span class="math notranslate nohighlight">\(P(w, c), P(w), P(c)\)</span> pushes all PMI values towards zero.</p>
 <ul class="simple">
 <li><p>Add-k smoothing affects low-probability events more, and will therefore reduce the bias of PMI towards infrequent events. (Pantel &amp; Turney 2010)</p></li>
 </ul>
@@ -1945,34 +1977,37 @@ $$</p>
 <section id="dot-product-as-similarity">
 <h2>Dot product as similarity<a class="headerlink" href="#dot-product-as-similarity" title="Permalink to this headline">#</a></h2>
 <p>If the vectors consist of simple binary features (0,1), we can use the <code class="docutils literal notranslate"><span class="pre">dot</span> <span class="pre">product</span></code> as <code class="docutils literal notranslate"><span class="pre">similarity</span> <span class="pre">metric</span></code>:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 sim_{dot-prod}(\vec{x}\cdot\vec{y}) = \sum_{i=1}^{N} x_i \times y_i
-$$</p>
+\]</div>
 <p>The dot product is a bad metric if the vector elements are arbitrary features: it prefers <code class="docutils literal notranslate"><span class="pre">long</span></code> vectors</p>
 <ul class="simple">
-<li><p>If one $x_i$ is very large (and $y_i$ nonzero), $sim(x, y)$ gets very large</p></li>
-<li><p>If the number of nonzero $x_i$ and $y_i$ is very large, $sim(x, y)$ gets very large.</p></li>
+<li><p>If one <span class="math notranslate nohighlight">\(x_i\)</span> is very large (and <span class="math notranslate nohighlight">\(y_i\)</span> nonzero), <span class="math notranslate nohighlight">\(sim(x, y)\)</span> gets very large</p></li>
+<li><p>If the number of nonzero <span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(y_i\)</span> is very large, <span class="math notranslate nohighlight">\(sim(x, y)\)</span> gets very large.</p></li>
 <li><p>Both can happen with frequent words.</p></li>
 </ul>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \text{length of }\vec{x}: |\vec{x}|=\sqrt{\sum_{i=1}^{N}x_i^2}
-$$</p>
+\]</div>
 </section>
 <section id="vector-similarity-cosine">
 <h2>Vector similarity: Cosine<a class="headerlink" href="#vector-similarity-cosine" title="Permalink to this headline">#</a></h2>
 <p>One way to define the similarity of two vectors is to use the cosine of their angle.</p>
 <p>The cosine of two vectors is their dot product, divided by the product of their lengths:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 sim_{cos}(\vec{x},\vec{y})=\frac{\sum_{i=1}^{N} x_i \times y_i}{\sqrt{\sum_{i=1}^{N}x_i^2}\sqrt{\sum_{i=1}^{N}y_i^2}} = \frac{\vec{x}\cdot\vec{y}}{|\vec{x}||\vec{y}|}
-$$</p>
+\]</div>
 <blockquote>
-<div><p>$sim(\mathbf{w}, \mathbf{u}) = 1$: $\mathbf{w}$ and $\mathbf{u}$ point in the same direction</p>
+<div><p><span class="math notranslate nohighlight">\(sim(\mathbf{w}, \mathbf{u}) = 1\)</span>: <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> point in the same direction</p>
 </div></blockquote>
 <blockquote>
-<div><p>$sim(\mathbf{w}, \mathbf{u}) = 0$: $\mathbf{w}$ and $\mathbf{u}$ are orthogonal</p>
+<div><p><span class="math notranslate nohighlight">\(sim(\mathbf{w}, \mathbf{u}) = 0\)</span>: <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> are orthogonal</p>
 </div></blockquote>
 <blockquote>
-<div><p>$sim(\mathbf{w}, \mathbf{u}) = -1$: $\mathbf{w}$ and $\mathbf{u}$ point in the opposite direction</p>
+<div><p><span class="math notranslate nohighlight">\(sim(\mathbf{w}, \mathbf{u}) = -1\)</span>: <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> point in the opposite direction</p>
 </div></blockquote>
 <section id="visualizing-cosines">
 <h3>Visualizing cosines<a class="headerlink" href="#visualizing-cosines" title="Permalink to this headline">#</a></h3>

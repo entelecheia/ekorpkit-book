@@ -4,7 +4,29 @@
 
 ## Results
 
-<table>
+::::{grid} 3
+
+:::{grid-item}
+Image Evolution
+:::
+:::{grid-item}
+Final generated image
+:::
+:::{grid-item}
+Original template
+:::
+:::{grid-item}
+![](../figs/robotic_drawing/fast_robotic/moraine_lake_2022-02-13_16.56.08.447562.gif)
+:::
+:::{grid-item}
+![](../figs/robotic_drawing/fast_robotic/moraine_lake_2022-02-13_16.56.08.447562.png)
+:::
+:::{grid-item}
+![](../figs/robotic_drawing/fast_robotic/moraine_lake.jpg)
+:::
+::::
+
+<!-- <table>
   <tr>
     <td><strong><em>Image Evolution</em></strong></td>
      <td><strong><em>Final generated image</em></strong></td>
@@ -30,7 +52,7 @@
     <td valign="center"><img src="../figs/robotic_drawing/fast_robotic/kingfisher_2022-02-13_17.33.58.817652.png"></td>
     <td valign="center"><img src="../figs/robotic_drawing/fast_robotic/kingfisher.jpg" width="256"></td>
   </tr>
- </table>
+ </table> -->
 
  ## References
 

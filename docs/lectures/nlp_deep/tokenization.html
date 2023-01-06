@@ -53,6 +53,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="SentencePiece Tokenizer" href="sentencepiece.html" />
@@ -2399,7 +2401,7 @@ Tokenizating of the unknown word:
 <li><p>WordPiece is a subword tokenization algorithm that was proposed by Google in 2016.</p></li>
 <li><p>Wordpiece works almost the same as BPE, but it uses a different way to merge the tokens.</p></li>
 <li><p>Wordpiece merges tokens based on likelihood of the tokens instead of frequency.</p></li>
-<li><p>The likelihood is calculated with the $p(w_{i}, w_{j})/p(w_{i})p(w_{j})$ formula.</p></li>
+<li><p>The likelihood is calculated with the <span class="math notranslate nohighlight">\(p(w_{i}, w_{j})/p(w_{i})p(w_{j})\)</span> formula.</p></li>
 </ul>
 <section id="tokenization-algorithm">
 <h3>Tokenization Algorithm<a class="headerlink" href="#tokenization-algorithm" title="Permalink to this headline">#</a></h3>
@@ -2779,14 +2781,15 @@ Last 50 tokens: [&#39;thompso&#39;, &#39;accompan&#39;, &#39;accompany&#39;, &#3
 <p>Kudo (2018) proposed the Unigram model based subword segmentation algorithm which outputs multiple subword segmentation along with their probabilities.</p>
 <ul class="simple">
 <li><p>The model assumes that each subword occurs independently.</p></li>
-<li><p>The probability of a subword sequence $x=(x_{1}, x_{2}, \cdots, x_{n})$ is calculated as $p(x)=\prod_{i=1}^{n} p(x_{i})$.</p></li>
-<li><p>The most probable segmentation $x^<em>$ for the sentence $X$ is given by $x^</em>=\underset{x \in S(X)}{\operatorname{argmax}} P(x)$.</p></li>
-<li><p>$S(X)$ is a set of all possible segmentations for the sentence $X$.</p></li>
-<li><p>Subword occurrence probabilities $x_{i}$ are estimated using the <a class="reference external" href="https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm">expectation maximization (EM) algorithm</a> by maximizing the log-likelihood $L$ of the training data $D$.</p></li>
+<li><p>The probability of a subword sequence <span class="math notranslate nohighlight">\(x=(x_{1}, x_{2}, \cdots, x_{n})\)</span> is calculated as <span class="math notranslate nohighlight">\(p(x)=\prod_{i=1}^{n} p(x_{i})\)</span>.</p></li>
+<li><p>The most probable segmentation <span class="math notranslate nohighlight">\(x^*\)</span> for the sentence <span class="math notranslate nohighlight">\(X\)</span> is given by <span class="math notranslate nohighlight">\(x^*=\underset{x \in S(X)}{\operatorname{argmax}} P(x)\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(S(X)\)</span> is a set of all possible segmentations for the sentence <span class="math notranslate nohighlight">\(X\)</span>.</p></li>
+<li><p>Subword occurrence probabilities <span class="math notranslate nohighlight">\(x_{i}\)</span> are estimated using the <a class="reference external" href="https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm">expectation maximization (EM) algorithm</a> by maximizing the log-likelihood <span class="math notranslate nohighlight">\(L\)</span> of the training data <span class="math notranslate nohighlight">\(D\)</span>.</p></li>
 </ul>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 L=\sum_{s = 1}^{|D|} \log(P(X^{(s)})) = \sum_{s = 1}^{|D|} \log(\sum_{x \in S(X^{(S)})} P(x))
-$$</p>
+\]</div>
 <p>The procedure of obtaining the vocabulary V with a desired size.</p>
 <ol class="simple">
 <li><p>Initialize a reasonably big seed vocabulary.</p></li>
@@ -2794,7 +2797,7 @@ $$</p>
 <li><p>Optimize the subword occurrence probabilities using the EM algorithm by fixing the vocabulary.</p></li>
 <li><p>Compute the loss for each subword.</p>
 <ul class="simple">
-<li><p>The loss of a subword depicts the decrement in the aforementioned likelihood $L$ when that subword is removed from the vocabulary.</p></li>
+<li><p>The loss of a subword depicts the decrement in the aforementioned likelihood <span class="math notranslate nohighlight">\(L\)</span> when that subword is removed from the vocabulary.</p></li>
 </ul>
 </li>
 <li><p>Sort the subwords by loss and keep the top n% of subwords.</p>
@@ -3140,13 +3143,13 @@ $$</p>
 <h2>Subword Sampling<a class="headerlink" href="#subword-sampling" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p>The models are trained with multiple subword segmentation based on a unigram language model and those are probabilistically sampled during training.</p></li>
-<li><p>$L$-best segmentation is an approach that can be used for approximate sampling.</p></li>
-<li><p>First, the $l$-best segmentations are obtained and after performing $l$-best search, one segmentation is sampled.</p></li>
-<li><p>Subword regularization has two hyperparameters which are the size of sampling candidates ($l$) and smoothing constant ($\alpha$).</p></li>
-<li><p>Theoretically, setting $l \to \infty$ means considering all possible segmentations.</p></li>
+<li><p><span class="math notranslate nohighlight">\(L\)</span>-best segmentation is an approach that can be used for approximate sampling.</p></li>
+<li><p>First, the <span class="math notranslate nohighlight">\(l\)</span>-best segmentations are obtained and after performing <span class="math notranslate nohighlight">\(l\)</span>-best search, one segmentation is sampled.</p></li>
+<li><p>Subword regularization has two hyperparameters which are the size of sampling candidates (<span class="math notranslate nohighlight">\(l\)</span>) and smoothing constant (<span class="math notranslate nohighlight">\(\alpha\)</span>).</p></li>
+<li><p>Theoretically, setting <span class="math notranslate nohighlight">\(l \to \infty\)</span> means considering all possible segmentations.</p></li>
 <li><p>But it is infeasible since the number of characters exponentially increases with the length of the sentence.</p></li>
 <li><p>Therefore, the Forward-Filtering and Backward-Sampling algorithm is used for sampling.</p></li>
-<li><p>Further, if $\alpha$ is small, the distribution is more uniform and if $\alpha$ is large, it tends towards the Viterbi segmentation.</p></li>
+<li><p>Further, if <span class="math notranslate nohighlight">\(\alpha\)</span> is small, the distribution is more uniform and if <span class="math notranslate nohighlight">\(\alpha\)</span> is large, it tends towards the Viterbi segmentation.</p></li>
 </ul>
 </section>
 <section id="bpe-dropout">
@@ -3154,7 +3157,7 @@ $$</p>
 <ul class="simple">
 <li><p>BPE-dropout is an effective subword regularization method based on BPE.</p></li>
 <li><p>This keeps the BPE vocabulary and the merge table as original while changing the segmentation procedure.</p></li>
-<li><p>Here, some merges are randomly removed with a probability of $p$ at each merge step, thus giving multiple segmentations for the same word.</p></li>
+<li><p>Here, some merges are randomly removed with a probability of <span class="math notranslate nohighlight">\(p\)</span> at each merge step, thus giving multiple segmentations for the same word.</p></li>
 <li><p>If the probability is zero, the subword segmentation is equal to the original BPE.</p></li>
 <li><p>If the probability is one, the subword segmentation is equal to character segmentation.</p></li>
 <li><p>If the probability is varied from 0 to 1, it gives multiple segmentations with various granularities.</p></li>

@@ -53,6 +53,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Vector Semantics and Representation" href="vectorization.html" />
@@ -1452,9 +1454,9 @@ title="Print to PDF"
 <h2>Generating segment variants<a class="headerlink" href="#generating-segment-variants" title="Permalink to this headline">#</a></h2>
 <p>We can generate all possible segment variants of a string of characters. Each distinct segment variant is called a <strong>composition</strong>.</p>
 <ul class="simple">
-<li><p>En a string of length $n$, there are $n-1$ possible positions to split the string.</p></li>
-<li><p>Each of the $n-1$ positions can be used as word boundary.</p></li>
-<li><p>Therefore, there are $2^{n-1}$ possible compositions.</p></li>
+<li><p>En a string of length <span class="math notranslate nohighlight">\(n\)</span>, there are <span class="math notranslate nohighlight">\(n-1\)</span> possible positions to split the string.</p></li>
+<li><p>Each of the <span class="math notranslate nohighlight">\(n-1\)</span> positions can be used as word boundary.</p></li>
+<li><p>Therefore, there are <span class="math notranslate nohighlight">\(2^{n-1}\)</span> possible compositions.</p></li>
 </ul>
 <p>The compositions have to be evaluated to find the best segmentation.</p>
 <ul class="simple">
@@ -1464,7 +1466,7 @@ title="Print to PDF"
 <h3>Naive Recursive Algorithm<a class="headerlink" href="#naive-recursive-algorithm" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>The naive recursive algorithm is to generate all possible compositions and evaluate them.</p></li>
-<li><p>The time complexity of the naive recursive algorithm is $O(2^n)$.</p></li>
+<li><p>The time complexity of the naive recursive algorithm is <span class="math notranslate nohighlight">\(O(2^n)\)</span>.</p></li>
 <li><p>The naive recursive algorithm is not efficient for long strings.</p></li>
 </ul>
 <div class="cell docutils container">
@@ -1546,7 +1548,7 @@ title="Print to PDF"
 <h3>Dynamic Programming<a class="headerlink" href="#dynamic-programming" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Dynamic programming is a technique to solve a problem by breaking it into subproblems and storing the results of subproblems to avoid computing the same results again.</p></li>
-<li><p>The time complexity of dynamic programming is $O(n)$.</p></li>
+<li><p>The time complexity of dynamic programming is <span class="math notranslate nohighlight">\(O(n)\)</span>.</p></li>
 <li><p>For long strings, dynamic programming is much more efficient than the naive recursive algorithm.</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">segment</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">):</span>
@@ -1599,10 +1601,11 @@ title="Print to PDF"
 <ul>
 <li><p>Generally, we can evaluate a composition by calculating the probability of the composition.</p></li>
 <li><p>Word probabilities can be estimated from a corpus:</p>
-<p>$$
-P(w_i) = \frac{c(w_i)}{N}
-$$</p>
-<p>where $c(w_i)$ is the count of word $w_i$ and $N$ is the total number of words in the corpus.</p>
+<div class="math notranslate nohighlight">
+\[
+    P(w_i) = \frac{c(w_i)}{N}
+    \]</div>
+<p>where <span class="math notranslate nohighlight">\(c(w_i)\)</span> is the count of word <span class="math notranslate nohighlight">\(w_i\)</span> and <span class="math notranslate nohighlight">\(N\)</span> is the total number of words in the corpus.</p>
 </li>
 <li><p>However, for unkonwn words, we have to use other criteria to evaluate the composition.</p></li>
 <li><p>At word boundary, the uncertainty of the segmentation increases.</p></li>
@@ -1650,41 +1653,46 @@ $$</p>
 <h3>Branching Entropy<a class="headerlink" href="#branching-entropy" title="Permalink to this headline">#</a></h3>
 <p><strong>Assumption 1</strong>: The uncertainty of successive tokens increases at word boundaries.</p>
 <ul>
-<li><p>Given a set of elements $X$ and a set of n-gram sequences $X_n$, the conditional entropy of an element occuring after an n-gram sequence $X_n$ is defined as:</p>
-<p>$$
-H(X|X_n) = -\sum_{x_n \in X_n} P(x_n) \sum_{x \in X} P(x|x_n) \log P(x|x_n)
-$$</p>
-<p>where $P(x) = P(X=x)$, $P(x|x_n) = P(X=x|X_n=x_n)$, and $P(X=x)$ indicates the probability of an element $x$ occuring in $X$.</p>
+<li><p>Given a set of elements <span class="math notranslate nohighlight">\(X\)</span> and a set of n-gram sequences <span class="math notranslate nohighlight">\(X_n\)</span>, the conditional entropy of an element occuring after an n-gram sequence <span class="math notranslate nohighlight">\(X_n\)</span> is defined as:</p>
+<div class="math notranslate nohighlight">
+\[
+    H(X|X_n) = -\sum_{x_n \in X_n} P(x_n) \sum_{x \in X} P(x|x_n) \log P(x|x_n)
+    \]</div>
+<p>where <span class="math notranslate nohighlight">\(P(x) = P(X=x)\)</span>, <span class="math notranslate nohighlight">\(P(x|x_n) = P(X=x|X_n=x_n)\)</span>, and <span class="math notranslate nohighlight">\(P(X=x)\)</span> indicates the probability of an element <span class="math notranslate nohighlight">\(x\)</span> occuring in <span class="math notranslate nohighlight">\(X\)</span>.</p>
 </li>
-<li><p>$H(X|X_n)$ decreases as $n$ increases, meaning that $X$ will become more predictable as $X_n$ becomes longer.</p></li>
-<li><p>The latter half of the equation, the entropy of $X$ given $X_n$, indicates the average information of branching out from a specific n-gram sequence $X_n$:</p>
-<p>$$
-H(X|X_n=x_n) = -\sum_{x \in X} P(x|x_n) \log P(x|x_n)
-$$</p>
+<li><p><span class="math notranslate nohighlight">\(H(X|X_n)\)</span> decreases as <span class="math notranslate nohighlight">\(n\)</span> increases, meaning that <span class="math notranslate nohighlight">\(X\)</span> will become more predictable as <span class="math notranslate nohighlight">\(X_n\)</span> becomes longer.</p></li>
+<li><p>The latter half of the equation, the entropy of <span class="math notranslate nohighlight">\(X\)</span> given <span class="math notranslate nohighlight">\(X_n\)</span>, indicates the average information of branching out from a specific n-gram sequence <span class="math notranslate nohighlight">\(X_n\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+    H(X|X_n=x_n) = -\sum_{x \in X} P(x|x_n) \log P(x|x_n)
+    \]</div>
 </li>
-<li><p>This local entropy is the branching entropy of $X$ given $X_n$, and denoted as $h(x_n)$:</p>
-<p>$$
-h(x_n) = -\sum_{x \in X} P(x|x_n) \log P(x|x_n)
-$$</p>
+<li><p>This local entropy is the branching entropy of <span class="math notranslate nohighlight">\(X\)</span> given <span class="math notranslate nohighlight">\(X_n\)</span>, and denoted as <span class="math notranslate nohighlight">\(h(x_n)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+    h(x_n) = -\sum_{x \in X} P(x|x_n) \log P(x|x_n)
+    \]</div>
 </li>
 </ul>
 <p><strong>Assumption 2</strong>: If the entropy of successive tokens is high or increasing, the location is a word boundary.</p>
 <ul>
 <li><p>Generally, as the length of the n-gram sequence increases, the entropy of the n-gram sequence decreases.</p>
-<p>$$
-h(x_n) \geq h(x_{n-1})
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+    h(x_n) \geq h(x_{n-1})
+    \]</div>
 </li>
-<li><p>If $x_n$ is the prefix of $x_{n+1}$, the branching entropy of $x_n$ will likely be smaller than that of $x_{n+1}$:</p>
-<p>$$
-h(x_n) &lt; h(x_{n+1})
-$$</p>
+<li><p>If <span class="math notranslate nohighlight">\(x_n\)</span> is the prefix of <span class="math notranslate nohighlight">\(x_{n+1}\)</span>, the branching entropy of <span class="math notranslate nohighlight">\(x_n\)</span> will likely be smaller than that of <span class="math notranslate nohighlight">\(x_{n+1}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+    h(x_n) &lt; h(x_{n+1})
+    \]</div>
 </li>
-<li><p>There are three boundary conditions to decide whether $x_n$ is a word boundary:</p>
+<li><p>There are three boundary conditions to decide whether <span class="math notranslate nohighlight">\(x_n\)</span> is a word boundary:</p>
 <ol class="simple">
-<li><p>$B_{max}$: If $h(x_n) &gt; \text{val}_{max}$</p></li>
-<li><p>$B_{increase}$: $h(x_n) &gt; h(x_{n-1})$</p></li>
-<li><p>$B_{ordinary}$: $h(x_n) &gt; \text{val}_{ordinary}$</p></li>
+<li><p><span class="math notranslate nohighlight">\(B_{max}\)</span>: If <span class="math notranslate nohighlight">\(h(x_n) &gt; \text{val}_{max}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(B_{increase}\)</span>: <span class="math notranslate nohighlight">\(h(x_n) &gt; h(x_{n-1})\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(B_{ordinary}\)</span>: <span class="math notranslate nohighlight">\(h(x_n) &gt; \text{val}_{ordinary}\)</span></p></li>
 </ol>
 </li>
 </ul>
