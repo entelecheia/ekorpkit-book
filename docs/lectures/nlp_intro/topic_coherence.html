@@ -53,8 +53,6 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Sentiment Analysis" href="sentiments.html" />
@@ -938,12 +936,12 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Study
+  Projects
  </span>
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../study/robotic_drawing/index.html">
+  <a class="reference internal" href="../../projects/robotic_drawing/index.html">
    Robotic Drawing
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" type="checkbox"/>
@@ -953,13 +951,23 @@ const thebe_selector_output = ".output, .cell_output"
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../study/robotic_drawing/intro.html">
-     Robotic Drawing
+    <a class="reference internal" href="../../projects/robotic_drawing/intro.html">
+     Introduction to Robotic Drawing
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../study/robotic_drawing/robocodraw.html">
+    <a class="reference internal" href="../../projects/robotic_drawing/sketch_generation.html">
+     Sketch Generation with Drawing Process Guided by Vector Flow and Grayscale
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../projects/robotic_drawing/robocodraw.html">
      Avatar-GAN (RoboCoDraw)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../projects/robotic_drawing/fast_robotic_pencil_drawing.html">
+     Fast Robotic Pencil Drawing
     </a>
    </li>
   </ul>
@@ -1436,17 +1444,14 @@ It consists of three components:</p>
 <section id="segmentation">
 <h3>Segmentation<a class="headerlink" href="#segmentation" title="Permalink to this headline">#</a></h3>
 <p>The segmentation module is responsible for creating pairs of word subsets that will be used to compute the coherence of a topic.</p>
-<p>Considering <span class="math notranslate nohighlight">\(W={w_1, w_2, …, w_n}\)</span> as the top-n most important words of a topic <span class="math notranslate nohighlight">\(t\)</span>, the application of a segmentation <span class="math notranslate nohighlight">\(S\)</span> results in a set of subset pairs from <span class="math notranslate nohighlight">\(W\)</span>.</p>
-<div class="math notranslate nohighlight">
-\[ S = \{(W^{\prime}, W^*), W^{\prime}, W^* \subseteq W\} \]</div>
+<p>Considering $W={w_1, w_2, …, w_n}$ as the top-n most important words of a topic $t$, the application of a segmentation $S$ results in a set of subset pairs from $W$.</p>
+<p>$$ S = {(W^{\prime}, W^<em>), W^{\prime}, W^</em> \subseteq W} $$</p>
 <p>To simplify things, we can understand the segmentation as the step where we choose how we want to mix the words in a topic to evaluate them posteriorly.</p>
-<p>For example, the segmentation S-one-one, says that we need to make word pairs of different words. If <span class="math notranslate nohighlight">\(W={w_1, w_2, …, w_n}\)</span>, then the segmentation S-one-one will result in the following pairs:</p>
-<div class="math notranslate nohighlight">
-\[ S = \{(w_1, w_2), (w_1, w_3), …, (w_1, w_n), (w_2, w_3), …, (w_2, w_n), …, (w_{n-1}, w_n)\} \]</div>
+<p>For example, the segmentation S-one-one, says that we need to make word pairs of different words. If $W={w_1, w_2, …, w_n}$, then the segmentation S-one-one will result in the following pairs:</p>
+<p>$$ S = {(w_1, w_2), (w_1, w_3), …, (w_1, w_n), (w_2, w_3), …, (w_2, w_n), …, (w_{n-1}, w_n)} $$</p>
 <p>So, by using this technique, we’re saying that to compute the final coherence score, our model is interested in the relationship between each word in the topic and the other words in the topic.</p>
-<p>Another example is the segmentation S-one-all, which says that we need to make pairs of each word with all other words. Applying it to <span class="math notranslate nohighlight">\(W\)</span> will result in the following pairs:</p>
-<div class="math notranslate nohighlight">
-\[ S = \{(\{w_1\}, \{w_2, w_3, …, w_n\}), (\{w_2\}, \{w_1, w_3, …, w_n\}), …, (\{w_n\}, \{w_1, w_2, …, w_{n-1}\})\} \]</div>
+<p>Another example is the segmentation S-one-all, which says that we need to make pairs of each word with all other words. Applying it to $W$ will result in the following pairs:</p>
+<p>$$ S = {({w_1}, {w_2, w_3, …, w_n}), ({w_2}, {w_1, w_3, …, w_n}), …, ({w_n}, {w_1, w_2, …, w_{n-1}})} $$</p>
 <p>So, by using this technique, we’re saying that to compute the final coherence score, our model is interested in the relationship between each word in the topic and all the other words in the topic.</p>
 </section>
 <section id="probability-calculation">
@@ -1454,55 +1459,49 @@ It consists of three components:</p>
 <p>Coherence metrics use probabilities drawn from the textual corpus. The probability calculation module is responsible for calculating the probabilities of the word subsets generated by the segmentation module.</p>
 <p>For example, let’s say we’re interested in two different probabilities:</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(P(w)\)</span>: the probability of a word <span class="math notranslate nohighlight">\(w\)</span> in the corpus.</p></li>
-<li><p><span class="math notranslate nohighlight">\(P(w_1, w_2)\)</span>: the probability of a word pair <span class="math notranslate nohighlight">\((w_1, w_2)\)</span> in the corpus.</p></li>
+<li><p>$P(w)$: the probability of a word $w$ in the corpus.</p></li>
+<li><p>$P(w_1, w_2)$: the probability of a word pair $(w_1, w_2)$ in the corpus.</p></li>
 </ul>
-<p>Different techniques will estimate these probabilities in different ways. For example, the probability <span class="math notranslate nohighlight">\(P_{bd}(w)\)</span> can be estimated by counting the number of documents that <span class="math notranslate nohighlight">\(w\)</span> appears and dividing it by the total number of documents in the corpus.</p>
-<div class="math notranslate nohighlight">
-\[ P_{bd}(w) = \frac{count(D_{w})}{N} \]</div>
-<p>The probability <span class="math notranslate nohighlight">\(P(w_1, w_2)\)</span> can be estimated by counting the number of documents that both <span class="math notranslate nohighlight">\(w_1\)</span> and <span class="math notranslate nohighlight">\(w_2\)</span> appear and dividing it by the total number of documents in the corpus.</p>
-<div class="math notranslate nohighlight">
-\[ P(w_1, w_2) = \frac{count(D_{w_1, w_2})}{N} \]</div>
-<p>Another example is to use sentence-level probabilities. In this case, the probability <span class="math notranslate nohighlight">\(P_{bs}(w)\)</span> is estimated by counting the number of sentences that <span class="math notranslate nohighlight">\(w\)</span> appears and dividing it by the total number of sentences in the corpus.</p>
-<p>In case of <span class="math notranslate nohighlight">\(P_{sw}\)</span>, the probability is estimated by counting the number of sliding windows that <span class="math notranslate nohighlight">\(w\)</span> appears and dividing it by the total number of sliding windows in the corpus.</p>
+<p>Different techniques will estimate these probabilities in different ways. For example, the probability $P_{bd}(w)$ can be estimated by counting the number of documents that $w$ appears and dividing it by the total number of documents in the corpus.</p>
+<p>$$ P_{bd}(w) = \frac{count(D_{w})}{N} $$</p>
+<p>The probability $P(w_1, w_2)$ can be estimated by counting the number of documents that both $w_1$ and $w_2$ appear and dividing it by the total number of documents in the corpus.</p>
+<p>$$ P(w_1, w_2) = \frac{count(D_{w_1, w_2})}{N} $$</p>
+<p>Another example is to use sentence-level probabilities. In this case, the probability $P_{bs}(w)$ is estimated by counting the number of sentences that $w$ appears and dividing it by the total number of sentences in the corpus.</p>
+<p>In case of $P_{sw}$, the probability is estimated by counting the number of sliding windows that $w$ appears and dividing it by the total number of sliding windows in the corpus.</p>
 <p>These probabilities are the fundamental building blocks of the coherence metrics.</p>
 </section>
 <section id="confirmation-measure">
 <h3>Confirmation Measure<a class="headerlink" href="#confirmation-measure" title="Permalink to this headline">#</a></h3>
 <p>The confirmation measure module is the core of the coherence metrics. It is responsible for calculating the confirmation of a word subset.</p>
-<p>The confirmation measure is calculated by comparing the probability of the word subset <span class="math notranslate nohighlight">\(S\)</span> with the probabilities of the words in the subset. It computes how well the subset <span class="math notranslate nohighlight">\(W^*\)</span> supports the words in the subset <span class="math notranslate nohighlight">\(W^{\prime}\)</span>.</p>
+<p>The confirmation measure is calculated by comparing the probability of the word subset $S$ with the probabilities of the words in the subset. It computes how well the subset $W^*$ supports the words in the subset $W^{\prime}$.</p>
 <p>That is, it tries to measure how well two subsets of words are related to each other by comparing the probabilities calculated from the corpus.</p>
-<p>If the words in <span class="math notranslate nohighlight">\(W^{\prime}\)</span> are more likely to appear together with the words in <span class="math notranslate nohighlight">\(W^*\)</span>, then the confirmation measure will be high. Otherwise, it will be low.</p>
+<p>If the words in $W^{\prime}$ are more likely to appear together with the words in $W^*$, then the confirmation measure will be high. Otherwise, it will be low.</p>
 <p>For example, let’s say we have the following word subsets:</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(W^{\prime} = \{w_1, w_2\}\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(W^* = \{w_3, w_4\}\)</span></p></li>
+<li><p>$W^{\prime} = {w_1, w_2}$</p></li>
+<li><p>$W^* = {w_3, w_4}$</p></li>
 </ul>
-<p>The confirmation measure will be high if the words <span class="math notranslate nohighlight">\(w_1\)</span> and <span class="math notranslate nohighlight">\(w_2\)</span> are more likely to appear together with the words <span class="math notranslate nohighlight">\(w_3\)</span> and <span class="math notranslate nohighlight">\(w_4\)</span> in the reference corpus.</p>
+<p>The confirmation measure will be high if the words $w_1$ and $w_2$ are more likely to appear together with the words $w_3$ and $w_4$ in the reference corpus.</p>
 <p><img alt="" src="../../../_images/confirmation_measure.png" /></p>
 <p>The confirmation measure is applied to each one of the pairs created in the segmentation step, yielding a confirmation score for each pair.</p>
 <p>There are two different types of confirmation measures: direct and indirect.</p>
 <section id="direct-confirmation-measure">
 <h4>Direct Confirmation Measure<a class="headerlink" href="#direct-confirmation-measure" title="Permalink to this headline">#</a></h4>
-<p>The direct confirmation measure is the simplest one. It compares the probabilities of the word subsets <span class="math notranslate nohighlight">\(W^{\prime}\)</span> and <span class="math notranslate nohighlight">\(W^*\)</span>.</p>
-<div class="math notranslate nohighlight">
-\[ m_r(S_i) = \frac{P(W^{\prime}, W^*)}{P(W^{\prime})P(W^*)} \]</div>
+<p>The direct confirmation measure is the simplest one. It compares the probabilities of the word subsets $W^{\prime}$ and $W^*$.</p>
+<p>$$ m_r(S_i) = \frac{P(W^{\prime}, W^<em>)}{P(W^{\prime})P(W^</em>)} $$</p>
 <p>or, using logarithms:</p>
-<div class="math notranslate nohighlight">
-\[ m_{lr}(S_i) = log \frac{P(W^{\prime}, W^*) + \epsilon}{P(W^{\prime})P(W^*) + \epsilon} \]</div>
-<p>where <span class="math notranslate nohighlight">\(\epsilon\)</span> is a small constant to avoid undefined values for logarithms.</p>
+<p>$$ m_{lr}(S_i) = log \frac{P(W^{\prime}, W^<em>) + \epsilon}{P(W^{\prime})P(W^</em>) + \epsilon} $$</p>
+<p>where $\epsilon$ is a small constant to avoid undefined values for logarithms.</p>
 </section>
 <section id="indirect-confirmation-measure">
 <h4>Indirect Confirmation Measure<a class="headerlink" href="#indirect-confirmation-measure" title="Permalink to this headline">#</a></h4>
-<p>The indirect confirmation measure is a more complex one. It computes a direct confirmation measure for each word in the subsets <span class="math notranslate nohighlight">\(W^{\prime}\)</span> with all other words in the subset <span class="math notranslate nohighlight">\(W\)</span>, yielding a vector of confirmation scores for each word in <span class="math notranslate nohighlight">\(W^{\prime}\)</span>.</p>
-<div class="math notranslate nohighlight">
-\[ \vec{v}_m(W^{\prime}) = \left\{\sum_{w \in W^{\prime}} m(w_i, w_j)\right\}_{j=1,2, …, |W|} \]</div>
-<p>where <span class="math notranslate nohighlight">\(|W|\)</span> is the number of words in <span class="math notranslate nohighlight">\(W\)</span>.</p>
-<p>The same is done for the subset <span class="math notranslate nohighlight">\(W^*\)</span>.</p>
+<p>The indirect confirmation measure is a more complex one. It computes a direct confirmation measure for each word in the subsets $W^{\prime}$ with all other words in the subset $W$, yielding a vector of confirmation scores for each word in $W^{\prime}$.</p>
+<p>$$ \vec{v}<em>m(W^{\prime}) = \left{\sum</em>{w \in W^{\prime}} m(w_i, w_j)\right}_{j=1,2, …, |W|} $$</p>
+<p>where $|W|$ is the number of words in $W$.</p>
+<p>The same is done for the subset $W^*$.</p>
 <p>Then, the indirect confirmation measure is the similarity between the two vectors.</p>
-<div class="math notranslate nohighlight">
-\[ \tilde{m}_{cos}(W^{\prime}, W^*) = sim(\vec{v}_m(W^{\prime}), \vec{v}_m(W^*)) \]</div>
-<p>where <span class="math notranslate nohighlight">\(sim\)</span> is a similarity function, such as cosine similarity.</p>
+<p>$$ \tilde{m}_{cos}(W^{\prime}, W^<em>) = sim(\vec{v}_m(W^{\prime}), \vec{v}_m(W^</em>)) $$</p>
+<p>where $sim$ is a similarity function, such as cosine similarity.</p>
 <p><img alt="" src="../../../_images/indirect_confirmation_measure.png" /></p>
 <p>The idea behind this indirect confirmation measure is that it tries to capture some relationships that are not captured by the direct confirmation measure.</p>
 <p>For example, the words ‘cats’ and ‘dogs’ may never appear together in our dataset, but they might appear frequently with the words ‘toys’, ‘pets’, and ‘cute’. In this case, the direct confirmation measure will not be able to capture the relationship between ‘cats’ and ‘dogs’ because they never appear together. However, the indirect confirmation measure will be able to capture this relationship because it will be able to see that ‘cats’ and ‘dogs’ appear frequently with the words ‘toys’, ‘pets’, and ‘cute’.</p>
@@ -1518,33 +1517,32 @@ It consists of three components:</p>
 <h3>Putting everything together<a class="headerlink" href="#putting-everything-together" title="Permalink to this headline">#</a></h3>
 <p>Measuring the coherence metrics follows the following steps:</p>
 <ul class="simple">
-<li><p>We have a topic <span class="math notranslate nohighlight">\(T\)</span> that we want to measure the coherence of.</p></li>
-<li><p>We choose a reference corpus <span class="math notranslate nohighlight">\(C\)</span>.</p></li>
-<li><p>The top-n most important words in the topic <span class="math notranslate nohighlight">\(T\)</span> are extracted, yielding a word subset <span class="math notranslate nohighlight">\(W\)</span>.</p></li>
-<li><p><span class="math notranslate nohighlight">\(W\)</span> is segmented into pairs of words, yielding a set of word subsets <span class="math notranslate nohighlight">\(S\)</span>.</p></li>
-<li><p>Using the reference corpus <span class="math notranslate nohighlight">\(C\)</span>, we calculate the probabilities of the word subsets <span class="math notranslate nohighlight">\(S\)</span>.</p></li>
-<li><p>With the segmented word subsets <span class="math notranslate nohighlight">\(S\)</span> and the probabilities calculated from the reference corpus <span class="math notranslate nohighlight">\(C\)</span>, we calculate the confirmation measure for each pair of words in <span class="math notranslate nohighlight">\(S\)</span>.</p></li>
-<li><p>All the confirmation scores are aggregated into a single coherence score for the topic <span class="math notranslate nohighlight">\(T\)</span>.</p></li>
+<li><p>We have a topic $T$ that we want to measure the coherence of.</p></li>
+<li><p>We choose a reference corpus $C$.</p></li>
+<li><p>The top-n most important words in the topic $T$ are extracted, yielding a word subset $W$.</p></li>
+<li><p>$W$ is segmented into pairs of words, yielding a set of word subsets $S$.</p></li>
+<li><p>Using the reference corpus $C$, we calculate the probabilities of the word subsets $S$.</p></li>
+<li><p>With the segmented word subsets $S$ and the probabilities calculated from the reference corpus $C$, we calculate the confirmation measure for each pair of words in $S$.</p></li>
+<li><p>All the confirmation scores are aggregated into a single coherence score for the topic $T$.</p></li>
 </ul>
 <p><img alt="" src="../../../_images/putting_everything_together.png" /></p>
 <p>If we have more than one topic, we can repeat the same process for each topic and use the average coherence score as a measure of the quality of the topic model.</p>
 <p><img alt="" src="../../../_images/multiple_topics.png" /></p>
 <p>The Gensim library provides a class that implements the four most famous coherence models:
-<span class="math notranslate nohighlight">\(u_{mass}\)</span>, <span class="math notranslate nohighlight">\(c_v\)</span>, <span class="math notranslate nohighlight">\(c_{uci}\)</span>, <span class="math notranslate nohighlight">\(c_{npmi}\)</span>.</p>
+$u_{mass}$, $c_v$, $c_{uci}$, $c_{npmi}$.</p>
 <p><img alt="" src="../../../_images/gensim_coherence_models.png" /></p>
-<p><span class="math notranslate nohighlight">\(C_{NPMI}\)</span> uses the following steps:</p>
+<p>$C_{NPMI}$ uses the following steps:</p>
 <ul class="simple">
 <li><p>Segmentation: S-one-one (one word in each subset)</p></li>
 <li><p>Probability estimation: the probabilities are calculated over a sliding window of size 10.</p></li>
 <li><p>Confirmation measure: the confirmation measure is the Normalized Pointwise Mutual Information (NPMI).</p></li>
 </ul>
-<div class="math notranslate nohighlight">
-\[ NPMI(W^{\prime}, W^*) = \frac{log \frac{P(W^{\prime}, W^*) + \epsilon}{P(W^{\prime})P(W^*) + \epsilon}}{-log (P(W^{\prime}, W^*) + \epsilon)} \]</div>
-<p>where <span class="math notranslate nohighlight">\(\epsilon\)</span> is a small constant to avoid undefined values for logarithms.</p>
+<p>$$ NPMI(W^{\prime}, W^<em>) = \frac{log \frac{P(W^{\prime}, W^</em>) + \epsilon}{P(W^{\prime})P(W^<em>) + \epsilon}}{-log (P(W^{\prime}, W^</em>) + \epsilon)} $$</p>
+<p>where $\epsilon$ is a small constant to avoid undefined values for logarithms.</p>
 <ul class="simple">
 <li><p>Aggregation: the aggregation is the mean of the confirmation scores.</p></li>
 </ul>
-<p><span class="math notranslate nohighlight">\(C_V\)</span> uses the following steps:</p>
+<p>$C_V$ uses the following steps:</p>
 <ul class="simple">
 <li><p>Segmentation: S-one-set, the confirmaion measure is calculated for pairs of words that are in the same subset.</p></li>
 <li><p>Probability estimation: the probabilities are calculated over a sliding window of size 110.</p></li>
@@ -1566,28 +1564,25 @@ It consists of three components:</p>
 <section id="pmi">
 <h3>PMI<a class="headerlink" href="#pmi" title="Permalink to this headline">#</a></h3>
 <p>The PMI is a measure of the association between two words. It is defined as follows:</p>
-<div class="math notranslate nohighlight">
-\[ PMI(w_i, w_j) = log \frac{P(w_i, w_j)}{P(w_i)P(w_j)} \]</div>
-<p>where <span class="math notranslate nohighlight">\(P(w_i, w_j)\)</span> is the probability of the words <span class="math notranslate nohighlight">\(w_i\)</span> and <span class="math notranslate nohighlight">\(w_j\)</span> appearing together in the corpus, and <span class="math notranslate nohighlight">\(P(w_i)\)</span> and <span class="math notranslate nohighlight">\(P(w_j)\)</span> are the probabilities of the words <span class="math notranslate nohighlight">\(w_i\)</span> and <span class="math notranslate nohighlight">\(w_j\)</span> appearing individually in the corpus.</p>
-<p>When <span class="math notranslate nohighlight">\(w_i\)</span> and <span class="math notranslate nohighlight">\(w_j\)</span> are independent, <span class="math notranslate nohighlight">\(P(w_i, w_j) = P(w_i)P(w_j)\)</span>, and the PMI is zero.</p>
-<p>When <span class="math notranslate nohighlight">\(w_i\)</span> and <span class="math notranslate nohighlight">\(w_j\)</span> are dependent, <span class="math notranslate nohighlight">\(P(w_i, w_j) &gt; P(w_i)P(w_j)\)</span>, and the PMI is positive.</p>
-<p>When <span class="math notranslate nohighlight">\(w_i\)</span> and <span class="math notranslate nohighlight">\(w_j\)</span> are negatively dependent, <span class="math notranslate nohighlight">\(P(w_i, w_j) &lt; P(w_i)P(w_j)\)</span>, and the PMI is negative.</p>
+<p>$$ PMI(w_i, w_j) = log \frac{P(w_i, w_j)}{P(w_i)P(w_j)} $$</p>
+<p>where $P(w_i, w_j)$ is the probability of the words $w_i$ and $w_j$ appearing together in the corpus, and $P(w_i)$ and $P(w_j)$ are the probabilities of the words $w_i$ and $w_j$ appearing individually in the corpus.</p>
+<p>When $w_i$ and $w_j$ are independent, $P(w_i, w_j) = P(w_i)P(w_j)$, and the PMI is zero.</p>
+<p>When $w_i$ and $w_j$ are dependent, $P(w_i, w_j) &gt; P(w_i)P(w_j)$, and the PMI is positive.</p>
+<p>When $w_i$ and $w_j$ are negatively dependent, $P(w_i, w_j) &lt; P(w_i)P(w_j)$, and the PMI is negative.</p>
 </section>
 <section id="normalized-pointwise-mutual-information">
 <h3>Normalized Pointwise Mutual Information<a class="headerlink" href="#normalized-pointwise-mutual-information" title="Permalink to this headline">#</a></h3>
 <p>The PMI is a good measure of the association between two words, but it has some limitations.</p>
 <p>For example, the PMI is not normalized, so it is difficult to compare the association between two words with different frequencies.</p>
 <p>The normalized pointwise mutual information (NPMI) is a normalized version of the PMI. It is defined as follows:</p>
-<div class="math notranslate nohighlight">
-\[ NPMI(w_i, w_j) = \frac{PMI(w_i, w_j)}{-log(P(w_i, w_j))} \]</div>
+<p>$$ NPMI(w_i, w_j) = \frac{PMI(w_i, w_j)}{-log(P(w_i, w_j))} $$</p>
 </section>
 </section>
 <section id="understanding-cosine-similarity">
 <h2>Understanding Cosine Similarity<a class="headerlink" href="#understanding-cosine-similarity" title="Permalink to this headline">#</a></h2>
 <p>The cosine similarity is a measure of similarity between two vectors. It is defined as follows:</p>
-<div class="math notranslate nohighlight">
-\[ cos(\theta) = \frac{A \cdot B}{||A|| \cdot ||B||} \]</div>
-<p>where <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> are two vectors, and <span class="math notranslate nohighlight">\(\theta\)</span> is the angle between the two vectors.</p>
+<p>$$ cos(\theta) = \frac{A \cdot B}{||A|| \cdot ||B||} $$</p>
+<p>where $A$ and $B$ are two vectors, and $\theta$ is the angle between the two vectors.</p>
 <p>The cosine similarity is a number between -1 and 1.</p>
 <ul class="simple">
 <li><p>When the two vectors are identical, the cosine similarity is 1.</p></li>
