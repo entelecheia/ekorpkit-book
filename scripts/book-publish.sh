@@ -1,3 +1,3 @@
 #!/bin/bash
 
-ghp-import -n -p -f ekorpkit-book/_build/html
+ghp-import -n -p -f ekorpkit-book/_build/html -c entelecheia.cc
