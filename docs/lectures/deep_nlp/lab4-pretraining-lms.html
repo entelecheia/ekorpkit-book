@@ -1,0 +1,2682 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Lab 4: Pretraining Language Models &#8212; eKorpkit Tutorials</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/ekorpkit.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Applications of NLP" href="../nlp_apps/index.html" />
+    <link rel="prev" title="Lab 3: Training Tokenizers" href="lab3-train-tokenizers.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-FN4GFT8HP8"></script>
+<script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){ dataLayer.push(arguments); }
+                    gtag('js', new Date());
+                    gtag('config', 'G-FN4GFT8HP8');
+                </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../_static/ekorpkit.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">eKorpkit Tutorials</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    eKonomic Research Python Toolkit
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Basics
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/index.html">
+   Getting started
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/install.html">
+     Installation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/usage.html">
+     Usage
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/features/index.html">
+   Key features
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/easy_config.html">
+     Easy Configuration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/no_boiler.html">
+     No Boilerplate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/workflows.html">
+     Workflows
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/share.html">
+     Sharable and Reproducible
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/plug.html">
+     Pluggable Architece
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tutorials
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/config/index.html">
+   Configuring ekorpkit
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/config/eKonf.html">
+     Using eKonf class
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/datasets/index.html">
+   Datasets
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/corpus.html">
+     Build and Load Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/datasets/dataset.html">
+     Build and Load Datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/pipeline.html">
+     Corpus task pipelines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/models/index.html">
+   Models
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/models/automl/index.html">
+     Auto ML
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/embeddings/index.html">
+     Word Embeddings
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/embeddings/word2vec_basics.html">
+       Word2Vec Basics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/embeddings/eval_vectors.html">
+       Evaluate pretrained embeddings
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/ngram/index.html">
+     N-Grams
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram.html">
+       N-Grams
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram_for_lexicons.html">
+       N-Gram model for ngram lexicon features
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram_for_words.html">
+       N-Gram model for unigram lexicon features
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/sentiment/index.html">
+     Sentiment Analyers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/lbsa_en.html">
+       Lexicon-based Sentiment Analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/financial_phrasebank_lm.html">
+       Evaluate LM with financial phrasebank
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/sentiment.html">
+       LM Dictionary vs. finbert vs. T5
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/models/transformers/index.html">
+     Transformers
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/pipelines/index.html">
+   Pipelines
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/pipelines/pipeline.html">
+     Instantiating pipeline
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/preprocessors/index.html">
+   Preprocessors
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/normalizer/index.html">
+     Normalizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+    <label for="toctree-checkbox-11">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/normalizer/normalizer.html">
+       Normalizers
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/segmenter/index.html">
+     Segmenters
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+    <label for="toctree-checkbox-12">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/segmenter/segmenter.html">
+       Segmenters
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/tokenizer/index.html">
+     Tokenizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+    <label for="toctree-checkbox-13">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/tokenizer/mecab.html">
+       Mecab Tokenizer
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/visualizers/index.html">
+   Visualizers
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/>
+  <label for="toctree-checkbox-14">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/visualizers/plot.html">
+     Plots
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../tutorials/workflow/index.html">
+   Workflows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Datasets
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../corpus/ekorpkot_corpus.html">
+   The eKorpkit Corpus
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Use Cases
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/fomc/index.html">
+   FOMC
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/>
+  <label for="toctree-checkbox-15">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/02_FOMC_numerical_data.html">
+     Preparing Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/03_FOMC_corpus.html">
+     Preparing Textual Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/04_FOMC_EDA_numericals.html">
+     EDA on Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/05_FOMC_features.html">
+     Visualizing Features
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/06_FOMC_AutoML.html">
+     Checking Baseline with AutoML
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/07_FOMC_sentiments.html">
+     Predicting Sentiments of FOMC Corpus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/08_FOMC_EDA_sentiments.html">
+     EDA on Sentiment Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/09_FOMC_AutoML_with_tones.html">
+     Predicting the next decisions with tones
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../usecases/bok/index.html">
+   Bank of Korea
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/edgar/index.html">
+   EDGAR
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/>
+  <label for="toctree-checkbox-16">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/edgar/predict_edgar.html">
+     Prediciting Sentiments
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/esg/index.html">
+   ESG
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" type="checkbox"/>
+  <label for="toctree-checkbox-17">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/snorkel-polarity.html">
+     Preparing polarity classification datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/rubrix.html">
+     Improving classification datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/classifiers.html">
+     Training Classifiers for ESG Ratings
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/econ_news_corpus.html">
+     Building
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       econ_news_kr
+      </span>
+     </code>
+     corpus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/predict_news.html">
+     Predicting ESG Categories and Polarities
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/rubrix_classifiers.html">
+     Preparing classifiers for active learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/predict_for_learning.html">
+     Preparing active learning data
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/esg-en/index.html">
+   ESG (English)
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" type="checkbox"/>
+  <label for="toctree-checkbox-18">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg-en/esg_corpus.html">
+     Building
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       JOCo
+      </span>
+     </code>
+     corpus
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/cointax/index.html">
+   Taxation on Cryptocurrency
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/>
+  <label for="toctree-checkbox-19">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/cointax/coin_dataset.html">
+     Improving classification datasets
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Research
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../research/esg_topics/analyst.html">
+   ESG Topic Analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../research/esg_topics/rethink_esg.html">
+   Rethinking ESG
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Lectures
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../intro_nlp/index.html">
+   Introduction to NLP
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" type="checkbox"/>
+  <label for="toctree-checkbox-20">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/intro.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/ekorpkit.html">
+     Getting started with ekorpkit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/research.html">
+     Research Applications
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/language_models.html">
+     Language Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/topic.html">
+     Topic Modeling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/topic_models.html">
+     Topic Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/topic_coherence.html">
+     Topic Coherence Measures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/sentiments.html">
+     Sentiment Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/tokenization.html">
+     Tokenization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/word_segmentation.html">
+     Word Segmentation and Association
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/vectorization.html">
+     Vector Semantics and Representation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/word_embeddings.html">
+     Word Embeddings
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lab1-corpus.html">
+     Lab 1: Preparing Wikipedia Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lab2-corpus-eda.html">
+     Lab 2: EDA on Corpora
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   Deep Learning for NLP
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" type="checkbox"/>
+  <label for="toctree-checkbox-21">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="intro.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="ekorpkit.html">
+     Getting started with ekorpkit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="zeroshot.html">
+     Zero Shot, Prompt, and Search Strategies
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="bloom.html">
+     What is BLOOM?
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="bloom_apps.html">
+     Bloom Examples
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="transformers.html">
+     Transformers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="bert.html">
+     BERT: Bidirectional Encoder Representations from Transformers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="t5.html">
+     T5: Text-To-Text Transfer Transformer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="tokenization.html">
+     Tokenization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="sentencepiece.html">
+     SentencePiece Tokenizer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="byt5.html">
+     ByT5: Towards a token-free future with pre-trained byte-to-byte models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="plms.html">
+     Pretrained Language Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lab1-corpus.html">
+     Lab 1: Preparing Wikipedia Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lab2-corpus-eda.html">
+     Lab 2: EDA on Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lab3-train-tokenizers.html">
+     Lab 3: Training Tokenizers
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Lab 4: Pretraining Language Models
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../nlp_apps/index.html">
+   Applications of NLP
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../aiart/index.html">
+   AI Art (Text-to-Image)
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" type="checkbox"/>
+  <label for="toctree-checkbox-22">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/intro.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/project-themes.html">
+     Project Themes - A Brave New World
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/dalle1.html">
+     DALL·E 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/dalle2.html">
+     DALL·E 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/imagen.html">
+     Imagen
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/dalle-mini.html">
+     DALL·E Mini
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/stable-diffusion.html">
+     Stable Diffusion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/prompt-generator.html">
+     Prompt Generator for Stable Diffusion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/textual-inversion.html">
+     Textual Inversion (Dreambooth)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/whisper.html">
+     Automatic Speech Recognition (Whisper)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/text2music.html">
+     Text to Music
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/image2music.html">
+     Image to Music
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mlops/index.html">
+   Machine Learning Systems Design
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ds/index.html">
+   Data Science for Economics and Finance
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about/index.html">
+   Bibliography
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about/cite.html">
+   Citation
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/entelecheia/ekorpkit-book/main?urlpath=tree/ekorpkit-book/docs/lectures/deep_nlp/lab4-pretraining-lms.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://colab.research.google.com/github/entelecheia/ekorpkit-book/blob/main/ekorpkit-book/docs/lectures/deep_nlp/lab4-pretraining-lms.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Colab"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../../_static/images/logo_colab.png">
+  </span>
+<span class="headerbtn__text-container">Colab</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/entelecheia/ekorpkit-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/entelecheia/ekorpkit-book/issues/new?title=Issue%20on%20page%20%2Fdocs/lectures/deep_nlp/lab4-pretraining-lms.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../../_sources/docs/lectures/deep_nlp/lab4-pretraining-lms.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#unicode-normalization">
+   Unicode Normalization
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tl-dr">
+     TL;DR
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#unicode-normalization-forms">
+     Unicode Normalization Forms
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#unicode-normalization-in-python">
+     Unicode Normalization in Python
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bert-pretraining">
+   BERT Pretraining
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#what-is-bert">
+     What is BERT?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#masked-language-modeling-mlm">
+     Masked-Language Modeling (MLM)
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#preprocessing-the-dataset">
+   Preprocessing the Dataset
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#load-the-tokenizer">
+     Load the tokenizer
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#load-the-dataset">
+     Load the dataset
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tokenize-the-dataset">
+     Tokenize the dataset
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#initializing-a-new-model">
+   Initializing a New Model
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#set-up-a-datacollator">
+     Set up a DataCollator
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#load-the-tokenized-dataset">
+     Load the Tokenized Dataset
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#training-the-model">
+   Training the Model
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#configure-the-training-arguments">
+     Configure the Training Arguments
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#train-the-model">
+     Train the Model
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#testing-the-model">
+   Testing the Model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#usage-of-mlm-trainer">
+   Usage of MLM Trainer
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#training-bnwiki-bert-using-mlm-trainer">
+   Training bnwiki_bert using MLM Trainer
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Lab 4: Pretraining Language Models</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#unicode-normalization">
+   Unicode Normalization
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tl-dr">
+     TL;DR
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#unicode-normalization-forms">
+     Unicode Normalization Forms
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#unicode-normalization-in-python">
+     Unicode Normalization in Python
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bert-pretraining">
+   BERT Pretraining
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#what-is-bert">
+     What is BERT?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#masked-language-modeling-mlm">
+     Masked-Language Modeling (MLM)
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#preprocessing-the-dataset">
+   Preprocessing the Dataset
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#load-the-tokenizer">
+     Load the tokenizer
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#load-the-dataset">
+     Load the dataset
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tokenize-the-dataset">
+     Tokenize the dataset
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#initializing-a-new-model">
+   Initializing a New Model
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#set-up-a-datacollator">
+     Set up a DataCollator
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#load-the-tokenized-dataset">
+     Load the Tokenized Dataset
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#training-the-model">
+   Training the Model
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#configure-the-training-arguments">
+     Configure the Training Arguments
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#train-the-model">
+     Train the Model
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#testing-the-model">
+   Testing the Model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#usage-of-mlm-trainer">
+   Usage of MLM Trainer
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#training-bnwiki-bert-using-mlm-trainer">
+   Training bnwiki_bert using MLM Trainer
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="lab-4-pretraining-language-models">
+<h1>Lab 4: Pretraining Language Models<a class="headerlink" href="#lab-4-pretraining-language-models" title="Permalink to this headline">#</a></h1>
+<p><img alt="" src="../../../_images/train.png" /></p>
+<p>Now that we have our dataset and tokenizer, in this lab, we will train a language model on a large corpus of text from scratch.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">pre</span> <span class="n">ekorpkit</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+
+<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;WARNING&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;version:&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+
+<span class="n">is_colab</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is colab?&quot;</span><span class="p">,</span> <span class="n">is_colab</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">is_colab</span><span class="p">:</span>
+    <span class="n">eKonf</span><span class="o">.</span><span class="n">mount_google_drive</span><span class="p">()</span>
+<span class="n">workspace_dir</span> <span class="o">=</span> <span class="s2">&quot;/content/drive/MyDrive/workspace&quot;</span>
+<span class="n">project_name</span> <span class="o">=</span> <span class="s2">&quot;ekorpkit-book&quot;</span>
+<span class="n">project_dir</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">set_workspace</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="n">workspace_dir</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project_name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;project_dir:&quot;</span><span class="p">,</span> <span class="n">project_dir</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">os</span><span class="o">.</span><span class="n">envs</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Set environment variable EKORPKIT_WORKSPACE_ROOT=/content/drive/MyDrive/workspace
+INFO:ekorpkit.base:Set environment variable EKORPKIT_PROJECT_DIR=/content/drive/MyDrive/workspace/projects/ekorpkit-book
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.40.post0.dev47
+is colab? False
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:There are no arguments to initilize a config, using default config.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>project_dir: project_name=&#39;ekorpkit-book&#39; task_name=&#39;default-task&#39; workspace_root=&#39;/content/drive/MyDrive/workspace&#39; project_root=&#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book&#39; description=None version=&#39;0.1.40.post0.dev47&#39; path=ProjectPathConfig(workspace=&#39;/content/drive/MyDrive/workspace&#39;, project=&#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book&#39;, data=&#39;/content/drive/MyDrive/workspace/data&#39;, home=&#39;/root&#39;, ekorpkit=&#39;/workspace/projects/ekorpkit/ekorpkit&#39;, resources=&#39;/workspace/projects/ekorpkit/ekorpkit/resources&#39;, runtime=&#39;/workspace/projects/ekorpkit-book/ekorpkit-book/docs/lectures/deep_nlp&#39;, archive=&#39;/content/drive/MyDrive/workspace/data/archive&#39;, corpus=&#39;/content/drive/MyDrive/workspace/data/datasets/corpus&#39;, datasets=&#39;/content/drive/MyDrive/workspace/data/datasets&#39;, logs=&#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/logs&#39;, models=&#39;/content/drive/MyDrive/workspace/data/models&#39;, outputs=&#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/outputs&#39;, cache=&#39;/content/drive/MyDrive/workspace/.cache&#39;, tmp=&#39;/content/drive/MyDrive/workspace/.tmp&#39;, library=&#39;/content/drive/MyDrive/workspace/data/libs&#39;)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;EKORPKIT_CONFIG_DIR&#39;: &#39;/workspace/projects/ekorpkit-book/config&#39;,
+ &#39;EKORPKIT_WORKSPACE_ROOT&#39;: &#39;/content/drive/MyDrive/workspace&#39;,
+ &#39;EKORPKIT_PROJECT&#39;: &#39;ekorpkit-book&#39;,
+ &#39;EKORPKIT_PROJECT_DIR&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book&#39;,
+ &#39;EKORPKIT_DATA_DIR&#39;: None,
+ &#39;EKORPKIT_LOG_LEVEL&#39;: &#39;WARNING&#39;,
+ &#39;NUM_WORKERS&#39;: 230,
+ &#39;KMP_DUPLICATE_LIB_OK&#39;: &#39;TRUE&#39;,
+ &#39;CUDA_DEVICE_ORDER&#39;: None,
+ &#39;CUDA_VISIBLE_DEVICES&#39;: None,
+ &#39;WANDB_PROJECT&#39;: None,
+ &#39;WANDB_DISABLED&#39;: None}
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 1.09 s (started: 2022-12-06 08:13:37 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">notebook_login</span>
+
+<span class="n">notebook_login</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "e221b829f9574fbf988c75775e1603e1", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 70.7 ms (started: 2022-11-21 00:59:58 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">HfApi</span>
+<span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">HfFolder</span>
+
+<span class="n">token</span> <span class="o">=</span> <span class="n">HfFolder</span><span class="o">.</span><span class="n">get_token</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;HF_USER_ACCESS_TOKEN&quot;</span><span class="p">]</span>
+
+<span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Please login to huggingface_hub&quot;</span><span class="p">)</span>
+
+<span class="n">user_id</span> <span class="o">=</span> <span class="n">HfApi</span><span class="p">()</span><span class="o">.</span><span class="n">whoami</span><span class="p">(</span><span class="n">token</span><span class="p">)[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;user id &#39;</span><span class="si">{</span><span class="n">user_id</span><span class="si">}</span><span class="s2">&#39; will be used during this lab&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>user id &#39;entelecheia&#39; will be used during this lab
+time: 893 ms (started: 2022-11-21 01:06:46 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<section id="unicode-normalization">
+<h2>Unicode Normalization<a class="headerlink" href="#unicode-normalization" title="Permalink to this headline">#</a></h2>
+<p>One little thing to note is that we will need to normalize our text before training our language model. This is because the same character can be represented in different ways. For example, the character “é” can be represented as “e” followed by a combining accent character, or as a single character.</p>
+<section id="tl-dr">
+<h3>TL;DR<a class="headerlink" href="#tl-dr" title="Permalink to this headline">#</a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">NFKC</span></code> normalization to normalize your text before training your language model.</p>
+</section>
+<section id="unicode-normalization-forms">
+<h3>Unicode Normalization Forms<a class="headerlink" href="#unicode-normalization-forms" title="Permalink to this headline">#</a></h3>
+<p>There are four normalization forms:</p>
+<ul class="simple">
+<li><p><strong>NFC</strong>: Normalization Form Canonical Composition</p></li>
+<li><p><strong>NFD</strong>: Normalization Form Canonical Decomposition</p></li>
+<li><p><strong>NFKC</strong>: Normalization Form Compatibility Composition</p></li>
+<li><p><strong>NFKD</strong>: Normalization Form Compatibility Decomposition</p></li>
+</ul>
+<p>In the above forms, “C” stands for “Canonical” and “K” stands for “Compatibility”. The “C” forms are the most commonly used. The “K” forms are used when you need to convert characters to their compatibility representation. For example, the “K” forms will convert “ﬁ” to “fi”.</p>
+<p>There two main differences between the two sets of forms:</p>
+<ul class="simple">
+<li><p>The length of the string is changed or not: NFC and NFKC always produce a string of the same length or shorter, while NFD and NFKD may produce a string that is longer.</p></li>
+<li><p>The original string is changed or not: NFC and NFD always produce a string that is identical to the original string, while NFKC and NFKD may produce a string that is different from the original string.</p></li>
+</ul>
+</section>
+<section id="unicode-normalization-in-python">
+<h3>Unicode Normalization in Python<a class="headerlink" href="#unicode-normalization-in-python" title="Permalink to this headline">#</a></h3>
+<p>In Python, you can use the <code class="docutils literal notranslate"><span class="pre">unicodedata</span></code> module to normalize your text. The <code class="docutils literal notranslate"><span class="pre">unicodedata.normalize</span></code> function takes two arguments:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">form</span></code>: The normalization form to use. This can be one of the following: <code class="docutils literal notranslate"><span class="pre">NFC</span></code>, <code class="docutils literal notranslate"><span class="pre">NFD</span></code>, <code class="docutils literal notranslate"><span class="pre">NFKC</span></code>, <code class="docutils literal notranslate"><span class="pre">NFKD</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unistr</span></code>: The string to normalize.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unicodedata</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;ａｂｃＡＢＣ１２３가나다…&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original: </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;NFC&quot;</span><span class="p">,</span> <span class="s2">&quot;NFD&quot;</span><span class="p">,</span> <span class="s2">&quot;NFKC&quot;</span><span class="p">,</span> <span class="s2">&quot;NFKD&quot;</span><span class="p">]:</span>
+    <span class="n">ntext</span> <span class="o">=</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">form</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">ntext</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ntext</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original: ａｂｃＡＢＣ１２３가나다…, 13
+NFC: ａｂｃＡＢＣ１２３가나다…, 13
+NFD: ａｂｃＡＢＣ１２３가나다…, 16
+NFKC: abcABC123가나다..., 15
+NFKD: abcABC123가나다..., 18
+time: 23.8 ms (started: 2022-11-19 10:16:57 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="bert-pretraining">
+<h2>BERT Pretraining<a class="headerlink" href="#bert-pretraining" title="Permalink to this headline">#</a></h2>
+<p>In this lab, we will train a BERT-like model using masked-language modeling, one of the two pretraining tasks used in the original BERT paper.</p>
+<section id="what-is-bert">
+<h3>What is BERT?<a class="headerlink" href="#what-is-bert" title="Permalink to this headline">#</a></h3>
+<p>BERT is a large-scale language model that was trained on the English Wikipedia using a masked-language modeling objective. The model was then fine-tuned on a variety of downstream tasks, including question answering, natural language inference, and sentiment analysis. BERT was the first large-scale language model to be pre-trained using a deep bidirectional architecture and outperformed previous language models on a variety of tasks.</p>
+<p>BERT was originally pre-trained on 1 Million Steps with a global batch size of 256.</p>
+<blockquote>
+<div><p>“We train with batch size of 256 sequences (256 sequences * 512 tokens = 128,000 tokens/batch) for 1,000,000 steps, which is approximately 40 epochs over the 3.3 billion word corpus.”</p>
+</div></blockquote>
+<p>For more information, see the lecture notes on BERT.</p>
+</section>
+<section id="masked-language-modeling-mlm">
+<h3>Masked-Language Modeling (MLM)<a class="headerlink" href="#masked-language-modeling-mlm" title="Permalink to this headline">#</a></h3>
+<p>Masked-language modeling is a pretraining task where we mask some of the input tokens and train the model to predict the original value of the masked tokens. For example, if we have the sentence “The dog ate the apple”, we can mask the word “ate” and train the model to predict the original value of the masked token. The model will then learn to predict the original value of the masked tokens based on the context of the sentence.</p>
+<p>Example:</p>
+<blockquote>
+<div><p>Input: “The dog [MASK] the apple”</p>
+</div></blockquote>
+</section>
+</section>
+<section id="preprocessing-the-dataset">
+<h2>Preprocessing the Dataset<a class="headerlink" href="#preprocessing-the-dataset" title="Permalink to this headline">#</a></h2>
+<p>Before training our language model, we need to preprocess our dataset. We will use our tokenizer to tokenize our dataset and then convert the tokens to their IDs. If we have a sentence that is longer than the maximum sequence length, we will truncate the sentence. If the sentence is shorter than the maximum sequence length, we will pad the sentence with the padding token.</p>
+<p>Unlike the original BERT paper, we will not use the WordPiece tokenization algorithm. Instead, we will use the <code class="docutils literal notranslate"><span class="pre">unigram</span></code> tokenization algorithm.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tokenizers</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">PreTrainedTokenizerFast</span>
+<span class="kn">from</span> <span class="nn">tokenizers.processors</span> <span class="kn">import</span> <span class="n">BertProcessing</span>
+
+<span class="n">tokenizer_path</span> <span class="o">=</span> <span class="s2">&quot;tokenizers/enko_wiki/enko_wiki_unigram_huggingface_vocab_30000.json&quot;</span>
+<span class="n">tokenizer_path</span> <span class="o">=</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">tokenizer_path</span>
+<span class="n">context_length</span> <span class="o">=</span> <span class="mi">512</span>
+
+<span class="n">unigram_tokenizer</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">tokenizer_path</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Vocab size: </span><span class="si">{</span><span class="n">unigram_tokenizer</span><span class="o">.</span><span class="n">get_vocab_size</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">unigram_tokenizer</span><span class="o">.</span><span class="n">post_processor</span> <span class="o">=</span> <span class="n">BertProcessing</span><span class="p">(</span>
+    <span class="p">(</span><span class="s2">&quot;&lt;/s&gt;&quot;</span><span class="p">,</span> <span class="n">unigram_tokenizer</span><span class="o">.</span><span class="n">token_to_id</span><span class="p">(</span><span class="s2">&quot;&lt;/s&gt;&quot;</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">&quot;&lt;s&gt;&quot;</span><span class="p">,</span> <span class="n">unigram_tokenizer</span><span class="o">.</span><span class="n">token_to_id</span><span class="p">(</span><span class="s2">&quot;&lt;s&gt;&quot;</span><span class="p">)),</span>
+<span class="p">)</span>
+
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">PreTrainedTokenizerFast</span><span class="p">(</span>
+    <span class="n">tokenizer_object</span><span class="o">=</span><span class="n">unigram_tokenizer</span><span class="p">,</span>
+    <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">max_length</span><span class="o">=</span><span class="n">context_length</span><span class="p">,</span>
+    <span class="n">return_length</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">bos_token</span><span class="o">=</span><span class="s2">&quot;&lt;s&gt;&quot;</span><span class="p">,</span>
+    <span class="n">eos_token</span><span class="o">=</span><span class="s2">&quot;&lt;/s&gt;&quot;</span><span class="p">,</span>
+    <span class="n">unk_token</span><span class="o">=</span><span class="s2">&quot;&lt;unk&gt;&quot;</span><span class="p">,</span>
+    <span class="n">pad_token</span><span class="o">=</span><span class="s2">&quot;&lt;pad&gt;&quot;</span><span class="p">,</span>
+    <span class="n">cls_token</span><span class="o">=</span><span class="s2">&quot;&lt;cls&gt;&quot;</span><span class="p">,</span>
+    <span class="n">sep_token</span><span class="o">=</span><span class="s2">&quot;&lt;sep&gt;&quot;</span><span class="p">,</span>
+    <span class="n">mask_token</span><span class="o">=</span><span class="s2">&quot;&lt;mask&gt;&quot;</span><span class="p">,</span>
+    <span class="n">padding_side</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;is_fast: </span><span class="si">{</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">is_fast</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Vocab size: </span><span class="si">{</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">vocab_size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">(</span><span class="s2">&quot;Hello, my dog is cute&quot;</span><span class="p">))</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/tokenizers/enko_wiki&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Vocab size: 30000
+is_fast: True
+Vocab size: 30000
+{&#39;input_ids&#39;: [1, 8, 14690, 10, 8, 968, 8, 6871, 8, 42, 8, 2777, 72, 2], &#39;token_type_ids&#39;: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], &#39;attention_mask&#39;: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/tokenizers/enko_wiki/tokenizer_config.json&#39;,
+ &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/tokenizers/enko_wiki/special_tokens_map.json&#39;,
+ &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/tokenizers/enko_wiki/tokenizer.json&#39;)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 67 ms (started: 2022-11-19 10:55:20 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<section id="load-the-tokenizer">
+<h3>Load the tokenizer<a class="headerlink" href="#load-the-tokenizer" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span>
+
+
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+    <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/tokenizers/enko_wiki&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;is_fast: </span><span class="si">{</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">is_fast</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>is_fast: True
+time: 59.6 ms (started: 2022-11-21 01:03:21 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tokenizer</span><span class="p">(</span><span class="s2">&quot;Hello, this one sentence!&quot;</span><span class="p">,</span> <span class="s2">&quot;And this sentence goes with it.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;input_ids&#39;: [1, 8, 14690, 10, 8, 235, 8, 202, 8, 15219, 489, 2, 8, 37, 8, 235, 8, 15219, 8, 11241, 8, 80, 8, 65, 9, 2], &#39;token_type_ids&#39;: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], &#39;attention_mask&#39;: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 20.2 ms (started: 2022-11-21 01:07:07 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="load-the-dataset">
+<h3>Load the dataset<a class="headerlink" href="#load-the-dataset" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">load_dataset</span>
+
+<span class="n">data_dir</span> <span class="o">=</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/data/tokenizers/enko_filtered_chunk&quot;</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="n">data_dir</span><span class="o">=</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">)</span>
+<span class="n">dataset</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "3eeddc62f7db4f55a039916fbd57d972", "version_major": 2, "version_minor": 0}
+</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:datasets.builder:Using custom data configuration default-f34802e795f4ed05
+WARNING:datasets.builder:Reusing dataset text (/workspace/data/tbts/.cache/huggingface/datasets/text/default-f34802e795f4ed05/0.0.0/21a506d1b2b34316b1e82d0bd79066905d846e5d7e619823c0dd338d6f1fa6ad)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset({
+    features: [&#39;text&#39;],
+    num_rows: 3618972
+})
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 1.02 s (started: 2022-11-19 09:39:39 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="tokenize-the-dataset">
+<h3>Tokenize the dataset<a class="headerlink" href="#tokenize-the-dataset" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">text_column</span> <span class="o">=</span> <span class="s2">&quot;text&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="n">element</span><span class="p">):</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span>
+        <span class="n">element</span><span class="p">[</span><span class="n">text_column</span><span class="p">],</span>
+        <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="n">context_length</span><span class="p">,</span>
+        <span class="n">return_special_tokens_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">outputs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 15.3 ms (started: 2022-11-19 09:55:12 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_proc</span> <span class="o">=</span> <span class="mi">20</span>
+
+<span class="c1"># preprocess dataset</span>
+<span class="n">tokenized_dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+    <span class="n">tokenize</span><span class="p">,</span> <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">remove_columns</span><span class="o">=</span><span class="p">[</span><span class="n">text_column</span><span class="p">],</span> <span class="n">num_proc</span><span class="o">=</span><span class="n">num_proc</span>
+<span class="p">)</span>
+<span class="n">tokenized_dataset</span><span class="o">.</span><span class="n">features</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
+
+<span class="c1"># Main data processing function that will concatenate all texts from our dataset and generate chunks of</span>
+<span class="c1"># max_seq_length.</span>
+<span class="k">def</span> <span class="nf">group_texts</span><span class="p">(</span><span class="n">examples</span><span class="p">):</span>
+    <span class="c1"># Concatenate all texts.</span>
+    <span class="n">concatenated_examples</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="n">examples</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">examples</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+    <span class="n">total_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">concatenated_examples</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">examples</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]])</span>
+    <span class="c1"># We drop the small remainder, we could add padding if the model supported it instead of this drop, you can</span>
+    <span class="c1"># customize this part to your needs.</span>
+    <span class="k">if</span> <span class="n">total_length</span> <span class="o">&gt;=</span> <span class="n">context_length</span><span class="p">:</span>
+        <span class="n">total_length</span> <span class="o">=</span> <span class="p">(</span><span class="n">total_length</span> <span class="o">//</span> <span class="n">context_length</span><span class="p">)</span> <span class="o">*</span> <span class="n">context_length</span>
+    <span class="c1"># Split by chunks of max_len.</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">k</span><span class="p">:</span> <span class="p">[</span><span class="n">t</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">context_length</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">total_length</span><span class="p">,</span> <span class="n">context_length</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">concatenated_examples</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="n">tokenized_dataset</span> <span class="o">=</span> <span class="n">tokenized_dataset</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">group_texts</span><span class="p">,</span> <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_proc</span><span class="o">=</span><span class="n">num_proc</span><span class="p">)</span>
+
+<span class="c1"># shuffle dataset</span>
+<span class="n">tokenized_dataset</span> <span class="o">=</span> <span class="n">tokenized_dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;the dataset contains in total </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tokenized_dataset</span><span class="p">)</span><span class="o">*</span><span class="n">context_length</span><span class="si">}</span><span class="s2"> tokens&quot;</span><span class="p">)</span>
+<span class="c1"># the dataset contains in total 137,816,832 tokens</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We have 137,816,832 tokens in our dataset. For reference, the original BERT paper used 3.2 billion tokens, and GPT-3 uses 300 billion tokens.</p>
+</section>
+</section>
+<section id="initializing-a-new-model">
+<h2>Initializing a New Model<a class="headerlink" href="#initializing-a-new-model" title="Permalink to this headline">#</a></h2>
+<p>We will initialize a new model using the <code class="docutils literal notranslate"><span class="pre">bert-base-uncased</span></code> configuration. We will then save the configuration to a file so that we can use it later when we load the model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoConfig</span><span class="p">,</span> <span class="n">AutoModelForMaskedLM</span>
+
+<span class="n">tk_path</span> <span class="o">=</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/tokenizers/enko_wiki&quot;</span>
+
+<span class="c1"># Load codeparrot tokenizer trained for Python code tokenization</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">tk_path</span><span class="p">)</span>
+
+<span class="c1"># Configuration</span>
+<span class="n">config_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;vocab_size&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">),</span>
+    <span class="s2">&quot;pad_token_id&quot;</span><span class="p">:</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token_id</span><span class="p">,</span>
+    <span class="s2">&quot;mask_token_id&quot;</span><span class="p">:</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">mask_token_id</span><span class="p">,</span>
+    <span class="s2">&quot;cls_token_id&quot;</span><span class="p">:</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">cls_token_id</span><span class="p">,</span>
+    <span class="s2">&quot;sep_token_id&quot;</span><span class="p">:</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">sep_token_id</span><span class="p">,</span>
+    <span class="s2">&quot;unk_token_id&quot;</span><span class="p">:</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">unk_token_id</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># # Load model with config and push to hub</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">AutoConfig</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;bert-base-uncased&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">config_kwargs</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForMaskedLM</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+<span class="n">model_path</span> <span class="o">=</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/models/enko_wiki_bert_base_uncased&quot;</span>
+<span class="n">model</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 3.4 s (started: 2022-11-19 11:29:40 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Our model have 109.1 million parameters just like the original BERT model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">BertForMaskedLM</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">BertForMaskedLM</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">model_size</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BERT size: </span><span class="si">{</span><span class="n">model_size</span><span class="o">/</span><span class="mi">1000</span><span class="o">**</span><span class="mi">2</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">M parameters&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>BERT size: 109.1M parameters
+time: 2.07 s (started: 2022-11-19 11:23:15 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<section id="set-up-a-datacollator">
+<h3>Set up a DataCollator<a class="headerlink" href="#set-up-a-datacollator" title="Permalink to this headline">#</a></h3>
+<p>Before we can start training, we need to set up a data collator that will be used to collate the batches of data. We will use the <code class="docutils literal notranslate"><span class="pre">DataCollatorForLanguageModeling</span></code> data collator, which will take care of masking the tokens and padding the sequences.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">DataCollatorForLanguageModeling</span>
+
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token</span>
+<span class="n">data_collator</span> <span class="o">=</span> <span class="n">DataCollatorForLanguageModeling</span><span class="p">(</span>
+    <span class="n">tokenizer</span><span class="p">,</span> <span class="n">mlm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mlm_probability</span><span class="o">=</span><span class="mf">0.15</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2022-11-21 01:24:31.069901: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 2.59 s (started: 2022-11-21 01:24:30 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="load-the-tokenized-dataset">
+<h3>Load the Tokenized Dataset<a class="headerlink" href="#load-the-tokenized-dataset" title="Permalink to this headline">#</a></h3>
+<p>Our dataset is already tokenized, there are 268,366 examples in our dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">Dataset</span>
+
+<span class="n">dataset_dir</span> <span class="o">=</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/data/tokenized_datasets/enko_filtered&quot;</span>
+
+<span class="n">tokenized_dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">load_from_disk</span><span class="p">(</span><span class="n">dataset_dir</span><span class="p">)</span>
+<span class="n">tokenized_dataset</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset({
+    features: [&#39;input_ids&#39;, &#39;token_type_ids&#39;, &#39;attention_mask&#39;, &#39;special_tokens_mask&#39;],
+    num_rows: 268366
+})
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 269 ms (started: 2022-11-21 01:24:33 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Check the output of the first batch of data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">out</span> <span class="o">=</span> <span class="n">data_collator</span><span class="p">([</span><span class="n">tokenized_dataset</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)])</span>
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">out</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> shape: </span><span class="si">{</span><span class="n">out</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>input_ids shape: torch.Size([5, 512])
+token_type_ids shape: torch.Size([5, 512])
+attention_mask shape: torch.Size([5, 512])
+labels shape: torch.Size([5, 512])
+time: 70 ms (started: 2022-11-21 01:24:35 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="training-the-model">
+<h2>Training the Model<a class="headerlink" href="#training-the-model" title="Permalink to this headline">#</a></h2>
+<p>We will configure the training arguments and then set up a trainer to train our model.</p>
+<section id="configure-the-training-arguments">
+<h3>Configure the Training Arguments<a class="headerlink" href="#configure-the-training-arguments" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">Trainer</span><span class="p">,</span> <span class="n">TrainingArguments</span>
+
+
+<span class="n">args</span> <span class="o">=</span> <span class="n">TrainingArguments</span><span class="p">(</span>
+    <span class="n">output_dir</span><span class="o">=</span><span class="n">model_path</span><span class="p">,</span>
+    <span class="n">per_device_train_batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+    <span class="n">per_device_eval_batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+    <span class="n">evaluation_strategy</span><span class="o">=</span><span class="s2">&quot;steps&quot;</span><span class="p">,</span>
+    <span class="n">eval_steps</span><span class="o">=</span><span class="mi">5_000</span><span class="p">,</span>
+    <span class="n">logging_steps</span><span class="o">=</span><span class="mi">5_000</span><span class="p">,</span>
+    <span class="n">gradient_accumulation_steps</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+    <span class="n">num_train_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">weight_decay</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">warmup_steps</span><span class="o">=</span><span class="mi">1_000</span><span class="p">,</span>
+    <span class="n">lr_scheduler_type</span><span class="o">=</span><span class="s2">&quot;cosine&quot;</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="mf">5e-4</span><span class="p">,</span>
+    <span class="n">save_steps</span><span class="o">=</span><span class="mi">5_000</span><span class="p">,</span>
+    <span class="n">fp16</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">push_to_hub</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
+    <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
+    <span class="n">data_collator</span><span class="o">=</span><span class="n">data_collator</span><span class="p">,</span>
+    <span class="n">train_dataset</span><span class="o">=</span><span class="n">tokenized_dataset</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using cuda_amp half precision backend
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 2.43 s (started: 2022-11-19 11:34:48 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="train-the-model">
+<h3>Train the Model<a class="headerlink" href="#train-the-model" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">accelerate</span> <span class="kn">import</span> <span class="n">Accelerator</span>
+
+<span class="n">accelerator</span> <span class="o">=</span> <span class="n">Accelerator</span><span class="p">()</span>
+<span class="n">acc_state</span> <span class="o">=</span> <span class="p">{</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">):</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">accelerator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">accelerator</span><span class="o">.</span><span class="n">device</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;device: </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">accelerator</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">trainer</span><span class="p">)</span>
+
+<span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+
+<span class="n">trainer</span><span class="o">.</span><span class="n">save_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>device: cuda
+time: 47.9 ms (started: 2022-11-19 11:34:51 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<p>It took 6h 33m 0.0s to train our model for 40 epochs.</p>
+</section>
+</section>
+<section id="testing-the-model">
+<h2>Testing the Model<a class="headerlink" href="#testing-the-model" title="Permalink to this headline">#</a></h2>
+<p>We will load our model and test it on a few examples.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">pipeline</span><span class="p">,</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoModelForMaskedLM</span>
+
+<span class="n">model_path</span> <span class="o">=</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/models/enko_wiki_bert_base_uncased&quot;</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForMaskedLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+
+<span class="n">fill_mask</span> <span class="o">=</span> <span class="n">pipeline</span><span class="p">(</span><span class="s2">&quot;fill-mask&quot;</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO|configuration_utils.py:652] 2022-11-22 19:14:02,688 &gt;&gt; loading configuration file /content/drive/MyDrive/workspace/projects/ekorpkit-book/models/enko_wiki_bert_base_uncased/config.json
+[INFO|configuration_utils.py:706] 2022-11-22 19:14:02,690 &gt;&gt; Model config BertConfig {
+  &quot;_name_or_path&quot;: &quot;/content/drive/MyDrive/workspace/projects/ekorpkit-book/models/enko_wiki_bert_base_uncased&quot;,
+  &quot;architectures&quot;: [
+    &quot;BertForMaskedLM&quot;
+  ],
+  &quot;attention_probs_dropout_prob&quot;: 0.1,
+  &quot;classifier_dropout&quot;: null,
+  &quot;gradient_checkpointing&quot;: false,
+  &quot;hidden_act&quot;: &quot;gelu&quot;,
+  &quot;hidden_dropout_prob&quot;: 0.1,
+  &quot;hidden_size&quot;: 768,
+  &quot;initializer_range&quot;: 0.02,
+  &quot;intermediate_size&quot;: 3072,
+  &quot;layer_norm_eps&quot;: 1e-12,
+  &quot;max_position_embeddings&quot;: 512,
+  &quot;model_type&quot;: &quot;bert&quot;,
+  &quot;num_attention_heads&quot;: 12,
+  &quot;num_hidden_layers&quot;: 12,
+  &quot;pad_token_id&quot;: 4,
+  &quot;position_embedding_type&quot;: &quot;absolute&quot;,
+  &quot;sep_token_id&quot;: 6,
+  &quot;torch_dtype&quot;: &quot;float32&quot;,
+  &quot;transformers_version&quot;: &quot;4.24.0&quot;,
+  &quot;type_vocab_size&quot;: 2,
+  &quot;use_cache&quot;: true,
+  &quot;vocab_size&quot;: 30000
+}
+
+[INFO|modeling_utils.py:2155] 2022-11-22 19:14:02,691 &gt;&gt; loading weights file /content/drive/MyDrive/workspace/projects/ekorpkit-book/models/enko_wiki_bert_base_uncased/pytorch_model.bin
+[INFO|modeling_utils.py:2608] 2022-11-22 19:14:04,867 &gt;&gt; All model checkpoint weights were used when initializing BertForMaskedLM.
+
+[INFO|modeling_utils.py:2616] 2022-11-22 19:14:04,873 &gt;&gt; All the weights of BertForMaskedLM were initialized from the model checkpoint at /content/drive/MyDrive/workspace/projects/ekorpkit-book/models/enko_wiki_bert_base_uncased.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use BertForMaskedLM for predictions without further training.
+[INFO|tokenization_utils_base.py:1773] 2022-11-22 19:14:04,888 &gt;&gt; loading file tokenizer.json
+[INFO|tokenization_utils_base.py:1773] 2022-11-22 19:14:04,888 &gt;&gt; loading file added_tokens.json
+[INFO|tokenization_utils_base.py:1773] 2022-11-22 19:14:04,889 &gt;&gt; loading file special_tokens_map.json
+[INFO|tokenization_utils_base.py:1773] 2022-11-22 19:14:04,889 &gt;&gt; loading file tokenizer_config.json
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 2.3 s (started: 2022-11-22 19:14:02 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># perform predictions</span>
+<span class="n">example</span> <span class="o">=</span> <span class="s2">&quot;처음으로 대중적으로 &lt;mask&gt; 롤플레잉 게임이다.&quot;</span>
+<span class="k">for</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">fill_mask</span><span class="p">(</span><span class="n">example</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;score&#39;: 0.1881457269191742, &#39;token&#39;: 1183, &#39;token_str&#39;: &#39;만든&#39;, &#39;sequence&#39;: &#39;▁ 처음으로 ▁ 대중적 으로 ▁ 만든 ▁ 롤플레잉 ▁ 게임 이다.&#39;}
+{&#39;score&#39;: 0.14176464080810547, &#39;token&#39;: 3567, &#39;token_str&#39;: &#39;제작한&#39;, &#39;sequence&#39;: &#39;▁ 처음으로 ▁ 대중적 으로 ▁ 제작한 ▁ 롤플레잉 ▁ 게임 이다.&#39;}
+{&#39;score&#39;: 0.04182405769824982, &#39;token&#39;: 15022, &#39;token_str&#39;: &#39;롤플레잉&#39;, &#39;sequence&#39;: &#39;▁ 처음으로 ▁ 대중적 으로 ▁ 롤플레잉 ▁ 롤플레잉 ▁ 게임 이다.&#39;}
+{&#39;score&#39;: 0.035137832164764404, &#39;token&#39;: 3225, &#39;token_str&#39;: &#39;개발한&#39;, &#39;sequence&#39;: &#39;▁ 처음으로 ▁ 대중적 으로 ▁ 개발한 ▁ 롤플레잉 ▁ 게임 이다.&#39;}
+{&#39;score&#39;: 0.033710286021232605, &#39;token&#39;: 3171, &#39;token_str&#39;: &#39;아시안&#39;, &#39;sequence&#39;: &#39;▁ 처음으로 ▁ 대중적 으로 ▁ 아시안 ▁ 롤플레잉 ▁ 게임 이다.&#39;}
+time: 223 ms (started: 2022-11-22 19:14:05 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="usage-of-mlm-trainer">
+<h2>Usage of MLM Trainer<a class="headerlink" href="#usage-of-mlm-trainer" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_format=&#39;retina&#39;
+<span class="o">%</span><span class="k">load_ext</span> autotime
+
+<span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+
+<span class="n">eKonf</span><span class="o">.</span><span class="n">setLogger</span><span class="p">(</span><span class="s2">&quot;WARNING&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;version:&quot;</span><span class="p">,</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+
+<span class="n">is_colab</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is colab?&quot;</span><span class="p">,</span> <span class="n">is_colab</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">is_colab</span><span class="p">:</span>
+    <span class="n">eKonf</span><span class="o">.</span><span class="n">mount_google_drive</span><span class="p">()</span>
+<span class="n">workspace_dir</span> <span class="o">=</span> <span class="s2">&quot;/content/drive/MyDrive/workspace&quot;</span>
+<span class="n">project_name</span> <span class="o">=</span> <span class="s2">&quot;ekorpkit-book&quot;</span>
+<span class="n">project_dir</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">set_workspace</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="n">workspace_dir</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project_name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;project_dir:&quot;</span><span class="p">,</span> <span class="n">project_dir</span><span class="p">)</span>
+<span class="n">eKonf</span><span class="o">.</span><span class="n">os</span><span class="o">.</span><span class="n">envs</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The autotime extension is already loaded. To reload it, use:
+  %reload_ext autotime
+version: 0.1.40.post0.dev46
+is colab? False
+project_dir: /content/drive/MyDrive/workspace/projects/ekorpkit-book
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;EKORPKIT_CONFIG_DIR&#39;: &#39;/workspace/projects/ekorpkit-book/config&#39;,
+ &#39;EKORPKIT_WORKSPACE_ROOT&#39;: &#39;/content/drive/MyDrive/workspace&#39;,
+ &#39;EKORPKIT_PROJECT&#39;: &#39;ekorpkit-book&#39;,
+ &#39;EKORPKIT_PROJECT_DIR&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book&#39;,
+ &#39;EKORPKIT_DATA_DIR&#39;: None,
+ &#39;EKORPKIT_LOG_LEVEL&#39;: &#39;WARNING&#39;,
+ &#39;NUM_WORKERS&#39;: 230,
+ &#39;KMP_DUPLICATE_LIB_OK&#39;: &#39;TRUE&#39;,
+ &#39;CUDA_DEVICE_ORDER&#39;: None,
+ &#39;CUDA_VISIBLE_DEVICES&#39;: None,
+ &#39;WANDB_PROJECT&#39;: None,
+ &#39;WANDB_DISABLED&#39;: None}
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 10.1 ms (started: 2022-12-05 10:58:05 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.tasks.nlp</span> <span class="kn">import</span> <span class="n">MlmTrainer</span>
+
+<span class="n">train_dir</span> <span class="o">=</span> <span class="s2">&quot;outputs/enkowiki/sentence_chunks&quot;</span>
+<span class="n">pretrained_tokenizer_file</span> <span class="o">=</span> <span class="s2">&quot;enkowiki_unigram_huggingface_vocab_30000.json&quot;</span>
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;task/nlp/lm=mlm&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;enkowiki&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">config_name</span> <span class="o">=</span> <span class="s2">&quot;bert-base-uncased&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">pretrained_tokenizer_file</span> <span class="o">=</span> <span class="n">pretrained_tokenizer_file</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">train_file</span> <span class="o">=</span> <span class="n">train_dir</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">max_seq_length</span> <span class="o">=</span> <span class="mi">512</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">use_accelerator</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">num_train_epochs</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">eval_steps</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">warmup_steps</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="c1"># eKonf.print(cfg)</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">MlmTrainer</span><span class="p">(</span><span class="o">**</span><span class="n">cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:ekorpkit.models.transformer.trainers.base:Process rank: -1, device: cuda:0, n_gpu: 8, distributed training: False, 16-bits training: True
+INFO:ekorpkit.base:No method defined to call
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 2.35 s (started: 2022-12-05 10:59:56 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># trainer.train()</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">save_config</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;enkowiki(19)_config.yaml&#39;
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 260 ms (started: 2022-12-05 11:00:06 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ekorpkit <span class="nv">print_config</span><span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+    <span class="nv">project_name</span><span class="o">=</span>ekorpkit-book <span class="se">\</span>
+    <span class="nv">workspace_dir</span><span class="o">=</span>/content/drive/MyDrive/workspace <span class="se">\</span>
+    <span class="nv">run</span><span class="o">=</span>transformer <span class="se">\</span>
+    <span class="nv">transformer</span><span class="o">=</span>mlm.trainer <span class="se">\</span>
+    transformer.name<span class="o">=</span>enkowiki <span class="se">\</span>
+    transformer.model.config_name<span class="o">=</span>bert-base-uncased <span class="se">\</span>
+    transformer.tokenizer.pretrained_tokenizer_file<span class="o">=</span>enkowiki_unigram_huggingface_vocab_30000.json <span class="se">\</span>
+    transformer.dataset.train_file<span class="o">=</span>outputs/enkowiki/sentence_chunks <span class="se">\</span>
+    transformer.dataset.max_seq_length<span class="o">=</span><span class="m">512</span> <span class="se">\</span>
+    transformer.dataset.num_workers<span class="o">=</span><span class="m">8</span> <span class="se">\</span>
+    transformer.use_accelerator<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+    transformer.training.num_train_epochs<span class="o">=</span><span class="m">40</span> <span class="se">\</span>
+    transformer.training.eval_steps<span class="o">=</span><span class="m">500</span> <span class="se">\</span>
+    transformer.training.warmup_steps<span class="o">=</span><span class="m">100</span> <span class="se">\</span>
+    transformer.auto<span class="o">=</span>train
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># perform predictions</span>
+<span class="n">example</span> <span class="o">=</span> <span class="s2">&quot;처음으로 대중적으로 &lt;mask&gt; 롤플레잉 게임이다.&quot;</span>
+<span class="k">for</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">trainer</span><span class="o">.</span><span class="n">fill_mask</span><span class="p">(</span><span class="n">example</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO|configuration_utils.py:652] 2022-11-26 11:57:21,702 &gt;&gt; loading configuration file /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/models/enkowiki/enkowiki-bert-base-uncased/config.json
+[INFO|configuration_utils.py:706] 2022-11-26 11:57:21,703 &gt;&gt; Model config BertConfig {
+  &quot;_name_or_path&quot;: &quot;/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/models/enkowiki/enkowiki-bert-base-uncased&quot;,
+  &quot;architectures&quot;: [
+    &quot;BertForMaskedLM&quot;
+  ],
+  &quot;attention_probs_dropout_prob&quot;: 0.1,
+  &quot;classifier_dropout&quot;: null,
+  &quot;cls_token_id&quot;: 5,
+  &quot;gradient_checkpointing&quot;: false,
+  &quot;hidden_act&quot;: &quot;gelu&quot;,
+  &quot;hidden_dropout_prob&quot;: 0.1,
+  &quot;hidden_size&quot;: 768,
+  &quot;initializer_range&quot;: 0.02,
+  &quot;intermediate_size&quot;: 3072,
+  &quot;layer_norm_eps&quot;: 1e-12,
+  &quot;mask_token_id&quot;: 3,
+  &quot;max_position_embeddings&quot;: 512,
+  &quot;model_type&quot;: &quot;bert&quot;,
+  &quot;num_attention_heads&quot;: 12,
+  &quot;num_hidden_layers&quot;: 12,
+  &quot;pad_token_id&quot;: 4,
+  &quot;position_embedding_type&quot;: &quot;absolute&quot;,
+  &quot;sep_token_id&quot;: 6,
+  &quot;torch_dtype&quot;: &quot;float32&quot;,
+  &quot;transformers_version&quot;: &quot;4.24.0&quot;,
+  &quot;type_vocab_size&quot;: 2,
+  &quot;unk_token_id&quot;: 7,
+  &quot;use_cache&quot;: true,
+  &quot;vocab_size&quot;: 30000
+}
+
+[INFO|modeling_utils.py:2155] 2022-11-26 11:57:21,708 &gt;&gt; loading weights file /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/models/enkowiki/enkowiki-bert-base-uncased/pytorch_model.bin
+[INFO|modeling_utils.py:2608] 2022-11-26 11:57:23,604 &gt;&gt; All model checkpoint weights were used when initializing BertForMaskedLM.
+
+[INFO|modeling_utils.py:2616] 2022-11-26 11:57:23,610 &gt;&gt; All the weights of BertForMaskedLM were initialized from the model checkpoint at /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/models/enkowiki/enkowiki-bert-base-uncased.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use BertForMaskedLM for predictions without further training.
+[INFO|tokenization_utils_base.py:1773] 2022-11-26 11:57:23,662 &gt;&gt; loading file tokenizer.json
+[INFO|tokenization_utils_base.py:1773] 2022-11-26 11:57:23,663 &gt;&gt; loading file added_tokens.json
+[INFO|tokenization_utils_base.py:1773] 2022-11-26 11:57:23,663 &gt;&gt; loading file special_tokens_map.json
+[INFO|tokenization_utils_base.py:1773] 2022-11-26 11:57:23,663 &gt;&gt; loading file tokenizer_config.json
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;score&#39;: 0.3371969759464264, &#39;token&#39;: 8, &#39;token_str&#39;: &#39;▁&#39;, &#39;sequence&#39;: &#39;▁ 처음으로 ▁ 대중적 으로 ▁ ▁ ▁ 롤플레잉 ▁ 게임 이다.&#39;}
+{&#39;score&#39;: 0.028631633147597313, &#39;token&#39;: 9, &#39;token_str&#39;: &#39;.&#39;, &#39;sequence&#39;: &#39;▁ 처음으로 ▁ 대중적 으로 ▁. ▁ 롤플레잉 ▁ 게임 이다.&#39;}
+{&#39;score&#39;: 0.019517863169312477, &#39;token&#39;: 10, &#39;token_str&#39;: &#39;,&#39;, &#39;sequence&#39;: &#39;▁ 처음으로 ▁ 대중적 으로 ▁, ▁ 롤플레잉 ▁ 게임 이다.&#39;}
+{&#39;score&#39;: 0.009688169695436954, &#39;token&#39;: 11, &#39;token_str&#39;: &#39;the&#39;, &#39;sequence&#39;: &#39;▁ 처음으로 ▁ 대중적 으로 ▁ the ▁ 롤플레잉 ▁ 게임 이다.&#39;}
+{&#39;score&#39;: 0.008737098425626755, &#39;token&#39;: 13, &#39;token_str&#39;: &#39;)&#39;, &#39;sequence&#39;: &#39;▁ 처음으로 ▁ 대중적 으로 ▁ ) ▁ 롤플레잉 ▁ 게임 이다.&#39;}
+time: 2.16 s (started: 2022-11-26 11:57:21 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">show_config</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.config:Using existing path: /content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling
+INFO:ekorpkit.config:Merging config with args: {}
+INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;_target_&#39;: &#39;ekorpkit.models.transformer.trainers.MlmTrainer&#39;,
+ &#39;auto&#39;: {},
+ &#39;batch&#39;: {&#39;batch_name&#39;: &#39;enkowiki&#39;,
+           &#39;batch_num&#39;: None,
+           &#39;num_workers&#39;: 1,
+           &#39;random_seed&#39;: True,
+           &#39;resume_latest&#39;: False,
+           &#39;resume_run&#39;: False,
+           &#39;run_to_resume&#39;: &#39;latest&#39;,
+           &#39;seed&#39;: None,
+           &#39;verbose&#39;: False},
+ &#39;dataset&#39;: {&#39;cache_dir&#39;: &#39;/content/drive/MyDrive/workspace/.cache&#39;,
+             &#39;data_dir&#39;: None,
+             &#39;dataset_config_name&#39;: None,
+             &#39;dataset_name&#39;: None,
+             &#39;download_mode&#39;: None,
+             &#39;filename_extension&#39;: None,
+             &#39;line_by_line&#39;: False,
+             &#39;max_eval_samples&#39;: None,
+             &#39;max_seq_length&#39;: 512,
+             &#39;max_train_samples&#39;: None,
+             &#39;mlm_probability&#39;: 0.15,
+             &#39;num_workers&#39;: None,
+             &#39;overwrite_cache&#39;: True,
+             &#39;pad_to_max_length&#39;: False,
+             &#39;seed&#39;: None,
+             &#39;shuffle&#39;: False,
+             &#39;text_column_name&#39;: None,
+             &#39;train_file&#39;: &#39;outputs/enkowiki/sentence_chunks&#39;,
+             &#39;use_auth_token&#39;: False,
+             &#39;validation_file&#39;: None,
+             &#39;validation_split_percentage&#39;: 5},
+ &#39;model&#39;: {&#39;cache_dir&#39;: None,
+           &#39;config_name&#39;: &#39;bert-base-uncased&#39;,
+           &#39;config_overrides&#39;: None,
+           &#39;model_dir&#39;: None,
+           &#39;model_name&#39;: None,
+           &#39;model_name_or_path&#39;: None,
+           &#39;model_revision&#39;: &#39;main&#39;,
+           &#39;model_type&#39;: None,
+           &#39;tokenizer_name&#39;: None,
+           &#39;use_auth_token&#39;: False,
+           &#39;use_fast_tokenizer&#39;: True},
+ &#39;name&#39;: &#39;enkowiki&#39;,
+ &#39;path&#39;: {&#39;batch_dir&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/enkowiki&#39;,
+          &#39;batch_name&#39;: &#39;enkowiki&#39;,
+          &#39;cache_dir&#39;: &#39;/content/drive/MyDrive/workspace/.cache&#39;,
+          &#39;data_dir&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/data&#39;,
+          &#39;library_dir&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/libs&#39;,
+          &#39;model_dir&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/models&#39;,
+          &#39;output_dir&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs&#39;,
+          &#39;root&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling&#39;,
+          &#39;task_name&#39;: &#39;language-modeling&#39;,
+          &#39;tmp_dir&#39;: &#39;/content/drive/MyDrive/workspace/.tmp&#39;,
+          &#39;verbose&#39;: False},
+ &#39;project&#39;: {&#39;path&#39;: {&#39;archive&#39;: &#39;/content/drive/MyDrive/workspace/data/archive&#39;,
+                      &#39;cache&#39;: &#39;/content/drive/MyDrive/workspace/.cache&#39;,
+                      &#39;corpus&#39;: &#39;/content/drive/MyDrive/workspace/data/datasets/corpus&#39;,
+                      &#39;data&#39;: &#39;/content/drive/MyDrive/workspace/data&#39;,
+                      &#39;dataset&#39;: &#39;/content/drive/MyDrive/workspace/data/datasets&#39;,
+                      &#39;ekorpkit&#39;: &#39;/workspace/projects/ekorpkit/ekorpkit&#39;,
+                      &#39;home&#39;: &#39;/root&#39;,
+                      &#39;library&#39;: &#39;/content/drive/MyDrive/workspace/data/libs&#39;,
+                      &#39;log&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/logs&#39;,
+                      &#39;model&#39;: &#39;/content/drive/MyDrive/workspace/data/models&#39;,
+                      &#39;output&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book/outputs&#39;,
+                      &#39;project&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book&#39;,
+                      &#39;resource&#39;: &#39;/workspace/projects/ekorpkit/ekorpkit/resources&#39;,
+                      &#39;runtime&#39;: &#39;/workspace/projects/ekorpkit-book/ekorpkit-book/docs/lectures/deep_nlp&#39;,
+                      &#39;tmp&#39;: &#39;/content/drive/MyDrive/workspace/.tmp&#39;,
+                      &#39;workspace&#39;: &#39;/content/drive/MyDrive/workspace&#39;},
+             &#39;project_dir&#39;: &#39;/content/drive/MyDrive/workspace/projects/ekorpkit-book&#39;,
+             &#39;project_name&#39;: &#39;ekorpkit-book&#39;,
+             &#39;task_name&#39;: &#39;language-modeling&#39;,
+             &#39;workspace_dir&#39;: &#39;/content/drive/MyDrive/workspace&#39;},
+ &#39;secret&#39;: {&#39;hf_user_access_token&#39;: None, &#39;wandb_api_key&#39;: None},
+ &#39;tokenizer&#39;: {&#39;bos_token&#39;: &#39;&lt;s&gt;&#39;,
+               &#39;cls_token&#39;: &#39;&lt;cls&gt;&#39;,
+               &#39;eos_token&#39;: &#39;&lt;/s&gt;&#39;,
+               &#39;mask_token&#39;: &#39;&lt;mask&gt;&#39;,
+               &#39;model_dir&#39;: None,
+               &#39;model_max_length&#39;: None,
+               &#39;model_type&#39;: None,
+               &#39;name&#39;: &#39;enkowiki_unigram_huggingface_vocab_30000.json&#39;,
+               &#39;pad_token&#39;: &#39;&lt;pad&gt;&#39;,
+               &#39;padding_side&#39;: &#39;right&#39;,
+               &#39;path&#39;: None,
+               &#39;return_length&#39;: True,
+               &#39;sep_token&#39;: &#39;&lt;sep&gt;&#39;,
+               &#39;truncation&#39;: True,
+               &#39;unk_token&#39;: &#39;&lt;unk&gt;&#39;},
+ &#39;training&#39;: {&#39;do_eval&#39;: True,
+              &#39;do_train&#39;: True,
+              &#39;eval_steps&#39;: 500,
+              &#39;evaluation_strategy&#39;: &#39;steps&#39;,
+              &#39;fp16&#39;: True,
+              &#39;gradient_accumulation_steps&#39;: 8,
+              &#39;learning_rate&#39;: 0.0005,
+              &#39;logging_steps&#39;: 1000,
+              &#39;lr_scheduler_type&#39;: &#39;cosine&#39;,
+              &#39;num_train_epochs&#39;: 10,
+              &#39;output_dir&#39;: None,
+              &#39;overwrite_output_dir&#39;: True,
+              &#39;per_device_eval_batch_size&#39;: 32,
+              &#39;per_device_train_batch_size&#39;: 32,
+              &#39;push_to_hub&#39;: False,
+              &#39;report_to&#39;: &#39;wandb&#39;,
+              &#39;run_name&#39;: &#39;enkowiki&#39;,
+              &#39;save_steps&#39;: 5000,
+              &#39;warmup_steps&#39;: 100,
+              &#39;weight_decay&#39;: 0.1},
+ &#39;use_accelerator&#39;: True,
+ &#39;verbose&#39;: False}
+time: 314 ms (started: 2022-11-29 10:36:06 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="training-bnwiki-bert-using-mlm-trainer">
+<h2>Training bnwiki_bert using MLM Trainer<a class="headerlink" href="#training-bnwiki-bert-using-mlm-trainer" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.tokenizers.trainer</span> <span class="kn">import</span> <span class="n">TokenizerTrainer</span>
+
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;tokenizer=trainer&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;bnwiki&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">use_sample</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">model_type</span> <span class="o">=</span> <span class="s2">&quot;unigram&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">=</span> <span class="mi">30000</span>
+
+<span class="n">tk_trainer</span> <span class="o">=</span> <span class="n">TokenizerTrainer</span><span class="p">(</span><span class="o">**</span><span class="n">cfg</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tk_trainer</span><span class="o">.</span><span class="n">model_path</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tk_trainer</span><span class="o">.</span><span class="n">sample_filepath</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+INFO:ekorpkit.base:No method defined to call
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/tokenizers/bnwiki/bnwiki_unigram_huggingface_vocab_30000.json
+/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/bnwiki/sentence_sample/sentence_chunks_sampled.txt
+time: 2.76 s (started: 2022-11-24 11:54:52 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.models.transformer.trainers</span> <span class="kn">import</span> <span class="n">MlmTrainer</span>
+
+<span class="c1"># data_file = &quot;bnwiki_filtered.parquet&quot;</span>
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;model/transformer=mlm.trainer&quot;</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;bnwiki&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">config_name</span> <span class="o">=</span> <span class="s2">&quot;bert-base-uncased&quot;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">pretrained_tokenizer_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tk_trainer</span><span class="o">.</span><span class="n">model_path</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">train_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tk_trainer</span><span class="o">.</span><span class="n">sample_filepath</span><span class="p">)</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">max_seq_length</span> <span class="o">=</span> <span class="mi">512</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">use_accelerator</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">num_train_epochs</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">eval_steps</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">warmup_steps</span> <span class="o">=</span> <span class="mi">50</span>
+
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">MlmTrainer</span><span class="p">(</span><span class="o">**</span><span class="n">cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2022-11-24 11:54:58.186442: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+INFO:ekorpkit.base:Loaded .env from /workspace/projects/ekorpkit-book/config/.env
+WARNING:ekorpkit.models.transformer.trainers.mlm:Process rank: -1, device: cuda:0, n_gpu: 8, distributed training: False, 16-bits training: True
+INFO:ekorpkit.models.transformer.trainers.mlm:Training/evaluation parameters TrainingArguments(
+_n_gpu=8,
+adafactor=False,
+adam_beta1=0.9,
+adam_beta2=0.999,
+adam_epsilon=1e-08,
+auto_find_batch_size=False,
+bf16=False,
+bf16_full_eval=False,
+data_seed=None,
+dataloader_drop_last=False,
+dataloader_num_workers=0,
+dataloader_pin_memory=True,
+ddp_bucket_cap_mb=None,
+ddp_find_unused_parameters=None,
+ddp_timeout=1800,
+debug=[],
+deepspeed=None,
+disable_tqdm=False,
+do_eval=True,
+do_predict=False,
+do_train=True,
+eval_accumulation_steps=None,
+eval_delay=0,
+eval_steps=100,
+evaluation_strategy=steps,
+fp16=True,
+fp16_backend=auto,
+fp16_full_eval=False,
+fp16_opt_level=O1,
+fsdp=[],
+fsdp_min_num_params=0,
+fsdp_transformer_layer_cls_to_wrap=None,
+full_determinism=False,
+gradient_accumulation_steps=8,
+gradient_checkpointing=False,
+greater_is_better=None,
+group_by_length=False,
+half_precision_backend=auto,
+hub_model_id=None,
+hub_private_repo=False,
+hub_strategy=every_save,
+hub_token=&lt;HUB_TOKEN&gt;,
+ignore_data_skip=False,
+include_inputs_for_metrics=False,
+jit_mode_eval=False,
+label_names=None,
+label_smoothing_factor=0.0,
+learning_rate=0.0005,
+length_column_name=length,
+load_best_model_at_end=False,
+local_rank=-1,
+log_level=passive,
+log_level_replica=passive,
+log_on_each_node=True,
+logging_dir=None,
+logging_first_step=False,
+logging_nan_inf_filter=True,
+logging_steps=1000,
+logging_strategy=steps,
+lr_scheduler_type=cosine,
+max_grad_norm=1.0,
+max_steps=-1,
+metric_for_best_model=None,
+mp_parameters=,
+no_cuda=False,
+num_train_epochs=50,
+optim=adamw_hf,
+output_dir=/content/drive/MyDrive/workspace/projects/ekorpkit-book/language-modeling/outputs/models/bnwiki/bnwiki-bert-base-uncased,
+overwrite_output_dir=True,
+past_index=-1,
+per_device_eval_batch_size=32,
+per_device_train_batch_size=32,
+prediction_loss_only=False,
+push_to_hub=False,
+push_to_hub_model_id=None,
+push_to_hub_organization=None,
+push_to_hub_token=&lt;PUSH_TO_HUB_TOKEN&gt;,
+ray_scope=last,
+remove_unused_columns=True,
+report_to=[&#39;wandb&#39;],
+resume_from_checkpoint=None,
+run_name=bnwiki,
+save_on_each_node=False,
+save_steps=5000,
+save_strategy=steps,
+save_total_limit=None,
+seed=1185224509,
+sharded_ddp=[],
+skip_memory_metrics=True,
+tf32=None,
+torchdynamo=None,
+tpu_metrics_debug=False,
+tpu_num_cores=None,
+use_ipex=False,
+use_legacy_prediction_loop=False,
+use_mps_device=False,
+warmup_ratio=0.0,
+warmup_steps=50,
+weight_decay=0.1,
+xpu_backend=None,
+)
+INFO:ekorpkit.base:No method defined to call
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 5.29 s (started: 2022-11-24 11:54:57 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># trainer.train()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ekorpkit <span class="nv">print_config</span><span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+    <span class="nv">project_name</span><span class="o">=</span>ekorpkit-book <span class="se">\</span>
+    <span class="nv">workspace_dir</span><span class="o">=</span>/content/drive/MyDrive/workspace <span class="se">\</span>
+    <span class="nv">run</span><span class="o">=</span>transformer <span class="se">\</span>
+    <span class="nv">transformer</span><span class="o">=</span>mlm.trainer <span class="se">\</span>
+    transformer.name<span class="o">=</span>bnwiki <span class="se">\</span>
+    transformer.model.config_name<span class="o">=</span>bert-base-uncased <span class="se">\</span>
+    transformer.tokenizer.pretrained_tokenizer_file<span class="o">=</span>bnwiki_unigram_huggingface_vocab_30000.json <span class="se">\</span>
+    transformer.dataset.train_file<span class="o">=</span>data/bnwiki_filtered.parquet <span class="se">\</span>
+    transformer.dataset.max_seq_length<span class="o">=</span><span class="m">512</span> <span class="se">\</span>
+    transformer.dataset.num_workers<span class="o">=</span><span class="m">8</span> <span class="se">\</span>
+    transformer.use_accelerator<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+    transformer.training.num_train_epochs<span class="o">=</span><span class="m">50</span> <span class="se">\</span>
+    transformer.training.eval_steps<span class="o">=</span><span class="m">100</span> <span class="se">\</span>
+    transformer.training.warmup_steps<span class="o">=</span><span class="m">50</span> <span class="se">\</span>
+    transformer.auto<span class="o">=</span>train
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># perform predictions</span>
+<span class="n">example</span> <span class="o">=</span> <span class="s2">&quot;এই মসজিদটির ভিত্তিপ্রস্তর Nov 25, 2022 at 1:21:19 PM GMT+9&lt;mask&gt; ২০১৫ সালের জুন মাসে।&quot;</span> <span class="c1"># হয়েছিলো</span>
+<span class="k">for</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">trainer</span><span class="o">.</span><span class="n">fill_mask</span><span class="p">(</span><span class="n">example</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;score&#39;: 0.05522403120994568, &#39;token&#39;: 8, &#39;token_str&#39;: &#39;▁&#39;, &#39;sequence&#39;: &#39;▁এই ▁মসজদট র ▁ভততপরসতর ▁ ▁ ▁ ২০১৫ ▁সলর ▁জন ▁মস ।&#39;}
+{&#39;score&#39;: 0.02941860817372799, &#39;token&#39;: 9, &#39;token_str&#39;: &#39;র&#39;, &#39;sequence&#39;: &#39;▁এই ▁মসজদট র ▁ভততপরসতর ▁ র ▁ ২০১৫ ▁সলর ▁জন ▁মস ।&#39;}
+{&#39;score&#39;: 0.016348714008927345, &#39;token&#39;: 10, &#39;token_str&#39;: &#39;,&#39;, &#39;sequence&#39;: &#39;▁এই ▁মসজদট র ▁ভততপরসতর ▁, ▁ ২০১৫ ▁সলর ▁জন ▁মস ।&#39;}
+{&#39;score&#39;: 0.012751172296702862, &#39;token&#39;: 11, &#39;token_str&#39;: &#39;▁এব&#39;, &#39;sequence&#39;: &#39;▁এই ▁মসজদট র ▁ভততপরসতর ▁ ▁এব ▁ ২০১৫ ▁সলর ▁জন ▁মস ।&#39;}
+{&#39;score&#39;: 0.01006506010890007, &#39;token&#39;: 13, &#39;token_str&#39;: &#39;.&#39;, &#39;sequence&#39;: &#39;▁এই ▁মসজদট র ▁ভততপরসতর ▁. ▁ ২০১৫ ▁সলর ▁জন ▁মস ।&#39;}
+time: 339 ms (started: 2022-11-24 23:45:48 +00:00)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Unicode_equivalence">Unicode equivalence</a></p></li>
+<li><p><a class="reference external" href="https://huggingface.co/course/chapter7/6?fw=pt">Training a causal language model from scratch</a></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./docs/lectures/deep_nlp"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="lab3-train-tokenizers.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Lab 3: Training Tokenizers</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../nlp_apps/index.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Applications of NLP</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Young Joon Lee<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

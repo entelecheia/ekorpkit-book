@@ -1,0 +1,2899 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Tokenization &#8212; eKorpkit Tutorials</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/ekorpkit.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Word Segmentation and Association" href="word_segmentation.html" />
+    <link rel="prev" title="Sentiment Analysis" href="sentiments.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-FN4GFT8HP8"></script>
+<script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){ dataLayer.push(arguments); }
+                    gtag('js', new Date());
+                    gtag('config', 'G-FN4GFT8HP8');
+                </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../_static/ekorpkit.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">eKorpkit Tutorials</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    eKonomic Research Python Toolkit
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Basics
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/index.html">
+   Getting started
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/install.html">
+     Installation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/usage.html">
+     Usage
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/features/index.html">
+   Key features
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/easy_config.html">
+     Easy Configuration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/no_boiler.html">
+     No Boilerplate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/workflows.html">
+     Workflows
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/share.html">
+     Sharable and Reproducible
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/plug.html">
+     Pluggable Architece
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tutorials
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/config/index.html">
+   Configuring ekorpkit
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/config/eKonf.html">
+     Using eKonf class
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/datasets/index.html">
+   Datasets
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/corpus.html">
+     Build and Load Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/datasets/dataset.html">
+     Build and Load Datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/pipeline.html">
+     Corpus task pipelines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/models/index.html">
+   Models
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/models/automl/index.html">
+     Auto ML
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/embeddings/index.html">
+     Word Embeddings
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/embeddings/word2vec_basics.html">
+       Word2Vec Basics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/embeddings/eval_vectors.html">
+       Evaluate pretrained embeddings
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/ngram/index.html">
+     N-Grams
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram.html">
+       N-Grams
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram_for_lexicons.html">
+       N-Gram model for ngram lexicon features
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram_for_words.html">
+       N-Gram model for unigram lexicon features
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/sentiment/index.html">
+     Sentiment Analyers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/lbsa_en.html">
+       Lexicon-based Sentiment Analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/financial_phrasebank_lm.html">
+       Evaluate LM with financial phrasebank
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/sentiment.html">
+       LM Dictionary vs. finbert vs. T5
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/models/transformers/index.html">
+     Transformers
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/pipelines/index.html">
+   Pipelines
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/pipelines/pipeline.html">
+     Instantiating pipeline
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/preprocessors/index.html">
+   Preprocessors
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/normalizer/index.html">
+     Normalizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+    <label for="toctree-checkbox-11">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/normalizer/normalizer.html">
+       Normalizers
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/segmenter/index.html">
+     Segmenters
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+    <label for="toctree-checkbox-12">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/segmenter/segmenter.html">
+       Segmenters
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/tokenizer/index.html">
+     Tokenizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+    <label for="toctree-checkbox-13">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/tokenizer/mecab.html">
+       Mecab Tokenizer
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/visualizers/index.html">
+   Visualizers
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/>
+  <label for="toctree-checkbox-14">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/visualizers/plot.html">
+     Plots
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../tutorials/workflow/index.html">
+   Workflows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Datasets
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../corpus/ekorpkot_corpus.html">
+   The eKorpkit Corpus
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Use Cases
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/fomc/index.html">
+   FOMC
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/>
+  <label for="toctree-checkbox-15">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/02_FOMC_numerical_data.html">
+     Preparing Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/03_FOMC_corpus.html">
+     Preparing Textual Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/04_FOMC_EDA_numericals.html">
+     EDA on Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/05_FOMC_features.html">
+     Visualizing Features
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/06_FOMC_AutoML.html">
+     Checking Baseline with AutoML
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/07_FOMC_sentiments.html">
+     Predicting Sentiments of FOMC Corpus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/08_FOMC_EDA_sentiments.html">
+     EDA on Sentiment Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/09_FOMC_AutoML_with_tones.html">
+     Predicting the next decisions with tones
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../usecases/bok/index.html">
+   Bank of Korea
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/edgar/index.html">
+   EDGAR
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/>
+  <label for="toctree-checkbox-16">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/edgar/predict_edgar.html">
+     Prediciting Sentiments
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/esg/index.html">
+   ESG
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" type="checkbox"/>
+  <label for="toctree-checkbox-17">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/snorkel-polarity.html">
+     Preparing polarity classification datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/rubrix.html">
+     Improving classification datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/classifiers.html">
+     Training Classifiers for ESG Ratings
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/econ_news_corpus.html">
+     Building
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       econ_news_kr
+      </span>
+     </code>
+     corpus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/predict_news.html">
+     Predicting ESG Categories and Polarities
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/rubrix_classifiers.html">
+     Preparing classifiers for active learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/predict_for_learning.html">
+     Preparing active learning data
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/esg-en/index.html">
+   ESG (English)
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" type="checkbox"/>
+  <label for="toctree-checkbox-18">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg-en/esg_corpus.html">
+     Building
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       JOCo
+      </span>
+     </code>
+     corpus
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/cointax/index.html">
+   Taxation on Cryptocurrency
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/>
+  <label for="toctree-checkbox-19">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/cointax/coin_dataset.html">
+     Improving classification datasets
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Research
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../research/esg_topics/analyst.html">
+   ESG Topic Analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../research/esg_topics/rethink_esg.html">
+   Rethinking ESG
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Lectures
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   Introduction to NLP
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" type="checkbox"/>
+  <label for="toctree-checkbox-20">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="intro.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="ekorpkit.html">
+     Getting started with ekorpkit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="research.html">
+     Research Applications
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="language_models.html">
+     Language Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="topic.html">
+     Topic Modeling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="topic_models.html">
+     Topic Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="topic_coherence.html">
+     Topic Coherence Measures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="sentiments.html">
+     Sentiment Analysis
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Tokenization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="word_segmentation.html">
+     Word Segmentation and Association
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="vectorization.html">
+     Vector Semantics and Representation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="word_embeddings.html">
+     Word Embeddings
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lab1-corpus.html">
+     Lab 1: Preparing Wikipedia Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lab2-corpus-eda.html">
+     Lab 2: EDA on Corpora
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../deep_nlp/index.html">
+   Deep Learning for NLP
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" type="checkbox"/>
+  <label for="toctree-checkbox-21">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../deep_nlp/intro.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../deep_nlp/ekorpkit.html">
+     Getting started with ekorpkit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../deep_nlp/zeroshot.html">
+     Zero Shot, Prompt, and Search Strategies
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../deep_nlp/bloom.html">
+     What is BLOOM?
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../deep_nlp/bloom_apps.html">
+     Bloom Examples
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../deep_nlp/transformers.html">
+     Transformers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../deep_nlp/bert.html">
+     BERT: Bidirectional Encoder Representations from Transformers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../deep_nlp/t5.html">
+     T5: Text-To-Text Transfer Transformer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../deep_nlp/tokenization.html">
+     Tokenization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../deep_nlp/sentencepiece.html">
+     SentencePiece Tokenizer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../deep_nlp/byt5.html">
+     ByT5: Towards a token-free future with pre-trained byte-to-byte models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../deep_nlp/plms.html">
+     Pretrained Language Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../deep_nlp/lab1-corpus.html">
+     Lab 1: Preparing Wikipedia Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../deep_nlp/lab2-corpus-eda.html">
+     Lab 2: EDA on Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../deep_nlp/lab3-train-tokenizers.html">
+     Lab 3: Training Tokenizers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../deep_nlp/lab4-pretraining-lms.html">
+     Lab 4: Pretraining Language Models
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../nlp_apps/index.html">
+   Applications of NLP
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../aiart/index.html">
+   AI Art (Text-to-Image)
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" type="checkbox"/>
+  <label for="toctree-checkbox-22">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/intro.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/project-themes.html">
+     Project Themes - A Brave New World
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/dalle1.html">
+     DALL·E 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/dalle2.html">
+     DALL·E 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/imagen.html">
+     Imagen
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/dalle-mini.html">
+     DALL·E Mini
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/stable-diffusion.html">
+     Stable Diffusion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/prompt-generator.html">
+     Prompt Generator for Stable Diffusion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/textual-inversion.html">
+     Textual Inversion (Dreambooth)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/whisper.html">
+     Automatic Speech Recognition (Whisper)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/text2music.html">
+     Text to Music
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/image2music.html">
+     Image to Music
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mlops/index.html">
+   Machine Learning Systems Design
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ds/index.html">
+   Data Science for Economics and Finance
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about/index.html">
+   Bibliography
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about/cite.html">
+   Citation
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/entelecheia/ekorpkit-book/main?urlpath=tree/ekorpkit-book/docs/lectures/intro_nlp/tokenization.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://colab.research.google.com/github/entelecheia/ekorpkit-book/blob/main/ekorpkit-book/docs/lectures/intro_nlp/tokenization.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Colab"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../../_static/images/logo_colab.png">
+  </span>
+<span class="headerbtn__text-container">Colab</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/entelecheia/ekorpkit-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/entelecheia/ekorpkit-book/issues/new?title=Issue%20on%20page%20%2Fdocs/lectures/intro_nlp/tokenization.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../../_sources/docs/lectures/intro_nlp/tokenization.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overview">
+   Overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-is-tokenization">
+   What is Tokenization?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-do-we-need-tokenization">
+   Why do we need tokenization?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-do-we-identify-words-in-text">
+   How do we identify words in text?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#words-arent-just-defined-by-blanks">
+     Words aren’t just defined by blanks
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tokenization-standards">
+     Tokenization Standards
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#what-about-sentence-boundaries">
+     What about sentence boundaries?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#spelling-variants-typos-etc">
+     Spelling variants, typos, etc.
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-many-different-words-are-there-in-english">
+   How many different words are there in English?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#counting-words-tokens-vs-types">
+     Counting words: tokens vs. types
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#zipfs-law-the-long-tail">
+     Zipf’s law: the long tail
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#implications-of-zipfs-law-for-nlp">
+       Implications of Zipf’s Law for NLP
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#dealing-with-the-bad-and-the-ugly">
+       Dealing with the bad and the ugly
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-do-we-represent-words">
+   How do we represent words?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-do-we-represent-unknown-words">
+   How do we represent unknown words?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-many-different-words-are-there">
+   How many different words are there?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#inflectional-morphology-in-english">
+     Inflectional morphology in English
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#derivational-morphology-in-english">
+     Derivational morphology in English
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#morphemes-stems-affixes">
+     Morphemes: stems, affixes
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id1">
+   Tokenization
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#input">
+     Input:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#output-tokens">
+     Output (tokens):
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#output-n-grams">
+     Output (n-grams):
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tokens">
+     Tokens
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#goals-of-tokenization">
+     Goals of Tokenization
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-traditional-tokenization-pipeline">
+     A Traditional Tokenization Pipeline
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#subword-tokenization-for-sequence-models">
+     Subword Tokenization for Sequence Models
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#segmenting-paragraphs-sentences">
+     Segmenting paragraphs/sentences
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pre-processing">
+     Pre-processing
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#capitalization">
+       Capitalization
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#punctuation">
+       Punctuation
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#numbers">
+       Numbers
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#drop-stopwords">
+       Drop Stopwords?
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#stemming-lemmatizing">
+       Stemming/lemmatizing
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bag-of-words-representation">
+   Bag-of-words representation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#counts-and-frequencies">
+     Counts and frequencies
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#building-a-vocabulary">
+     Building a vocabulary
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tf-idf-weighting">
+     TF-IDF Weighting
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#scikit-learns-tfidfvectorizer">
+     scikit-learn’s TfidfVectorizer
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#other-transformations">
+     Other Transformations
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-are-n-grams">
+   What are N-grams?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#n-grams-and-high-dimensionality">
+     N-grams and high dimensionality
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#hashing-vectorizer">
+     Hashing Vectorizer
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#collocations">
+     Collocations
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pointwise-mutual-information">
+     Pointwise Mutual Information
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#out-of-vocabulary-words-oov-for-n-grams">
+     Out-of-Vocabulary Words (OOV) for N-grams
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-are-parts-of-speech">
+   What are parts of speech?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pos-tagging">
+     POS Tagging
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#why-pos-tagging">
+     Why POS Tagging?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#creating-a-pos-tagger">
+     Creating a POS Tagger
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dependency-parsing">
+   Dependency Parsing
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#constituency-parsing">
+   Constituency Parsing
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Tokenization</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overview">
+   Overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-is-tokenization">
+   What is Tokenization?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-do-we-need-tokenization">
+   Why do we need tokenization?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-do-we-identify-words-in-text">
+   How do we identify words in text?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#words-arent-just-defined-by-blanks">
+     Words aren’t just defined by blanks
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tokenization-standards">
+     Tokenization Standards
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#what-about-sentence-boundaries">
+     What about sentence boundaries?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#spelling-variants-typos-etc">
+     Spelling variants, typos, etc.
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-many-different-words-are-there-in-english">
+   How many different words are there in English?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#counting-words-tokens-vs-types">
+     Counting words: tokens vs. types
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#zipfs-law-the-long-tail">
+     Zipf’s law: the long tail
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#implications-of-zipfs-law-for-nlp">
+       Implications of Zipf’s Law for NLP
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#dealing-with-the-bad-and-the-ugly">
+       Dealing with the bad and the ugly
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-do-we-represent-words">
+   How do we represent words?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-do-we-represent-unknown-words">
+   How do we represent unknown words?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-many-different-words-are-there">
+   How many different words are there?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#inflectional-morphology-in-english">
+     Inflectional morphology in English
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#derivational-morphology-in-english">
+     Derivational morphology in English
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#morphemes-stems-affixes">
+     Morphemes: stems, affixes
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id1">
+   Tokenization
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#input">
+     Input:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#output-tokens">
+     Output (tokens):
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#output-n-grams">
+     Output (n-grams):
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tokens">
+     Tokens
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#goals-of-tokenization">
+     Goals of Tokenization
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-traditional-tokenization-pipeline">
+     A Traditional Tokenization Pipeline
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#subword-tokenization-for-sequence-models">
+     Subword Tokenization for Sequence Models
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#segmenting-paragraphs-sentences">
+     Segmenting paragraphs/sentences
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pre-processing">
+     Pre-processing
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#capitalization">
+       Capitalization
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#punctuation">
+       Punctuation
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#numbers">
+       Numbers
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#drop-stopwords">
+       Drop Stopwords?
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#stemming-lemmatizing">
+       Stemming/lemmatizing
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bag-of-words-representation">
+   Bag-of-words representation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#counts-and-frequencies">
+     Counts and frequencies
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#building-a-vocabulary">
+     Building a vocabulary
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tf-idf-weighting">
+     TF-IDF Weighting
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#scikit-learns-tfidfvectorizer">
+     scikit-learn’s TfidfVectorizer
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#other-transformations">
+     Other Transformations
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-are-n-grams">
+   What are N-grams?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#n-grams-and-high-dimensionality">
+     N-grams and high dimensionality
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#hashing-vectorizer">
+     Hashing Vectorizer
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#collocations">
+     Collocations
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pointwise-mutual-information">
+     Pointwise Mutual Information
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#out-of-vocabulary-words-oov-for-n-grams">
+     Out-of-Vocabulary Words (OOV) for N-grams
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-are-parts-of-speech">
+   What are parts of speech?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pos-tagging">
+     POS Tagging
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#why-pos-tagging">
+     Why POS Tagging?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#creating-a-pos-tagger">
+     Creating a POS Tagger
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dependency-parsing">
+   Dependency Parsing
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#constituency-parsing">
+   Constituency Parsing
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="tokenization">
+<h1>Tokenization<a class="headerlink" href="#tokenization" title="Permalink to this headline">#</a></h1>
+<p><img alt="" src="../../../_images/entelecheia_puzzle_pieces1.png" /></p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">#</a></h2>
+<p>NLP systems have three main components that help machines understand natural language:</p>
+<ul class="simple">
+<li><p><strong>Tokenization</strong>: Splitting a string into a list of tokens.</p></li>
+<li><p><strong>Embedding</strong>: Mapping tokens to vectors.</p></li>
+<li><p><strong>Model</strong>: A neural network that takes token vectors as input and outputs predictions.</p></li>
+</ul>
+<p>Tokenization is the first step in the NLP pipeline.</p>
+<ul class="simple">
+<li><p>Tokenization is the process of splitting a string into a list of tokens.</p></li>
+<li><p>For example, the sentence “I like to eat apples” can be tokenized into the list of tokens <code class="docutils literal notranslate"><span class="pre">[&quot;I&quot;,</span> <span class="pre">&quot;like&quot;,</span> <span class="pre">&quot;to&quot;,</span> <span class="pre">&quot;eat&quot;,</span> <span class="pre">&quot;apples&quot;]</span></code>.</p></li>
+<li><p>The tokens can be words, characters, or subwords.</p></li>
+</ul>
+</section>
+<section id="what-is-tokenization">
+<h2>What is Tokenization?<a class="headerlink" href="#what-is-tokenization" title="Permalink to this headline">#</a></h2>
+<ul>
+<li><p>Tokenization is the process of representing a text in smaller units called tokens.</p></li>
+<li><p>In a very simple case, we can simply map every word in the text to a numerical index.</p></li>
+<li><p>For example, the sentence “I like to eat apples” can be tokenized into the list of tokens:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">[&quot;I&quot;,</span> <span class="pre">&quot;like&quot;,</span> <span class="pre">&quot;to&quot;,</span> <span class="pre">&quot;eat&quot;,</span> <span class="pre">&quot;apples&quot;]</span></code>.</p>
+</div></blockquote>
+</li>
+<li><p>Then, each token can be mapped to a unique index, such as:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">{&quot;I&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;like&quot;:</span> <span class="pre">1,</span> <span class="pre">&quot;to&quot;:</span> <span class="pre">2,</span> <span class="pre">&quot;eat&quot;:</span> <span class="pre">3,</span> <span class="pre">&quot;apples&quot;:</span> <span class="pre">4}</span></code>.</p>
+</div></blockquote>
+</li>
+<li><p>There are more linguistic features to consider when tokenizing a text, such as punctuation, capitalization, and so on.</p></li>
+</ul>
+</section>
+<section id="why-do-we-need-tokenization">
+<h2>Why do we need tokenization?<a class="headerlink" href="#why-do-we-need-tokenization" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>“How can we make a machine read a sentence?”</p></li>
+<li><p>Machines don’t know any language, nor do they understand sounds or phonetics.</p></li>
+<li><p>They need to be taught from scratch.</p></li>
+<li><p>The first step is to break down the sentence into smaller units that the machine can process.</p></li>
+<li><p>Tokenization determines how the input is represented to the model.</p></li>
+<li><p>This decision has a huge impact on the performance of the model.</p></li>
+</ul>
+</section>
+<section id="how-do-we-identify-words-in-text">
+<h2>How do we identify words in text?<a class="headerlink" href="#how-do-we-identify-words-in-text" title="Permalink to this headline">#</a></h2>
+<p>For a language like English, this seems like a simple task. We can simply split the text by spaces.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>A word is any sequence of alphabetical characters between whitespaces that’s not a punctuation mark?
+</pre></div>
+</div>
+<p>However, there are many cases where this is not true.</p>
+<ul class="simple">
+<li><p>What about contractions?</p>
+<ul>
+<li><p>“I’m” is a single word, but it is split into two tokens.</p></li>
+</ul>
+</li>
+<li><p>What about abbreviations?</p>
+<ul>
+<li><p>“U.S.” is a single word, but it is split into two tokens.</p></li>
+</ul>
+</li>
+<li><p>What about hyphenated words?</p>
+<ul>
+<li><p>“self-driving”, “R2-D2” are single words, but they are split into two tokens.</p></li>
+</ul>
+</li>
+<li><p>What about complex names?</p>
+<ul>
+<li><p>“New York” is a single word, but it is split into two tokens.</p></li>
+</ul>
+</li>
+<li><p>What about languages like Chinese that have no spaces between words?</p></li>
+</ul>
+<section id="words-arent-just-defined-by-blanks">
+<h3>Words aren’t just defined by blanks<a class="headerlink" href="#words-arent-just-defined-by-blanks" title="Permalink to this headline">#</a></h3>
+<p>Problem 1: Compounding</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>“ice cream”, “website”, “web site”, “New York-based”
+</pre></div>
+</div>
+<p>Problem 2: Other writing systems have no blanks</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Chinese: 我开始写⼩说 = 我 开始 写 ⼩说 (I start(ed) writing novel(s))
+</pre></div>
+</div>
+<p>Problem 3: Contractions and Clitics</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>English: “doesn’t” , “I’m” ,
+Italian: “dirglielo” = dir + gli(e) + lo (tell + him + it)
+</pre></div>
+</div>
+</section>
+<section id="tokenization-standards">
+<h3>Tokenization Standards<a class="headerlink" href="#tokenization-standards" title="Permalink to this headline">#</a></h3>
+<p>Any actual NLP system will assume a particular tokenization standard.</p>
+<ul class="simple">
+<li><p>NLP systems are usually trained on particular corpora (text datasets) that everybody uses.</p></li>
+<li><p>These corpora often define a de facto standard.</p></li>
+</ul>
+<p>Penn Treebank 3 standard:</p>
+<ul>
+<li><p>Input:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">&quot;The</span> <span class="pre">San</span> <span class="pre">Francisco-based</span> <span class="pre">restaurant,&quot;</span> <span class="pre">they</span> <span class="pre">said,</span> <span class="pre">&quot;doesn’t</span> <span class="pre">charge</span> <span class="pre">$10&quot;.</span></code></p>
+</div></blockquote>
+</li>
+<li><p>Output:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">“_</span> <span class="pre">The</span> <span class="pre">_</span> <span class="pre">San</span> <span class="pre">_</span> <span class="pre">Francisco-based</span> <span class="pre">_</span> <span class="pre">restaurant</span> <span class="pre">_</span> <span class="pre">,</span> <span class="pre">_”</span> <span class="pre">_</span> <span class="pre">they_</span> <span class="pre">said*</span> <span class="pre">,*</span> <span class="pre">&quot;_</span> <span class="pre">does</span> <span class="pre">_</span> <span class="pre">n’t</span> <span class="pre">_</span> <span class="pre">charge_</span> <span class="pre">$_</span> <span class="pre">10</span> <span class="pre">_</span> <span class="pre">&quot;</span> <span class="pre">_</span> <span class="pre">.</span> <span class="pre">_</span></code></p>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="what-about-sentence-boundaries">
+<h3>What about sentence boundaries?<a class="headerlink" href="#what-about-sentence-boundaries" title="Permalink to this headline">#</a></h3>
+<p>How can we identify that this is two sentences?</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Mr</span><span class="o">.</span> <span class="n">Smith</span> <span class="n">went</span> <span class="n">to</span> <span class="n">D</span><span class="o">.</span><span class="n">C</span><span class="o">.</span> <span class="n">Ms</span><span class="o">.</span> <span class="n">Xu</span> <span class="n">went</span> <span class="n">to</span> <span class="n">Chicago</span> <span class="n">instead</span><span class="o">.</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>We can use a period to identify the end of a sentence.</p></li>
+<li><p>However, this is not always true.</p></li>
+<li><p>Abbreviations, such as “Mr.”, “D.C.”, “Ms.”, “U.S.”, “etc.” can be followed by a period.</p></li>
+</ul>
+<p>How many sentences are in this text?</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;The San Francisco-based restaurant,&quot;</span> <span class="n">they</span> <span class="n">said</span><span class="p">,</span> <span class="s2">&quot;doesn’t charge $10&quot;</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Answer: just one, because the comma is not a sentence boundary.</p>
+<p>Similarly, we typically treat this also just as one sentence:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>They said: ”The San Francisco-based restaurant doesn’t charge $10&quot;.
+</pre></div>
+</div>
+</section>
+<section id="spelling-variants-typos-etc">
+<h3>Spelling variants, typos, etc.<a class="headerlink" href="#spelling-variants-typos-etc" title="Permalink to this headline">#</a></h3>
+<p>The same word can be written in different ways:</p>
+<ul class="simple">
+<li><p>with different <code class="docutils literal notranslate"><span class="pre">capitalizations</span></code>:</p>
+<ul>
+<li><p>lowercase “cat” (in standard running text)</p></li>
+<li><p>capitalized “Cat” (as first word in a sentence, or in titles/headlines),</p></li>
+<li><p>all-caps “CAT” (e.g. in headlines)</p></li>
+</ul>
+</li>
+<li><p>with different abbreviation or hyphenation styles:</p>
+<ul>
+<li><p>US-based, US based, U.S.-based, U.S. based</p></li>
+<li><p>US-EU relations, U.S./E.U. relations, …</p></li>
+</ul>
+</li>
+<li><p>with spelling variants (e.g. regional variants of English):</p>
+<ul>
+<li><p>labor vs labour, materialize vs materialise,</p></li>
+</ul>
+</li>
+<li><p>with typos (teh)</p></li>
+</ul>
+</section>
+</section>
+<section id="how-many-different-words-are-there-in-english">
+<h2>How many different words are there in English?<a class="headerlink" href="#how-many-different-words-are-there-in-english" title="Permalink to this headline">#</a></h2>
+<section id="counting-words-tokens-vs-types">
+<h3>Counting words: tokens vs. types<a class="headerlink" href="#counting-words-tokens-vs-types" title="Permalink to this headline">#</a></h3>
+<p>When counting words in text, we distinguish between word types and word tokens:</p>
+<ul>
+<li><p>The vocabulary of a language is the set of (unique) word types:</p>
+<blockquote>
+<div><p>V = {a, aardvark, …., zyzzva}</p>
+</div></blockquote>
+</li>
+<li><p>The tokens in a document include all occurrences of the word types in that document or corpus</p></li>
+<li><p>The frequency of a word (type) in a document<br />
+= the number of occurrences (tokens) of that type</p></li>
+</ul>
+<p>How large is the vocabulary of English (or any other language)?</p>
+<ul>
+<li><p>Vocabulary size = the number of distinct word types</p>
+<blockquote>
+<div><p>Google N-gram corpus: 1 trillion tokens, 13 million word types that appear 40+ times</p>
+</div></blockquote>
+</li>
+<li><p>You may have heard statements such as:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">adults</span> <span class="pre">know</span> <span class="pre">about</span> <span class="pre">30,000</span> <span class="pre">words</span></code></p>
+</div></blockquote>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">you</span> <span class="pre">need</span> <span class="pre">to</span> <span class="pre">know</span> <span class="pre">at</span> <span class="pre">least</span> <span class="pre">5,000</span> <span class="pre">words</span> <span class="pre">to</span> <span class="pre">be</span> <span class="pre">fluent</span></code></p>
+</div></blockquote>
+</li>
+</ul>
+<p>If you count words in text, you will find that …</p>
+<ul class="simple">
+<li><p>a few words (mostly closed-class) are very frequent (the, be, to, of, and, a, in, that,…)</p></li>
+<li><p>most words (all open class) are very rare.</p></li>
+<li><p>even if you’ve read a lot of text, you will keep finding words you haven’t seen before.</p></li>
+</ul>
+</section>
+<section id="zipfs-law-the-long-tail">
+<h3>Zipf’s law: the long tail<a class="headerlink" href="#zipfs-law-the-long-tail" title="Permalink to this headline">#</a></h3>
+<p>In a natural language:</p>
+<ul class="simple">
+<li><p>A small number of events (e.g. words) occur with high frequency</p></li>
+<li><p>A large number of events occur with very low frequency</p></li>
+</ul>
+<p><img alt="" src="../../../_images/1.png" /></p>
+<section id="implications-of-zipfs-law-for-nlp">
+<h4>Implications of Zipf’s Law for NLP<a class="headerlink" href="#implications-of-zipfs-law-for-nlp" title="Permalink to this headline">#</a></h4>
+<p>The good:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Any</span> <span class="n">text</span> <span class="n">will</span> <span class="n">contain</span> <span class="n">a</span> <span class="n">number</span> <span class="n">of</span> <span class="n">words</span> <span class="n">that</span> <span class="n">are</span> <span class="n">very</span> <span class="n">common</span><span class="o">.</span>
+<span class="n">We</span> <span class="n">have</span> <span class="n">seen</span> <span class="n">these</span> <span class="n">words</span> <span class="n">often</span> <span class="n">enough</span> <span class="n">that</span> <span class="n">we</span> <span class="n">know</span> <span class="p">(</span><span class="n">almost</span><span class="p">)</span> <span class="n">everything</span> <span class="n">about</span> <span class="n">them</span><span class="o">.</span>
+<span class="n">These</span> <span class="n">words</span> <span class="n">will</span> <span class="n">help</span> <span class="n">us</span> <span class="n">get</span> <span class="n">at</span> <span class="n">the</span> <span class="n">structure</span> <span class="p">(</span><span class="ow">and</span> <span class="n">possibly</span> <span class="n">meaning</span><span class="p">)</span> <span class="n">of</span> <span class="n">this</span> <span class="n">text</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>The bad:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Any text will contain a number of words that are rare.
+We know something about these words, but haven’t seen them often enough to know everything about them.
+They may occur with a meaning or a part of speech we haven’t seen before.
+</pre></div>
+</div>
+<p>The ugly:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Any</span> <span class="n">text</span> <span class="n">will</span> <span class="n">contain</span> <span class="n">a</span> <span class="n">number</span> <span class="n">of</span> <span class="n">words</span> <span class="n">that</span> <span class="n">are</span> <span class="n">unknown</span> <span class="n">to</span> <span class="n">us</span><span class="o">.</span>
+<span class="n">We</span> <span class="n">have</span> <span class="n">never</span> <span class="n">seen</span> <span class="n">them</span> <span class="n">before</span><span class="p">,</span> <span class="n">but</span> <span class="n">we</span> <span class="n">still</span> <span class="n">need</span> <span class="n">to</span> <span class="n">get</span> <span class="n">at</span> <span class="n">the</span> <span class="n">structure</span> <span class="p">(</span><span class="ow">and</span> <span class="n">meaning</span><span class="p">)</span> <span class="n">of</span> <span class="n">these</span> <span class="n">texts</span><span class="o">.</span>
+</pre></div>
+</div>
+</section>
+<section id="dealing-with-the-bad-and-the-ugly">
+<h4>Dealing with the bad and the ugly<a class="headerlink" href="#dealing-with-the-bad-and-the-ugly" title="Permalink to this headline">#</a></h4>
+<p>NLP systems need to be able to generalize from the known to the unknown.</p>
+<p>There are two main strategies:</p>
+<ul class="simple">
+<li><p>Linguistic knowledge</p>
+<ul>
+<li><p>a finite set of grammatical rules is enough to generate an infinite number of languages</p></li>
+</ul>
+</li>
+<li><p>Machine learning or statistical methods</p>
+<ul>
+<li><p>learn representations of words from large amounts of data that often work well for unseen words</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+</section>
+<section id="how-do-we-represent-words">
+<h2>How do we represent words?<a class="headerlink" href="#how-do-we-represent-words" title="Permalink to this headline">#</a></h2>
+<p>Option 1: Words are atomic symbols</p>
+<ul>
+<li><p>Each (surface) word is a unique symbol</p></li>
+<li><p>Add some generalization rules to map different surface forms to the same symbol</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Normalization</span></code>: map all variants of the same word (form) to the same canonical variant</p>
+<blockquote>
+<div><p>e.g. lowercase everything, normalize spellings, perhaps spell-check)</p>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Lemmatization</span></code>: map each word to its lemma (esp. in English, the lemma is still a word in the language, but lemmatized text is no longer grammatical)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Stemming</span></code>: remove endings that differ among word forms (no guarantee that the resulting symbol is an actual word)</p></li>
+</ul>
+</li>
+</ul>
+<p>Option 2: Represent the structure of each word</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;books&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;book N pl&quot;</span> <span class="p">(</span><span class="ow">or</span> <span class="s2">&quot;book V 3rd sg&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>This requries a morphological analyzer</p></li>
+<li><p>The output is often a lemma (e.g. “book”) and morphological features (e.g. “N pl” for noun plural, “V 3rd sg” for verb 3rd person singular)</p></li>
+<li><p>This is particularly useful for languages with rich morphology (e.g. Turkish, Finnish, Hungarian, etc.)</p></li>
+<li><p>Less useful for languages with little morphology (e.g. English, German, etc.)</p></li>
+</ul>
+</section>
+<section id="how-do-we-represent-unknown-words">
+<h2>How do we represent unknown words?<a class="headerlink" href="#how-do-we-represent-unknown-words" title="Permalink to this headline">#</a></h2>
+<p>Many NLP systems assume a fixed vocabulary, but still have to handle out-of-vocabulary (OOV) words.</p>
+<p>Option 1: <code class="docutils literal notranslate"><span class="pre">the</span> <span class="pre">UNK</span> <span class="pre">token</span></code></p>
+<ul class="simple">
+<li><p>Replace all rare words (with a frequency at or below a given threshold, e.g. 2, 3, or 5) in your training data with an UNK token (UNK = “Unknown word”).</p></li>
+<li><p>Replace all unknown words that you come across after training (including rare training words) with the same UNK token</p></li>
+</ul>
+<p>Option 2: <code class="docutils literal notranslate"><span class="pre">substring-based</span> <span class="pre">representations</span></code></p>
+<ul class="simple">
+<li><p>Often used in neural models</p></li>
+<li><p>Represent (rare and unknown) words [“Champaign”] as sequences of characters [‘C’, ‘h’, ‘a’,…,’g’, ’n’] or substrings [“Ch”, “amp”, “ai”, “gn”]</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Byte</span> <span class="pre">Pair</span> <span class="pre">Encoding</span> <span class="pre">(BPE)</span></code>: learn which character sequences are common in the vocabulary of your language, and treat those common sequences as atomic units of your vocabulary</p></li>
+</ul>
+<p><strong>Which words appear in this text?</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Of course he wants to take the advanced course too. He already took two beginners’ courses.
+</pre></div>
+</div>
+<p>Actual text doesn’t consist of dictionary entries:</p>
+<ul class="simple">
+<li><p>wants is a form of want</p></li>
+<li><p>took is a form of take</p></li>
+<li><p>courses is a form of course</p></li>
+</ul>
+<p>Linguists distinguish between</p>
+<ul class="simple">
+<li><p><strong>the (surface) forms that occur in text</strong>: want, wants, beginners’, took,…</p></li>
+<li><p><strong>and the lemmas that are the uninflected forms of these words</strong>: want, beginner, take, …</p></li>
+</ul>
+<p>In NLP, we sometimes map words to lemmas (or simpler “stems”), but the raw data always consists of surface forms</p>
+</section>
+<section id="how-many-different-words-are-there">
+<h2>How many different words are there?<a class="headerlink" href="#how-many-different-words-are-there" title="Permalink to this headline">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Inflection</span></code> creates different forms of the same word:</p>
+<ul class="simple">
+<li><p>Verbs: to be, being, I am, you are, he is, I was,</p></li>
+<li><p>Nouns: one book, two books</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">Derivation</span></code> creates different words from the same lemma:</p>
+<ul class="simple">
+<li><p>grace ⇒ disgrace ⇒ disgraceful ⇒ disgracefully</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">Compounding</span></code> combines two words into a new word:</p>
+<ul class="simple">
+<li><p>cream ⇒ ice cream ⇒ ice cream cone ⇒ ice cream cone bakery</p></li>
+</ul>
+<p>Word formation is productive:</p>
+<ul class="simple">
+<li><p>New words are subject to all of these processes:
+Google ⇒ Googler, to google, to ungoogle, to misgoogle, googlification, ungooglification, googlified, Google Maps, Google Maps service,…</p></li>
+</ul>
+<section id="inflectional-morphology-in-english">
+<h3>Inflectional morphology in English<a class="headerlink" href="#inflectional-morphology-in-english" title="Permalink to this headline">#</a></h3>
+<p><strong>Verbs</strong>:</p>
+<ul class="simple">
+<li><p>Infinitive/present tense: walk, go</p></li>
+<li><p>3rd person singular present tense (s-form): walks, goes</p></li>
+<li><p>Simple past: walked, went</p></li>
+<li><p>Past participle (ed-form): walked, gone</p></li>
+<li><p>Present participle (ing-form): walking, going</p></li>
+</ul>
+<p><strong>Nouns</strong>:</p>
+<ul class="simple">
+<li><p>Common nouns inflect for number:
+singular (book) vs. plural (books)</p></li>
+<li><p>Personal pronouns inflect for person, number, gender, case:
+I saw him; he saw me; you saw her; we saw them; they saw us.</p></li>
+</ul>
+</section>
+<section id="derivational-morphology-in-english">
+<h3>Derivational morphology in English<a class="headerlink" href="#derivational-morphology-in-english" title="Permalink to this headline">#</a></h3>
+<p>Nominalization:</p>
+<ul class="simple">
+<li><p>V + -ation: computerization, privatization, democratization,…</p></li>
+<li><p>V + -er: killer, trainer, driver,…</p></li>
+<li><p>Adj + -ness: fuzziness, kindness,…</p></li>
+</ul>
+<p>Negation:</p>
+<ul class="simple">
+<li><p>un-: undo, unseen, unkind,…</p></li>
+<li><p>mis-: mistake, mislead, misbehave,…</p></li>
+</ul>
+<p>Adjectivization:</p>
+<ul class="simple">
+<li><p>V + -able: doable, teachable,…</p></li>
+<li><p>N + -al: national, personal,…</p></li>
+</ul>
+</section>
+<section id="morphemes-stems-affixes">
+<h3>Morphemes: stems, affixes<a class="headerlink" href="#morphemes-stems-affixes" title="Permalink to this headline">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="n">dis</span><span class="o">-</span><span class="n">grace</span><span class="o">-</span><span class="n">ful</span><span class="o">-</span><span class="n">ly</span>
+<span class="n">prefix</span><span class="o">-</span><span class="n">stem</span><span class="o">-</span><span class="n">suffix</span><span class="o">-</span><span class="n">suffix</span>
+</pre></div>
+</div>
+<p>Many word forms consist of a <code class="docutils literal notranslate"><span class="pre">stem</span></code> plus a number of <code class="docutils literal notranslate"><span class="pre">affixes</span> <span class="pre">(prefixes</span> <span class="pre">or</span> <span class="pre">suffixes)</span></code></p>
+<ul class="simple">
+<li><p>Exceptions: Infixes are inserted inside the stem Circumfixes (German gesehen) surround the stem</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">Morphemes</span></code>: the smallest (meaningful/grammatical) parts of words.</p>
+<ul class="simple">
+<li><p>Stems (grace) are often <code class="docutils literal notranslate"><span class="pre">free</span> <span class="pre">morphemes</span></code>.
+Free morphemes can occur by themselves as words.</p></li>
+<li><p>Affixes (dis-, -ful, -ly) are usually <code class="docutils literal notranslate"><span class="pre">bound</span> <span class="pre">morphemes</span></code>.
+Bound morphemes have to combine with others to form words.</p></li>
+</ul>
+<p><strong>Morphemes and morphs</strong></p>
+<p>The same information (plural, past tense, …) is often expressed in different ways in the same language.</p>
+<ul class="simple">
+<li><p>One way may be more common than others, and exceptions may depend on specific words:</p>
+<ul>
+<li><p>Most plural nouns: add <strong>-s</strong> to singular: book-book<strong>s</strong>, but: box-box<strong>es</strong>, fly-fl<strong>ies</strong>, child-child<strong>ren</strong></p></li>
+<li><p>Most past tense verbs add <strong>-ed</strong> to infinitive: walk-walk<strong>ed</strong>, but: like-like<strong>d</strong>, leap-leap<strong>t</strong>
+Such exceptions are called <code class="docutils literal notranslate"><span class="pre">irregular</span> <span class="pre">word</span> <span class="pre">forms</span></code></p></li>
+</ul>
+</li>
+</ul>
+<p>Linguists say that there is <code class="docutils literal notranslate"><span class="pre">one</span> <span class="pre">underlying</span> <span class="pre">morpheme</span></code> (e.g. for plural nouns) that is “realized” as different “surface” forms (morphs) (e.g. -s/-es/-ren)</p>
+<ul class="simple">
+<li><p>Allomorphs: two different realizations (-s/-es/-ren) of the same underlying morpheme (plural)</p></li>
+</ul>
+<p><strong>“Surface”?</strong></p>
+<p>This terminology comes from Chomskyan Transformational Grammar.</p>
+<ul class="simple">
+<li><p>Dominant early approach in theoretical linguistics, superseded by other approaches (“minimalism”).</p></li>
+<li><p>Not computational, but has some historical influence on computational linguistics (e.g. Penn Treebank)</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">“Surface”</span></code> = standard English (Chinese, Hindi, etc.).</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">“Surface</span> <span class="pre">string”</span></code> = a written sequence of characters or words</p></li>
+</ul>
+<p>vs. <code class="docutils literal notranslate"><span class="pre">“Deep”/“Underlying”</span></code> structure/representation:</p>
+<ul class="simple">
+<li><p>A more abstract representation.</p></li>
+<li><p>Might be the same for different sentences/words with the same meaning.</p></li>
+</ul>
+</section>
+</section>
+<section id="id1">
+<h2>Tokenization<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
+<section id="input">
+<h3>Input:<a class="headerlink" href="#input" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>A set of documents (e.g. text files), <span class="math notranslate nohighlight">\(D\)</span></p></li>
+</ul>
+</section>
+<section id="output-tokens">
+<h3>Output (tokens):<a class="headerlink" href="#output-tokens" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>A sequence, <span class="math notranslate nohighlight">\(W\)</span> , containing a list of tokens – words or word pieces for use in natural language processing</p></li>
+</ul>
+</section>
+<section id="output-n-grams">
+<h3>Output (n-grams):<a class="headerlink" href="#output-n-grams" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>A matrix, <span class="math notranslate nohighlight">\(X\)</span>, containing statistics about word/phrase frequencies in those documents.</p></li>
+</ul>
+</section>
+<section id="tokens">
+<h3>Tokens<a class="headerlink" href="#tokens" title="Permalink to this headline">#</a></h3>
+<p>The most basic unit of representation in a text.</p>
+<ul>
+<li><p>characters: documents as sequence of individual letters {h,e,l,l,o, ,w,o,r,l,d}</p></li>
+<li><p>words: split on white space {hello, world}</p></li>
+<li><p>n-grams: learn a vocabulary of phrases and tokenize those:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">“hellow</span> <span class="pre">world</span> <span class="pre">→</span> <span class="pre">hellow_world”</span></code></p>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="goals-of-tokenization">
+<h3>Goals of Tokenization<a class="headerlink" href="#goals-of-tokenization" title="Permalink to this headline">#</a></h3>
+<p>To summarize: A major goal of tokenization is to produce features that are</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">predictive</span></code> in the learning task</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">interpretable</span></code> by human investigators</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tractable</span></code> enough to be easy to work with</p></li>
+</ul>
+<p>Two broad approaches:</p>
+<ol class="simple">
+<li><p>convert documents to vectors, usually frequency distributions over pre-processed n-grams.</p></li>
+<li><p>convert documents to sequences of tokens, for inputs to sequential models.</p></li>
+</ol>
+</section>
+<section id="a-traditional-tokenization-pipeline">
+<h3>A Traditional Tokenization Pipeline<a class="headerlink" href="#a-traditional-tokenization-pipeline" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Extract text from documents (e.g. PDF, HTML, XML, …)</p></li>
+<li><p>Tokenize text into words</p></li>
+<li><p>Normalize words (e.g. lowercasing, stemming, lemmatization)</p></li>
+<li><p>Remove stop words (e.g. “the”, “a”, “an”, “in”, …)</p></li>
+<li><p>Build a vocabulary of words</p></li>
+<li><p>Convert documents to vectors of word counts or TF-IDF scores</p></li>
+<li><p>Train a model on those vectors</p></li>
+</ul>
+</section>
+<section id="subword-tokenization-for-sequence-models">
+<h3>Subword Tokenization for Sequence Models<a class="headerlink" href="#subword-tokenization-for-sequence-models" title="Permalink to this headline">#</a></h3>
+<p>Modern transformer models (e.g. BERT, GPT) use subword tokenization:</p>
+<ul class="simple">
+<li><p>construct character-level n-grams</p></li>
+<li><p>whitespace treated the same as letters</p></li>
+<li><p>all letters to lowercase, but add a special character for the next letter being capitalized.</p></li>
+</ul>
+<p>e.g., BERT’s WordPiece tokenizer:</p>
+<ul class="simple">
+<li><p>character-level byte-pair encoder</p></li>
+<li><p>learns character n-grams to breaks words like “playing” into “play” and “##ing”.</p></li>
+<li><p>have to fix a vocabulary size: e.g. BERT uses 30K.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/37.png" /></p>
+</section>
+<section id="segmenting-paragraphs-sentences">
+<h3>Segmenting paragraphs/sentences<a class="headerlink" href="#segmenting-paragraphs-sentences" title="Permalink to this headline">#</a></h3>
+<p>Many tasks should be done on sentences, rather than corpora as a whole.</p>
+<ul class="simple">
+<li><p>spaCy is a good (but not perfect) job of splitting sentences, while accounting for periods on abbreviations, etc.</p></li>
+<li><p>pySBD is a better option for splitting sentences.</p></li>
+</ul>
+<p>There isn’t a grammar-based paragraph tokenizer.</p>
+<ul class="simple">
+<li><p>most corpora have new paragraphs annotated.</p></li>
+<li><p>or use line breaks.</p></li>
+</ul>
+</section>
+<section id="pre-processing">
+<h3>Pre-processing<a class="headerlink" href="#pre-processing" title="Permalink to this headline">#</a></h3>
+<p>An important piece of the “art” of text analysis is deciding what data to throw out.</p>
+<ul class="simple">
+<li><p>Uninformative data add noise and reduce statistical precision.</p></li>
+<li><p>They are also computationally costly.</p></li>
+</ul>
+<p>Pre-processing choices can affect down-stream results, especially in unsupervised learning tasks (Denny and Spirling 2017).</p>
+<ul class="simple">
+<li><p>some features are more interpretable: “govenor has” / “has discretion” vs “govenor has discretion”.</p></li>
+</ul>
+<section id="capitalization">
+<h4>Capitalization<a class="headerlink" href="#capitalization" title="Permalink to this headline">#</a></h4>
+<p>Removing capitalization is a standard corpus normalization technique</p>
+<ul class="simple">
+<li><p>usually the capitalized/non-capitalized version of a word are equivalent – e.g. words showing up capitalized at beginning of sentence</p></li>
+<li><p>→ capitalization not informative.</p></li>
+</ul>
+<p>Also: what about “the first amendment” versus “the First Amendment”?</p>
+<ul class="simple">
+<li><p>Compromise: include capitalized version of words not at beginning of sentence.</p></li>
+</ul>
+<p>For some tasks, capitalization is important</p>
+<ul class="simple">
+<li><p>needed for sentence splitting, part-of-speech tagging, syntactic parsing, and semantic role labeling.</p></li>
+<li><p>For sequence data, e.g. language modeling – huggingface tokenizer takes out capitalization but then add a special “capitalized” token before the word.</p></li>
+</ul>
+</section>
+<section id="punctuation">
+<h4>Punctuation<a class="headerlink" href="#punctuation" title="Permalink to this headline">#</a></h4>
+<p><img alt="" src="../../../_images/42.png" />
+(Source: Chris Bail text data slides.)</p>
+<p>Inclusion of punctuation depends on your task:</p>
+<ul class="simple">
+<li><p>if you are vectorizing the document as a bag of words or bag of n-grams, punctuation won’t be needed.</p></li>
+<li><p>like capitalization, punctuation is needed for annotations (sentence splitting, parts of speech, syntax, roles, etc)</p>
+<ul>
+<li><p>also needed for language models.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="numbers">
+<h4>Numbers<a class="headerlink" href="#numbers" title="Permalink to this headline">#</a></h4>
+<p>for classification using bag of words:</p>
+<ul class="simple">
+<li><p>can drop numbers, or replace with special characters</p></li>
+</ul>
+<p>for language models:</p>
+<ul class="simple">
+<li><p>just treat them like letters.</p></li>
+<li><p>GPT-3 can solve math problems (but not well, this is an area of research)</p></li>
+</ul>
+</section>
+<section id="drop-stopwords">
+<h4>Drop Stopwords?<a class="headerlink" href="#drop-stopwords" title="Permalink to this headline">#</a></h4>
+<p><img alt="" src="../../../_images/52.png" /></p>
+<ul class="simple">
+<li><p>Stopwords are words that are so common that they don’t carry much information.</p></li>
+<li><p>can drop stopwords by themselves, but keep them as part of phrases.</p></li>
+<li><p>can filter out words and phrases using part-of-speech tags (later).</p></li>
+</ul>
+</section>
+<section id="stemming-lemmatizing">
+<h4>Stemming/lemmatizing<a class="headerlink" href="#stemming-lemmatizing" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p>Effective dimension reduction with little loss of information.</p></li>
+<li><p>Lemmatizer produces real words, but N-grams won’t make grammatical sense</p>
+<ul>
+<li><p>e.g., “I am running” → “I am run”</p></li>
+</ul>
+</li>
+</ul>
+<p><img alt="" src="../../../_images/61.png" /></p>
+</section>
+</section>
+</section>
+<section id="bag-of-words-representation">
+<h2>Bag-of-words representation<a class="headerlink" href="#bag-of-words-representation" title="Permalink to this headline">#</a></h2>
+<p>Say we want to convert a corpus <span class="math notranslate nohighlight">\(D\)</span> to a matrix <span class="math notranslate nohighlight">\(X\)</span>:</p>
+<ul class="simple">
+<li><p>In the <code class="docutils literal notranslate"><span class="pre">“bag-of-words”</span></code> representation, a row of <span class="math notranslate nohighlight">\(X\)</span> is just the frequency distribution over words in the document corresponding to that row.</p></li>
+</ul>
+<section id="counts-and-frequencies">
+<h3>Counts and frequencies<a class="headerlink" href="#counts-and-frequencies" title="Permalink to this headline">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Document</span> <span class="pre">counts</span></code>: number of documents where a token appears.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Term</span> <span class="pre">counts</span></code>: number of total appearances of a token in corpus.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Term</span> <span class="pre">frequency</span></code>:</p>
+<div class="math notranslate nohighlight">
+\[ \text{Term Frequency of } w \text{ in document } k = \frac{\text{Count of }w\text{ in document }k}{\text{Total tokens in document } k} \]</div>
+</section>
+<section id="building-a-vocabulary">
+<h3>Building a vocabulary<a class="headerlink" href="#building-a-vocabulary" title="Permalink to this headline">#</a></h3>
+<p>An important featurization step is to build a vocabulary of words:</p>
+<ul class="simple">
+<li><p>Compute document frequencies for all words</p></li>
+<li><p>Inspect low-frequency words and determine a minimum document threshold.</p>
+<ul>
+<li><p>e.g., 10 documents, or .25% of documents.</p></li>
+</ul>
+</li>
+</ul>
+<p>Can also impose more complex thresholds, e.g.:</p>
+<ul class="simple">
+<li><p>appears twice in at least 20 documents</p></li>
+<li><p>appears in at least 3 documents in at least 5 years</p></li>
+</ul>
+<p>Assign numerical identifiers to tokens to increase speed and reduce disk usage.</p>
+</section>
+<section id="tf-idf-weighting">
+<h3>TF-IDF Weighting<a class="headerlink" href="#tf-idf-weighting" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>TF/IDF: “Term-Frequency / Inverse-Document-Frequency.”</p></li>
+<li><p>The formula for word <span class="math notranslate nohighlight">\(w\)</span> in document <span class="math notranslate nohighlight">\(k\)</span>:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+\text{TF-IDF} = \frac{\text{Term Frequency of }w\text{ in document }k}{\text{Total tokens in document } k} \times \log \frac{\text{Total number of documents}}{\text{Document count of }w}
+\]</div>
+<ul class="simple">
+<li><p>The formula up-weights relatively rare words that do not appear in all documents.</p>
+<ul>
+<li><p>These words are probably more distinctive of topics or differences between documents.</p></li>
+</ul>
+</li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Example: A document contains 100 words, and the word appears 3 times in the document.
+The TF is .03. The corpus has 100 documents, and the word appears in 10 documents.
+the IDF is 0log(100/10) ≈ 2.3, so the TF-IDF for this document is .03×2.3 = .07.
+Say the word appears in 90 out of 100 documents:
+Then the IDF is 0.105, with TF-IDF for this document equal to .003.
+</pre></div>
+</div>
+</section>
+<section id="scikit-learns-tfidfvectorizer">
+<h3>scikit-learn’s TfidfVectorizer<a class="headerlink" href="#scikit-learns-tfidfvectorizer" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>corpus is a sequence of strings, e.g. pandas data-frame columns.</p></li>
+<li><p>I pre-processing options: strip accents, lowercase, drop stopwords,</p></li>
+<li><p>n-grams: can produce phrases up to length n (words or characters).</p></li>
+<li><p>vocab options: min/max frequency, vocab size</p></li>
+<li><p>post-processing: binary, l2 norm, (smoothed) idf weighting, etc</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_20newsgroups</span>
+
+<span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;alt.atheism&quot;</span><span class="p">,</span> <span class="s2">&quot;soc.religion.christian&quot;</span><span class="p">,</span> <span class="s2">&quot;comp.graphics&quot;</span><span class="p">,</span> <span class="s2">&quot;sci.med&quot;</span><span class="p">]</span>
+
+<span class="n">twenty_train</span> <span class="o">=</span> <span class="n">fetch_20newsgroups</span><span class="p">(</span>
+    <span class="n">subset</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="n">categories</span><span class="o">=</span><span class="n">categories</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+<span class="p">)</span>
+
+<span class="n">tfidf</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span>
+    <span class="n">sublinear_tf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">min_df</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">norm</span><span class="o">=</span><span class="s2">&quot;l2&quot;</span><span class="p">,</span>
+    <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;latin-1&quot;</span><span class="p">,</span>
+    <span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="n">stop_words</span><span class="o">=</span><span class="s2">&quot;english&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">features</span> <span class="o">=</span> <span class="n">tfidf</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">twenty_train</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="c1"># print(tfidf.get_feature_names())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2257, 14303)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="other-transformations">
+<h3>Other Transformations<a class="headerlink" href="#other-transformations" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Could add log counts, quadratics in counts, etc.</p></li>
+<li><p>Could also add pairwise interactions bet ween word counts/frequencies.</p></li>
+<li><p>These often are not done much because of the dimensionality problem.</p></li>
+<li><p>Could use PCA to reduce dimensionality, but this is a lossy transformation.</p></li>
+</ul>
+</section>
+</section>
+<section id="what-are-n-grams">
+<h2>What are N-grams?<a class="headerlink" href="#what-are-n-grams" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>N-grams are contiguous sequences of n tokens.</p>
+<ul>
+<li><p>Bigrams: 2-grams</p></li>
+<li><p>Trigrams: 3-grams</p></li>
+<li><p>Quadgrams: 4-grams</p></li>
+</ul>
+</li>
+<li><p>Google Developers recommend tf-idf-weighted bigrams as a baseline for text classification.</p></li>
+</ul>
+<p>For example, the sentence “The quick brown fox jumps over the lazy dog” has the following bigrams:</p>
+<blockquote>
+<div><p>[“The quick”, “quick brown”, “brown fox”, “fox jumps”, “jumps over”, “over the”, “the lazy”, “lazy dog”]</p>
+</div></blockquote>
+<p>for trigrams:</p>
+<blockquote>
+<div><p>[“The quick brown”, “quick brown fox”, “brown fox jumps”, “fox jumps over”, “jumps over the”, “over the lazy”, “the lazy dog”]</p>
+</div></blockquote>
+<p><strong>Text classification flowchart (from Google Developers):</strong></p>
+<p><img alt="" src="../../../_images/101.png" /></p>
+<section id="n-grams-and-high-dimensionality">
+<h3>N-grams and high dimensionality<a class="headerlink" href="#n-grams-and-high-dimensionality" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>N-grams will blow up your feature space:</p>
+<ul>
+<li><p>1-grams: 1000 words → 1000 features</p></li>
+<li><p>2-grams: 1000 words → 500,500 features</p></li>
+</ul>
+</li>
+<li><p>Filtering out low-frequency and uninformative n-grams is important.</p></li>
+<li><p>Google Developers say that a feature space of 20,000 features will work well for descriptive and predictive text classification.</p></li>
+</ul>
+</section>
+<section id="hashing-vectorizer">
+<h3>Hashing Vectorizer<a class="headerlink" href="#hashing-vectorizer" title="Permalink to this headline">#</a></h3>
+<p>Rather than make a one-to-one lookup for each n-gram, put n-grams through a hashing function that takes an arbitrary string and outputs an integer in some range (e.g. 1 to 10,000).</p>
+<ul class="simple">
+<li><p>This is a lossy transformation, but it can be useful for very large feature spaces.</p></li>
+<li><p>The hashing function is deterministic, so the same string will always map to the same integer.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/112.png" /></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">HashingVectorizer</span>
+
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">HashingVectorizer</span><span class="p">(</span>
+    <span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">4</span><span class="p">,</span> <span class="n">stop_words</span><span class="o">=</span><span class="s2">&quot;english&quot;</span><span class="p">,</span> <span class="n">alternate_sign</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">twenty_train</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2257, 16)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="collocations">
+<h3>Collocations<a class="headerlink" href="#collocations" title="Permalink to this headline">#</a></h3>
+<p>Collocations are phrases that occur together more often than would be expected by chance.</p>
+<ul>
+<li><p>Non-compositional: the meaning is not the sum of the parts</p>
+<blockquote>
+<div><p>e.g., “New York” is not the sum of “New” and “York”</p>
+</div></blockquote>
+</li>
+<li><p>Non-substitutable: cannot substitute one component with synonyms</p>
+<blockquote>
+<div><p>e.g., “fast food” is not the same as “quick food”</p>
+</div></blockquote>
+</li>
+<li><p>Non-modifiable: cannot modify with additional words</p>
+<blockquote>
+<div><p>e.g., “kick around the bucket” is not the same as “kick the bucket around”</p>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="pointwise-mutual-information">
+<h3>Pointwise Mutual Information<a class="headerlink" href="#pointwise-mutual-information" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Pointwise Mutual Information (PMI) is a measure of how often two words co-occur in a corpus.</p></li>
+<li><p>PMI is defined as:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+PMI(w_1,w_2) = \frac{P(w_1\_ w_2)}{P(w_1)P(w_2)} \\
+= \frac{\text{Prob. of collocation, actual}}{\text{Prob. of collocation, if independent}}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(w_1\)</span> and <span class="math notranslate nohighlight">\(w_2\)</span> are words in the vocabulary, and <span class="math notranslate nohighlight">\(w_1\)</span>, <span class="math notranslate nohighlight">\(w_2\)</span> is the N-gram <span class="math notranslate nohighlight">\(w_1\_w_2\)</span>.
+ranks words by how often they collocate, relative to how often they occur apart.</p>
+<ul class="simple">
+<li><p>Generalizes to longer phrases (length N) as the geometric mean of the probabilities:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[ \frac{P(w*1,\ldots w_2 )}{\prod*{i=1}^{n} \sqrt[n]{P(w_i)}} \]</div>
+<ul class="simple">
+<li><p>Caveat: Rare words will have high PMI, but this is not necessarily a good thing.</p>
+<ul>
+<li><p>Can use a threshold to filter out rare words.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="out-of-vocabulary-words-oov-for-n-grams">
+<h3>Out-of-Vocabulary Words (OOV) for N-grams<a class="headerlink" href="#out-of-vocabulary-words-oov-for-n-grams" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>OOV words are words that are not in the vocabulary.</p></li>
+<li><p>OOV words are a problem for N-gram models.</p>
+<ul>
+<li><p>Can be replaced with a special token, e.g. <code class="docutils literal notranslate"><span class="pre">&lt;UNK&gt;</span></code>.</p></li>
+<li><p>Can be replaced with the POS tag, e.g. <code class="docutils literal notranslate"><span class="pre">&lt;NOUN&gt;</span></code>.</p></li>
+<li><p>Can be replaced with the hypernym, e.g. <code class="docutils literal notranslate"><span class="pre">&lt;ANIMAL&gt;</span></code>.</p></li>
+<li><p>Can use a hash function to map OOV words to a fixed number of buckets.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="what-are-parts-of-speech">
+<h2>What are parts of speech?<a class="headerlink" href="#what-are-parts-of-speech" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>Nouns, Pronouns, Proper Nouns,</p></li>
+<li><p>Verbs, Auxiliaries,</p></li>
+<li><p>Adjectives, Adverbs</p></li>
+<li><p>Prepositions, Conjunctions,</p></li>
+<li><p>Determiners, Particles</p></li>
+<li><p>Numerals, Symbols,</p></li>
+<li><p>Interjections, etc.</p></li>
+</ul>
+<p>See e.g. <a class="reference external" href="https://universaldependencies.org/u/pos/">https://universaldependencies.org/u/pos/</a></p>
+<section id="pos-tagging">
+<h3>POS Tagging<a class="headerlink" href="#pos-tagging" title="Permalink to this headline">#</a></h3>
+<p>Words often have more than one POS:</p>
+<ul class="simple">
+<li><p>The back door <code class="docutils literal notranslate"><span class="pre">(adjective)</span></code></p></li>
+<li><p>On my back <code class="docutils literal notranslate"><span class="pre">(noun)</span></code></p></li>
+<li><p>Win the voters back <code class="docutils literal notranslate"><span class="pre">(particle)</span></code></p></li>
+<li><p>Promised to back the bill <code class="docutils literal notranslate"><span class="pre">(verb)</span></code></p></li>
+</ul>
+<p>The POS tagging task:</p>
+<ul class="simple">
+<li><p>Given a sequence of words, assign a POS tag to each word.</p></li>
+<li><p>The POS tag is a label from a fixed set of tags.</p></li>
+<li><p>Due to ambiguity (and unknown words), we cannot look up the POS tag in a dictionary.</p></li>
+</ul>
+</section>
+<section id="why-pos-tagging">
+<h3>Why POS Tagging?<a class="headerlink" href="#why-pos-tagging" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>POS tagging is one of the first steps in many NLP tasks.</p></li>
+<li><p>For a traditional NLP pipeline, POS tagging is regarded as a prerequisite for further processing.</p>
+<ul>
+<li><p>Syntactic parsing: POS tags are used to build a parse tree.</p></li>
+<li><p>Information extraction: POS tags are used to identify named entities, relations, etc.</p></li>
+</ul>
+</li>
+<li><p>Although POS tagging is not a prerequisite for many modern NLP tasks, it is still useful.</p>
+<ul>
+<li><p>To understand the basic structure of a sentence.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="creating-a-pos-tagger">
+<h3>Creating a POS Tagger<a class="headerlink" href="#creating-a-pos-tagger" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>A POS tagger is a classifier that assigns a POS tag to each word in a sentence.</p></li>
+<li><p>To handle ambiguity, a POS tagger relies on learned models.</p></li>
+<li><p>For a <code class="docutils literal notranslate"><span class="pre">new</span> <span class="pre">language</span> <span class="pre">or</span> <span class="pre">domain</span></code>, a POS tagger can be trained from scratch.</p>
+<ul>
+<li><p>Define a set of POS tags.</p></li>
+<li><p>Annotate a corpus with POS tags.</p></li>
+</ul>
+</li>
+<li><p>For an <code class="docutils literal notranslate"><span class="pre">existing</span> <span class="pre">language</span> <span class="pre">or</span> <span class="pre">domain</span></code>, a POS tagger can be trained on the existing annotated corpus.</p>
+<ul>
+<li><p>Obtain a corpus with POS tags.</p></li>
+</ul>
+</li>
+<li><p>To train a POS tagger,</p>
+<ul>
+<li><p>Choose a POS tagging algorithm. (e.g. HMM, CRF, etc.)</p></li>
+<li><p>Train the POS tagging algorithm on the annotated corpus.</p></li>
+<li><p>Evaluate the POS tagging algorithm on a test set.</p></li>
+</ul>
+</li>
+</ul>
+<p><img alt="" src="../../../_images/211.png" /></p>
+<p><a class="reference external" href="https://universaldependencies.org/u/pos/">List of Universal POS tags</a></p>
+<p><img alt="" src="../../../_images/221.png" /></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># !python -m spacy download en</span>
+<span class="kn">import</span> <span class="nn">spacy</span>
+
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;en_core_web_sm&quot;</span><span class="p">)</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;POS tagging is the process of marking up a word in a text (corpus) as corresponding to a particular part of speech, based on both its definition and its context.&quot;</span>
+
+<span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s2">&quot;=&gt;&quot;</span><span class="p">,</span> <span class="n">token</span><span class="o">.</span><span class="n">pos_</span><span class="p">,</span> <span class="s2">&quot;=&gt;&quot;</span><span class="p">,</span> <span class="n">token</span><span class="o">.</span><span class="n">tag_</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2022-10-22 08:42:06.914835: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>POS =&gt; PROPN =&gt; NNP
+tagging =&gt; NOUN =&gt; NN
+is =&gt; AUX =&gt; VBZ
+the =&gt; DET =&gt; DT
+process =&gt; NOUN =&gt; NN
+of =&gt; ADP =&gt; IN
+marking =&gt; VERB =&gt; VBG
+up =&gt; ADP =&gt; RP
+a =&gt; DET =&gt; DT
+word =&gt; NOUN =&gt; NN
+in =&gt; ADP =&gt; IN
+a =&gt; DET =&gt; DT
+text =&gt; NOUN =&gt; NN
+( =&gt; PUNCT =&gt; -LRB-
+corpus =&gt; PROPN =&gt; NNP
+) =&gt; PUNCT =&gt; -RRB-
+as =&gt; ADP =&gt; IN
+corresponding =&gt; VERB =&gt; VBG
+to =&gt; ADP =&gt; IN
+a =&gt; DET =&gt; DT
+particular =&gt; ADJ =&gt; JJ
+part =&gt; NOUN =&gt; NN
+of =&gt; ADP =&gt; IN
+speech =&gt; NOUN =&gt; NN
+, =&gt; PUNCT =&gt; ,
+based =&gt; VERB =&gt; VBN
+on =&gt; ADP =&gt; IN
+both =&gt; CCONJ =&gt; CC
+its =&gt; PRON =&gt; PRP$
+definition =&gt; NOUN =&gt; NN
+and =&gt; CCONJ =&gt; CC
+its =&gt; PRON =&gt; PRP$
+context =&gt; NOUN =&gt; NN
+. =&gt; PUNCT =&gt; .
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="dependency-parsing">
+<h2>Dependency Parsing<a class="headerlink" href="#dependency-parsing" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>Dependency parsing is the task of assigning a syntactic dependency to each word in a sentence.</p></li>
+<li><p>In dependency parsing, dependency tags represent the grammatical function of a word in a sentence.</p></li>
+</ul>
+<p>For example, in the sentence “The quick brown fox jumps over the lazy dog”,</p>
+<ul class="simple">
+<li><p>A dependency exists from the <code class="docutils literal notranslate"><span class="pre">fox</span></code> to the <code class="docutils literal notranslate"><span class="pre">brown</span></code> in which the <code class="docutils literal notranslate"><span class="pre">fox</span></code> acts as the head and the <code class="docutils literal notranslate"><span class="pre">brown</span></code> acts as the dependent or child.</p></li>
+<li><p>This dependency is labeled <code class="docutils literal notranslate"><span class="pre">amod</span></code> (adjectival modifier).</p></li>
+</ul>
+<p><a class="reference external" href="https://universaldependencies.org/u/dep/">Universal Dependency Relations</a></p>
+<p><img alt="" src="../../../_images/231.png" /></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">spacy</span> <span class="kn">import</span> <span class="n">displacy</span>
+
+<span class="n">sent</span> <span class="o">=</span> <span class="s2">&quot;The quick brown fox jumps over the lazy dog.&quot;</span>
+<span class="n">displacy</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">nlp</span><span class="p">(</span><span class="n">sent</span><span class="p">),</span> <span class="n">jupyter</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><span class="tex2jax_ignore"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:lang="en" id="c8e30886aa8a42ac814d6fb21a6f802b-0" class="displacy" width="1625" height="399.5" direction="ltr" style="max-width: none; height: 399.5px; color: #000000; background: #ffffff; font-family: Arial; direction: ltr">
+<text class="displacy-token" fill="currentColor" text-anchor="middle" y="309.5">
+    <tspan class="displacy-word" fill="currentColor" x="50">The</tspan>
+    <tspan class="displacy-tag" dy="2em" fill="currentColor" x="50">DET</tspan>
+</text>
+
+<text class="displacy-token" fill="currentColor" text-anchor="middle" y="309.5">
+    <tspan class="displacy-word" fill="currentColor" x="225">quick</tspan>
+    <tspan class="displacy-tag" dy="2em" fill="currentColor" x="225">ADJ</tspan>
+</text>
+
+<text class="displacy-token" fill="currentColor" text-anchor="middle" y="309.5">
+    <tspan class="displacy-word" fill="currentColor" x="400">brown</tspan>
+    <tspan class="displacy-tag" dy="2em" fill="currentColor" x="400">ADJ</tspan>
+</text>
+
+<text class="displacy-token" fill="currentColor" text-anchor="middle" y="309.5">
+    <tspan class="displacy-word" fill="currentColor" x="575">fox</tspan>
+    <tspan class="displacy-tag" dy="2em" fill="currentColor" x="575">NOUN</tspan>
+</text>
+
+<text class="displacy-token" fill="currentColor" text-anchor="middle" y="309.5">
+    <tspan class="displacy-word" fill="currentColor" x="750">jumps</tspan>
+    <tspan class="displacy-tag" dy="2em" fill="currentColor" x="750">VERB</tspan>
+</text>
+
+<text class="displacy-token" fill="currentColor" text-anchor="middle" y="309.5">
+    <tspan class="displacy-word" fill="currentColor" x="925">over</tspan>
+    <tspan class="displacy-tag" dy="2em" fill="currentColor" x="925">ADP</tspan>
+</text>
+
+<text class="displacy-token" fill="currentColor" text-anchor="middle" y="309.5">
+    <tspan class="displacy-word" fill="currentColor" x="1100">the</tspan>
+    <tspan class="displacy-tag" dy="2em" fill="currentColor" x="1100">DET</tspan>
+</text>
+
+<text class="displacy-token" fill="currentColor" text-anchor="middle" y="309.5">
+    <tspan class="displacy-word" fill="currentColor" x="1275">lazy</tspan>
+    <tspan class="displacy-tag" dy="2em" fill="currentColor" x="1275">ADJ</tspan>
+</text>
+
+<text class="displacy-token" fill="currentColor" text-anchor="middle" y="309.5">
+    <tspan class="displacy-word" fill="currentColor" x="1450">dog.</tspan>
+    <tspan class="displacy-tag" dy="2em" fill="currentColor" x="1450">NOUN</tspan>
+</text>
+
+<g class="displacy-arrow">
+    <path class="displacy-arc" id="arrow-c8e30886aa8a42ac814d6fb21a6f802b-0-0" stroke-width="2px" d="M70,264.5 C70,2.0 575.0,2.0 575.0,264.5" fill="none" stroke="currentColor"/>
+    <text dy="1.25em" style="font-size: 0.8em; letter-spacing: 1px">
+        <textPath xlink:href="#arrow-c8e30886aa8a42ac814d6fb21a6f802b-0-0" class="displacy-label" startOffset="50%" side="left" fill="currentColor" text-anchor="middle">det</textPath>
+    </text>
+    <path class="displacy-arrowhead" d="M70,266.5 L62,254.5 78,254.5" fill="currentColor"/>
+</g>
+
+<g class="displacy-arrow">
+    <path class="displacy-arc" id="arrow-c8e30886aa8a42ac814d6fb21a6f802b-0-1" stroke-width="2px" d="M245,264.5 C245,89.5 570.0,89.5 570.0,264.5" fill="none" stroke="currentColor"/>
+    <text dy="1.25em" style="font-size: 0.8em; letter-spacing: 1px">
+        <textPath xlink:href="#arrow-c8e30886aa8a42ac814d6fb21a6f802b-0-1" class="displacy-label" startOffset="50%" side="left" fill="currentColor" text-anchor="middle">amod</textPath>
+    </text>
+    <path class="displacy-arrowhead" d="M245,266.5 L237,254.5 253,254.5" fill="currentColor"/>
+</g>
+
+<g class="displacy-arrow">
+    <path class="displacy-arc" id="arrow-c8e30886aa8a42ac814d6fb21a6f802b-0-2" stroke-width="2px" d="M420,264.5 C420,177.0 565.0,177.0 565.0,264.5" fill="none" stroke="currentColor"/>
+    <text dy="1.25em" style="font-size: 0.8em; letter-spacing: 1px">
+        <textPath xlink:href="#arrow-c8e30886aa8a42ac814d6fb21a6f802b-0-2" class="displacy-label" startOffset="50%" side="left" fill="currentColor" text-anchor="middle">amod</textPath>
+    </text>
+    <path class="displacy-arrowhead" d="M420,266.5 L412,254.5 428,254.5" fill="currentColor"/>
+</g>
+
+<g class="displacy-arrow">
+    <path class="displacy-arc" id="arrow-c8e30886aa8a42ac814d6fb21a6f802b-0-3" stroke-width="2px" d="M595,264.5 C595,177.0 740.0,177.0 740.0,264.5" fill="none" stroke="currentColor"/>
+    <text dy="1.25em" style="font-size: 0.8em; letter-spacing: 1px">
+        <textPath xlink:href="#arrow-c8e30886aa8a42ac814d6fb21a6f802b-0-3" class="displacy-label" startOffset="50%" side="left" fill="currentColor" text-anchor="middle">nsubj</textPath>
+    </text>
+    <path class="displacy-arrowhead" d="M595,266.5 L587,254.5 603,254.5" fill="currentColor"/>
+</g>
+
+<g class="displacy-arrow">
+    <path class="displacy-arc" id="arrow-c8e30886aa8a42ac814d6fb21a6f802b-0-4" stroke-width="2px" d="M770,264.5 C770,177.0 915.0,177.0 915.0,264.5" fill="none" stroke="currentColor"/>
+    <text dy="1.25em" style="font-size: 0.8em; letter-spacing: 1px">
+        <textPath xlink:href="#arrow-c8e30886aa8a42ac814d6fb21a6f802b-0-4" class="displacy-label" startOffset="50%" side="left" fill="currentColor" text-anchor="middle">prep</textPath>
+    </text>
+    <path class="displacy-arrowhead" d="M915.0,266.5 L923.0,254.5 907.0,254.5" fill="currentColor"/>
+</g>
+
+<g class="displacy-arrow">
+    <path class="displacy-arc" id="arrow-c8e30886aa8a42ac814d6fb21a6f802b-0-5" stroke-width="2px" d="M1120,264.5 C1120,89.5 1445.0,89.5 1445.0,264.5" fill="none" stroke="currentColor"/>
+    <text dy="1.25em" style="font-size: 0.8em; letter-spacing: 1px">
+        <textPath xlink:href="#arrow-c8e30886aa8a42ac814d6fb21a6f802b-0-5" class="displacy-label" startOffset="50%" side="left" fill="currentColor" text-anchor="middle">det</textPath>
+    </text>
+    <path class="displacy-arrowhead" d="M1120,266.5 L1112,254.5 1128,254.5" fill="currentColor"/>
+</g>
+
+<g class="displacy-arrow">
+    <path class="displacy-arc" id="arrow-c8e30886aa8a42ac814d6fb21a6f802b-0-6" stroke-width="2px" d="M1295,264.5 C1295,177.0 1440.0,177.0 1440.0,264.5" fill="none" stroke="currentColor"/>
+    <text dy="1.25em" style="font-size: 0.8em; letter-spacing: 1px">
+        <textPath xlink:href="#arrow-c8e30886aa8a42ac814d6fb21a6f802b-0-6" class="displacy-label" startOffset="50%" side="left" fill="currentColor" text-anchor="middle">amod</textPath>
+    </text>
+    <path class="displacy-arrowhead" d="M1295,266.5 L1287,254.5 1303,254.5" fill="currentColor"/>
+</g>
+
+<g class="displacy-arrow">
+    <path class="displacy-arc" id="arrow-c8e30886aa8a42ac814d6fb21a6f802b-0-7" stroke-width="2px" d="M945,264.5 C945,2.0 1450.0,2.0 1450.0,264.5" fill="none" stroke="currentColor"/>
+    <text dy="1.25em" style="font-size: 0.8em; letter-spacing: 1px">
+        <textPath xlink:href="#arrow-c8e30886aa8a42ac814d6fb21a6f802b-0-7" class="displacy-label" startOffset="50%" side="left" fill="currentColor" text-anchor="middle">pobj</textPath>
+    </text>
+    <path class="displacy-arrowhead" d="M1450.0,266.5 L1458.0,254.5 1442.0,254.5" fill="currentColor"/>
+</g>
+</svg></span></div></div>
+</div>
+</section>
+<section id="constituency-parsing">
+<h2>Constituency Parsing<a class="headerlink" href="#constituency-parsing" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>Constituency parsing is the task of analyzing a sentence by breaking it into sub-phrases (constituents).</p></li>
+<li><p>These sub-phrases belong to a fixed set of syntactic categories, such as NP (noun phrase) and VP (verb phrase).</p></li>
+</ul>
+<blockquote>
+<div><p>“It took me more than two hours to translate a few pages of English.”</p>
+</div></blockquote>
+<p><img alt="" src="../../../_images/271.png" /></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./docs/lectures/intro_nlp"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="sentiments.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Sentiment Analysis</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="word_segmentation.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Word Segmentation and Association</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Young Joon Lee<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

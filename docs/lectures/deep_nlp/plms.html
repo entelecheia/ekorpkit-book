@@ -1,0 +1,1708 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Pretrained Language Models &#8212; eKorpkit Tutorials</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/ekorpkit.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Lab 1: Preparing Wikipedia Corpora" href="lab1-corpus.html" />
+    <link rel="prev" title="ByT5: Towards a token-free future with pre-trained byte-to-byte models" href="byt5.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-FN4GFT8HP8"></script>
+<script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){ dataLayer.push(arguments); }
+                    gtag('js', new Date());
+                    gtag('config', 'G-FN4GFT8HP8');
+                </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../_static/ekorpkit.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">eKorpkit Tutorials</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    eKonomic Research Python Toolkit
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Basics
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/index.html">
+   Getting started
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/install.html">
+     Installation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/usage.html">
+     Usage
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/features/index.html">
+   Key features
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/easy_config.html">
+     Easy Configuration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/no_boiler.html">
+     No Boilerplate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/workflows.html">
+     Workflows
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/share.html">
+     Sharable and Reproducible
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/plug.html">
+     Pluggable Architece
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tutorials
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/config/index.html">
+   Configuring ekorpkit
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/config/eKonf.html">
+     Using eKonf class
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/datasets/index.html">
+   Datasets
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/corpus.html">
+     Build and Load Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/datasets/dataset.html">
+     Build and Load Datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/pipeline.html">
+     Corpus task pipelines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/models/index.html">
+   Models
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/models/automl/index.html">
+     Auto ML
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/embeddings/index.html">
+     Word Embeddings
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/embeddings/word2vec_basics.html">
+       Word2Vec Basics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/embeddings/eval_vectors.html">
+       Evaluate pretrained embeddings
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/ngram/index.html">
+     N-Grams
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram.html">
+       N-Grams
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram_for_lexicons.html">
+       N-Gram model for ngram lexicon features
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram_for_words.html">
+       N-Gram model for unigram lexicon features
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/sentiment/index.html">
+     Sentiment Analyers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/lbsa_en.html">
+       Lexicon-based Sentiment Analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/financial_phrasebank_lm.html">
+       Evaluate LM with financial phrasebank
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/sentiment.html">
+       LM Dictionary vs. finbert vs. T5
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/models/transformers/index.html">
+     Transformers
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/pipelines/index.html">
+   Pipelines
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/pipelines/pipeline.html">
+     Instantiating pipeline
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/preprocessors/index.html">
+   Preprocessors
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/normalizer/index.html">
+     Normalizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+    <label for="toctree-checkbox-11">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/normalizer/normalizer.html">
+       Normalizers
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/segmenter/index.html">
+     Segmenters
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+    <label for="toctree-checkbox-12">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/segmenter/segmenter.html">
+       Segmenters
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/tokenizer/index.html">
+     Tokenizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+    <label for="toctree-checkbox-13">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/tokenizer/mecab.html">
+       Mecab Tokenizer
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/visualizers/index.html">
+   Visualizers
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/>
+  <label for="toctree-checkbox-14">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/visualizers/plot.html">
+     Plots
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../tutorials/workflow/index.html">
+   Workflows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Datasets
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../corpus/ekorpkot_corpus.html">
+   The eKorpkit Corpus
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Use Cases
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/fomc/index.html">
+   FOMC
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/>
+  <label for="toctree-checkbox-15">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/02_FOMC_numerical_data.html">
+     Preparing Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/03_FOMC_corpus.html">
+     Preparing Textual Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/04_FOMC_EDA_numericals.html">
+     EDA on Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/05_FOMC_features.html">
+     Visualizing Features
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/06_FOMC_AutoML.html">
+     Checking Baseline with AutoML
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/07_FOMC_sentiments.html">
+     Predicting Sentiments of FOMC Corpus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/08_FOMC_EDA_sentiments.html">
+     EDA on Sentiment Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/09_FOMC_AutoML_with_tones.html">
+     Predicting the next decisions with tones
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../usecases/bok/index.html">
+   Bank of Korea
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/edgar/index.html">
+   EDGAR
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/>
+  <label for="toctree-checkbox-16">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/edgar/predict_edgar.html">
+     Prediciting Sentiments
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/esg/index.html">
+   ESG
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" type="checkbox"/>
+  <label for="toctree-checkbox-17">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/snorkel-polarity.html">
+     Preparing polarity classification datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/rubrix.html">
+     Improving classification datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/classifiers.html">
+     Training Classifiers for ESG Ratings
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/econ_news_corpus.html">
+     Building
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       econ_news_kr
+      </span>
+     </code>
+     corpus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/predict_news.html">
+     Predicting ESG Categories and Polarities
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/rubrix_classifiers.html">
+     Preparing classifiers for active learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/predict_for_learning.html">
+     Preparing active learning data
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/esg-en/index.html">
+   ESG (English)
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" type="checkbox"/>
+  <label for="toctree-checkbox-18">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg-en/esg_corpus.html">
+     Building
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       JOCo
+      </span>
+     </code>
+     corpus
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/cointax/index.html">
+   Taxation on Cryptocurrency
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/>
+  <label for="toctree-checkbox-19">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/cointax/coin_dataset.html">
+     Improving classification datasets
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Research
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../research/esg_topics/analyst.html">
+   ESG Topic Analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../research/esg_topics/rethink_esg.html">
+   Rethinking ESG
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Lectures
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../intro_nlp/index.html">
+   Introduction to NLP
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" type="checkbox"/>
+  <label for="toctree-checkbox-20">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/intro.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/ekorpkit.html">
+     Getting started with ekorpkit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/research.html">
+     Research Applications
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/language_models.html">
+     Language Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/topic.html">
+     Topic Modeling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/topic_models.html">
+     Topic Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/topic_coherence.html">
+     Topic Coherence Measures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/sentiments.html">
+     Sentiment Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/tokenization.html">
+     Tokenization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/word_segmentation.html">
+     Word Segmentation and Association
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/vectorization.html">
+     Vector Semantics and Representation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/word_embeddings.html">
+     Word Embeddings
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lab1-corpus.html">
+     Lab 1: Preparing Wikipedia Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro_nlp/lab2-corpus-eda.html">
+     Lab 2: EDA on Corpora
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   Deep Learning for NLP
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" type="checkbox"/>
+  <label for="toctree-checkbox-21">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="intro.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="ekorpkit.html">
+     Getting started with ekorpkit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="zeroshot.html">
+     Zero Shot, Prompt, and Search Strategies
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="bloom.html">
+     What is BLOOM?
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="bloom_apps.html">
+     Bloom Examples
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="transformers.html">
+     Transformers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="bert.html">
+     BERT: Bidirectional Encoder Representations from Transformers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="t5.html">
+     T5: Text-To-Text Transfer Transformer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="tokenization.html">
+     Tokenization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="sentencepiece.html">
+     SentencePiece Tokenizer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="byt5.html">
+     ByT5: Towards a token-free future with pre-trained byte-to-byte models
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Pretrained Language Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lab1-corpus.html">
+     Lab 1: Preparing Wikipedia Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lab2-corpus-eda.html">
+     Lab 2: EDA on Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lab3-train-tokenizers.html">
+     Lab 3: Training Tokenizers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lab4-pretraining-lms.html">
+     Lab 4: Pretraining Language Models
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../nlp_apps/index.html">
+   Applications of NLP
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../aiart/index.html">
+   AI Art (Text-to-Image)
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" type="checkbox"/>
+  <label for="toctree-checkbox-22">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/intro.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/project-themes.html">
+     Project Themes - A Brave New World
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/dalle1.html">
+     DALL·E 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/dalle2.html">
+     DALL·E 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/imagen.html">
+     Imagen
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/dalle-mini.html">
+     DALL·E Mini
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/stable-diffusion.html">
+     Stable Diffusion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/prompt-generator.html">
+     Prompt Generator for Stable Diffusion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/textual-inversion.html">
+     Textual Inversion (Dreambooth)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/whisper.html">
+     Automatic Speech Recognition (Whisper)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/text2music.html">
+     Text to Music
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../aiart/image2music.html">
+     Image to Music
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mlops/index.html">
+   Machine Learning Systems Design
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ds/index.html">
+   Data Science for Economics and Finance
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about/index.html">
+   Bibliography
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about/cite.html">
+   Citation
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/entelecheia/ekorpkit-book/main?urlpath=tree/ekorpkit-book/docs/lectures/deep_nlp/plms.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://colab.research.google.com/github/entelecheia/ekorpkit-book/blob/main/ekorpkit-book/docs/lectures/deep_nlp/plms.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Colab"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../../_static/images/logo_colab.png">
+  </span>
+<span class="headerbtn__text-container">Colab</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/entelecheia/ekorpkit-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/entelecheia/ekorpkit-book/issues/new?title=Issue%20on%20page%20%2Fdocs/lectures/deep_nlp/plms.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../../_sources/docs/lectures/deep_nlp/plms.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#language-models">
+   Language Models
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#contextualized-word-embeddings">
+   Contextualized Word Embeddings
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id1">
+   Pretrained Language Models
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#categories-of-pretrained-language-models">
+   Categories of Pretrained Language Models
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#training-objectives">
+   Training Objectives
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#standard-autoregressive-language-modeling">
+     Standard Autoregressive Language Modeling
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#masked-language-modeling">
+     Masked Language Modeling
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#causal-masked-language-modeling">
+     Causal Masked Language Modeling
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#permutation-language-modeling">
+     Permutation Language Modeling
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#transformer-architecture-and-plms">
+   Transformer Architecture and PLMs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gpt-family">
+   GPT Family
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bert">
+   BERT
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#roberta">
+   RoBERTa
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#albert">
+   ALBERT
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#electra">
+   ELECTRA
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#xlnet">
+   XLNet
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#t5">
+   T5
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bart">
+   BART
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#finetuning-of-plms">
+   Finetuning of PLMs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Pretrained Language Models</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#language-models">
+   Language Models
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#contextualized-word-embeddings">
+   Contextualized Word Embeddings
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id1">
+   Pretrained Language Models
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#categories-of-pretrained-language-models">
+   Categories of Pretrained Language Models
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#training-objectives">
+   Training Objectives
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#standard-autoregressive-language-modeling">
+     Standard Autoregressive Language Modeling
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#masked-language-modeling">
+     Masked Language Modeling
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#causal-masked-language-modeling">
+     Causal Masked Language Modeling
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#permutation-language-modeling">
+     Permutation Language Modeling
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#transformer-architecture-and-plms">
+   Transformer Architecture and PLMs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gpt-family">
+   GPT Family
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bert">
+   BERT
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#roberta">
+   RoBERTa
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#albert">
+   ALBERT
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#electra">
+   ELECTRA
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#xlnet">
+   XLNet
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#t5">
+   T5
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bart">
+   BART
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#finetuning-of-plms">
+   Finetuning of PLMs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="pretrained-language-models">
+<h1>Pretrained Language Models<a class="headerlink" href="#pretrained-language-models" title="Permalink to this headline">#</a></h1>
+<p><img alt="" src="../../../_images/plm.png" /></p>
+<section id="language-models">
+<h2>Language Models<a class="headerlink" href="#language-models" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>Language models are models that can predict the next word in a sequence of words.</p></li>
+<li><p>They are trained on large corpora of text.</p></li>
+<li><p>They are used to generate text, to fill in missing words, to correct spelling, and to do many other things.</p></li>
+<li><p>They are also used to initialize the weights of other models, such as neural machine translation models.</p></li>
+</ul>
+</section>
+<section id="contextualized-word-embeddings">
+<h2>Contextualized Word Embeddings<a class="headerlink" href="#contextualized-word-embeddings" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>Contextualized word embeddings are word embeddings that are computed in the context of a sentence.</p></li>
+<li><p>Word embeddings like Word2Vec and GloVe are static, meaning that they are computed without any context.</p>
+<ul>
+<li><p>E.g., the word “bank” in “I went to the bank to deposit my check” is the same as the word “bank” in “The river bank was full of dead fish.”</p></li>
+</ul>
+</li>
+<li><p>Deep learning based word embeddings like ELMo and BERT are contextualized, meaning that they are computed in the context of a sentence.</p></li>
+</ul>
+</section>
+<section id="id1">
+<h2>Pretrained Language Models<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>Pretrained language models are language models that have been trained on large corpora of text in a self-supervised manner.</p></li>
+<li><p>Then, the weights of the model are saved and can be used to fine-tune other models for specific tasks. It is called transfer learning.</p></li>
+<li><p>The power of pretrained language models is that they understand the generic linguistic structure of language.</p></li>
+</ul>
+</section>
+<section id="categories-of-pretrained-language-models">
+<h2>Categories of Pretrained Language Models<a class="headerlink" href="#categories-of-pretrained-language-models" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>Pretrained language models can be categorized by their training objectives.</p>
+<ul>
+<li><p><strong>Standard language models</strong> are trained to predict the next word in a sequence of words.</p></li>
+<li><p><strong>Masked language models</strong> are trained to predict the missing words in a sequence of words.</p></li>
+<li><p><strong>Permutation language models</strong> are trained to predict workds in some random order.</p></li>
+</ul>
+</li>
+<li><p>PLMs can also be categorized by their architecture.</p>
+<ul>
+<li><p><strong>Encoder-only models</strong> predict the masked or corrupted tokens based on all other tokens in the sequence.</p></li>
+<li><p><strong>Decoder-only models</strong> predict the next token based on the previous tokens.</p></li>
+<li><p><strong>Encoder-decoder models</strong> generate output sequences based on input sequences.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="training-objectives">
+<h2>Training Objectives<a class="headerlink" href="#training-objectives" title="Permalink to this headline">#</a></h2>
+<section id="standard-autoregressive-language-modeling">
+<h3>Standard Autoregressive Language Modeling<a class="headerlink" href="#standard-autoregressive-language-modeling" title="Permalink to this headline">#</a></h3>
+<p>In autoregressive language modeling, the ideal language model <span class="math notranslate nohighlight">\(p^*(w)\)</span> is a probability distribution over all possible sequences of words <span class="math notranslate nohighlight">\(w\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+p^*(w) \approx \prod_{i=1}^n \hat{p}_{\theta}(w_i \mid w_1, \ldots, w_{i-1})
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\theta\)</span> are the model parameters and <span class="math notranslate nohighlight">\(\hat{p}\)</span> is the model’s prediction of the probability of the next word given the previous words.</p>
+<ul class="simple">
+<li><p>The autoregressive language modeling approach uses the previous words to predict the next word.</p></li>
+<li><p>LSTM or Bi-LSTM, an RNN based architecture before the transformer architecture, uses this approach.</p></li>
+<li><p>This inherent sequential nature of the models does not understand the context of the sentence as a whole.</p></li>
+<li><p>Correctly predicting the next word depends on the previous words.</p></li>
+<li><p>As a sequence of words gets longer, the model becomes more difficult to predict the next word.</p></li>
+<li><p>This nature of the model makes it difficult and slow to train.</p></li>
+</ul>
+</section>
+<section id="masked-language-modeling">
+<h3>Masked Language Modeling<a class="headerlink" href="#masked-language-modeling" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>The main objective of the model is to predict the masked words, which are randomly masked in the input sequence.</p></li>
+<li><p>This approach makes the model bidirectional in nature because the masked words are predicted based on the words before and after the masked words.</p></li>
+<li><p>BERT (Bidirectional Encoder Representations from Transformers) is the most famous masked language model.</p></li>
+<li><p>This approach only use the encoder part of the model.</p></li>
+<li><p>Predicting the masked words is done independently of the other masked words in the sequence. This makes it easier to parallelize the training process.</p></li>
+<li><p>However, this approach does not take into account the dependency between the masked words.</p></li>
+</ul>
+<p>For example, in the sentence “I went to the [MASK] to deposit my [MASK]”, the model should predict “bank” for the first masked word and “check” for the second masked word. However, the model may predict “bank” for the first word and “luggage” for the second word because the model does not take into account the dependency between the masked words.</p>
+<a class="reference internal image-reference" href="../../../_images/t5-mask-patterns.png"><img alt="t5-mask-patterns" class="align-center" src="../../../_images/t5-mask-patterns.png" style="width: 500px;" /></a>
+</section>
+<section id="causal-masked-language-modeling">
+<h3>Causal Masked Language Modeling<a class="headerlink" href="#causal-masked-language-modeling" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Causal masked language modeling is also to predict the masked words in the input sequence.</p></li>
+<li><p>However, unlike the masked language modeling, the model can only see the words before the masked word by the causal masking scheme.</p></li>
+<li><p>Therefore, this approach is unidirectional in nature.</p></li>
+<li><p>GPT (Generative Pre-Training) and its variants follow this approach.</p></li>
+<li><p>This approach naturally takes into account the dependency between the masked words.</p></li>
+<li><p>Because the model only uses the decoder part of the transformer architecture, it is also called decoder-only language model.</p></li>
+</ul>
+</section>
+<section id="permutation-language-modeling">
+<h3>Permutation Language Modeling<a class="headerlink" href="#permutation-language-modeling" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>The major flaw of the masked language modeling approach is that it does not take into account the dependency between the masked words.</p></li>
+<li><p>Permutation language modeling is to predict the tokens in a random order.</p></li>
+<li><p>XLNet (Generalized Autoregressive Pretraining for Language Understanding) uses this approach. (<span id="id2">[<a class="reference internal" href="../../about/index.html#id27" title="Zhilin Yang, Zihang Dai, Yiming Yang, Jaime Carbonell, Russ R Salakhutdinov, and Quoc V Le. Xlnet: generalized autoregressive pretraining for language understanding. Advances in neural information processing systems, 2019. URL: https://arxiv.org/pdf/1906.08237.pdf.">Yang <em>et al.</em>, 2019</a>]</span>)</p></li>
+<li><p>Permutation language models learn the bidirectional dependency between all combinations of tokens in the sequence.</p></li>
+</ul>
+</section>
+</section>
+<section id="transformer-architecture-and-plms">
+<h2>Transformer Architecture and PLMs<a class="headerlink" href="#transformer-architecture-and-plms" title="Permalink to this headline">#</a></h2>
+<p>The transformer architecture consists of two parts: the encoder and the decoder. The encoder is used to encode the input sequence into a vector representation. The decoder is used to decode the vector representation into the output sequence.</p>
+<p>We can classify PLMs into three categories based on the usage of the encoder and the decoder:</p>
+<ul class="simple">
+<li><p><strong>Encoder-only PLMs</strong> (e.g. BERT, RoBERTa, DistilBERT, ALBERT, ELECTRA, etc.) are used to encode the input sequence into a vector representation. The decoder is not used. The vector representation is used as the input to the downstream task. For example, the vector representation can be used as the input to a classifier to perform text classification.</p></li>
+<li><p><strong>Decoder-only PLMs</strong> (e.g. GPT-2, CTRL, etc.) only use the decoder to generate the output sequence. The encoder is not used. The decoder is trained to predict the next word in the sequence of words.</p></li>
+<li><p><strong>Encoder-decoder PLMs</strong> (e.g. T5, BART, MASS, etc.) use both the encoder and the decoder. The encoder is used to encode the input sequence into a vector representation. The decoder is used to generate the output sequence.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/t5-structure.png" /></p>
+</section>
+<section id="gpt-family">
+<h2>GPT Family<a class="headerlink" href="#gpt-family" title="Permalink to this headline">#</a></h2>
+<ul>
+<li><p>GPT (Generative Pre-Training) is the first decoder-only PLM.</p></li>
+<li><p>GPT uses the uni-directional context to predict the next word.</p>
+<p>Loss function is defined as:</p>
+<div class="math notranslate nohighlight">
+\[
+    \mathcal{L} = -\frac{1}{N} \sum_{i=1}^N \log \hat{p}_{\theta}(w_i \mid w_1, \ldots, w_{i-1})
+    \]</div>
+</li>
+<li><p>Main usage of GPT is to generate text.</p></li>
+</ul>
+</section>
+<section id="bert">
+<h2>BERT<a class="headerlink" href="#bert" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>BERT (Bidirectional Encoder Representations from Transformers) is the first encoder-only PLM.</p></li>
+<li><p>BERT uses two objectives to train the model: masked language modeling and next sentence prediction.</p></li>
+<li><p><strong>Masked language modeling</strong> is to predict the masked words in the input sequence.</p></li>
+</ul>
+<a class="bg-primary mb-1 reference internal image-reference" href="../../../_images/bert_mlm.jpg"><img alt="bert_mlm" class="bg-primary mb-1 align-center" src="../../../_images/bert_mlm.jpg" style="width: 400px;" /></a>
+<ul class="simple">
+<li><p><strong>Next sentence prediction</strong> is to predict whether the second sentence is the next sentence of the first sentence.</p></li>
+</ul>
+<a class="bg-primary mb-1 reference internal image-reference" href="../../../_images/bert_nsp.jpg"><img alt="bert_nsp" class="bg-primary mb-1 align-center" src="../../../_images/bert_nsp.jpg" style="width: 400px;" /></a>
+</section>
+<section id="roberta">
+<h2>RoBERTa<a class="headerlink" href="#roberta" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>RoBERTa (Robustly Optimized BERT Pretraining Approach) is a variant of BERT.</p></li>
+<li><p>Modifications to BERT:</p>
+<ul>
+<li><p><strong>Dynamic masking</strong> is used instead of static masking.</p></li>
+<li><p><strong>Byte-level BPE</strong> is used instead of WordPiece.</p></li>
+<li><p><strong>Training with longer sequences</strong> is used.</p></li>
+<li><p><strong>Training with more data</strong> is used.</p></li>
+<li><p><strong>Training with more epochs</strong> is used.</p></li>
+<li><p><strong>No next sentence prediction</strong> is used.</p></li>
+</ul>
+</li>
+</ul>
+<a class="bg-primary mb-1 reference internal image-reference" href="../../../_images/roberta.png"><img alt="rberta" class="bg-primary mb-1 align-center" src="../../../_images/roberta.png" style="width: 500px;" /></a>
+</section>
+<section id="albert">
+<h2>ALBERT<a class="headerlink" href="#albert" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>ALBERT (A Lite BERT) is a variant of BERT.</p></li>
+<li><p>Modifications to BERT:</p>
+<ul>
+<li><p><strong>Factorized embedding parameterization</strong>: use lower-dimensional parameter matrices to represent the word embeddings and the token type embeddings.</p></li>
+<li><p><strong>Cross-layer parameter sharing</strong>: share the parameters across different layers.</p></li>
+<li><p><strong>Inter-sentence coherence objective</strong>: use the sentence order prediction task to train the model.</p></li>
+</ul>
+</li>
+</ul>
+<a class="bg-primary mb-1 reference internal image-reference" href="../../../_images/albert.png"><img alt="albert" class="bg-primary mb-1 align-center" src="../../../_images/albert.png" style="width: 700px;" /></a>
+</section>
+<section id="electra">
+<h2>ELECTRA<a class="headerlink" href="#electra" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>ELECTRA (ELECtric pre-training of Language Representations) is a variant of BERT.</p></li>
+<li><p>ELECTRA uses the replaced token detection task to train the model.</p></li>
+<li><p>The generator is used to generate the masked words, and the discriminator is trained with a binary classification task to distinguish the generated words from the original words.</p></li>
+</ul>
+<a class="bg-primary mb-1 reference internal image-reference" href="../../../_images/electra.png"><img alt="electra" class="bg-primary mb-1 align-center" src="../../../_images/electra.png" style="width: 700px;" /></a>
+<ul class="simple">
+<li><p>ELECTRA shows the better performance than BERT on the GLUE benchmark.</p></li>
+</ul>
+<a class="bg-primary mb-1 reference internal image-reference" href="../../../_images/electra_result.png"><img alt="electra_result" class="bg-primary mb-1 align-center" src="../../../_images/electra_result.png" style="width: 700px;" /></a>
+</section>
+<section id="xlnet">
+<h2>XLNet<a class="headerlink" href="#xlnet" title="Permalink to this headline">#</a></h2>
+<ul>
+<li><p>XLNet (Generalized Autoregressive Pretraining for Language Understanding) is the first permutation language model.</p></li>
+<li><p>XLNet uses the permutation language modeling to train the model.</p>
+<ul class="simple">
+<li><p>It randomly permutes the input sequence and then predicts the target word using the remaining words in the sequence.</p></li>
+<li><p>Bidirectional dependency between all combinations of tokens in the sequence is learned.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/xlnet-plm.png" /></p>
+</li>
+<li><p>XLNet utilizes the Transformer-XL architecture to train the model.</p>
+<ul class="simple">
+<li><p>The Transformer-XL architecture uses the relative positional encoding to encode the position of the tokens in the sequence.</p></li>
+<li><p>It uses the segment-level recurrence to encode the dependency between the tokens in the sequence.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="t5">
+<h2>T5<a class="headerlink" href="#t5" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>T5: Text-to-Text Transfer Transformer</p></li>
+<li><p>We have the separate lecture on T5. Please refer to the lecture on T5 for more details.</p></li>
+</ul>
+<a class="bg-primary mb-1 reference internal image-reference" href="../../../_images/t5-training.png"><img alt="t5-training" class="bg-primary mb-1 align-center" src="../../../_images/t5-training.png" style="width: 400px;" /></a>
+</section>
+<section id="bart">
+<h2>BART<a class="headerlink" href="#bart" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>BART: Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension</p></li>
+<li><p>Pre-training objective: apply the denoising objective to the input sequence to generate the output sequence (i.e. masks, deletions, permutations, and insertions).</p></li>
+<li><p>Fine-tuning</p>
+<ul>
+<li><p>For classification tasks, feed the same input sequence to the encoder and the decoder and use the final decoder token for classification.</p></li>
+<li><p>For generation tasks, feed the input sequence to the encoder and use the decoder to generate the output sequence.</p></li>
+</ul>
+</li>
+</ul>
+<p><img alt="" src="../../../_images/bart.png" /></p>
+</section>
+<section id="finetuning-of-plms">
+<h2>Finetuning of PLMs<a class="headerlink" href="#finetuning-of-plms" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>Finetuning of PLMs is to fine-tune the pre-trained PLMs on the downstream tasks.</p></li>
+<li><p>We add task-specific layers (e.g. classification layer) on top of the pre-trained PLMs to perform the downstream tasks.</p></li>
+<li><p>Task-specific layers are initialized randomly and then jointly trained with the pre-trained PLMs with task-specific training data.</p></li>
+</ul>
+<p><img alt="" src="../../../_images/finetuning.png" /></p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>Radford, A., Narasimhan, K., Salimans, T., &amp; Sutskever, I. (2018). Improving language understanding by generative pre-training. OpenAI blog</p></li>
+<li><p>Radford, A., Wu, J., Child, R., Luan, D., Amodei, D., &amp; Sutskever, I. (2019). Language models are unsupervised multitask learners. OpenAI blog, 1(8), 9.</p></li>
+<li><p>Devlin, Jacob, et al. “Bert: Pre-training of deep bidirectional transformers for language understanding.” arXiv preprint arXiv:1810.04805 (2018).</p></li>
+<li><p>Liu, Y., Yang, Z., Dyer, C., He, X., Smola, A., &amp; Hovy, E. (2019). RoBERTa: A robustly optimized BERT pretraining approach. arXiv preprint arXiv:1907.11692.</p></li>
+<li><p>Lan, Z., Chen, M., Yeyati, E., He, X., &amp; Smola, A. (2019). ALBERT: A lite BERT for self-supervised learning of language representations. arXiv preprint arXiv:1909.11942.</p></li>
+<li><p>Clark, K., Luong, M. T., Le, Q. V., &amp; Manning, C. D. (2020). ELECTRA: Pre-training text encoders as discriminators rather than generators. ICLR.</p></li>
+<li><p>Yang, Z., Dai, Z., Yang, Y., Carbonell, J., Salakhutdinov, R., &amp; Le, Q. V. (2019). XLNet: Generalized Autoregressive Pretraining for Language Understanding. NeurIPS.</p></li>
+<li><p>affel, C., Shazeer, N., Roberts, A., Lee, K., Narang, S., Matena, M., … &amp; Liu, P. J. (2020). Exploring the limits of transfer learning with a unified text-to-text transformer. JMLR.</p></li>
+<li><p>Lewis, M., Liu, Y., Goyal, N., Ontanon, S., Ba, J., &amp; Zettlemoyer, L. (2020). BART: Denoising sequence-to-sequence pre-training for natural language generation, translation, and comprehension. arXiv preprint arXiv:1910.13461.</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./docs/lectures/deep_nlp"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="byt5.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">ByT5: Towards a token-free future with pre-trained byte-to-byte models</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="lab1-corpus.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Lab 1: Preparing Wikipedia Corpora</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Young Joon Lee<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
