@@ -1,0 +1,1608 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Introduction to Robotic Drawing &#8212; eKorpkit Tutorials</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/ekorpkit.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Proposal for a Robot Drawing System" href="proposal.html" />
+    <link rel="prev" title="Robot Drawing System" href="index.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-FN4GFT8HP8"></script>
+<script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){ dataLayer.push(arguments); }
+                    gtag('js', new Date());
+                    gtag('config', 'G-FN4GFT8HP8');
+                </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../_static/ekorpkit.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">eKorpkit Tutorials</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../intro.html">
+                    eKonomic Research Python Toolkit
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Basics
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/index.html">
+   Getting started
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/install.html">
+     Installation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/usage.html">
+     Usage
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../basics/features/index.html">
+   Key features
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/easy_config.html">
+     Easy Configuration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/no_boiler.html">
+     No Boilerplate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/workflows.html">
+     Workflows
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/share.html">
+     Sharable and Reproducible
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../basics/features/plug.html">
+     Pluggable Architece
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tutorials
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/config/index.html">
+   Configuring ekorpkit
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/config/eKonf.html">
+     Using eKonf class
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/datasets/index.html">
+   Datasets
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/corpus.html">
+     Build and Load Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/datasets/dataset.html">
+     Build and Load Datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/corpora/pipeline.html">
+     Corpus task pipelines
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/models/index.html">
+   Models
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/models/automl/index.html">
+     Auto ML
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/embeddings/index.html">
+     Word Embeddings
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/embeddings/word2vec_basics.html">
+       Word2Vec Basics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/embeddings/eval_vectors.html">
+       Evaluate pretrained embeddings
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/ngram/index.html">
+     N-Grams
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram.html">
+       N-Grams
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram_for_lexicons.html">
+       N-Gram model for ngram lexicon features
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/ngram/ngram_for_words.html">
+       N-Gram model for unigram lexicon features
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/models/sentiment/index.html">
+     Sentiment Analyers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/lbsa_en.html">
+       Lexicon-based Sentiment Analysis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/financial_phrasebank_lm.html">
+       Evaluate LM with financial phrasebank
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/models/sentiment/sentiment.html">
+       LM Dictionary vs. finbert vs. T5
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/models/transformers/index.html">
+     Transformers
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/pipelines/index.html">
+   Pipelines
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/pipelines/pipeline.html">
+     Instantiating pipeline
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/preprocessors/index.html">
+   Preprocessors
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/normalizer/index.html">
+     Normalizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+    <label for="toctree-checkbox-11">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/normalizer/normalizer.html">
+       Normalizers
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/segmenter/index.html">
+     Segmenters
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+    <label for="toctree-checkbox-12">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/segmenter/segmenter.html">
+       Segmenters
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../tutorials/preprocessors/tokenizer/index.html">
+     Tokenizers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+    <label for="toctree-checkbox-13">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../tutorials/preprocessors/tokenizer/mecab.html">
+       Mecab Tokenizer
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../tutorials/visualizers/index.html">
+   Visualizers
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/>
+  <label for="toctree-checkbox-14">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../tutorials/visualizers/plot.html">
+     Plots
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../tutorials/workflow/index.html">
+   Workflows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Datasets
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../corpus/ekorpkot_corpus.html">
+   The eKorpkit Corpus
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Use Cases
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/fomc/index.html">
+   FOMC
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/>
+  <label for="toctree-checkbox-15">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/02_FOMC_numerical_data.html">
+     Preparing Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/03_FOMC_corpus.html">
+     Preparing Textual Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/04_FOMC_EDA_numericals.html">
+     EDA on Numerical Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/05_FOMC_features.html">
+     Visualizing Features
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/06_FOMC_AutoML.html">
+     Checking Baseline with AutoML
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/07_FOMC_sentiments.html">
+     Predicting Sentiments of FOMC Corpus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/08_FOMC_EDA_sentiments.html">
+     EDA on Sentiment Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/fomc/09_FOMC_AutoML_with_tones.html">
+     Predicting the next decisions with tones
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../usecases/bok/index.html">
+   Bank of Korea
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/edgar/index.html">
+   EDGAR
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/>
+  <label for="toctree-checkbox-16">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/edgar/predict_edgar.html">
+     Prediciting Sentiments
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/esg/index.html">
+   ESG
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" type="checkbox"/>
+  <label for="toctree-checkbox-17">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/prepare_datasets.html">
+     Preparing training datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/improve_datasets.html">
+     Improving classification datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/train_classifiers.html">
+     Training Classifiers for ESG Ratings
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/build_news_corpus.html">
+     Building
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       econ_news_kr
+      </span>
+     </code>
+     corpus
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/predict_esg_classes.html">
+     Predicting ESG Categories and Polarities
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/cross_validate_datasets.html">
+     Cross validating datasets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/prepare_datasets_for_labeling.html">
+     Preparing active learning data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg/all_in_one_pipeline.html">
+     Putting them together in a pipeline
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/esg-en/index.html">
+   ESG (English)
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" type="checkbox"/>
+  <label for="toctree-checkbox-18">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/esg-en/esg_corpus.html">
+     Building
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       JOCo
+      </span>
+     </code>
+     corpus
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../usecases/cointax/index.html">
+   Taxation on Cryptocurrency
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/>
+  <label for="toctree-checkbox-19">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../usecases/cointax/coin_dataset.html">
+     Improving classification datasets
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Research
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../research/esg_topics/analyst.html">
+   ESG Topic Analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../research/esg_topics/rethink_esg.html">
+   Rethinking ESG
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Lectures
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../lectures/nlp_intro/index.html">
+   Introduction to NLP
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" type="checkbox"/>
+  <label for="toctree-checkbox-20">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/intro.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/ekorpkit.html">
+     Getting started with ekorpkit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/research.html">
+     Research Applications
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/language_models.html">
+     Language Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/topic.html">
+     Topic Modeling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/topic_models.html">
+     Topic Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/topic_coherence.html">
+     Topic Coherence Measures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/sentiments.html">
+     Sentiment Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/tokenization.html">
+     Tokenization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/word_segmentation.html">
+     Word Segmentation and Association
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/vectorization.html">
+     Vector Semantics and Representation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/word_embeddings.html">
+     Word Embeddings
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/lab1-corpus.html">
+     Lab 1: Preparing Wikipedia Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_intro/lab2-corpus-eda.html">
+     Lab 2: EDA on Corpora
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../lectures/nlp_deep/index.html">
+   Deep Learning for NLP
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" type="checkbox"/>
+  <label for="toctree-checkbox-21">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/intro.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/ekorpkit.html">
+     Getting started with ekorpkit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/zeroshot.html">
+     Zero Shot, Prompt, and Search Strategies
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/bloom.html">
+     What is BLOOM?
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/bloom_apps.html">
+     Bloom Examples
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/transformers.html">
+     Transformers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/bert.html">
+     BERT: Bidirectional Encoder Representations from Transformers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/t5.html">
+     T5: Text-To-Text Transfer Transformer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/tokenization.html">
+     Tokenization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/sentencepiece.html">
+     SentencePiece Tokenizer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/byt5.html">
+     ByT5: Towards a token-free future with pre-trained byte-to-byte models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/plms.html">
+     Pretrained Language Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/lab1-corpus.html">
+     Lab 1: Preparing Wikipedia Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/lab2-corpus-eda.html">
+     Lab 2: EDA on Corpora
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/lab3-train-tokenizers.html">
+     Lab 3: Training Tokenizers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/nlp_deep/lab4-pretraining-lms.html">
+     Lab 4: Pretraining Language Models
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../lectures/nlp_apps/index.html">
+   NLP Applications
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../lectures/aiart/index.html">
+   AI Art (Text-to-Image)
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" type="checkbox"/>
+  <label for="toctree-checkbox-22">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/intro.html">
+     Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/project-themes.html">
+     Project Themes - A Brave New World
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/dalle1.html">
+     DALL·E 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/dalle2.html">
+     DALL·E 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/imagen.html">
+     Imagen
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/dalle-mini.html">
+     DALL·E Mini
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/stable-diffusion.html">
+     Stable Diffusion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/prompt-generator.html">
+     Prompt Generator for Stable Diffusion
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/textual-inversion.html">
+     Textual Inversion (Dreambooth)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/whisper.html">
+     Automatic Speech Recognition (Whisper)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/text2music.html">
+     Text to Music
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/aiart/image2music.html">
+     Image to Music
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../lectures/mlops/index.html">
+   Machine Learning Systems Design
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" type="checkbox"/>
+  <label for="toctree-checkbox-23">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/mlops/dev-env.html">
+     Development Environment
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../lectures/mlops/dotfiles.html">
+     Dotfiles
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../lectures/ds/index.html">
+   Data Science for Economics and Finance
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Projects
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   Robot Drawing System
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" type="checkbox"/>
+  <label for="toctree-checkbox-24">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Introduction to Robotic Drawing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="proposal.html">
+     Proposal for a Robot Drawing System
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="sketch_generation.html">
+     Reference - Sketch Generation with Drawing Process Guided by Vector Flow and Grayscale
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="robocodraw.html">
+     Reference - Avatar-GAN (RoboCoDraw)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="fast_robotic_pencil_drawing.html">
+     Reference - Fast Robotic Pencil Drawing
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://entelecheia.me">
+   entelecheia.me
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about/index.html">
+   Bibliography
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about/cite.html">
+   Citation
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/entelecheia/ekorpkit-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/entelecheia/ekorpkit-book/issues/new?title=Issue%20on%20page%20%2Fdocs/projects/robot_drawing/intro.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../../_sources/docs/projects/robot_drawing/intro.md"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.md</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#project-outline">
+   Project Outline
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#implementation">
+   Implementation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#genetic-algorithms">
+     Genetic Algorithms
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#deep-learning">
+     Deep Learning
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#combined-approach">
+     Combined Approach
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#generative-approach">
+     Generative Approach
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Introduction to Robotic Drawing</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#project-outline">
+   Project Outline
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#implementation">
+   Implementation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#genetic-algorithms">
+     Genetic Algorithms
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#deep-learning">
+     Deep Learning
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#combined-approach">
+     Combined Approach
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#generative-approach">
+     Generative Approach
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="introduction-to-robotic-drawing">
+<h1>Introduction to Robotic Drawing<a class="headerlink" href="#introduction-to-robotic-drawing" title="Permalink to this headline">#</a></h1>
+<p>Robotic drawing is the use of robots to create drawings or artworks. This can be done in a variety of ways, such as using a robot arm with a pen or marker to draw on a surface, or using a robot to control a 3D printer to create a physical drawing. The robot can be programmed to create the drawing based on a set of instructions, or it can be controlled in real-time by a human artist. Robotic drawing can be used to create precise and intricate drawings, or to create large-scale artworks that would be difficult or impossible for a human to produce alone.</p>
+<p>Procedural drawing is a method of creating drawings or graphics using a set of rules or procedures, rather than by drawing them by hand. These rules or procedures can be encoded in a computer program, which can then be used to generate the drawing automatically. Robotic drawing can be considered a type of procedural drawing, in that it involves the use of a robot to follow a set of instructions or rules in order to create a drawing. However, the term “procedural drawing” is generally used to refer to the creation of drawings using computer algorithms, rather than using a physical robot.</p>
+<p>In both cases, the goal is to use a set of predetermined rules or instructions to create a drawing, rather than relying on the skill and creativity of a human artist. This can allow for the creation of highly complex and detailed drawings, or for the rapid generation of many different variations on a theme. Procedural drawing can also be used to create drawings that would be difficult or impossible for a human to create by hand, such as those with a very large scale or with intricate, repeating patterns.</p>
+<p>Genetic algorithms are a type of optimization algorithm that are inspired by the process of natural evolution. They are commonly used to search for the best solution to a problem within a large search space.</p>
+<p>In the context of procedural drawing, genetic algorithms can be used to generate drawings that are optimized for certain criteria. For example, a genetic algorithm could be used to generate a drawing that is aesthetically pleasing, or that incorporates certain elements or features. The algorithm would do this by generating a large number of different variations on the drawing, and then evaluating each one based on how well it meets the desired criteria. The best-performing variations would then be selected and used to create new variations, in a process that mimics the process of natural selection. This process would continue iteratively until the best possible solution is found.</p>
+<p>Genetic algorithms can be used to generate a wide variety of different types of drawings, including abstract art, representational drawings, and 3D models. They can be particularly useful when the desired characteristics of the drawing are difficult to specify in precise terms, or when there are many different possible solutions that could be considered “good” or “correct”.</p>
+<p>Deep learning is a type of machine learning that is based on neural networks, which are networks of algorithms that are designed to process and analyze large amounts of data. Deep learning algorithms have been very successful in a wide range of tasks, including image and speech recognition, natural language processing, and machine translation.</p>
+<p>In the context of procedural drawing, deep learning algorithms could be used in a number of ways. For example, a deep learning algorithm could be trained to recognize and classify different types of drawings or art styles, or to generate drawings that are similar to a given set of examples. Deep learning algorithms could also be used to analyze and understand the structure and composition of existing drawings, in order to generate new drawings that are inspired by or based on those examples.</p>
+<p>Another potential use for deep learning in procedural drawing is in the development of generative models, which are algorithms that can generate new examples that are similar to a set of training data. These models could be used to generate drawings or other types of art that are similar to a given set of examples, or to create new variations on an existing drawing.</p>
+<p>Overall, the use of deep learning in procedural drawing could enable the creation of more complex and sophisticated drawings, and could also allow for the rapid generation of many different variations on a theme.</p>
+<p>Generative deep learning models, such as generative adversarial networks (GANs) and variational autoencoders (VAEs), can be used to generate new images that have a similar style or content as a given input image. These models can be used in the context of procedural drawing to generate new strokes that have a similar style as a given image, or to generate a final drawing directly from an input image.</p>
+<p>For example, you could use a GAN to generate a population of strokes that are similar in style to a given image, and then use a genetic algorithm to select the best strokes from this population to create the final drawing. Alternatively, you could use a VAE to generate a final drawing directly from an input image, by training the VAE to reconstruct the input image using a set of strokes as the output.</p>
+<p>In both cases, the deep learning model would be used to guide the generation of the strokes, either by providing a set of strokes for the genetic algorithm to select from, or by generating the strokes directly. This would allow you to create procedural drawings that are more faithful to the style of the input image, and that are less reliant on the initial style information extracted by the CNN.</p>
+<section id="project-outline">
+<h2>Project Outline<a class="headerlink" href="#project-outline" title="Permalink to this headline">#</a></h2>
+<p>A general outline for a procedural drawing project using genetic algorithms:</p>
+<ol class="simple">
+<li><p><strong>Define the problem</strong>: Clearly define the problem that you want to solve with your procedural drawing project. For example, you might want to generate abstract art that is aesthetically pleasing, or create drawings that are similar to a given set of examples.</p></li>
+<li><p><strong>Develop a representation</strong>: Determine how you will represent the drawings in your procedural drawing system. This might involve defining a set of shapes, colors, and other design elements that can be used to create the drawings, or it might involve using a more abstract representation such as a set of numbers or coordinates.</p></li>
+<li><p><strong>Implement a fitness function</strong>: Develop a function that will be used to evaluate the quality of the drawings generated by your system. This function should take as input a drawing and output a score indicating how well the drawing meets the desired criteria.</p></li>
+<li><p><strong>Create an initial population</strong>: Generate a set of initial drawings that will be used as the starting point for your genetic algorithm. These could be randomly generated, or they could be based on a given set of examples.</p></li>
+<li><p><strong>Iterate</strong>: Use your genetic algorithm to iteratively improve the quality of the drawings in your population. This will involve evaluating the drawings using the fitness function, selecting the best-performing drawings to be used as parents for the next generation, and generating new offspring by combining elements from the parent drawings. Continue this process until the desired level of quality is reached.</p></li>
+<li><p><strong>Evaluate and refine</strong>: Once you have reached the desired level of quality, evaluate the results of your procedural drawing system and consider any possible improvements or refinements that could be made. You may also want to consider extending the system to handle additional types of drawings or to solve additional problems.</p></li>
+</ol>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">#</a></h2>
+<section id="genetic-algorithms">
+<h3>Genetic Algorithms<a class="headerlink" href="#genetic-algorithms" title="Permalink to this headline">#</a></h3>
+<p>This is a simple example of how you might use a genetic algorithm in Python to generate a procedural drawing based on a given image:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">iimport</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Load the image and convert it to grayscale</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;image.jpg&#39;</span><span class="p">)</span>
+<span class="n">gray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.299</span><span class="p">,</span> <span class="mf">0.587</span><span class="p">,</span> <span class="mf">0.114</span><span class="p">])</span>
+
+<span class="c1"># Set the size of the drawing</span>
+<span class="n">width</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">height</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># Define the fitness function</span>
+<span class="k">def</span> <span class="nf">fitness</span><span class="p">(</span><span class="n">drawing</span><span class="p">):</span>
+  <span class="c1"># Calculate the difference between the drawing and the image</span>
+  <span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">drawing</span> <span class="o">-</span> <span class="n">gray</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
+
+<span class="c1"># Initialize the population of drawings</span>
+<span class="n">population</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">))</span>
+
+<span class="c1"># Set the number of generations</span>
+<span class="n">generations</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># Set the mutation rate</span>
+<span class="n">mutation_rate</span> <span class="o">=</span> <span class="mf">0.01</span>
+
+<span class="c1"># Evolve the population</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">generations</span><span class="p">):</span>
+  <span class="c1"># Evaluate the fitness of each drawing</span>
+  <span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="n">fitness</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">population</span><span class="p">]</span>
+  
+  <span class="c1"># Select the fittest half of the population</span>
+  <span class="n">fittest_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">scores</span><span class="p">)[:</span><span class="mi">50</span><span class="p">]</span>
+  <span class="n">fittest</span> <span class="o">=</span> <span class="n">population</span><span class="p">[</span><span class="n">fittest_idx</span><span class="p">]</span>
+  
+  <span class="c1"># Generate offspring from the fittest half of the population</span>
+  <span class="n">offspring</span> <span class="o">=</span> <span class="n">fittest</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+  <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">offspring</span><span class="p">:</span>
+    <span class="c1"># Mutate the child with a probability of mutation_rate</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">child</span><span class="p">:</span>
+      <span class="k">for</span> <span class="n">pixel</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">mutation_rate</span><span class="p">:</span>
+          <span class="n">pixel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+          
+  <span class="c1"># Replace the least fit half of the population with the offspring</span>
+  <span class="n">population</span><span class="p">[</span><span class="n">fittest_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">offspring</span>
+
+<span class="c1"># Select the fittest drawing</span>
+<span class="n">fittest_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+<span class="n">fittest_drawing</span> <span class="o">=</span> <span class="n">population</span><span class="p">[</span><span class="n">fittest_idx</span><span class="p">]</span>
+
+<span class="c1"># Display the fittest drawing</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">fittest_drawing</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This code will load the image ‘image.jpg’ and convert it to grayscale. It will then create a blank canvas for the drawing, and define a fitness function that measures the difference between the drawing and the image. The code will then use a genetic algorithm to iteratively improve the quality of the drawings in the population, by selecting the best-performing drawings as parents and generating new offspring by combining elements from the parent drawings. Finally, it will select the best drawing from the final population and display it using Matplotlib.</p>
+<p>You can modify this code to suit your specific needs. For example, you might want to use a different size for the drawing, or you might want to use a different color map. You could also modify the fitness function or the genetic algorithm itself to optimize for different criteria.</p>
+</section>
+<section id="deep-learning">
+<h3>Deep Learning<a class="headerlink" href="#deep-learning" title="Permalink to this headline">#</a></h3>
+<p>Here is an example of how you might use deep learning in Python to extract styles from an image and guide the direction, shade, and details of a procedural drawing:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+
+<span class="c1"># Load the image and convert it to grayscale</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;image.jpg&#39;</span><span class="p">)</span>
+<span class="n">gray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.299</span><span class="p">,</span> <span class="mf">0.587</span><span class="p">,</span> <span class="mf">0.114</span><span class="p">])</span>
+
+<span class="c1"># Set the size of the drawing</span>
+<span class="n">width</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">height</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># Create an empty canvas for the drawing</span>
+<span class="n">drawing</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">))</span>
+
+<span class="c1"># Build a convolutional neural network (CNN) to extract style information from the image</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MaxPooling2D</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MaxPooling2D</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+
+<span class="c1"># Compile and fit the model</span>
+<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;mean_squared_error&#39;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">gray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">height</span> <span class="o">//</span> <span class="mi">4</span><span class="p">,</span> <span class="n">width</span> <span class="o">//</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">64</span><span class="p">)),</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Extract the style information from the image</span>
+<span class="n">style</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">gray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Use the style information to guide the direction, shade, and details of the drawing</span>
+<span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">height</span><span class="p">):</span>
+  <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span><span class="p">):</span>
+    <span class="c1"># Use the style information to determine the direction of the stroke</span>
+    <span class="n">direction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">style</span><span class="p">[</span><span class="n">y</span> <span class="o">//</span> <span class="mi">4</span><span class="p">,</span> <span class="n">x</span> <span class="o">//</span> <span class="mi">4</span><span class="p">,</span> <span class="p">:])</span>
+    <span class="c1"># Use the style information to determine the shade of the stroke</span>
+    <span class="n">shade</span> <span class="o">=</span> <span class="n">style</span><span class="p">[</span><span class="n">y</span> <span class="o">//</span> <span class="mi">4</span><span class="p">,</span> <span class="n">x</span> <span class="o">//</span> <span class="mi">4</span><span class="p">,</span> <span class="n">direction</span><span class="p">]</span>
+    <span class="c1"># Use the style information to determine the details of the stroke</span>
+    <span class="n">details</span> <span class="o">=</span> <span class="n">style</span><span class="p">[</span><span class="n">y</span> <span class="o">//</span> <span class="mi">4</span><span class="p">,</span> <span class="n">x</span> <span class="o">//</span> <span class="mi">4</span><span class="p">,</span> <span class="n">direction</span> <span class="o">+</span> <span class="mi">32</span><span class="p">]</span>
+    
+    <span class="c1"># Draw the stroke using the determined direction, shade, and details</span>
+    <span class="c1"># ...</span>
+
+<span class="c1"># Display the resulting drawing</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">drawing</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This code will load the image ‘image.jpg’ and convert it to grayscale. It will then build a convolutional neural network (CNN) to extract style information from the image, and use this information to guide the direction, shade, and details of the drawing as it iterates over the pixels in the image. Finally, it will display the resulting drawing using Matplotlib.</p>
+<p>You can modify this code to suit your specific needs. For example, you might want to use a different size for the drawing, or you might want to use a different color map. You could also modify the CNN architecture or the way in which the style information is used to guide the drawing.</p>
+</section>
+<section id="combined-approach">
+<h3>Combined Approach<a class="headerlink" href="#combined-approach" title="Permalink to this headline">#</a></h3>
+<p>This is an example of how you might use genetic algorithms in Python to generate a population of strokes for a procedural drawing using style information extracted by a convolutional neural network (CNN):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+
+<span class="c1"># Load the image and convert it to grayscale</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;image.jpg&#39;</span><span class="p">)</span>
+<span class="n">gray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.299</span><span class="p">,</span> <span class="mf">0.587</span><span class="p">,</span> <span class="mf">0.114</span><span class="p">])</span>
+
+<span class="c1"># Set the size of the drawing</span>
+<span class="n">width</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">height</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># Build a CNN to extract style information from the image</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MaxPooling2D</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MaxPooling2D</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+
+<span class="c1"># Extract the style information from the image</span>
+<span class="n">style</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">gray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Set the number of strokes in the population</span>
+<span class="n">population_size</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="c1"># Set the width of the strokes</span>
+<span class="n">stroke_width</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c1"># Create an initial population of strokes based on the style information</span>
+<span class="n">population</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">population_size</span><span class="p">):</span>
+  <span class="c1"># Use the style information to determine the direction of the stroke</span>
+  <span class="n">direction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">style</span><span class="p">[</span><span class="n">i</span> <span class="o">//</span> <span class="p">(</span><span class="n">population_size</span> <span class="o">//</span> <span class="p">(</span><span class="n">height</span> <span class="o">//</span> <span class="n">stroke_width</span><span class="p">)),</span> <span class="n">i</span> <span class="o">//</span> <span class="p">(</span><span class="n">population_size</span> <span class="o">//</span> <span class="p">(</span><span class="n">width</span> <span class="o">//</span> <span class="n">stroke_width</span><span class="p">)),</span> <span class="p">:])</span>
+  <span class="c1"># Use the style information to determine the shade of the stroke</span>
+  <span class="n">shade</span> <span class="o">=</span> <span class="n">style</span><span class="p">[</span><span class="n">i</span> <span class="o">//</span> <span class="p">(</span><span class="n">population_size</span> <span class="o">//</span> <span class="p">(</span><span class="n">height</span> <span class="o">//</span> <span class="n">stroke_width</span><span class="p">)),</span> <span class="n">i</span> <span class="o">//</span> <span class="p">(</span><span class="n">population_size</span> <span class="o">//</span> <span class="p">(</span><span class="n">width</span> <span class="o">//</span> <span class="n">stroke_width</span><span class="p">)),</span> <span class="n">direction</span><span class="p">]</span>
+  <span class="c1"># Use the style information to determine the details of the stroke</span>
+  <span class="n">details</span> <span class="o">=</span> <span class="n">style</span><span class="p">[</span><span class="n">i</span> <span class="o">//</span> <span class="p">(</span><span class="n">population_size</span> <span class="o">//</span> <span class="p">(</span><span class="n">height</span> <span class="o">//</span> <span class="n">stroke_width</span><span class="p">)),</span> <span class="n">i</span> <span class="o">//</span> <span class="p">(</span><span class="n">population_size</span> <span class="o">//</span> <span class="p">(</span><span class="n">width</span> <span class="o">//</span> <span class="n">stroke_width</span><span class="p">)),</span> <span class="n">direction</span> <span class="o">+</span> <span class="mi">32</span><span class="p">]</span>
+  
+  <span class="c1"># Create a stroke using the determined direction, shade, and details</span>
+  <span class="n">stroke</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">height</span> <span class="o">//</span> <span class="n">stroke_width</span><span class="p">,</span> <span class="n">width</span> <span class="o">//</span> <span class="n">stroke_width</span><span class="p">))</span>
+  <span class="n">stroke</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">shade</span>
+  <span class="n">population</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stroke</span><span class="p">)</span>
+
+<span class="c1"># Define the fitness function</span>
+<span class="k">def</span> <span class="nf">fitness</span><span class="p">(</span><span class="n">strokes</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+  <span class="c1"># Calculate the mean squared error between the strokes and the image</span>
+  <span class="n">mse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">strokes</span> <span class="o">-</span> <span class="n">image</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+  <span class="c1"># Calculate the total length of the strokes</span>
+  <span class="n">total_length</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">strokes</span><span class="p">)</span>
+  <span class="c1"># Calculate the average length of the strokes</span>
+  <span class="n">avg_length</span> <span class="o">=</span> <span class="n">total_length</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">strokes</span><span class="p">)</span>
+  <span class="c1"># Calculate the fitness score as a combination of the MSE and average stroke length</span>
+  <span class="n">score</span> <span class="o">=</span> <span class="n">mse</span> <span class="o">*</span> <span class="n">avg_length</span>
+  <span class="k">return</span> <span class="n">score</span>
+
+<span class="c1"># Set the number of generations to evolve the strokes</span>
+<span class="n">generations</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># Iterate over the generations</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">generations</span><span class="p">):</span>
+  <span class="c1"># Evaluate the fitness of each stroke in the population</span>
+  <span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="n">fitness</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">gray</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">population</span><span class="p">]</span>
+  
+  <span class="c1"># Select the best-performing strokes to be used as parents</span>
+  <span class="n">parents</span> <span class="o">=</span> <span class="p">[</span><span class="n">population</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">scores</span><span class="p">)[:</span><span class="mi">10</span><span class="p">]]</span>
+  
+  <span class="c1"># Generate new offspring by combining elements from the parent strokes</span>
+  <span class="n">offspring</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">population_size</span> <span class="o">-</span> <span class="mi">10</span><span class="p">):</span>
+    <span class="n">parent1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">parents</span><span class="p">)</span>
+    <span class="n">parent2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">parents</span><span class="p">)</span>
+    <span class="n">child</span> <span class="o">=</span> <span class="p">(</span><span class="n">parent1</span> <span class="o">+</span> <span class="n">parent2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">offspring</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+  
+  <span class="c1"># Replace the current population with the new offspring</span>
+  <span class="n">population</span> <span class="o">=</span> <span class="n">offspring</span>
+
+<span class="c1"># Select the best strokes from the final population</span>
+<span class="n">best_strokes</span> <span class="o">=</span> <span class="n">population</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">scores</span><span class="p">)]</span>
+
+<span class="c1"># Create the final drawing using the best strokes</span>
+<span class="n">drawing</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">stroke</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">best_strokes</span><span class="p">):</span>
+  <span class="n">drawing</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">stroke_width</span><span class="p">:(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">stroke_width</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">stroke</span>
+
+<span class="c1"># Display the resulting drawing</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">drawing</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This code uses a CNN to extract style information from a given image, and then uses this information to guide the creation of a population of strokes using a genetic algorithm. It iteratively improves the quality of the strokes in the population, and then selects the best strokes from the final population to create the final drawing. Finally, it displays the resulting drawing using Matplotlib.</p>
+</section>
+<section id="generative-approach">
+<h3>Generative Approach<a class="headerlink" href="#generative-approach" title="Permalink to this headline">#</a></h3>
+<p>This is an example of how you might use a GAN to generate a population of strokes that are similar in style to a given image:</p>
+<ol class="simple">
+<li><p>Load the image and convert it to grayscale</p></li>
+<li><p>Set the size of the drawing</p></li>
+<li><p>Build the GAN:</p>
+<ol class="simple">
+<li><p>Define the generator model</p></li>
+<li><p>Define the discriminator model</p></li>
+<li><p>Couple the generator and discriminator into the GAN</p></li>
+</ol>
+</li>
+<li><p>Compile the GAN</p></li>
+<li><p>Train the GAN:</p>
+<ol class="simple">
+<li><p>Generate a batch of fake strokes using the generator</p></li>
+<li><p>Select a batch of real strokes from the image</p></li>
+<li><p>Concatenate the fake and real strokes</p></li>
+<li><p>Create the labels for the fake and real strokes</p></li>
+<li><p>Train the discriminator on the fake and real strokes</p></li>
+<li><p>Generate a batch of random noise</p></li>
+<li><p>Use the noise to generate a batch of fake strokes</p></li>
+<li><p>Train the GAN by setting the labels for the fake strokes to be ones</p></li>
+</ol>
+</li>
+</ol>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./docs/projects/robot_drawing"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="index.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Robot Drawing System</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="proposal.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Proposal for a Robot Drawing System</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By <a href="https://entelecheia.me">Young Joon Lee</a><br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
