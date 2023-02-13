@@ -1,4 +1,4 @@
-# Avatar-GAN (RoboCoDraw)
+# Reference - Avatar-GAN (RoboCoDraw)
 
 This is a summary of the paper "RoboCoDraw: Robotic Avatar Drawing with GAN-Based Style Transfer and Time-Efﬁcient Path Optimization" {cite}`wang2020robocodraw`
 
