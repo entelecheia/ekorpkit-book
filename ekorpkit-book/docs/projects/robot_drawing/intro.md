@@ -1,4 +1,4 @@
-# Introduction to Robotic Drawing
+# Introduction to Robot Drawing Systems
 
 Robotic drawing is the use of robots to create drawings or artworks. This can be done in a variety of ways, such as using a robot arm with a pen or marker to draw on a surface, or using a robot to control a 3D printer to create a physical drawing. The robot can be programmed to create the drawing based on a set of instructions, or it can be controlled in real-time by a human artist. Robotic drawing can be used to create precise and intricate drawings, or to create large-scale artworks that would be difficult or impossible for a human to produce alone.
 
