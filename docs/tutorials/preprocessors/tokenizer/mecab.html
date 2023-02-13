@@ -956,18 +956,23 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../../../projects/robotic_drawing/proposal.html">
+     Proposal for a Robot Drawing System
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../../../projects/robotic_drawing/sketch_generation.html">
-     Sketch Generation with Drawing Process Guided by Vector Flow and Grayscale
+     Reference - Sketch Generation with Drawing Process Guided by Vector Flow and Grayscale
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../projects/robotic_drawing/robocodraw.html">
-     Avatar-GAN (RoboCoDraw)
+     Reference - Avatar-GAN (RoboCoDraw)
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../projects/robotic_drawing/fast_robotic_pencil_drawing.html">
-     Fast Robotic Pencil Drawing
+     Reference - Fast Robotic Pencil Drawing
     </a>
    </li>
   </ul>
@@ -1261,16 +1266,34 @@ title="Print to PDF"
 <h1>Mecab Tokenizer<a class="headerlink" href="#mecab-tokenizer" title="Permalink to this headline">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
 
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">eKonf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">is_colab</span><span class="p">():</span>
+    <span class="n">eKonf</span><span class="o">.</span><span class="n">mount_google_drive</span><span class="p">()</span>
+<span class="n">ws</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">set_workspace</span><span class="p">(</span>
+    <span class="n">workspace</span><span class="o">=</span><span class="s2">&quot;/workspace&quot;</span><span class="p">,</span> 
+    <span class="n">project</span><span class="o">=</span><span class="s2">&quot;ekorpkit-book/exmaples&quot;</span><span class="p">,</span> 
+    <span class="n">task</span><span class="o">=</span><span class="s2">&quot;tutorials&quot;</span><span class="p">,</span> 
+    <span class="n">log_level</span><span class="o">=</span><span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;version:&quot;</span><span class="p">,</span> <span class="n">ws</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;project_dir:&quot;</span><span class="p">,</span> <span class="n">ws</span><span class="o">.</span><span class="n">project_dir</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1.31+16.g2b3b245.dirty
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.base:Set environment variable EKORPKIT_DATA_ROOT=/workspace/data
+INFO:ekorpkit.base:Set environment variable CACHED_PATH_CACHE_ROOT=/workspace/.cache/cached_path
+INFO:ekorpkit.base:Set environment variable WANDB_DIR=/workspace/projects/ekorpkit-book/exmaples/logs
+INFO:ekorpkit.base:Set environment variable WANDB_PROJECT=ekorpkit-book-exmaples
+INFO:ekorpkit.base:Set environment variable WANDB_NOTEBOOK_NAME=/workspace/projects/ekorpkit-book/exmaples/logs/tutorials-nb
+INFO:ekorpkit.base:Set environment variable WANDB_SILENT=False
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>version: 0.1.40.post0.dev88
+project_dir: /workspace/projects/ekorpkit-book/exmaples
+time: 967 ms (started: 2023-02-06 06:37:34 +00:00)
 </pre></div>
 </div>
 </div>
@@ -1282,6 +1305,15 @@ title="Print to PDF"
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">config_group</span><span class="o">=</span><span class="s1">&#39;preprocessor/tokenizer=mecab&#39;</span>
 <span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="n">config_group</span><span class="o">=</span><span class="n">config_group</span><span class="p">)</span>
 <span class="n">mecab</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.preprocessors.tokenizer:Initializing mecab with {&#39;userdic_path&#39;: None, &#39;backend&#39;: &#39;mecab-python3&#39;, &#39;verbose&#39;: False}...
+INFO:ekorpkit.preprocessors.tokenizer:instantiating ekorpkit.preprocessors.stopwords.Stopwords...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 756 ms (started: 2023-02-06 06:37:36 +00:00)
 </pre></div>
 </div>
 </div>
@@ -1298,6 +1330,7 @@ title="Print to PDF"
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;IMF/SL&#39;, &#39;가/JKS&#39;, &#39;/SP&#39;, &#39;推定/NNG&#39;, &#39;한/XSA+ETM&#39;, &#39;/SP&#39;, &#39;우리나라/NNG&#39;, &#39;의/JKG&#39;, &#39;/SP&#39;, &#39;GDP/SL&#39;, &#39;갭/NNG&#39;, &#39;률/XSN&#39;, &#39;은/JX&#39;, &#39;/SP&#39;, &#39;今年/NNG&#39;, &#39;에/JKB&#39;, &#39;도/JX&#39;, &#39;/SP&#39;, &#39;소폭/NNG&#39;, &#39;의/JKG&#39;, &#39;/SP&#39;, &#39;마이너스/NNG&#39;, &#39;(/SSO&#39;, &#39;−)/SY&#39;, &#39;를/JKO&#39;, &#39;/SP&#39;, &#39;持續/NNG&#39;, &#39;하/XSV&#39;, &#39;고/EC&#39;, &#39;/SP&#39;, &#39;있/VX&#39;, &#39;다/EF&#39;, &#39;./SF&#39;]
 [&#39;IMF/SL&#39;, &#39;가/JKS&#39;, &#39;/SP&#39;, &#39;推定/NNG&#39;, &#39;한/XSA+ETM&#39;, &#39;/SP&#39;, &#39;우리나라/NNG&#39;, &#39;의/JKG&#39;, &#39;/SP&#39;, &#39;GDP/SL&#39;, &#39;갭/NNG&#39;, &#39;률/XSN&#39;, &#39;은/JX&#39;, &#39;/SP&#39;, &#39;今年/NNG&#39;, &#39;에/JKB&#39;, &#39;도/JX&#39;, &#39;/SP&#39;, &#39;소폭/NNG&#39;, &#39;의/JKG&#39;, &#39;/SP&#39;, &#39;마이너스/NNG&#39;, &#39;(/SSO&#39;, &#39;−)/SY&#39;, &#39;를/JKO&#39;, &#39;/SP&#39;, &#39;持續/NNG&#39;, &#39;하/XSV&#39;, &#39;고/EC&#39;, &#39;/SP&#39;, &#39;있/VX&#39;, &#39;다/EF&#39;, &#39;./SF&#39;]
+time: 4.36 ms (started: 2023-02-06 06:37:37 +00:00)
 </pre></div>
 </div>
 </div>
@@ -1310,6 +1343,11 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 799 ms (started: 2023-02-06 06:37:37 +00:00)
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1319,6 +1357,9 @@ title="Print to PDF"
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;IMF가 추정한 우리나라의 GDP갭률은 금년에도 소폭의 마이너스(-)를 지속하고 있다.&#39;
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time: 3.48 ms (started: 2023-02-06 06:37:38 +00:00)
 </pre></div>
 </div>
 </div>
@@ -1334,7 +1375,12 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.preprocessors.tokenizer:Initializing mecab with {&#39;userdic_path&#39;: None, &#39;backend&#39;: &#39;mecab-python3&#39;, &#39;verbose&#39;: False}...
+INFO:ekorpkit.preprocessors.tokenizer:instantiating ekorpkit.preprocessors.stopwords.Stopwords...
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;IMF/SL&#39;, &#39;가/JKS&#39;, &#39;/SP&#39;, &#39;추정/NNG&#39;, &#39;한/XSA+ETM&#39;, &#39;/SP&#39;, &#39;우리나라/NNG&#39;, &#39;의/JKG&#39;, &#39;/SP&#39;, &#39;GDP/SL&#39;, &#39;갭/NNG&#39;, &#39;률/XSN&#39;, &#39;은/JX&#39;, &#39;/SP&#39;, &#39;금년/NNG&#39;, &#39;에/JKB&#39;, &#39;도/JX&#39;, &#39;/SP&#39;, &#39;소폭/NNG&#39;, &#39;의/JKG&#39;, &#39;/SP&#39;, &#39;마이너스/NNG&#39;, &#39;(/SSO&#39;, &#39;-)/SY&#39;, &#39;를/JKO&#39;, &#39;/SP&#39;, &#39;지속/NNG&#39;, &#39;하/XSV&#39;, &#39;고/EC&#39;, &#39;/SP&#39;, &#39;있/VX&#39;, &#39;다/EF&#39;, &#39;./SF&#39;]
+time: 329 ms (started: 2023-02-06 06:37:38 +00:00)
 </pre></div>
 </div>
 </div>
@@ -1351,7 +1397,12 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.preprocessors.tokenizer:Initializing mecab with {&#39;userdic_path&#39;: None, &#39;backend&#39;: &#39;mecab-python3&#39;, &#39;verbose&#39;: False}...
+INFO:ekorpkit.preprocessors.tokenizer:instantiating ekorpkit.preprocessors.stopwords.Stopwords...
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;IMF/SL&#39;, &#39;가/JKS&#39;, &#39;/SP&#39;, &#39;추정/NNG&#39;, &#39;한/XSA+ETM&#39;, &#39;/SP&#39;, &#39;우리나라/NNG&#39;, &#39;의/JKG&#39;, &#39;/SP&#39;, &#39;GDP/SL&#39;, &#39;갭/NNG&#39;, &#39;률/XSN&#39;, &#39;은/JX&#39;, &#39;/SP&#39;, &#39;금년/NNG&#39;, &#39;에/JKB&#39;, &#39;도/JX&#39;, &#39;/SP&#39;, &#39;소폭/NNG&#39;, &#39;의/JKG&#39;, &#39;/SP&#39;, &#39;마이너스/NNG&#39;, &#39;(/SSO&#39;, &#39;-)/SY&#39;, &#39;를/JKO&#39;, &#39;/SP&#39;, &#39;지속/NNG&#39;, &#39;하/XSV&#39;, &#39;고/EC&#39;, &#39;/SP&#39;, &#39;있/VX&#39;, &#39;다/EF&#39;, &#39;./SF&#39;]
+time: 338 ms (started: 2023-02-06 06:37:38 +00:00)
 </pre></div>
 </div>
 </div>
@@ -1364,6 +1415,7 @@ title="Print to PDF"
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;IMF&#39;, &#39;추정&#39;, &#39;우리나라&#39;, &#39;GDP&#39;, &#39;갭&#39;, &#39;률&#39;, &#39;금년&#39;, &#39;소폭&#39;, &#39;마이너스&#39;, &#39;지속&#39;]
+time: 3.18 ms (started: 2023-02-06 06:37:39 +00:00)
 </pre></div>
 </div>
 </div>
@@ -1376,6 +1428,7 @@ title="Print to PDF"
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;IMF&#39;, &#39;가&#39;, &#39;추정&#39;, &#39;한&#39;, &#39;우리나라&#39;, &#39;의&#39;, &#39;GDP&#39;, &#39;갭&#39;, &#39;률&#39;, &#39;은&#39;, &#39;금년&#39;, &#39;에&#39;, &#39;도&#39;, &#39;소폭&#39;, &#39;의&#39;, &#39;마이너스&#39;, &#39;를&#39;, &#39;지속&#39;, &#39;하&#39;, &#39;고&#39;, &#39;있&#39;, &#39;다&#39;]
+time: 3.91 ms (started: 2023-02-06 06:37:39 +00:00)
 </pre></div>
 </div>
 </div>
@@ -1389,6 +1442,7 @@ title="Print to PDF"
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;금/MAJ&#39;, &#39;통/MAG&#39;, &#39;위/NNG&#39;, &#39;는/JX&#39;, &#39;/SP&#39;, &#39;통화/NNG&#39;, &#39;신용/NNG&#39;, &#39;정책/NNG&#39;, &#39;과/JC&#39;, &#39;/SP&#39;, &#39;한국은행/NNP&#39;, &#39;의/JKG&#39;, &#39;/SP&#39;, &#39;운영/NNG&#39;, &#39;에/JKB&#39;, &#39;/SP&#39;, &#39;관한/VV+ETM&#39;, &#39;/SP&#39;, &#39;의결/NNG&#39;, &#39;권/XSN&#39;, &#39;을/JKO&#39;, &#39;/SP&#39;, &#39;행사/NNG&#39;, &#39;한다/XSV+EF&#39;, &#39;./SF&#39;]
+time: 3.07 ms (started: 2023-02-06 06:37:39 +00:00)
 </pre></div>
 </div>
 </div>
@@ -1404,7 +1458,12 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:ekorpkit.preprocessors.tokenizer:Initializing mecab with {&#39;userdic_path&#39;: &#39;/workspace/projects/ekorpkit/ekorpkit/resources/dictionaries/mecab/ekon_v1.dic&#39;, &#39;backend&#39;: &#39;mecab-python3&#39;, &#39;verbose&#39;: False}...
+INFO:ekorpkit.preprocessors.tokenizer:instantiating ekorpkit.preprocessors.stopwords.Stopwords...
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;금통위/NNP&#39;, &#39;는/JX&#39;, &#39;/SP&#39;, &#39;통화/NNG&#39;, &#39;신용/NNG&#39;, &#39;정책/NNG&#39;, &#39;과/JC&#39;, &#39;/SP&#39;, &#39;한국은행/NNP&#39;, &#39;의/JKG&#39;, &#39;/SP&#39;, &#39;운영/NNG&#39;, &#39;에/JKB&#39;, &#39;/SP&#39;, &#39;관한/VV+ETM&#39;, &#39;/SP&#39;, &#39;의결권/NNP&#39;, &#39;을/JKO&#39;, &#39;/SP&#39;, &#39;행사/NNG&#39;, &#39;한다/XSV+EF&#39;, &#39;./SF&#39;]
+time: 273 ms (started: 2023-02-06 06:49:13 +00:00)
 </pre></div>
 </div>
 </div>
@@ -1424,7 +1483,7 @@ title="Print to PDF"
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./docs/tutorials/preprocessors/tokenizer"
         },
         predefinedOutput: true
