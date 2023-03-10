@@ -1,4 +1,4 @@
-# ekorpkit 【iːkɔːkɪt】 : **eKo**nomic **R**esearch **P**ython Tool**kit**
+# ekorpkit【iːkɔːkɪt】: **eKo**nomic **R**esearch **P**ython Tool**kit**
 
 [![PyPI](https://img.shields.io/pypi/v/ekorpkit?color=green)](https://pypi.org/project/ekorpkit) [![Jupyter Book Badge](https://jupyterbook.org/badge.svg)](https://entelecheia.cc/) [![PyPI - Downloads](https://img.shields.io/pypi/dw/ekorpkit)](https://pypi.org/project/ekorpkit) [![GitHub last commit](https://img.shields.io/github/last-commit/entelecheia/ekorpkit-book)](https://github.com/entelecheia/ekorpkit-book) [![LinkedIn Badge](https://img.shields.io/badge/LinkedIn-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/entelecheia/) [![GitHub Repo stars](https://img.shields.io/github/stars/entelecheia/ekorpkit)](https://github.com/entelecheia/ekorpkit) [![GitHub followers](https://img.shields.io/github/followers/entelecheia)](https://github.com/entelecheia) 
 
