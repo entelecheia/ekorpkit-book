@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 
 
-<html >
+<html lang="en" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>SentencePiece Tokenizer &#8212; eKorpkit Tutorials</title>
   
@@ -45,6 +45,7 @@
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
@@ -77,7 +78,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="next" title="ByT5: Towards a token-free future with pre-trained byte-to-byte models" href="byt5.html" />
     <link rel="prev" title="Tokenization" href="tokenization.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
   
   
@@ -622,10 +623,10 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="sentencepiece-tokenizer">
-<h1>SentencePiece Tokenizer<a class="headerlink" href="#sentencepiece-tokenizer" title="Permalink to this headline">#</a></h1>
+<h1>SentencePiece Tokenizer<a class="headerlink" href="#sentencepiece-tokenizer" title="Permalink to this heading">#</a></h1>
 <p><img alt="" src="../../../_images/entelecheia_alphabets.png" /></p>
 <section id="what-is-sentencepiece">
-<h2>What is SentencePiece?<a class="headerlink" href="#what-is-sentencepiece" title="Permalink to this headline">#</a></h2>
+<h2>What is SentencePiece?<a class="headerlink" href="#what-is-sentencepiece" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>SentencePiece is an unsupervised text tokenizer and detokenizer mainly for Neural Network-based text generation systems where the vocabulary size is predetermined prior to the neural model training.</p></li>
 <li><p>SentencePiece implements <strong>subword units</strong> (e.g., <strong>byte-pair-encoding (BPE)</strong> [<a class="reference external" href="https://www.aclweb.org/anthology/P16-1162">Sennrich et al.</a>]) and <strong>unigram language model</strong> [<a class="reference external" href="https://arxiv.org/abs/1804.10959">Kudo.</a>])
@@ -640,7 +641,7 @@ with the extension of direct training from raw sentences.</p></li>
 </ul>
 </section>
 <section id="technical-highlights">
-<h2>Technical highlights<a class="headerlink" href="#technical-highlights" title="Permalink to this headline">#</a></h2>
+<h2>Technical highlights<a class="headerlink" href="#technical-highlights" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p><strong>Purely data driven</strong>: SentencePiece trains tokenization and detokenization
 models from sentences. Pre-tokenization (<a class="reference external" href="https://github.com/moses-smt/mosesdecoder/blob/master/scripts/tokenizer/tokenizer.perl">Moses tokenizer</a>/<a class="reference external" href="http://taku910.github.io/mecab/">MeCab</a>/<a class="reference external" href="http://www.phontron.com/kytea/">KyTea</a>) is not always required.</p></li>
@@ -653,13 +654,13 @@ models from sentences. Pre-tokenization (<a class="reference external" href="htt
 <li><p><strong>NFKC-based normalization</strong>: SentencePiece performs NFKC-based text normalization.</p></li>
 </ul>
 <section id="comparisons-with-other-implementations">
-<h3>Comparisons with other implementations<a class="headerlink" href="#comparisons-with-other-implementations" title="Permalink to this headline">#</a></h3>
-<table class="colwidths-auto table">
+<h3>Comparisons with other implementations<a class="headerlink" href="#comparisons-with-other-implementations" title="Permalink to this heading">#</a></h3>
+<table class="table">
 <thead>
-<tr class="row-odd"><th class="text-left head"><p>Feature</p></th>
-<th class="text-center head"><p>SentencePiece</p></th>
-<th class="text-center head"><p>subword-nmt</p></th>
-<th class="text-center head"><p>WordPiece</p></th>
+<tr class="row-odd"><th class="head text-left"><p>Feature</p></th>
+<th class="head text-center"><p>SentencePiece</p></th>
+<th class="head text-center"><p>subword-nmt</p></th>
+<th class="head text-center"><p>WordPiece</p></th>
 </tr>
 </thead>
 <tbody>
@@ -709,9 +710,9 @@ models from sentences. Pre-tokenization (<a class="reference external" href="htt
 </section>
 </section>
 <section id="high-level-differences-between-sentencepiece-and-other-tokenizers">
-<h2>High level differences between SentencePiece and other tokenizers<a class="headerlink" href="#high-level-differences-between-sentencepiece-and-other-tokenizers" title="Permalink to this headline">#</a></h2>
+<h2>High level differences between SentencePiece and other tokenizers<a class="headerlink" href="#high-level-differences-between-sentencepiece-and-other-tokenizers" title="Permalink to this heading">#</a></h2>
 <section id="the-number-of-unique-tokens-is-predetermined">
-<h3>The number of unique tokens is predetermined<a class="headerlink" href="#the-number-of-unique-tokens-is-predetermined" title="Permalink to this headline">#</a></h3>
+<h3>The number of unique tokens is predetermined<a class="headerlink" href="#the-number-of-unique-tokens-is-predetermined" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Neural Machine Translation models typically operate with a fixed vocabulary.</p></li>
 <li><p>Unlike most unsupervised word segmentation algorithms, which assume an infinite vocabulary, SentencePiece trains the segmentation model such that the final vocabulary size is fixed, e.g., 8k, 16k, or 32k.</p></li>
@@ -721,7 +722,7 @@ models from sentences. Pre-tokenization (<a class="reference external" href="htt
 The number of merge operations is a BPE-specific parameter and not applicable to other segmentation algorithms, including unigram, word and character.</p>
 </section>
 <section id="trains-from-raw-sentences">
-<h3>Trains from raw sentences<a class="headerlink" href="#trains-from-raw-sentences" title="Permalink to this headline">#</a></h3>
+<h3>Trains from raw sentences<a class="headerlink" href="#trains-from-raw-sentences" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Previous sub-word implementations assume that the input sentences are pre-tokenized.</p></li>
 <li><p>This constraint was required for efficient training, but makes the preprocessing complicated as we have to run language dependent tokenizers in advance.</p></li>
@@ -730,7 +731,7 @@ The number of merge operations is a BPE-specific parameter and not applicable to
 </ul>
 </section>
 <section id="whitespace-is-treated-as-a-basic-symbol">
-<h3>Whitespace is treated as a basic symbol<a class="headerlink" href="#whitespace-is-treated-as-a-basic-symbol" title="Permalink to this headline">#</a></h3>
+<h3>Whitespace is treated as a basic symbol<a class="headerlink" href="#whitespace-is-treated-as-a-basic-symbol" title="Permalink to this heading">#</a></h3>
 <ul>
 <li><p>The first step of Natural Language processing is text tokenization.</p></li>
 <li><p>For example, a standard English tokenizer would segment the text “Hello world.” into the following three tokens.</p>
@@ -768,7 +769,7 @@ The number of merge operations is a BPE-specific parameter and not applicable to
 </ul>
 </section>
 <section id="subword-regularization-and-bpe-dropout">
-<h3>Subword regularization and BPE-dropout<a class="headerlink" href="#subword-regularization-and-bpe-dropout" title="Permalink to this headline">#</a></h3>
+<h3>Subword regularization and BPE-dropout<a class="headerlink" href="#subword-regularization-and-bpe-dropout" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Subword regularization [<a class="reference external" href="https://arxiv.org/abs/1804.10959">Kudo.</a>] and BPE-dropout <a class="reference external" href="https://arxiv.org/abs/1910.13267">Provilkov et al</a> are simple regularization methods that virtually augment training data with on-the-fly subword sampling, which helps to improve the accuracy as well as robustness of NMT models.</p></li>
 <li><p>To enable subword regularization, you would like to integrate SentencePiece library (C++/Python) into the NMT system to sample one segmentation for each parameter update, which is different from the standard off-line data preparations.</p></li>
@@ -905,7 +906,7 @@ trainer_interface.cc(697) LOG(INFO) Saving vocabs: m.vocab
 </section>
 </section>
 <section id="subword-regularization">
-<h2>Subword Regularization<a class="headerlink" href="#subword-regularization" title="Permalink to this headline">#</a></h2>
+<h2>Subword Regularization<a class="headerlink" href="#subword-regularization" title="Permalink to this heading">#</a></h2>
 <ul>
 <li><p>Given a sequence of unigrams <span class="math notranslate nohighlight">\(X = (x_1, x_2, \cdots, x_n)\)</span>, the probability of the sequence <span class="math notranslate nohighlight">\(X\)</span> is given by the product of the unigram conditional probabilities by the Bayes chain rule:</p>
 <div class="math notranslate nohighlight">
@@ -936,7 +937,7 @@ trainer_interface.cc(697) LOG(INFO) Saving vocabs: m.vocab
 </ul>
 </section>
 <section id="how-to-train-sentencepiece">
-<h2>How to train SentencePiece<a class="headerlink" href="#how-to-train-sentencepiece" title="Permalink to this headline">#</a></h2>
+<h2>How to train SentencePiece<a class="headerlink" href="#how-to-train-sentencepiece" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Assume that we have a large collection of bigrams, greater than what we ultimately want to use in our model.</p></li>
 <li><p>To train a SentencePiece model, we want to maximize the probability of obtaining a particular tokenization <span class="math notranslate nohighlight">\(X = (x_1, x_2, \cdots, x_n)\)</span> of the corpus, given the unigram probabilities <span class="math notranslate nohighlight">\(p(x_i), p(x_2), \cdots, p(x_n)\)</span>.</p></li>
@@ -1066,7 +1067,7 @@ trainer_interface.cc(697) LOG(INFO) Saving vocabs: m.vocab
 </div>
 </div>
 <section id="finding-the-optimal-segmentation">
-<h3>Finding the optimal segmentation<a class="headerlink" href="#finding-the-optimal-segmentation" title="Permalink to this headline">#</a></h3>
+<h3>Finding the optimal segmentation<a class="headerlink" href="#finding-the-optimal-segmentation" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p>If all of the subwords were of the same length, we could apply the Viterbi algorithm to find the optimal segmentation.</p></li>
 <li><p>The Viterbi algorithm is a dynamic programming algorithm that finds the most likely sequence of states, given a sequence of observations and a model of the transition probabilities between states and the emission probabilities of the observations given the states.</p>
@@ -1137,7 +1138,7 @@ trainer_interface.cc(697) LOG(INFO) Saving vocabs: m.vocab
 </div>
 </section>
 <section id="fitting-the-model">
-<h3>Fitting the model<a class="headerlink" href="#fitting-the-model" title="Permalink to this headline">#</a></h3>
+<h3>Fitting the model<a class="headerlink" href="#fitting-the-model" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p>One of the algorithm for finding the optimal sequence from the Trie is a forwards-backwards algorithm.</p>
 <ul>
@@ -1226,7 +1227,7 @@ trainer_interface.cc(697) LOG(INFO) Saving vocabs: m.vocab
 </div>
 </section>
 <section id="subword-sampling">
-<h3>Subword sampling<a class="headerlink" href="#subword-sampling" title="Permalink to this headline">#</a></h3>
+<h3>Subword sampling<a class="headerlink" href="#subword-sampling" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p>To find alternative segmentations, we can save the n-best paths in the forward-backward step.</p></li>
 <li><p>Now, we can sample from the n-best paths to find alternative segmentations.</p></li>
@@ -1234,7 +1235,7 @@ trainer_interface.cc(697) LOG(INFO) Saving vocabs: m.vocab
 </section>
 </section>
 <section id="implementation">
-<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">#</a></h2>
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit</span> <span class="kn">import</span> <span class="n">eKonf</span>
@@ -1343,7 +1344,7 @@ EM iter 4: Loss=-640155.71
 </div>
 </section>
 <section id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/google/sentencepiece">SentencePiece</a></p></li>
 <li><p><a class="reference external" href="https://towardsdatascience.com/sentencepiece-tokenizer-demystified-d0a3aac19b15">SentencePiece Tokenizer Demystified</a></p></li>

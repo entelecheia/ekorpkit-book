@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 
 
-<html >
+<html lang="en" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Lab 1: Preparing Wikipedia Corpora &#8212; eKorpkit Tutorials</title>
   
@@ -45,6 +45,7 @@
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
@@ -75,7 +76,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="next" title="Lab 2: EDA on Corpora" href="lab2-corpus-eda.html" />
     <link rel="prev" title="Pretrained Language Models" href="plms.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
   
   
@@ -625,10 +626,10 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="lab-1-preparing-wikipedia-corpora">
-<h1>Lab 1: Preparing Wikipedia Corpora<a class="headerlink" href="#lab-1-preparing-wikipedia-corpora" title="Permalink to this headline">#</a></h1>
+<h1>Lab 1: Preparing Wikipedia Corpora<a class="headerlink" href="#lab-1-preparing-wikipedia-corpora" title="Permalink to this heading">#</a></h1>
 <p><img alt="" src="../../../_images/corpus.png" /></p>
 <section id="prepare-the-environment">
-<h2>Prepare the Environment<a class="headerlink" href="#prepare-the-environment" title="Permalink to this headline">#</a></h2>
+<h2>Prepare the Environment<a class="headerlink" href="#prepare-the-environment" title="Permalink to this heading">#</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="o">--</span><span class="n">pre</span> <span class="n">ekorpkit</span><span class="p">[</span><span class="n">dataset</span><span class="p">,</span><span class="n">wiki</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -672,9 +673,9 @@ time: 1.36 s (started: 2022-11-14 01:22:37 +00:00)
 </div>
 </section>
 <section id="build-corpora-with-the-ekorpkit-configs">
-<h2>Build corpora with the ekorpkit configs<a class="headerlink" href="#build-corpora-with-the-ekorpkit-configs" title="Permalink to this headline">#</a></h2>
+<h2>Build corpora with the ekorpkit configs<a class="headerlink" href="#build-corpora-with-the-ekorpkit-configs" title="Permalink to this heading">#</a></h2>
 <section id="wikipedia-dump">
-<h3>Wikipedia Dump<a class="headerlink" href="#wikipedia-dump" title="Permalink to this headline">#</a></h3>
+<h3>Wikipedia Dump<a class="headerlink" href="#wikipedia-dump" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p>The first step is to download the Wikipedia dump.</p></li>
 <li><p>The dump is a collection of all Wikipedia articles in XML format.</p></li>
@@ -684,7 +685,7 @@ time: 1.36 s (started: 2022-11-14 01:22:37 +00:00)
 <li><p>For the detailed list of language codes, see <a class="reference external" href="https://meta.wikimedia.org/wiki/List_of_Wikipedias">https://meta.wikimedia.org/wiki/List_of_Wikipedias</a>.</p></li>
 </ul>
 <section id="fetch-the-dump-and-extract-it-to-the-data-directory">
-<h4>Fetch the dump and extract it to the <code class="docutils literal notranslate"><span class="pre">data</span></code> directory<a class="headerlink" href="#fetch-the-dump-and-extract-it-to-the-data-directory" title="Permalink to this headline">#</a></h4>
+<h4>Fetch the dump and extract it to the <code class="docutils literal notranslate"><span class="pre">data</span></code> directory<a class="headerlink" href="#fetch-the-dump-and-extract-it-to-the-data-directory" title="Permalink to this heading">#</a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekorpkit.io.fetch.loader.wiki</span> <span class="kn">import</span> <span class="n">Wiki</span>
 
 <span class="n">wiki</span> <span class="o">=</span> <span class="n">Wiki</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="s2">&quot;ko&quot;</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
@@ -696,7 +697,7 @@ time: 1.36 s (started: 2022-11-14 01:22:37 +00:00)
 </section>
 </section>
 <section id="build-the-korean-wikipedia-corpus">
-<h3>Build the Korean Wikipedia Corpus<a class="headerlink" href="#build-the-korean-wikipedia-corpus" title="Permalink to this headline">#</a></h3>
+<h3>Build the Korean Wikipedia Corpus<a class="headerlink" href="#build-the-korean-wikipedia-corpus" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wiki_cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;io/fetcher=wiki&quot;</span><span class="p">)</span>
@@ -813,7 +814,7 @@ INFO: Extracted 1300000 articles (5678.9 art/s)
 </div>
 </div>
 <section id="build-the-corpus-by-parsing-the-wikipedia-dump">
-<h4>Build the corpus by Parsing the Wikipedia Dump<a class="headerlink" href="#build-the-corpus-by-parsing-the-wikipedia-dump" title="Permalink to this headline">#</a></h4>
+<h4>Build the corpus by Parsing the Wikipedia Dump<a class="headerlink" href="#build-the-corpus-by-parsing-the-wikipedia-dump" title="Permalink to this heading">#</a></h4>
 <ul class="simple">
 <li><p>The next step is to parse the Wikipedia dump and build the corpus.</p></li>
 <li><p>Extracted Wikipedia dump is in JSON Lines format, which is a line-delimited JSON format.</p></li>
@@ -1107,7 +1108,7 @@ Corpus [kowiki] is built to [/content/drive/MyDrive/workspace/data/datasets/corp
 </section>
 </section>
 <section id="build-the-english-wikipedia-corpus">
-<h3>Build the English Wikipedia Corpus<a class="headerlink" href="#build-the-english-wikipedia-corpus" title="Permalink to this headline">#</a></h3>
+<h3>Build the English Wikipedia Corpus<a class="headerlink" href="#build-the-english-wikipedia-corpus" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;corpus/builtin=enwiki&quot;</span><span class="p">)</span>
@@ -1770,7 +1771,7 @@ Corpus [enwiki] is built to [/content/drive/MyDrive/workspace/data/datasets/corp
 </div>
 </section>
 <section id="build-a-wikipedia-corpus-for-other-languages">
-<h3>Build a Wikipedia Corpus for Other Languages<a class="headerlink" href="#build-a-wikipedia-corpus-for-other-languages" title="Permalink to this headline">#</a></h3>
+<h3>Build a Wikipedia Corpus for Other Languages<a class="headerlink" href="#build-a-wikipedia-corpus-for-other-languages" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;corpus/builtin=wiki&quot;</span><span class="p">)</span>
@@ -1992,7 +1993,7 @@ time: 41.5 s (started: 2022-11-04 08:16:28 +00:00)
 </div>
 </section>
 <section id="build-a-corpus-using-cli">
-<h3>Build a Corpus using CLI<a class="headerlink" href="#build-a-corpus-using-cli" title="Permalink to this headline">#</a></h3>
+<h3>Build a Corpus using CLI<a class="headerlink" href="#build-a-corpus-using-cli" title="Permalink to this heading">#</a></h3>
 <p>To build more efficiently with multiple processors, it is preferable to use CLI (command line interface) tools.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ekorpkit<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>project.name<span class="o">=</span>ekorpkit-book<span class="w"> </span><span class="se">\</span>
@@ -2011,7 +2012,7 @@ time: 41.5 s (started: 2022-11-04 08:16:28 +00:00)
 </section>
 </section>
 <section id="load-the-corpus">
-<h2>Load the Corpus<a class="headerlink" href="#load-the-corpus" title="Permalink to this headline">#</a></h2>
+<h2>Load the Corpus<a class="headerlink" href="#load-the-corpus" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cfg</span> <span class="o">=</span> <span class="n">eKonf</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="s2">&quot;corpus&quot;</span><span class="p">)</span>
@@ -2114,7 +2115,7 @@ time: 9.73 ms (started: 2022-11-04 02:26:02 +00:00)
 </div>
 </div>
 <section id="sample-and-save-the-corpus">
-<h3>Sample and Save the Corpus<a class="headerlink" href="#sample-and-save-the-corpus" title="Permalink to this headline">#</a></h3>
+<h3>Sample and Save the Corpus<a class="headerlink" href="#sample-and-save-the-corpus" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">enwiki</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
@@ -2195,7 +2196,7 @@ time: 5min 34s (started: 2022-11-04 02:27:31 +00:00)
 </section>
 </section>
 <section id="load-corpora">
-<h2>Load Corpora<a class="headerlink" href="#load-corpora" title="Permalink to this headline">#</a></h2>
+<h2>Load Corpora<a class="headerlink" href="#load-corpora" title="Permalink to this heading">#</a></h2>
 <p>You can load several corpora at once and merge them into a single corpus.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2268,7 +2269,7 @@ time: 18.8 s (started: 2022-11-04 03:20:27 +00:00)
 </div>
 </div>
 <section id="checking-the-corpus-information">
-<h3>Checking the Corpus Information<a class="headerlink" href="#checking-the-corpus-information" title="Permalink to this headline">#</a></h3>
+<h3>Checking the Corpus Information<a class="headerlink" href="#checking-the-corpus-information" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eKonf</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">crps</span><span class="p">[</span><span class="s2">&quot;kowiki&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
@@ -2341,7 +2342,7 @@ time: 8.71 ms (started: 2022-11-04 03:20:46 +00:00)
 </div>
 </section>
 <section id="checking-the-corpus-data">
-<h3>Checking the Corpus Data<a class="headerlink" href="#checking-the-corpus-data" title="Permalink to this headline">#</a></h3>
+<h3>Checking the Corpus Data<a class="headerlink" href="#checking-the-corpus-data" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">crps</span><span class="p">[</span><span class="s2">&quot;kowiki&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -2418,7 +2419,7 @@ time: 10.3 ms (started: 2022-11-04 03:20:46 +00:00)
 </div>
 </section>
 <section id="concatenating-corpora">
-<h3>Concatenating Corpora<a class="headerlink" href="#concatenating-corpora" title="Permalink to this headline">#</a></h3>
+<h3>Concatenating Corpora<a class="headerlink" href="#concatenating-corpora" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crps</span><span class="o">.</span><span class="n">concat_corpora</span><span class="p">()</span>
@@ -2715,7 +2716,7 @@ INFO:ekorpkit.info.column:Added a column [corpus] with value [bnwiki]
 </div>
 </section>
 <section id="save-the-concatenated-corpus">
-<h3>Save the concatenated corpus<a class="headerlink" href="#save-the-concatenated-corpus" title="Permalink to this headline">#</a></h3>
+<h3>Save the concatenated corpus<a class="headerlink" href="#save-the-concatenated-corpus" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eKonf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">crps</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;wiki_corpus.parquet&quot;</span><span class="p">,</span> <span class="n">project_dir</span> <span class="o">+</span> <span class="s2">&quot;/data&quot;</span><span class="p">)</span>
